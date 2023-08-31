@@ -12,21 +12,10 @@ type GeneralBuilder struct {
 	parent *Command
 }
 
-type ignoreErrorsFlag struct {
-}
-
-var _ Flag = (*ignoreErrorsFlag)(nil) // ensure ignoreErrorsFlag implements Flag interface.
-
-func (f *ignoreErrorsFlag) ID() string {
-	return "ignoreerrors"
-}
-
-func (f *ignoreErrorsFlag) String() string {
-	return "TODO"
-}
-
-func (f *ignoreErrorsFlag) AsFlag() []string {
-	return []string{"TODO"}
+// Then jumps back to the base command builder, if you want to add additional flags
+// from another flag builder.
+func (ff *GeneralBuilder) Then() *Command {
+	return ff.parent
 }
 
 // Ignore download and postprocessing errors. The download will be considered
@@ -34,42 +23,12 @@ func (f *ignoreErrorsFlag) AsFlag() []string {
 //
 // IgnoreErrors maps to cli flags: -i/--ignore-errors.
 func (ff *GeneralBuilder) IgnoreErrors() *GeneralBuilder {
-	ff.parent.addFlag(&ignoreErrorsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "ignoreerrors",
+		Flag: "--ignore-errors",
+		Args: nil,
+	})
 	return ff
-}
-
-type noAbortOnErrorFlag struct {
-}
-
-var _ Flag = (*noAbortOnErrorFlag)(nil) // ensure noAbortOnErrorFlag implements Flag interface.
-
-func (f *noAbortOnErrorFlag) ID() string {
-	return "ignoreerrors"
-}
-
-func (f *noAbortOnErrorFlag) String() string {
-	return "TODO"
-}
-
-func (f *noAbortOnErrorFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type abortOnErrorFlag struct {
-}
-
-var _ Flag = (*abortOnErrorFlag)(nil) // ensure abortOnErrorFlag implements Flag interface.
-
-func (f *abortOnErrorFlag) ID() string {
-	return "ignoreerrors"
-}
-
-func (f *abortOnErrorFlag) String() string {
-	return "TODO"
-}
-
-func (f *abortOnErrorFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Abort downloading of further videos if an error occurs (Alias:
@@ -77,76 +36,36 @@ func (f *abortOnErrorFlag) AsFlag() []string {
 //
 // AbortOnError maps to cli flags: --abort-on-error/--no-ignore-errors.
 func (ff *GeneralBuilder) AbortOnError() *GeneralBuilder {
-	ff.parent.addFlag(&abortOnErrorFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "ignoreerrors",
+		Flag: "--abort-on-error",
+		Args: nil,
+	})
 	return ff
-}
-
-type dumpUserAgentFlag struct {
-}
-
-var _ Flag = (*dumpUserAgentFlag)(nil) // ensure dumpUserAgentFlag implements Flag interface.
-
-func (f *dumpUserAgentFlag) ID() string {
-	return "dump_user_agent"
-}
-
-func (f *dumpUserAgentFlag) String() string {
-	return "TODO"
-}
-
-func (f *dumpUserAgentFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Display the current user-agent and exit
 //
 // DumpUserAgent maps to cli flags: --dump-user-agent.
 func (ff *GeneralBuilder) DumpUserAgent() *GeneralBuilder {
-	ff.parent.addFlag(&dumpUserAgentFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "dump_user_agent",
+		Flag: "--dump-user-agent",
+		Args: nil,
+	})
 	return ff
-}
-
-type forceGenericExtractorFlag struct {
-}
-
-var _ Flag = (*forceGenericExtractorFlag)(nil) // ensure forceGenericExtractorFlag implements Flag interface.
-
-func (f *forceGenericExtractorFlag) ID() string {
-	return "force_generic_extractor"
-}
-
-func (f *forceGenericExtractorFlag) String() string {
-	return "TODO"
-}
-
-func (f *forceGenericExtractorFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // ForceGenericExtractor sets the "force-generic-extractor" flag to "true".
 //
 // ForceGenericExtractor maps to cli flags: --force-generic-extractor.
 func (ff *GeneralBuilder) ForceGenericExtractor() *GeneralBuilder {
-	ff.parent.addFlag(&forceGenericExtractorFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "force_generic_extractor",
+		Flag: "--force-generic-extractor",
+		Args: nil,
+	})
 	return ff
-}
-
-type defaultSearchFlag struct {
-	args []string
-}
-
-var _ Flag = (*defaultSearchFlag)(nil) // ensure defaultSearchFlag implements Flag interface.
-
-func (f *defaultSearchFlag) ID() string {
-	return "default_search"
-}
-
-func (f *defaultSearchFlag) String() string {
-	return "TODO"
-}
-
-func (f *defaultSearchFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Use this prefix for unqualified URLs. E.g. "gvsearch2:python" downloads two
@@ -157,27 +76,12 @@ func (f *defaultSearchFlag) AsFlag() []string {
 //
 // DefaultSearch maps to cli flags: --default-search=PREFIX.
 func (ff *GeneralBuilder) DefaultSearch(prefix string) *GeneralBuilder {
-	ff.parent.addFlag(&defaultSearchFlag{
-		args: []string{prefix},
+	ff.parent.addFlag(&Flag{
+		ID:   "default_search",
+		Flag: "--default-search",
+		Args: []string{prefix},
 	})
 	return ff
-}
-
-type ignoreConfigFlag struct {
-}
-
-var _ Flag = (*ignoreConfigFlag)(nil) // ensure ignoreConfigFlag implements Flag interface.
-
-func (f *ignoreConfigFlag) ID() string {
-	return "ignoreconfig"
-}
-
-func (f *ignoreConfigFlag) String() string {
-	return "TODO"
-}
-
-func (f *ignoreConfigFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Don't load any more configuration files except those given by
@@ -187,84 +91,24 @@ func (f *ignoreConfigFlag) AsFlag() []string {
 //
 // IgnoreConfig maps to cli flags: --ignore-config/--no-config.
 func (ff *GeneralBuilder) IgnoreConfig() *GeneralBuilder {
-	ff.parent.addFlag(&ignoreConfigFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "ignoreconfig",
+		Flag: "--ignore-config",
+		Args: nil,
+	})
 	return ff
-}
-
-type noConfigLocationsFlag struct {
-}
-
-var _ Flag = (*noConfigLocationsFlag)(nil) // ensure noConfigLocationsFlag implements Flag interface.
-
-func (f *noConfigLocationsFlag) ID() string {
-	return "config_locations"
-}
-
-func (f *noConfigLocationsFlag) String() string {
-	return "TODO"
-}
-
-func (f *noConfigLocationsFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type flatPlaylistFlag struct {
-}
-
-var _ Flag = (*flatPlaylistFlag)(nil) // ensure flatPlaylistFlag implements Flag interface.
-
-func (f *flatPlaylistFlag) ID() string {
-	return "extract_flat"
-}
-
-func (f *flatPlaylistFlag) String() string {
-	return "TODO"
-}
-
-func (f *flatPlaylistFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type noFlatPlaylistFlag struct {
-}
-
-var _ Flag = (*noFlatPlaylistFlag)(nil) // ensure noFlatPlaylistFlag implements Flag interface.
-
-func (f *noFlatPlaylistFlag) ID() string {
-	return "extract_flat"
-}
-
-func (f *noFlatPlaylistFlag) String() string {
-	return "TODO"
-}
-
-func (f *noFlatPlaylistFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Fully extract the videos of a playlist (default)
 //
 // NoFlatPlaylist maps to cli flags: --no-flat-playlist.
 func (ff *GeneralBuilder) NoFlatPlaylist() *GeneralBuilder {
-	ff.parent.addFlag(&noFlatPlaylistFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "extract_flat",
+		Flag: "--no-flat-playlist",
+		Args: nil,
+	})
 	return ff
-}
-
-type liveFromStartFlag struct {
-}
-
-var _ Flag = (*liveFromStartFlag)(nil) // ensure liveFromStartFlag implements Flag interface.
-
-func (f *liveFromStartFlag) ID() string {
-	return "live_from_start"
-}
-
-func (f *liveFromStartFlag) String() string {
-	return "TODO"
-}
-
-func (f *liveFromStartFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Download livestreams from the start. Currently only supported for YouTube
@@ -272,51 +116,24 @@ func (f *liveFromStartFlag) AsFlag() []string {
 //
 // LiveFromStart maps to cli flags: --live-from-start.
 func (ff *GeneralBuilder) LiveFromStart() *GeneralBuilder {
-	ff.parent.addFlag(&liveFromStartFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "live_from_start",
+		Flag: "--live-from-start",
+		Args: nil,
+	})
 	return ff
-}
-
-type noLiveFromStartFlag struct {
-}
-
-var _ Flag = (*noLiveFromStartFlag)(nil) // ensure noLiveFromStartFlag implements Flag interface.
-
-func (f *noLiveFromStartFlag) ID() string {
-	return "live_from_start"
-}
-
-func (f *noLiveFromStartFlag) String() string {
-	return "TODO"
-}
-
-func (f *noLiveFromStartFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Download livestreams from the current time (default)
 //
 // NoLiveFromStart maps to cli flags: --no-live-from-start.
 func (ff *GeneralBuilder) NoLiveFromStart() *GeneralBuilder {
-	ff.parent.addFlag(&noLiveFromStartFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "live_from_start",
+		Flag: "--no-live-from-start",
+		Args: nil,
+	})
 	return ff
-}
-
-type waitForVideoFlag struct {
-	args []string
-}
-
-var _ Flag = (*waitForVideoFlag)(nil) // ensure waitForVideoFlag implements Flag interface.
-
-func (f *waitForVideoFlag) ID() string {
-	return "wait_for_video"
-}
-
-func (f *waitForVideoFlag) String() string {
-	return "TODO"
-}
-
-func (f *waitForVideoFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Wait for scheduled streams to become available. Pass the minimum number of
@@ -324,92 +141,34 @@ func (f *waitForVideoFlag) AsFlag() []string {
 //
 // WaitForVideo maps to cli flags: --wait-for-video=MIN.
 func (ff *GeneralBuilder) WaitForVideo(min string) *GeneralBuilder {
-	ff.parent.addFlag(&waitForVideoFlag{
-		args: []string{min},
+	ff.parent.addFlag(&Flag{
+		ID:   "wait_for_video",
+		Flag: "--wait-for-video",
+		Args: []string{min},
 	})
 	return ff
-}
-
-type noWaitForVideoFlag struct {
-}
-
-var _ Flag = (*noWaitForVideoFlag)(nil) // ensure noWaitForVideoFlag implements Flag interface.
-
-func (f *noWaitForVideoFlag) ID() string {
-	return "wait_for_video"
-}
-
-func (f *noWaitForVideoFlag) String() string {
-	return "TODO"
-}
-
-func (f *noWaitForVideoFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type markWatchedFlag struct {
-}
-
-var _ Flag = (*markWatchedFlag)(nil) // ensure markWatchedFlag implements Flag interface.
-
-func (f *markWatchedFlag) ID() string {
-	return "mark_watched"
-}
-
-func (f *markWatchedFlag) String() string {
-	return "TODO"
-}
-
-func (f *markWatchedFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Mark videos watched (even with --simulate)
 //
 // MarkWatched maps to cli flags: --mark-watched.
 func (ff *GeneralBuilder) MarkWatched() *GeneralBuilder {
-	ff.parent.addFlag(&markWatchedFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "mark_watched",
+		Flag: "--mark-watched",
+		Args: nil,
+	})
 	return ff
-}
-
-type noMarkWatchedFlag struct {
-}
-
-var _ Flag = (*noMarkWatchedFlag)(nil) // ensure noMarkWatchedFlag implements Flag interface.
-
-func (f *noMarkWatchedFlag) ID() string {
-	return "mark_watched"
-}
-
-func (f *noMarkWatchedFlag) String() string {
-	return "TODO"
-}
-
-func (f *noMarkWatchedFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not mark videos watched (default)
 //
 // NoMarkWatched maps to cli flags: --no-mark-watched.
 func (ff *GeneralBuilder) NoMarkWatched() *GeneralBuilder {
-	ff.parent.addFlag(&noMarkWatchedFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "mark_watched",
+		Flag: "--no-mark-watched",
+		Args: nil,
+	})
 	return ff
-}
-
-type noColorsFlag struct {
-}
-
-var _ Flag = (*noColorsFlag)(nil) // ensure noColorsFlag implements Flag interface.
-
-func (f *noColorsFlag) ID() string {
-	return "color"
-}
-
-func (f *noColorsFlag) String() string {
-	return "TODO"
-}
-
-func (f *noColorsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }

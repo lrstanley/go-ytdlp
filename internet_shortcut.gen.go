@@ -12,21 +12,10 @@ type InternetShortcutBuilder struct {
 	parent *Command
 }
 
-type writeLinkFlag struct {
-}
-
-var _ Flag = (*writeLinkFlag)(nil) // ensure writeLinkFlag implements Flag interface.
-
-func (f *writeLinkFlag) ID() string {
-	return "writelink"
-}
-
-func (f *writeLinkFlag) String() string {
-	return "TODO"
-}
-
-func (f *writeLinkFlag) AsFlag() []string {
-	return []string{"TODO"}
+// Then jumps back to the base command builder, if you want to add additional flags
+// from another flag builder.
+func (ff *InternetShortcutBuilder) Then() *Command {
+	return ff.parent
 }
 
 // Write an internet shortcut file, depending on the current platform (.url,
@@ -34,25 +23,12 @@ func (f *writeLinkFlag) AsFlag() []string {
 //
 // WriteLink maps to cli flags: --write-link.
 func (ff *InternetShortcutBuilder) WriteLink() *InternetShortcutBuilder {
-	ff.parent.addFlag(&writeLinkFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "writelink",
+		Flag: "--write-link",
+		Args: nil,
+	})
 	return ff
-}
-
-type writeUrlLinkFlag struct {
-}
-
-var _ Flag = (*writeUrlLinkFlag)(nil) // ensure writeUrlLinkFlag implements Flag interface.
-
-func (f *writeUrlLinkFlag) ID() string {
-	return "writeurllink"
-}
-
-func (f *writeUrlLinkFlag) String() string {
-	return "TODO"
-}
-
-func (f *writeUrlLinkFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Write a .url Windows internet shortcut. The OS caches the URL based on the file
@@ -60,56 +36,34 @@ func (f *writeUrlLinkFlag) AsFlag() []string {
 //
 // WriteUrlLink maps to cli flags: --write-url-link.
 func (ff *InternetShortcutBuilder) WriteUrlLink() *InternetShortcutBuilder {
-	ff.parent.addFlag(&writeUrlLinkFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "writeurllink",
+		Flag: "--write-url-link",
+		Args: nil,
+	})
 	return ff
-}
-
-type writeWeblocLinkFlag struct {
-}
-
-var _ Flag = (*writeWeblocLinkFlag)(nil) // ensure writeWeblocLinkFlag implements Flag interface.
-
-func (f *writeWeblocLinkFlag) ID() string {
-	return "writewebloclink"
-}
-
-func (f *writeWeblocLinkFlag) String() string {
-	return "TODO"
-}
-
-func (f *writeWeblocLinkFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Write a .webloc macOS internet shortcut
 //
 // WriteWeblocLink maps to cli flags: --write-webloc-link.
 func (ff *InternetShortcutBuilder) WriteWeblocLink() *InternetShortcutBuilder {
-	ff.parent.addFlag(&writeWeblocLinkFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "writewebloclink",
+		Flag: "--write-webloc-link",
+		Args: nil,
+	})
 	return ff
-}
-
-type writeDesktopLinkFlag struct {
-}
-
-var _ Flag = (*writeDesktopLinkFlag)(nil) // ensure writeDesktopLinkFlag implements Flag interface.
-
-func (f *writeDesktopLinkFlag) ID() string {
-	return "writedesktoplink"
-}
-
-func (f *writeDesktopLinkFlag) String() string {
-	return "TODO"
-}
-
-func (f *writeDesktopLinkFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Write a .desktop Linux internet shortcut
 //
 // WriteDesktopLink maps to cli flags: --write-desktop-link.
 func (ff *InternetShortcutBuilder) WriteDesktopLink() *InternetShortcutBuilder {
-	ff.parent.addFlag(&writeDesktopLinkFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "writedesktoplink",
+		Flag: "--write-desktop-link",
+		Args: nil,
+	})
 	return ff
 }

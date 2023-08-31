@@ -12,47 +12,22 @@ type PostProcessingBuilder struct {
 	parent *Command
 }
 
-type extractAudioFlag struct {
-}
-
-var _ Flag = (*extractAudioFlag)(nil) // ensure extractAudioFlag implements Flag interface.
-
-func (f *extractAudioFlag) ID() string {
-	return "extractaudio"
-}
-
-func (f *extractAudioFlag) String() string {
-	return "TODO"
-}
-
-func (f *extractAudioFlag) AsFlag() []string {
-	return []string{"TODO"}
+// Then jumps back to the base command builder, if you want to add additional flags
+// from another flag builder.
+func (ff *PostProcessingBuilder) Then() *Command {
+	return ff.parent
 }
 
 // Convert video files to audio-only files (requires ffmpeg and ffprobe)
 //
 // ExtractAudio maps to cli flags: -x/--extract-audio.
 func (ff *PostProcessingBuilder) ExtractAudio() *PostProcessingBuilder {
-	ff.parent.addFlag(&extractAudioFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "extractaudio",
+		Flag: "--extract-audio",
+		Args: nil,
+	})
 	return ff
-}
-
-type audioFormatFlag struct {
-	args []string
-}
-
-var _ Flag = (*audioFormatFlag)(nil) // ensure audioFormatFlag implements Flag interface.
-
-func (f *audioFormatFlag) ID() string {
-	return "audioformat"
-}
-
-func (f *audioFormatFlag) String() string {
-	return "TODO"
-}
-
-func (f *audioFormatFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Format to convert the audio to when -x is used. (currently supported: best
@@ -61,28 +36,12 @@ func (f *audioFormatFlag) AsFlag() []string {
 //
 // AudioFormat maps to cli flags: --audio-format=FORMAT.
 func (ff *PostProcessingBuilder) AudioFormat(format string) *PostProcessingBuilder {
-	ff.parent.addFlag(&audioFormatFlag{
-		args: []string{format},
+	ff.parent.addFlag(&Flag{
+		ID:   "audioformat",
+		Flag: "--audio-format",
+		Args: []string{format},
 	})
 	return ff
-}
-
-type audioQualityFlag struct {
-	args []string
-}
-
-var _ Flag = (*audioQualityFlag)(nil) // ensure audioQualityFlag implements Flag interface.
-
-func (f *audioQualityFlag) ID() string {
-	return "audioquality"
-}
-
-func (f *audioQualityFlag) String() string {
-	return "TODO"
-}
-
-func (f *audioQualityFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Specify ffmpeg audio quality to use when converting the audio with -x. Insert a
@@ -91,28 +50,12 @@ func (f *audioQualityFlag) AsFlag() []string {
 //
 // AudioQuality maps to cli flags: --audio-quality=QUALITY.
 func (ff *PostProcessingBuilder) AudioQuality(quality string) *PostProcessingBuilder {
-	ff.parent.addFlag(&audioQualityFlag{
-		args: []string{quality},
+	ff.parent.addFlag(&Flag{
+		ID:   "audioquality",
+		Flag: "--audio-quality",
+		Args: []string{quality},
 	})
 	return ff
-}
-
-type remuxVideoFlag struct {
-	args []string
-}
-
-var _ Flag = (*remuxVideoFlag)(nil) // ensure remuxVideoFlag implements Flag interface.
-
-func (f *remuxVideoFlag) ID() string {
-	return "remuxvideo"
-}
-
-func (f *remuxVideoFlag) String() string {
-	return "TODO"
-}
-
-func (f *remuxVideoFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Remux the video into another container if necessary (currently supported: avi,
@@ -123,28 +66,12 @@ func (f *remuxVideoFlag) AsFlag() []string {
 //
 // RemuxVideo maps to cli flags: --remux-video=FORMAT.
 func (ff *PostProcessingBuilder) RemuxVideo(format string) *PostProcessingBuilder {
-	ff.parent.addFlag(&remuxVideoFlag{
-		args: []string{format},
+	ff.parent.addFlag(&Flag{
+		ID:   "remuxvideo",
+		Flag: "--remux-video",
+		Args: []string{format},
 	})
 	return ff
-}
-
-type recodeVideoFlag struct {
-	args []string
-}
-
-var _ Flag = (*recodeVideoFlag)(nil) // ensure recodeVideoFlag implements Flag interface.
-
-func (f *recodeVideoFlag) ID() string {
-	return "recodevideo"
-}
-
-func (f *recodeVideoFlag) String() string {
-	return "TODO"
-}
-
-func (f *recodeVideoFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Re-encode the video into another format if necessary. The syntax and supported
@@ -152,227 +79,108 @@ func (f *recodeVideoFlag) AsFlag() []string {
 //
 // RecodeVideo maps to cli flags: --recode-video=FORMAT.
 func (ff *PostProcessingBuilder) RecodeVideo(format string) *PostProcessingBuilder {
-	ff.parent.addFlag(&recodeVideoFlag{
-		args: []string{format},
+	ff.parent.addFlag(&Flag{
+		ID:   "recodevideo",
+		Flag: "--recode-video",
+		Args: []string{format},
 	})
 	return ff
-}
-
-type keepVideoFlag struct {
-}
-
-var _ Flag = (*keepVideoFlag)(nil) // ensure keepVideoFlag implements Flag interface.
-
-func (f *keepVideoFlag) ID() string {
-	return "keepvideo"
-}
-
-func (f *keepVideoFlag) String() string {
-	return "TODO"
-}
-
-func (f *keepVideoFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Keep the intermediate video file on disk after post-processing
 //
 // KeepVideo maps to cli flags: -k/--keep-video.
 func (ff *PostProcessingBuilder) KeepVideo() *PostProcessingBuilder {
-	ff.parent.addFlag(&keepVideoFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "keepvideo",
+		Flag: "--keep-video",
+		Args: nil,
+	})
 	return ff
-}
-
-type noKeepVideoFlag struct {
-}
-
-var _ Flag = (*noKeepVideoFlag)(nil) // ensure noKeepVideoFlag implements Flag interface.
-
-func (f *noKeepVideoFlag) ID() string {
-	return "keepvideo"
-}
-
-func (f *noKeepVideoFlag) String() string {
-	return "TODO"
-}
-
-func (f *noKeepVideoFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Delete the intermediate video file after post-processing (default)
 //
 // NoKeepVideo maps to cli flags: --no-keep-video.
 func (ff *PostProcessingBuilder) NoKeepVideo() *PostProcessingBuilder {
-	ff.parent.addFlag(&noKeepVideoFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "keepvideo",
+		Flag: "--no-keep-video",
+		Args: nil,
+	})
 	return ff
-}
-
-type postOverwritesFlag struct {
-}
-
-var _ Flag = (*postOverwritesFlag)(nil) // ensure postOverwritesFlag implements Flag interface.
-
-func (f *postOverwritesFlag) ID() string {
-	return "nopostoverwrites"
-}
-
-func (f *postOverwritesFlag) String() string {
-	return "TODO"
-}
-
-func (f *postOverwritesFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Overwrite post-processed files (default)
 //
 // PostOverwrites maps to cli flags: --post-overwrites.
 func (ff *PostProcessingBuilder) PostOverwrites() *PostProcessingBuilder {
-	ff.parent.addFlag(&postOverwritesFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "nopostoverwrites",
+		Flag: "--post-overwrites",
+		Args: nil,
+	})
 	return ff
-}
-
-type noPostOverwritesFlag struct {
-}
-
-var _ Flag = (*noPostOverwritesFlag)(nil) // ensure noPostOverwritesFlag implements Flag interface.
-
-func (f *noPostOverwritesFlag) ID() string {
-	return "nopostoverwrites"
-}
-
-func (f *noPostOverwritesFlag) String() string {
-	return "TODO"
-}
-
-func (f *noPostOverwritesFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not overwrite post-processed files
 //
 // NoPostOverwrites maps to cli flags: --no-post-overwrites.
 func (ff *PostProcessingBuilder) NoPostOverwrites() *PostProcessingBuilder {
-	ff.parent.addFlag(&noPostOverwritesFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "nopostoverwrites",
+		Flag: "--no-post-overwrites",
+		Args: nil,
+	})
 	return ff
-}
-
-type embedSubsFlag struct {
-}
-
-var _ Flag = (*embedSubsFlag)(nil) // ensure embedSubsFlag implements Flag interface.
-
-func (f *embedSubsFlag) ID() string {
-	return "embedsubtitles"
-}
-
-func (f *embedSubsFlag) String() string {
-	return "TODO"
-}
-
-func (f *embedSubsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Embed subtitles in the video (only for mp4, webm and mkv videos)
 //
 // EmbedSubs maps to cli flags: --embed-subs.
 func (ff *PostProcessingBuilder) EmbedSubs() *PostProcessingBuilder {
-	ff.parent.addFlag(&embedSubsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "embedsubtitles",
+		Flag: "--embed-subs",
+		Args: nil,
+	})
 	return ff
-}
-
-type noEmbedSubsFlag struct {
-}
-
-var _ Flag = (*noEmbedSubsFlag)(nil) // ensure noEmbedSubsFlag implements Flag interface.
-
-func (f *noEmbedSubsFlag) ID() string {
-	return "embedsubtitles"
-}
-
-func (f *noEmbedSubsFlag) String() string {
-	return "TODO"
-}
-
-func (f *noEmbedSubsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not embed subtitles (default)
 //
 // NoEmbedSubs maps to cli flags: --no-embed-subs.
 func (ff *PostProcessingBuilder) NoEmbedSubs() *PostProcessingBuilder {
-	ff.parent.addFlag(&noEmbedSubsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "embedsubtitles",
+		Flag: "--no-embed-subs",
+		Args: nil,
+	})
 	return ff
-}
-
-type embedThumbnailFlag struct {
-}
-
-var _ Flag = (*embedThumbnailFlag)(nil) // ensure embedThumbnailFlag implements Flag interface.
-
-func (f *embedThumbnailFlag) ID() string {
-	return "embedthumbnail"
-}
-
-func (f *embedThumbnailFlag) String() string {
-	return "TODO"
-}
-
-func (f *embedThumbnailFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Embed thumbnail in the video as cover art
 //
 // EmbedThumbnail maps to cli flags: --embed-thumbnail.
 func (ff *PostProcessingBuilder) EmbedThumbnail() *PostProcessingBuilder {
-	ff.parent.addFlag(&embedThumbnailFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "embedthumbnail",
+		Flag: "--embed-thumbnail",
+		Args: nil,
+	})
 	return ff
-}
-
-type noEmbedThumbnailFlag struct {
-}
-
-var _ Flag = (*noEmbedThumbnailFlag)(nil) // ensure noEmbedThumbnailFlag implements Flag interface.
-
-func (f *noEmbedThumbnailFlag) ID() string {
-	return "embedthumbnail"
-}
-
-func (f *noEmbedThumbnailFlag) String() string {
-	return "TODO"
-}
-
-func (f *noEmbedThumbnailFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not embed thumbnail (default)
 //
 // NoEmbedThumbnail maps to cli flags: --no-embed-thumbnail.
 func (ff *PostProcessingBuilder) NoEmbedThumbnail() *PostProcessingBuilder {
-	ff.parent.addFlag(&noEmbedThumbnailFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "embedthumbnail",
+		Flag: "--no-embed-thumbnail",
+		Args: nil,
+	})
 	return ff
-}
-
-type embedMetadataFlag struct {
-}
-
-var _ Flag = (*embedMetadataFlag)(nil) // ensure embedMetadataFlag implements Flag interface.
-
-func (f *embedMetadataFlag) ID() string {
-	return "addmetadata"
-}
-
-func (f *embedMetadataFlag) String() string {
-	return "TODO"
-}
-
-func (f *embedMetadataFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Embed metadata to the video file. Also embeds chapters/infojson if present
@@ -380,202 +188,94 @@ func (f *embedMetadataFlag) AsFlag() []string {
 //
 // EmbedMetadata maps to cli flags: --embed-metadata/--add-metadata.
 func (ff *PostProcessingBuilder) EmbedMetadata() *PostProcessingBuilder {
-	ff.parent.addFlag(&embedMetadataFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "addmetadata",
+		Flag: "--embed-metadata",
+		Args: nil,
+	})
 	return ff
-}
-
-type noEmbedMetadataFlag struct {
-}
-
-var _ Flag = (*noEmbedMetadataFlag)(nil) // ensure noEmbedMetadataFlag implements Flag interface.
-
-func (f *noEmbedMetadataFlag) ID() string {
-	return "addmetadata"
-}
-
-func (f *noEmbedMetadataFlag) String() string {
-	return "TODO"
-}
-
-func (f *noEmbedMetadataFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not add metadata to file (default) (Alias: --no-add-metadata)
 //
 // NoEmbedMetadata maps to cli flags: --no-embed-metadata/--no-add-metadata.
 func (ff *PostProcessingBuilder) NoEmbedMetadata() *PostProcessingBuilder {
-	ff.parent.addFlag(&noEmbedMetadataFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "addmetadata",
+		Flag: "--no-embed-metadata",
+		Args: nil,
+	})
 	return ff
-}
-
-type embedChaptersFlag struct {
-}
-
-var _ Flag = (*embedChaptersFlag)(nil) // ensure embedChaptersFlag implements Flag interface.
-
-func (f *embedChaptersFlag) ID() string {
-	return "addchapters"
-}
-
-func (f *embedChaptersFlag) String() string {
-	return "TODO"
-}
-
-func (f *embedChaptersFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Add chapter markers to the video file (Alias: --add-chapters)
 //
 // EmbedChapters maps to cli flags: --embed-chapters/--add-chapters.
 func (ff *PostProcessingBuilder) EmbedChapters() *PostProcessingBuilder {
-	ff.parent.addFlag(&embedChaptersFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "addchapters",
+		Flag: "--embed-chapters",
+		Args: nil,
+	})
 	return ff
-}
-
-type noEmbedChaptersFlag struct {
-}
-
-var _ Flag = (*noEmbedChaptersFlag)(nil) // ensure noEmbedChaptersFlag implements Flag interface.
-
-func (f *noEmbedChaptersFlag) ID() string {
-	return "addchapters"
-}
-
-func (f *noEmbedChaptersFlag) String() string {
-	return "TODO"
-}
-
-func (f *noEmbedChaptersFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not add chapter markers (default) (Alias: --no-add-chapters)
 //
 // NoEmbedChapters maps to cli flags: --no-embed-chapters/--no-add-chapters.
 func (ff *PostProcessingBuilder) NoEmbedChapters() *PostProcessingBuilder {
-	ff.parent.addFlag(&noEmbedChaptersFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "addchapters",
+		Flag: "--no-embed-chapters",
+		Args: nil,
+	})
 	return ff
-}
-
-type embedInfoJsonFlag struct {
-}
-
-var _ Flag = (*embedInfoJsonFlag)(nil) // ensure embedInfoJsonFlag implements Flag interface.
-
-func (f *embedInfoJsonFlag) ID() string {
-	return "embed_infojson"
-}
-
-func (f *embedInfoJsonFlag) String() string {
-	return "TODO"
-}
-
-func (f *embedInfoJsonFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Embed the infojson as an attachment to mkv/mka video files
 //
 // EmbedInfoJson maps to cli flags: --embed-info-json.
 func (ff *PostProcessingBuilder) EmbedInfoJson() *PostProcessingBuilder {
-	ff.parent.addFlag(&embedInfoJsonFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "embed_infojson",
+		Flag: "--embed-info-json",
+		Args: nil,
+	})
 	return ff
-}
-
-type noEmbedInfoJsonFlag struct {
-}
-
-var _ Flag = (*noEmbedInfoJsonFlag)(nil) // ensure noEmbedInfoJsonFlag implements Flag interface.
-
-func (f *noEmbedInfoJsonFlag) ID() string {
-	return "embed_infojson"
-}
-
-func (f *noEmbedInfoJsonFlag) String() string {
-	return "TODO"
-}
-
-func (f *noEmbedInfoJsonFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not embed the infojson as an attachment to the video file
 //
 // NoEmbedInfoJson maps to cli flags: --no-embed-info-json.
 func (ff *PostProcessingBuilder) NoEmbedInfoJson() *PostProcessingBuilder {
-	ff.parent.addFlag(&noEmbedInfoJsonFlag{})
-	return ff
-}
-
-type metadataFromTitleFlag struct {
-	args []string
-}
-
-var _ Flag = (*metadataFromTitleFlag)(nil) // ensure metadataFromTitleFlag implements Flag interface.
-
-func (f *metadataFromTitleFlag) ID() string {
-	return "metafromtitle"
-}
-
-func (f *metadataFromTitleFlag) String() string {
-	return "TODO"
-}
-
-func (f *metadataFromTitleFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-// MetadataFromTitle maps to cli flags: --metadata-from-title=FORMAT.
-func (ff *PostProcessingBuilder) MetadataFromTitle(format string) *PostProcessingBuilder {
-	ff.parent.addFlag(&metadataFromTitleFlag{
-		args: []string{format},
+	ff.parent.addFlag(&Flag{
+		ID:   "embed_infojson",
+		Flag: "--no-embed-info-json",
+		Args: nil,
 	})
 	return ff
 }
 
-type xattrsFlag struct {
-}
-
-var _ Flag = (*xattrsFlag)(nil) // ensure xattrsFlag implements Flag interface.
-
-func (f *xattrsFlag) ID() string {
-	return "xattrs"
-}
-
-func (f *xattrsFlag) String() string {
-	return "TODO"
-}
-
-func (f *xattrsFlag) AsFlag() []string {
-	return []string{"TODO"}
+// MetadataFromTitle maps to cli flags: --metadata-from-title=FORMAT.
+func (ff *PostProcessingBuilder) MetadataFromTitle(format string) *PostProcessingBuilder {
+	ff.parent.addFlag(&Flag{
+		ID:   "metafromtitle",
+		Flag: "--metadata-from-title",
+		Args: []string{format},
+	})
+	return ff
 }
 
 // Write metadata to the video file's xattrs (using dublin core and xdg standards)
 //
 // Xattrs maps to cli flags: --xattrs/--xattr.
 func (ff *PostProcessingBuilder) Xattrs() *PostProcessingBuilder {
-	ff.parent.addFlag(&xattrsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "xattrs",
+		Flag: "--xattrs",
+		Args: nil,
+	})
 	return ff
-}
-
-type concatPlaylistFlag struct {
-	args []string
-}
-
-var _ Flag = (*concatPlaylistFlag)(nil) // ensure concatPlaylistFlag implements Flag interface.
-
-func (f *concatPlaylistFlag) ID() string {
-	return "concat_playlist"
-}
-
-func (f *concatPlaylistFlag) String() string {
-	return "TODO"
-}
-
-func (f *concatPlaylistFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 var concatPlaylistChoices = []string{
@@ -592,28 +292,12 @@ var concatPlaylistChoices = []string{
 //
 // ConcatPlaylist maps to cli flags: --concat-playlist=POLICY.
 func (ff *PostProcessingBuilder) ConcatPlaylist(policy string) *PostProcessingBuilder {
-	ff.parent.addFlag(&concatPlaylistFlag{
-		args: []string{policy},
+	ff.parent.addFlag(&Flag{
+		ID:   "concat_playlist",
+		Flag: "--concat-playlist",
+		Args: []string{policy},
 	})
 	return ff
-}
-
-type fixupFlag struct {
-	args []string
-}
-
-var _ Flag = (*fixupFlag)(nil) // ensure fixupFlag implements Flag interface.
-
-func (f *fixupFlag) ID() string {
-	return "fixup"
-}
-
-func (f *fixupFlag) String() string {
-	return "TODO"
-}
-
-func (f *fixupFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 var fixupChoices = []string{
@@ -630,78 +314,36 @@ var fixupChoices = []string{
 //
 // Fixup maps to cli flags: --fixup=POLICY.
 func (ff *PostProcessingBuilder) Fixup(policy string) *PostProcessingBuilder {
-	ff.parent.addFlag(&fixupFlag{
-		args: []string{policy},
+	ff.parent.addFlag(&Flag{
+		ID:   "fixup",
+		Flag: "--fixup",
+		Args: []string{policy},
 	})
 	return ff
-}
-
-type preferAvconvFlag struct {
-}
-
-var _ Flag = (*preferAvconvFlag)(nil) // ensure preferAvconvFlag implements Flag interface.
-
-func (f *preferAvconvFlag) ID() string {
-	return "prefer_ffmpeg"
-}
-
-func (f *preferAvconvFlag) String() string {
-	return "TODO"
-}
-
-func (f *preferAvconvFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // PreferAvconv sets the "prefer-avconv" flag to "false".
 //
 // PreferAvconv maps to cli flags: --prefer-avconv/--no-prefer-ffmpeg.
 func (ff *PostProcessingBuilder) PreferAvconv() *PostProcessingBuilder {
-	ff.parent.addFlag(&preferAvconvFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "prefer_ffmpeg",
+		Flag: "--prefer-avconv",
+		Args: nil,
+	})
 	return ff
-}
-
-type preferFfmpegFlag struct {
-}
-
-var _ Flag = (*preferFfmpegFlag)(nil) // ensure preferFfmpegFlag implements Flag interface.
-
-func (f *preferFfmpegFlag) ID() string {
-	return "prefer_ffmpeg"
-}
-
-func (f *preferFfmpegFlag) String() string {
-	return "TODO"
-}
-
-func (f *preferFfmpegFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // PreferFfmpeg sets the "prefer-ffmpeg" flag to "true".
 //
 // PreferFfmpeg maps to cli flags: --prefer-ffmpeg/--no-prefer-avconv.
 func (ff *PostProcessingBuilder) PreferFfmpeg() *PostProcessingBuilder {
-	ff.parent.addFlag(&preferFfmpegFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "prefer_ffmpeg",
+		Flag: "--prefer-ffmpeg",
+		Args: nil,
+	})
 	return ff
-}
-
-type ffmpegLocationFlag struct {
-	args []string
-}
-
-var _ Flag = (*ffmpegLocationFlag)(nil) // ensure ffmpegLocationFlag implements Flag interface.
-
-func (f *ffmpegLocationFlag) ID() string {
-	return "ffmpeg_location"
-}
-
-func (f *ffmpegLocationFlag) String() string {
-	return "TODO"
-}
-
-func (f *ffmpegLocationFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Location of the ffmpeg binary; either the path to the binary or its containing
@@ -709,62 +351,12 @@ func (f *ffmpegLocationFlag) AsFlag() []string {
 //
 // FfmpegLocation maps to cli flags: --ffmpeg-location/--avconv-location=PATH.
 func (ff *PostProcessingBuilder) FfmpegLocation(path string) *PostProcessingBuilder {
-	ff.parent.addFlag(&ffmpegLocationFlag{
-		args: []string{path},
+	ff.parent.addFlag(&Flag{
+		ID:   "ffmpeg_location",
+		Flag: "--ffmpeg-location",
+		Args: []string{path},
 	})
 	return ff
-}
-
-type noExecFlag struct {
-}
-
-var _ Flag = (*noExecFlag)(nil) // ensure noExecFlag implements Flag interface.
-
-func (f *noExecFlag) ID() string {
-	return "exec_cmd"
-}
-
-func (f *noExecFlag) String() string {
-	return "TODO"
-}
-
-func (f *noExecFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type noExecBeforeDownloadFlag struct {
-}
-
-var _ Flag = (*noExecBeforeDownloadFlag)(nil) // ensure noExecBeforeDownloadFlag implements Flag interface.
-
-func (f *noExecBeforeDownloadFlag) ID() string {
-	return "exec_before_dl_cmd"
-}
-
-func (f *noExecBeforeDownloadFlag) String() string {
-	return "TODO"
-}
-
-func (f *noExecBeforeDownloadFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type convertSubsFlag struct {
-	args []string
-}
-
-var _ Flag = (*convertSubsFlag)(nil) // ensure convertSubsFlag implements Flag interface.
-
-func (f *convertSubsFlag) ID() string {
-	return "convertsubtitles"
-}
-
-func (f *convertSubsFlag) String() string {
-	return "TODO"
-}
-
-func (f *convertSubsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Convert the subtitles to another format (currently supported: ass, lrc, srt,
@@ -772,28 +364,12 @@ func (f *convertSubsFlag) AsFlag() []string {
 //
 // ConvertSubs maps to cli flags: --convert-subs/--convert-sub/--convert-subtitles=FORMAT.
 func (ff *PostProcessingBuilder) ConvertSubs(format string) *PostProcessingBuilder {
-	ff.parent.addFlag(&convertSubsFlag{
-		args: []string{format},
+	ff.parent.addFlag(&Flag{
+		ID:   "convertsubtitles",
+		Flag: "--convert-subs",
+		Args: []string{format},
 	})
 	return ff
-}
-
-type convertThumbnailsFlag struct {
-	args []string
-}
-
-var _ Flag = (*convertThumbnailsFlag)(nil) // ensure convertThumbnailsFlag implements Flag interface.
-
-func (f *convertThumbnailsFlag) ID() string {
-	return "convertthumbnails"
-}
-
-func (f *convertThumbnailsFlag) String() string {
-	return "TODO"
-}
-
-func (f *convertThumbnailsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Convert the thumbnails to another format (currently supported: jpg, png, webp).
@@ -801,27 +377,12 @@ func (f *convertThumbnailsFlag) AsFlag() []string {
 //
 // ConvertThumbnails maps to cli flags: --convert-thumbnails=FORMAT.
 func (ff *PostProcessingBuilder) ConvertThumbnails(format string) *PostProcessingBuilder {
-	ff.parent.addFlag(&convertThumbnailsFlag{
-		args: []string{format},
+	ff.parent.addFlag(&Flag{
+		ID:   "convertthumbnails",
+		Flag: "--convert-thumbnails",
+		Args: []string{format},
 	})
 	return ff
-}
-
-type splitChaptersFlag struct {
-}
-
-var _ Flag = (*splitChaptersFlag)(nil) // ensure splitChaptersFlag implements Flag interface.
-
-func (f *splitChaptersFlag) ID() string {
-	return "split_chapters"
-}
-
-func (f *splitChaptersFlag) String() string {
-	return "TODO"
-}
-
-func (f *splitChaptersFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Split video into multiple files based on internal chapters. The "chapter:"
@@ -830,67 +391,24 @@ func (f *splitChaptersFlag) AsFlag() []string {
 //
 // SplitChapters maps to cli flags: --split-chapters/--split-tracks.
 func (ff *PostProcessingBuilder) SplitChapters() *PostProcessingBuilder {
-	ff.parent.addFlag(&splitChaptersFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "split_chapters",
+		Flag: "--split-chapters",
+		Args: nil,
+	})
 	return ff
-}
-
-type noSplitChaptersFlag struct {
-}
-
-var _ Flag = (*noSplitChaptersFlag)(nil) // ensure noSplitChaptersFlag implements Flag interface.
-
-func (f *noSplitChaptersFlag) ID() string {
-	return "split_chapters"
-}
-
-func (f *noSplitChaptersFlag) String() string {
-	return "TODO"
-}
-
-func (f *noSplitChaptersFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not split video based on chapters (default)
 //
 // NoSplitChapters maps to cli flags: --no-split-chapters/--no-split-tracks.
 func (ff *PostProcessingBuilder) NoSplitChapters() *PostProcessingBuilder {
-	ff.parent.addFlag(&noSplitChaptersFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "split_chapters",
+		Flag: "--no-split-chapters",
+		Args: nil,
+	})
 	return ff
-}
-
-type noRemoveChaptersFlag struct {
-}
-
-var _ Flag = (*noRemoveChaptersFlag)(nil) // ensure noRemoveChaptersFlag implements Flag interface.
-
-func (f *noRemoveChaptersFlag) ID() string {
-	return "remove_chapters"
-}
-
-func (f *noRemoveChaptersFlag) String() string {
-	return "TODO"
-}
-
-func (f *noRemoveChaptersFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type forceKeyframesAtCutsFlag struct {
-}
-
-var _ Flag = (*forceKeyframesAtCutsFlag)(nil) // ensure forceKeyframesAtCutsFlag implements Flag interface.
-
-func (f *forceKeyframesAtCutsFlag) ID() string {
-	return "force_keyframes_at_cuts"
-}
-
-func (f *forceKeyframesAtCutsFlag) String() string {
-	return "TODO"
-}
-
-func (f *forceKeyframesAtCutsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Force keyframes at cuts when downloading/splitting/removing sections. This is
@@ -899,31 +417,22 @@ func (f *forceKeyframesAtCutsFlag) AsFlag() []string {
 //
 // ForceKeyframesAtCuts maps to cli flags: --force-keyframes-at-cuts.
 func (ff *PostProcessingBuilder) ForceKeyframesAtCuts() *PostProcessingBuilder {
-	ff.parent.addFlag(&forceKeyframesAtCutsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "force_keyframes_at_cuts",
+		Flag: "--force-keyframes-at-cuts",
+		Args: nil,
+	})
 	return ff
-}
-
-type noForceKeyframesAtCutsFlag struct {
-}
-
-var _ Flag = (*noForceKeyframesAtCutsFlag)(nil) // ensure noForceKeyframesAtCutsFlag implements Flag interface.
-
-func (f *noForceKeyframesAtCutsFlag) ID() string {
-	return "force_keyframes_at_cuts"
-}
-
-func (f *noForceKeyframesAtCutsFlag) String() string {
-	return "TODO"
-}
-
-func (f *noForceKeyframesAtCutsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not force keyframes around the chapters when cutting/splitting (default)
 //
 // NoForceKeyframesAtCuts maps to cli flags: --no-force-keyframes-at-cuts.
 func (ff *PostProcessingBuilder) NoForceKeyframesAtCuts() *PostProcessingBuilder {
-	ff.parent.addFlag(&noForceKeyframesAtCutsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "force_keyframes_at_cuts",
+		Flag: "--no-force-keyframes-at-cuts",
+		Args: nil,
+	})
 	return ff
 }

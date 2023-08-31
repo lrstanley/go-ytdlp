@@ -12,44 +12,20 @@ type ThumbnailBuilder struct {
 	parent *Command
 }
 
-type noWriteThumbnailFlag struct {
-}
-
-var _ Flag = (*noWriteThumbnailFlag)(nil) // ensure noWriteThumbnailFlag implements Flag interface.
-
-func (f *noWriteThumbnailFlag) ID() string {
-	return "writethumbnail"
-}
-
-func (f *noWriteThumbnailFlag) String() string {
-	return "TODO"
-}
-
-func (f *noWriteThumbnailFlag) AsFlag() []string {
-	return []string{"TODO"}
+// Then jumps back to the base command builder, if you want to add additional flags
+// from another flag builder.
+func (ff *ThumbnailBuilder) Then() *Command {
+	return ff.parent
 }
 
 // Do not write thumbnail image to disk (default)
 //
 // NoWriteThumbnail maps to cli flags: --no-write-thumbnail.
 func (ff *ThumbnailBuilder) NoWriteThumbnail() *ThumbnailBuilder {
-	ff.parent.addFlag(&noWriteThumbnailFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "writethumbnail",
+		Flag: "--no-write-thumbnail",
+		Args: nil,
+	})
 	return ff
-}
-
-type writeAllThumbnailsFlag struct {
-}
-
-var _ Flag = (*writeAllThumbnailsFlag)(nil) // ensure writeAllThumbnailsFlag implements Flag interface.
-
-func (f *writeAllThumbnailsFlag) ID() string {
-	return "writethumbnail"
-}
-
-func (f *writeAllThumbnailsFlag) String() string {
-	return "TODO"
-}
-
-func (f *writeAllThumbnailsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }

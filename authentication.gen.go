@@ -12,131 +12,58 @@ type AuthenticationBuilder struct {
 	parent *Command
 }
 
-type usernameFlag struct {
-	args []string
-}
-
-var _ Flag = (*usernameFlag)(nil) // ensure usernameFlag implements Flag interface.
-
-func (f *usernameFlag) ID() string {
-	return "username"
-}
-
-func (f *usernameFlag) String() string {
-	return "TODO"
-}
-
-func (f *usernameFlag) AsFlag() []string {
-	return []string{"TODO"}
+// Then jumps back to the base command builder, if you want to add additional flags
+// from another flag builder.
+func (ff *AuthenticationBuilder) Then() *Command {
+	return ff.parent
 }
 
 // Login with this account ID
 //
 // Username maps to cli flags: -u/--username=USERNAME.
 func (ff *AuthenticationBuilder) Username(username string) *AuthenticationBuilder {
-	ff.parent.addFlag(&usernameFlag{
-		args: []string{username},
+	ff.parent.addFlag(&Flag{
+		ID:   "username",
+		Flag: "--username",
+		Args: []string{username},
 	})
 	return ff
-}
-
-type passwordFlag struct {
-	args []string
-}
-
-var _ Flag = (*passwordFlag)(nil) // ensure passwordFlag implements Flag interface.
-
-func (f *passwordFlag) ID() string {
-	return "password"
-}
-
-func (f *passwordFlag) String() string {
-	return "TODO"
-}
-
-func (f *passwordFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Account password. If this option is left out, yt-dlp will ask interactively
 //
 // Password maps to cli flags: -p/--password=PASSWORD.
 func (ff *AuthenticationBuilder) Password(password string) *AuthenticationBuilder {
-	ff.parent.addFlag(&passwordFlag{
-		args: []string{password},
+	ff.parent.addFlag(&Flag{
+		ID:   "password",
+		Flag: "--password",
+		Args: []string{password},
 	})
 	return ff
-}
-
-type twofactorFlag struct {
-	args []string
-}
-
-var _ Flag = (*twofactorFlag)(nil) // ensure twofactorFlag implements Flag interface.
-
-func (f *twofactorFlag) ID() string {
-	return "twofactor"
-}
-
-func (f *twofactorFlag) String() string {
-	return "TODO"
-}
-
-func (f *twofactorFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Two-factor authentication code
 //
 // Twofactor maps to cli flags: -2/--twofactor=TWOFACTOR.
 func (ff *AuthenticationBuilder) Twofactor(twofactor string) *AuthenticationBuilder {
-	ff.parent.addFlag(&twofactorFlag{
-		args: []string{twofactor},
+	ff.parent.addFlag(&Flag{
+		ID:   "twofactor",
+		Flag: "--twofactor",
+		Args: []string{twofactor},
 	})
 	return ff
-}
-
-type netrcFlag struct {
-}
-
-var _ Flag = (*netrcFlag)(nil) // ensure netrcFlag implements Flag interface.
-
-func (f *netrcFlag) ID() string {
-	return "usenetrc"
-}
-
-func (f *netrcFlag) String() string {
-	return "TODO"
-}
-
-func (f *netrcFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Use .netrc authentication data
 //
 // Netrc maps to cli flags: -n/--netrc.
 func (ff *AuthenticationBuilder) Netrc() *AuthenticationBuilder {
-	ff.parent.addFlag(&netrcFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "usenetrc",
+		Flag: "--netrc",
+		Args: nil,
+	})
 	return ff
-}
-
-type netrcLocationFlag struct {
-	args []string
-}
-
-var _ Flag = (*netrcLocationFlag)(nil) // ensure netrcLocationFlag implements Flag interface.
-
-func (f *netrcLocationFlag) ID() string {
-	return "netrc_location"
-}
-
-func (f *netrcLocationFlag) String() string {
-	return "TODO"
-}
-
-func (f *netrcLocationFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Location of .netrc authentication data; either the path or its containing
@@ -144,84 +71,36 @@ func (f *netrcLocationFlag) AsFlag() []string {
 //
 // NetrcLocation maps to cli flags: --netrc-location=PATH.
 func (ff *AuthenticationBuilder) NetrcLocation(path string) *AuthenticationBuilder {
-	ff.parent.addFlag(&netrcLocationFlag{
-		args: []string{path},
+	ff.parent.addFlag(&Flag{
+		ID:   "netrc_location",
+		Flag: "--netrc-location",
+		Args: []string{path},
 	})
 	return ff
-}
-
-type netrcCmdFlag struct {
-	args []string
-}
-
-var _ Flag = (*netrcCmdFlag)(nil) // ensure netrcCmdFlag implements Flag interface.
-
-func (f *netrcCmdFlag) ID() string {
-	return "netrc_cmd"
-}
-
-func (f *netrcCmdFlag) String() string {
-	return "TODO"
-}
-
-func (f *netrcCmdFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Command to execute to get the credentials for an extractor.
 //
 // NetrcCmd maps to cli flags: --netrc-cmd=NETRC_CMD.
 func (ff *AuthenticationBuilder) NetrcCmd(netrcCmd string) *AuthenticationBuilder {
-	ff.parent.addFlag(&netrcCmdFlag{
-		args: []string{netrcCmd},
+	ff.parent.addFlag(&Flag{
+		ID:   "netrc_cmd",
+		Flag: "--netrc-cmd",
+		Args: []string{netrcCmd},
 	})
 	return ff
-}
-
-type videoPasswordFlag struct {
-	args []string
-}
-
-var _ Flag = (*videoPasswordFlag)(nil) // ensure videoPasswordFlag implements Flag interface.
-
-func (f *videoPasswordFlag) ID() string {
-	return "videopassword"
-}
-
-func (f *videoPasswordFlag) String() string {
-	return "TODO"
-}
-
-func (f *videoPasswordFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Video password (vimeo, youku)
 //
 // VideoPassword maps to cli flags: --video-password=PASSWORD.
 func (ff *AuthenticationBuilder) VideoPassword(password string) *AuthenticationBuilder {
-	ff.parent.addFlag(&videoPasswordFlag{
-		args: []string{password},
+	ff.parent.addFlag(&Flag{
+		ID:   "videopassword",
+		Flag: "--video-password",
+		Args: []string{password},
 	})
 	return ff
-}
-
-type apMsoFlag struct {
-	args []string
-}
-
-var _ Flag = (*apMsoFlag)(nil) // ensure apMsoFlag implements Flag interface.
-
-func (f *apMsoFlag) ID() string {
-	return "ap_mso"
-}
-
-func (f *apMsoFlag) String() string {
-	return "TODO"
-}
-
-func (f *apMsoFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Adobe Pass multiple-system operator (TV provider) identifier, use --ap-list-mso
@@ -229,56 +108,24 @@ func (f *apMsoFlag) AsFlag() []string {
 //
 // ApMso maps to cli flags: --ap-mso=MSO.
 func (ff *AuthenticationBuilder) ApMso(mso string) *AuthenticationBuilder {
-	ff.parent.addFlag(&apMsoFlag{
-		args: []string{mso},
+	ff.parent.addFlag(&Flag{
+		ID:   "ap_mso",
+		Flag: "--ap-mso",
+		Args: []string{mso},
 	})
 	return ff
-}
-
-type apUsernameFlag struct {
-	args []string
-}
-
-var _ Flag = (*apUsernameFlag)(nil) // ensure apUsernameFlag implements Flag interface.
-
-func (f *apUsernameFlag) ID() string {
-	return "ap_username"
-}
-
-func (f *apUsernameFlag) String() string {
-	return "TODO"
-}
-
-func (f *apUsernameFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Multiple-system operator account login
 //
 // ApUsername maps to cli flags: --ap-username=USERNAME.
 func (ff *AuthenticationBuilder) ApUsername(username string) *AuthenticationBuilder {
-	ff.parent.addFlag(&apUsernameFlag{
-		args: []string{username},
+	ff.parent.addFlag(&Flag{
+		ID:   "ap_username",
+		Flag: "--ap-username",
+		Args: []string{username},
 	})
 	return ff
-}
-
-type apPasswordFlag struct {
-	args []string
-}
-
-var _ Flag = (*apPasswordFlag)(nil) // ensure apPasswordFlag implements Flag interface.
-
-func (f *apPasswordFlag) ID() string {
-	return "ap_password"
-}
-
-func (f *apPasswordFlag) String() string {
-	return "TODO"
-}
-
-func (f *apPasswordFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Multiple-system operator account password. If this option is left out, yt-dlp
@@ -286,109 +133,48 @@ func (f *apPasswordFlag) AsFlag() []string {
 //
 // ApPassword maps to cli flags: --ap-password=PASSWORD.
 func (ff *AuthenticationBuilder) ApPassword(password string) *AuthenticationBuilder {
-	ff.parent.addFlag(&apPasswordFlag{
-		args: []string{password},
+	ff.parent.addFlag(&Flag{
+		ID:   "ap_password",
+		Flag: "--ap-password",
+		Args: []string{password},
 	})
 	return ff
-}
-
-type apListMsoFlag struct {
-}
-
-var _ Flag = (*apListMsoFlag)(nil) // ensure apListMsoFlag implements Flag interface.
-
-func (f *apListMsoFlag) ID() string {
-	return "ap_list_mso"
-}
-
-func (f *apListMsoFlag) String() string {
-	return "TODO"
-}
-
-func (f *apListMsoFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // List all supported multiple-system operators
 //
 // ApListMso maps to cli flags: --ap-list-mso.
 func (ff *AuthenticationBuilder) ApListMso() *AuthenticationBuilder {
-	ff.parent.addFlag(&apListMsoFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "ap_list_mso",
+		Flag: "--ap-list-mso",
+		Args: nil,
+	})
 	return ff
-}
-
-type clientCertificateFlag struct {
-	args []string
-}
-
-var _ Flag = (*clientCertificateFlag)(nil) // ensure clientCertificateFlag implements Flag interface.
-
-func (f *clientCertificateFlag) ID() string {
-	return "client_certificate"
-}
-
-func (f *clientCertificateFlag) String() string {
-	return "TODO"
-}
-
-func (f *clientCertificateFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Path to client certificate file in PEM format. May include the private key
 //
 // ClientCertificate maps to cli flags: --client-certificate=CERTFILE.
 func (ff *AuthenticationBuilder) ClientCertificate(certfile string) *AuthenticationBuilder {
-	ff.parent.addFlag(&clientCertificateFlag{
-		args: []string{certfile},
+	ff.parent.addFlag(&Flag{
+		ID:   "client_certificate",
+		Flag: "--client-certificate",
+		Args: []string{certfile},
 	})
 	return ff
-}
-
-type clientCertificateKeyFlag struct {
-	args []string
-}
-
-var _ Flag = (*clientCertificateKeyFlag)(nil) // ensure clientCertificateKeyFlag implements Flag interface.
-
-func (f *clientCertificateKeyFlag) ID() string {
-	return "client_certificate_key"
-}
-
-func (f *clientCertificateKeyFlag) String() string {
-	return "TODO"
-}
-
-func (f *clientCertificateKeyFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Path to private key file for client certificate
 //
 // ClientCertificateKey maps to cli flags: --client-certificate-key=KEYFILE.
 func (ff *AuthenticationBuilder) ClientCertificateKey(keyfile string) *AuthenticationBuilder {
-	ff.parent.addFlag(&clientCertificateKeyFlag{
-		args: []string{keyfile},
+	ff.parent.addFlag(&Flag{
+		ID:   "client_certificate_key",
+		Flag: "--client-certificate-key",
+		Args: []string{keyfile},
 	})
 	return ff
-}
-
-type clientCertificatePasswordFlag struct {
-	args []string
-}
-
-var _ Flag = (*clientCertificatePasswordFlag)(nil) // ensure clientCertificatePasswordFlag implements Flag interface.
-
-func (f *clientCertificatePasswordFlag) ID() string {
-	return "client_certificate_password"
-}
-
-func (f *clientCertificatePasswordFlag) String() string {
-	return "TODO"
-}
-
-func (f *clientCertificatePasswordFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Password for client certificate private key, if encrypted. If not provided, and
@@ -396,8 +182,10 @@ func (f *clientCertificatePasswordFlag) AsFlag() []string {
 //
 // ClientCertificatePassword maps to cli flags: --client-certificate-password=PASSWORD.
 func (ff *AuthenticationBuilder) ClientCertificatePassword(password string) *AuthenticationBuilder {
-	ff.parent.addFlag(&clientCertificatePasswordFlag{
-		args: []string{password},
+	ff.parent.addFlag(&Flag{
+		ID:   "client_certificate_password",
+		Flag: "--client-certificate-password",
+		Args: []string{password},
 	})
 	return ff
 }

@@ -12,146 +12,70 @@ type VerbositySimulationBuilder struct {
 	parent *Command
 }
 
-type quietFlag struct {
-}
-
-var _ Flag = (*quietFlag)(nil) // ensure quietFlag implements Flag interface.
-
-func (f *quietFlag) ID() string {
-	return "quiet"
-}
-
-func (f *quietFlag) String() string {
-	return "TODO"
-}
-
-func (f *quietFlag) AsFlag() []string {
-	return []string{"TODO"}
+// Then jumps back to the base command builder, if you want to add additional flags
+// from another flag builder.
+func (ff *VerbositySimulationBuilder) Then() *Command {
+	return ff.parent
 }
 
 // Activate quiet mode. If used with --verbose, print the log to stderr
 //
 // Quiet maps to cli flags: -q/--quiet.
 func (ff *VerbositySimulationBuilder) Quiet() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&quietFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "quiet",
+		Flag: "--quiet",
+		Args: nil,
+	})
 	return ff
-}
-
-type noQuietFlag struct {
-}
-
-var _ Flag = (*noQuietFlag)(nil) // ensure noQuietFlag implements Flag interface.
-
-func (f *noQuietFlag) ID() string {
-	return "quiet"
-}
-
-func (f *noQuietFlag) String() string {
-	return "TODO"
-}
-
-func (f *noQuietFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Deactivate quiet mode. (Default)
 //
 // NoQuiet maps to cli flags: --no-quiet.
 func (ff *VerbositySimulationBuilder) NoQuiet() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&noQuietFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "quiet",
+		Flag: "--no-quiet",
+		Args: nil,
+	})
 	return ff
-}
-
-type noWarningsFlag struct {
-}
-
-var _ Flag = (*noWarningsFlag)(nil) // ensure noWarningsFlag implements Flag interface.
-
-func (f *noWarningsFlag) ID() string {
-	return "no_warnings"
-}
-
-func (f *noWarningsFlag) String() string {
-	return "TODO"
-}
-
-func (f *noWarningsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Ignore warnings
 //
 // NoWarnings maps to cli flags: --no-warnings.
 func (ff *VerbositySimulationBuilder) NoWarnings() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&noWarningsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "no_warnings",
+		Flag: "--no-warnings",
+		Args: nil,
+	})
 	return ff
-}
-
-type simulateFlag struct {
-}
-
-var _ Flag = (*simulateFlag)(nil) // ensure simulateFlag implements Flag interface.
-
-func (f *simulateFlag) ID() string {
-	return "simulate"
-}
-
-func (f *simulateFlag) String() string {
-	return "TODO"
-}
-
-func (f *simulateFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not download the video and do not write anything to disk
 //
 // Simulate maps to cli flags: -s/--simulate.
 func (ff *VerbositySimulationBuilder) Simulate() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&simulateFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "simulate",
+		Flag: "--simulate",
+		Args: nil,
+	})
 	return ff
-}
-
-type noSimulateFlag struct {
-}
-
-var _ Flag = (*noSimulateFlag)(nil) // ensure noSimulateFlag implements Flag interface.
-
-func (f *noSimulateFlag) ID() string {
-	return "simulate"
-}
-
-func (f *noSimulateFlag) String() string {
-	return "TODO"
-}
-
-func (f *noSimulateFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Download the video even if printing/listing options are used
 //
 // NoSimulate maps to cli flags: --no-simulate.
 func (ff *VerbositySimulationBuilder) NoSimulate() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&noSimulateFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "simulate",
+		Flag: "--no-simulate",
+		Args: nil,
+	})
 	return ff
-}
-
-type ignoreNoFormatsErrorFlag struct {
-}
-
-var _ Flag = (*ignoreNoFormatsErrorFlag)(nil) // ensure ignoreNoFormatsErrorFlag implements Flag interface.
-
-func (f *ignoreNoFormatsErrorFlag) ID() string {
-	return "ignore_no_formats_error"
-}
-
-func (f *ignoreNoFormatsErrorFlag) String() string {
-	return "TODO"
-}
-
-func (f *ignoreNoFormatsErrorFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Ignore "No video formats" error. Useful for extracting metadata even if the
@@ -159,275 +83,132 @@ func (f *ignoreNoFormatsErrorFlag) AsFlag() []string {
 //
 // IgnoreNoFormatsError maps to cli flags: --ignore-no-formats-error.
 func (ff *VerbositySimulationBuilder) IgnoreNoFormatsError() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&ignoreNoFormatsErrorFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "ignore_no_formats_error",
+		Flag: "--ignore-no-formats-error",
+		Args: nil,
+	})
 	return ff
-}
-
-type noIgnoreNoFormatsErrorFlag struct {
-}
-
-var _ Flag = (*noIgnoreNoFormatsErrorFlag)(nil) // ensure noIgnoreNoFormatsErrorFlag implements Flag interface.
-
-func (f *noIgnoreNoFormatsErrorFlag) ID() string {
-	return "ignore_no_formats_error"
-}
-
-func (f *noIgnoreNoFormatsErrorFlag) String() string {
-	return "TODO"
-}
-
-func (f *noIgnoreNoFormatsErrorFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Throw error when no downloadable video formats are found (default)
 //
 // NoIgnoreNoFormatsError maps to cli flags: --no-ignore-no-formats-error.
 func (ff *VerbositySimulationBuilder) NoIgnoreNoFormatsError() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&noIgnoreNoFormatsErrorFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "ignore_no_formats_error",
+		Flag: "--no-ignore-no-formats-error",
+		Args: nil,
+	})
 	return ff
-}
-
-type skipDownloadFlag struct {
-}
-
-var _ Flag = (*skipDownloadFlag)(nil) // ensure skipDownloadFlag implements Flag interface.
-
-func (f *skipDownloadFlag) ID() string {
-	return "skip_download"
-}
-
-func (f *skipDownloadFlag) String() string {
-	return "TODO"
-}
-
-func (f *skipDownloadFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not download the video but write all related files (Alias: --no-download)
 //
 // SkipDownload maps to cli flags: --skip-download/--no-download.
 func (ff *VerbositySimulationBuilder) SkipDownload() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&skipDownloadFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "skip_download",
+		Flag: "--skip-download",
+		Args: nil,
+	})
 	return ff
-}
-
-type getUrlFlag struct {
-}
-
-var _ Flag = (*getUrlFlag)(nil) // ensure getUrlFlag implements Flag interface.
-
-func (f *getUrlFlag) ID() string {
-	return "geturl"
-}
-
-func (f *getUrlFlag) String() string {
-	return "TODO"
-}
-
-func (f *getUrlFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // GetUrl sets the "get-url" flag to "true".
 //
 // GetUrl maps to cli flags: -g/--get-url.
 func (ff *VerbositySimulationBuilder) GetUrl() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&getUrlFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "geturl",
+		Flag: "--get-url",
+		Args: nil,
+	})
 	return ff
-}
-
-type getTitleFlag struct {
-}
-
-var _ Flag = (*getTitleFlag)(nil) // ensure getTitleFlag implements Flag interface.
-
-func (f *getTitleFlag) ID() string {
-	return "gettitle"
-}
-
-func (f *getTitleFlag) String() string {
-	return "TODO"
-}
-
-func (f *getTitleFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // GetTitle sets the "get-title" flag to "true".
 //
 // GetTitle maps to cli flags: -e/--get-title.
 func (ff *VerbositySimulationBuilder) GetTitle() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&getTitleFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "gettitle",
+		Flag: "--get-title",
+		Args: nil,
+	})
 	return ff
-}
-
-type getIdFlag struct {
-}
-
-var _ Flag = (*getIdFlag)(nil) // ensure getIdFlag implements Flag interface.
-
-func (f *getIdFlag) ID() string {
-	return "getid"
-}
-
-func (f *getIdFlag) String() string {
-	return "TODO"
-}
-
-func (f *getIdFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // GetId sets the "get-id" flag to "true".
 //
 // GetId maps to cli flags: --get-id.
 func (ff *VerbositySimulationBuilder) GetId() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&getIdFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "getid",
+		Flag: "--get-id",
+		Args: nil,
+	})
 	return ff
-}
-
-type getThumbnailFlag struct {
-}
-
-var _ Flag = (*getThumbnailFlag)(nil) // ensure getThumbnailFlag implements Flag interface.
-
-func (f *getThumbnailFlag) ID() string {
-	return "getthumbnail"
-}
-
-func (f *getThumbnailFlag) String() string {
-	return "TODO"
-}
-
-func (f *getThumbnailFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // GetThumbnail sets the "get-thumbnail" flag to "true".
 //
 // GetThumbnail maps to cli flags: --get-thumbnail.
 func (ff *VerbositySimulationBuilder) GetThumbnail() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&getThumbnailFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "getthumbnail",
+		Flag: "--get-thumbnail",
+		Args: nil,
+	})
 	return ff
-}
-
-type getDescriptionFlag struct {
-}
-
-var _ Flag = (*getDescriptionFlag)(nil) // ensure getDescriptionFlag implements Flag interface.
-
-func (f *getDescriptionFlag) ID() string {
-	return "getdescription"
-}
-
-func (f *getDescriptionFlag) String() string {
-	return "TODO"
-}
-
-func (f *getDescriptionFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // GetDescription sets the "get-description" flag to "true".
 //
 // GetDescription maps to cli flags: --get-description.
 func (ff *VerbositySimulationBuilder) GetDescription() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&getDescriptionFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "getdescription",
+		Flag: "--get-description",
+		Args: nil,
+	})
 	return ff
-}
-
-type getDurationFlag struct {
-}
-
-var _ Flag = (*getDurationFlag)(nil) // ensure getDurationFlag implements Flag interface.
-
-func (f *getDurationFlag) ID() string {
-	return "getduration"
-}
-
-func (f *getDurationFlag) String() string {
-	return "TODO"
-}
-
-func (f *getDurationFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // GetDuration sets the "get-duration" flag to "true".
 //
 // GetDuration maps to cli flags: --get-duration.
 func (ff *VerbositySimulationBuilder) GetDuration() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&getDurationFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "getduration",
+		Flag: "--get-duration",
+		Args: nil,
+	})
 	return ff
-}
-
-type getFilenameFlag struct {
-}
-
-var _ Flag = (*getFilenameFlag)(nil) // ensure getFilenameFlag implements Flag interface.
-
-func (f *getFilenameFlag) ID() string {
-	return "getfilename"
-}
-
-func (f *getFilenameFlag) String() string {
-	return "TODO"
-}
-
-func (f *getFilenameFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // GetFilename sets the "get-filename" flag to "true".
 //
 // GetFilename maps to cli flags: --get-filename.
 func (ff *VerbositySimulationBuilder) GetFilename() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&getFilenameFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "getfilename",
+		Flag: "--get-filename",
+		Args: nil,
+	})
 	return ff
-}
-
-type getFormatFlag struct {
-}
-
-var _ Flag = (*getFormatFlag)(nil) // ensure getFormatFlag implements Flag interface.
-
-func (f *getFormatFlag) ID() string {
-	return "getformat"
-}
-
-func (f *getFormatFlag) String() string {
-	return "TODO"
-}
-
-func (f *getFormatFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // GetFormat sets the "get-format" flag to "true".
 //
 // GetFormat maps to cli flags: --get-format.
 func (ff *VerbositySimulationBuilder) GetFormat() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&getFormatFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "getformat",
+		Flag: "--get-format",
+		Args: nil,
+	})
 	return ff
-}
-
-type dumpJsonFlag struct {
-}
-
-var _ Flag = (*dumpJsonFlag)(nil) // ensure dumpJsonFlag implements Flag interface.
-
-func (f *dumpJsonFlag) ID() string {
-	return "dumpjson"
-}
-
-func (f *dumpJsonFlag) String() string {
-	return "TODO"
-}
-
-func (f *dumpJsonFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Quiet, but print JSON information for each video. Simulate unless --no-simulate
@@ -435,25 +216,12 @@ func (f *dumpJsonFlag) AsFlag() []string {
 //
 // DumpJson maps to cli flags: -j/--dump-json.
 func (ff *VerbositySimulationBuilder) DumpJson() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&dumpJsonFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "dumpjson",
+		Flag: "--dump-json",
+		Args: nil,
+	})
 	return ff
-}
-
-type dumpSingleJsonFlag struct {
-}
-
-var _ Flag = (*dumpSingleJsonFlag)(nil) // ensure dumpSingleJsonFlag implements Flag interface.
-
-func (f *dumpSingleJsonFlag) ID() string {
-	return "dump_single_json"
-}
-
-func (f *dumpSingleJsonFlag) String() string {
-	return "TODO"
-}
-
-func (f *dumpSingleJsonFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Quiet, but print JSON information for each url or infojson passed. Simulate
@@ -462,25 +230,12 @@ func (f *dumpSingleJsonFlag) AsFlag() []string {
 //
 // DumpSingleJson maps to cli flags: -J/--dump-single-json.
 func (ff *VerbositySimulationBuilder) DumpSingleJson() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&dumpSingleJsonFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "dump_single_json",
+		Flag: "--dump-single-json",
+		Args: nil,
+	})
 	return ff
-}
-
-type forceWriteArchiveFlag struct {
-}
-
-var _ Flag = (*forceWriteArchiveFlag)(nil) // ensure forceWriteArchiveFlag implements Flag interface.
-
-func (f *forceWriteArchiveFlag) ID() string {
-	return "force_write_download_archive"
-}
-
-func (f *forceWriteArchiveFlag) String() string {
-	return "TODO"
-}
-
-func (f *forceWriteArchiveFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Force download archive entries to be written as far as no errors occur, even if
@@ -488,175 +243,84 @@ func (f *forceWriteArchiveFlag) AsFlag() []string {
 //
 // ForceWriteArchive maps to cli flags: --force-write-archive/--force-write-download-archive/--force-download-archive.
 func (ff *VerbositySimulationBuilder) ForceWriteArchive() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&forceWriteArchiveFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "force_write_download_archive",
+		Flag: "--force-write-archive",
+		Args: nil,
+	})
 	return ff
-}
-
-type newlineFlag struct {
-}
-
-var _ Flag = (*newlineFlag)(nil) // ensure newlineFlag implements Flag interface.
-
-func (f *newlineFlag) ID() string {
-	return "progress_with_newline"
-}
-
-func (f *newlineFlag) String() string {
-	return "TODO"
-}
-
-func (f *newlineFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Output progress bar as new lines
 //
 // Newline maps to cli flags: --newline.
 func (ff *VerbositySimulationBuilder) Newline() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&newlineFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "progress_with_newline",
+		Flag: "--newline",
+		Args: nil,
+	})
 	return ff
-}
-
-type noProgressFlag struct {
-}
-
-var _ Flag = (*noProgressFlag)(nil) // ensure noProgressFlag implements Flag interface.
-
-func (f *noProgressFlag) ID() string {
-	return "noprogress"
-}
-
-func (f *noProgressFlag) String() string {
-	return "TODO"
-}
-
-func (f *noProgressFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not print progress bar
 //
 // NoProgress maps to cli flags: --no-progress.
 func (ff *VerbositySimulationBuilder) NoProgress() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&noProgressFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "noprogress",
+		Flag: "--no-progress",
+		Args: nil,
+	})
 	return ff
-}
-
-type progressFlag struct {
-}
-
-var _ Flag = (*progressFlag)(nil) // ensure progressFlag implements Flag interface.
-
-func (f *progressFlag) ID() string {
-	return "noprogress"
-}
-
-func (f *progressFlag) String() string {
-	return "TODO"
-}
-
-func (f *progressFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Show progress bar, even if in quiet mode
 //
 // Progress maps to cli flags: --progress.
 func (ff *VerbositySimulationBuilder) Progress() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&progressFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "noprogress",
+		Flag: "--progress",
+		Args: nil,
+	})
 	return ff
-}
-
-type consoleTitleFlag struct {
-}
-
-var _ Flag = (*consoleTitleFlag)(nil) // ensure consoleTitleFlag implements Flag interface.
-
-func (f *consoleTitleFlag) ID() string {
-	return "consoletitle"
-}
-
-func (f *consoleTitleFlag) String() string {
-	return "TODO"
-}
-
-func (f *consoleTitleFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Display progress in console titlebar
 //
 // ConsoleTitle maps to cli flags: --console-title.
 func (ff *VerbositySimulationBuilder) ConsoleTitle() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&consoleTitleFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "consoletitle",
+		Flag: "--console-title",
+		Args: nil,
+	})
 	return ff
-}
-
-type verboseFlag struct {
-}
-
-var _ Flag = (*verboseFlag)(nil) // ensure verboseFlag implements Flag interface.
-
-func (f *verboseFlag) ID() string {
-	return "verbose"
-}
-
-func (f *verboseFlag) String() string {
-	return "TODO"
-}
-
-func (f *verboseFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Print various debugging information
 //
 // Verbose maps to cli flags: -v/--verbose.
 func (ff *VerbositySimulationBuilder) Verbose() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&verboseFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "verbose",
+		Flag: "--verbose",
+		Args: nil,
+	})
 	return ff
-}
-
-type dumpPagesFlag struct {
-}
-
-var _ Flag = (*dumpPagesFlag)(nil) // ensure dumpPagesFlag implements Flag interface.
-
-func (f *dumpPagesFlag) ID() string {
-	return "dump_intermediate_pages"
-}
-
-func (f *dumpPagesFlag) String() string {
-	return "TODO"
-}
-
-func (f *dumpPagesFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Print downloaded pages encoded using base64 to debug problems (very verbose)
 //
 // DumpPages maps to cli flags: --dump-pages/--dump-intermediate-pages.
 func (ff *VerbositySimulationBuilder) DumpPages() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&dumpPagesFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "dump_intermediate_pages",
+		Flag: "--dump-pages",
+		Args: nil,
+	})
 	return ff
-}
-
-type writePagesFlag struct {
-}
-
-var _ Flag = (*writePagesFlag)(nil) // ensure writePagesFlag implements Flag interface.
-
-func (f *writePagesFlag) ID() string {
-	return "write_pages"
-}
-
-func (f *writePagesFlag) String() string {
-	return "TODO"
-}
-
-func (f *writePagesFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Write downloaded intermediary pages to files in the current directory to debug
@@ -664,131 +328,70 @@ func (f *writePagesFlag) AsFlag() []string {
 //
 // WritePages maps to cli flags: --write-pages.
 func (ff *VerbositySimulationBuilder) WritePages() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&writePagesFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "write_pages",
+		Flag: "--write-pages",
+		Args: nil,
+	})
 	return ff
-}
-
-type loadPagesFlag struct {
-}
-
-var _ Flag = (*loadPagesFlag)(nil) // ensure loadPagesFlag implements Flag interface.
-
-func (f *loadPagesFlag) ID() string {
-	return "load_pages"
-}
-
-func (f *loadPagesFlag) String() string {
-	return "TODO"
-}
-
-func (f *loadPagesFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // LoadPages sets the "load-pages" flag to "true".
 //
 // LoadPages maps to cli flags: --load-pages.
 func (ff *VerbositySimulationBuilder) LoadPages() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&loadPagesFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "load_pages",
+		Flag: "--load-pages",
+		Args: nil,
+	})
 	return ff
-}
-
-type youtubePrintSigCodeFlag struct {
-}
-
-var _ Flag = (*youtubePrintSigCodeFlag)(nil) // ensure youtubePrintSigCodeFlag implements Flag interface.
-
-func (f *youtubePrintSigCodeFlag) ID() string {
-	return "youtube_print_sig_code"
-}
-
-func (f *youtubePrintSigCodeFlag) String() string {
-	return "TODO"
-}
-
-func (f *youtubePrintSigCodeFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // YoutubePrintSigCode sets the "youtube-print-sig-code" flag to "true".
 //
 // YoutubePrintSigCode maps to cli flags: --youtube-print-sig-code.
 func (ff *VerbositySimulationBuilder) YoutubePrintSigCode() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&youtubePrintSigCodeFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "youtube_print_sig_code",
+		Flag: "--youtube-print-sig-code",
+		Args: nil,
+	})
 	return ff
-}
-
-type printTrafficFlag struct {
-}
-
-var _ Flag = (*printTrafficFlag)(nil) // ensure printTrafficFlag implements Flag interface.
-
-func (f *printTrafficFlag) ID() string {
-	return "debug_printtraffic"
-}
-
-func (f *printTrafficFlag) String() string {
-	return "TODO"
-}
-
-func (f *printTrafficFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Display sent and read HTTP traffic
 //
 // PrintTraffic maps to cli flags: --print-traffic/--dump-headers.
 func (ff *VerbositySimulationBuilder) PrintTraffic() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&printTrafficFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "debug_printtraffic",
+		Flag: "--print-traffic",
+		Args: nil,
+	})
 	return ff
-}
-
-type callHomeFlag struct {
-}
-
-var _ Flag = (*callHomeFlag)(nil) // ensure callHomeFlag implements Flag interface.
-
-func (f *callHomeFlag) ID() string {
-	return "call_home"
-}
-
-func (f *callHomeFlag) String() string {
-	return "TODO"
-}
-
-func (f *callHomeFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // CallHome sets the "call-home" flag to "true".
 //
 // CallHome maps to cli flags: -C/--call-home.
 func (ff *VerbositySimulationBuilder) CallHome() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&callHomeFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "call_home",
+		Flag: "--call-home",
+		Args: nil,
+	})
 	return ff
-}
-
-type noCallHomeFlag struct {
-}
-
-var _ Flag = (*noCallHomeFlag)(nil) // ensure noCallHomeFlag implements Flag interface.
-
-func (f *noCallHomeFlag) ID() string {
-	return "call_home"
-}
-
-func (f *noCallHomeFlag) String() string {
-	return "TODO"
-}
-
-func (f *noCallHomeFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // NoCallHome sets the "no-call-home" flag to "false".
 //
 // NoCallHome maps to cli flags: --no-call-home.
 func (ff *VerbositySimulationBuilder) NoCallHome() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&noCallHomeFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "call_home",
+		Flag: "--no-call-home",
+		Args: nil,
+	})
 	return ff
 }

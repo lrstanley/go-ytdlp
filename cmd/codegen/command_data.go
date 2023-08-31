@@ -24,7 +24,8 @@ func (c *CommandData) Generate() {
 
 type OptionGroup struct {
 	// Generated fields.
-	Name string `json:"-"`
+	Name         string `json:"-"`
+	NeedsStrconv bool   `json:"-"`
 
 	// Command data fields.
 	OriginalTitle string   `json:"title"`
@@ -37,6 +38,10 @@ func (o *OptionGroup) Generate() {
 
 	for i := range o.Options {
 		o.Options[i].Generate()
+
+		if !o.Options[i].IsExecutable && (o.Options[i].Type == "int" || o.Options[i].Type == "float64") {
+			o.NeedsStrconv = true
+		}
 	}
 }
 

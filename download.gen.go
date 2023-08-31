@@ -8,26 +8,18 @@
 
 package ytdlp
 
+import (
+	"strconv"
+)
+
 type DownloadBuilder struct {
 	parent *Command
 }
 
-type concurrentFragmentsFlag struct {
-	args []int
-}
-
-var _ Flag = (*concurrentFragmentsFlag)(nil) // ensure concurrentFragmentsFlag implements Flag interface.
-
-func (f *concurrentFragmentsFlag) ID() string {
-	return "concurrent_fragment_downloads"
-}
-
-func (f *concurrentFragmentsFlag) String() string {
-	return "TODO"
-}
-
-func (f *concurrentFragmentsFlag) AsFlag() []string {
-	return []string{"TODO"}
+// Then jumps back to the base command builder, if you want to add additional flags
+// from another flag builder.
+func (ff *DownloadBuilder) Then() *Command {
+	return ff.parent
 }
 
 // Number of fragments of a dash/hlsnative video that should be downloaded
@@ -35,56 +27,26 @@ func (f *concurrentFragmentsFlag) AsFlag() []string {
 //
 // ConcurrentFragments maps to cli flags: -N/--concurrent-fragments=N.
 func (ff *DownloadBuilder) ConcurrentFragments(n int) *DownloadBuilder {
-	ff.parent.addFlag(&concurrentFragmentsFlag{
-		args: []int{n},
+	ff.parent.addFlag(&Flag{
+		ID:   "concurrent_fragment_downloads",
+		Flag: "--concurrent-fragments",
+		Args: []string{
+			strconv.Itoa(n),
+		},
 	})
 	return ff
-}
-
-type limitRateFlag struct {
-	args []string
-}
-
-var _ Flag = (*limitRateFlag)(nil) // ensure limitRateFlag implements Flag interface.
-
-func (f *limitRateFlag) ID() string {
-	return "ratelimit"
-}
-
-func (f *limitRateFlag) String() string {
-	return "TODO"
-}
-
-func (f *limitRateFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Maximum download rate in bytes per second, e.g. 50K or 4.2M
 //
 // LimitRate maps to cli flags: -r/--limit-rate/--rate-limit=RATE.
 func (ff *DownloadBuilder) LimitRate(rate string) *DownloadBuilder {
-	ff.parent.addFlag(&limitRateFlag{
-		args: []string{rate},
+	ff.parent.addFlag(&Flag{
+		ID:   "ratelimit",
+		Flag: "--limit-rate",
+		Args: []string{rate},
 	})
 	return ff
-}
-
-type throttledRateFlag struct {
-	args []string
-}
-
-var _ Flag = (*throttledRateFlag)(nil) // ensure throttledRateFlag implements Flag interface.
-
-func (f *throttledRateFlag) ID() string {
-	return "throttledratelimit"
-}
-
-func (f *throttledRateFlag) String() string {
-	return "TODO"
-}
-
-func (f *throttledRateFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Minimum download rate in bytes per second below which throttling is assumed and
@@ -92,56 +54,24 @@ func (f *throttledRateFlag) AsFlag() []string {
 //
 // ThrottledRate maps to cli flags: --throttled-rate=RATE.
 func (ff *DownloadBuilder) ThrottledRate(rate string) *DownloadBuilder {
-	ff.parent.addFlag(&throttledRateFlag{
-		args: []string{rate},
+	ff.parent.addFlag(&Flag{
+		ID:   "throttledratelimit",
+		Flag: "--throttled-rate",
+		Args: []string{rate},
 	})
 	return ff
-}
-
-type retriesFlag struct {
-	args []string
-}
-
-var _ Flag = (*retriesFlag)(nil) // ensure retriesFlag implements Flag interface.
-
-func (f *retriesFlag) ID() string {
-	return "retries"
-}
-
-func (f *retriesFlag) String() string {
-	return "TODO"
-}
-
-func (f *retriesFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Number of retries (default is %default), or "infinite"
 //
 // Retries maps to cli flags: -R/--retries=RETRIES.
 func (ff *DownloadBuilder) Retries(retries string) *DownloadBuilder {
-	ff.parent.addFlag(&retriesFlag{
-		args: []string{retries},
+	ff.parent.addFlag(&Flag{
+		ID:   "retries",
+		Flag: "--retries",
+		Args: []string{retries},
 	})
 	return ff
-}
-
-type fileAccessRetriesFlag struct {
-	args []string
-}
-
-var _ Flag = (*fileAccessRetriesFlag)(nil) // ensure fileAccessRetriesFlag implements Flag interface.
-
-func (f *fileAccessRetriesFlag) ID() string {
-	return "file_access_retries"
-}
-
-func (f *fileAccessRetriesFlag) String() string {
-	return "TODO"
-}
-
-func (f *fileAccessRetriesFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Number of times to retry on file access error (default is %default), or
@@ -149,28 +79,12 @@ func (f *fileAccessRetriesFlag) AsFlag() []string {
 //
 // FileAccessRetries maps to cli flags: --file-access-retries=RETRIES.
 func (ff *DownloadBuilder) FileAccessRetries(retries string) *DownloadBuilder {
-	ff.parent.addFlag(&fileAccessRetriesFlag{
-		args: []string{retries},
+	ff.parent.addFlag(&Flag{
+		ID:   "file_access_retries",
+		Flag: "--file-access-retries",
+		Args: []string{retries},
 	})
 	return ff
-}
-
-type fragmentRetriesFlag struct {
-	args []string
-}
-
-var _ Flag = (*fragmentRetriesFlag)(nil) // ensure fragmentRetriesFlag implements Flag interface.
-
-func (f *fragmentRetriesFlag) ID() string {
-	return "fragment_retries"
-}
-
-func (f *fragmentRetriesFlag) String() string {
-	return "TODO"
-}
-
-func (f *fragmentRetriesFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Number of retries for a fragment (default is %default), or "infinite" (DASH,
@@ -178,27 +92,12 @@ func (f *fragmentRetriesFlag) AsFlag() []string {
 //
 // FragmentRetries maps to cli flags: --fragment-retries=RETRIES.
 func (ff *DownloadBuilder) FragmentRetries(retries string) *DownloadBuilder {
-	ff.parent.addFlag(&fragmentRetriesFlag{
-		args: []string{retries},
+	ff.parent.addFlag(&Flag{
+		ID:   "fragment_retries",
+		Flag: "--fragment-retries",
+		Args: []string{retries},
 	})
 	return ff
-}
-
-type skipUnavailableFragmentsFlag struct {
-}
-
-var _ Flag = (*skipUnavailableFragmentsFlag)(nil) // ensure skipUnavailableFragmentsFlag implements Flag interface.
-
-func (f *skipUnavailableFragmentsFlag) ID() string {
-	return "skip_unavailable_fragments"
-}
-
-func (f *skipUnavailableFragmentsFlag) String() string {
-	return "TODO"
-}
-
-func (f *skipUnavailableFragmentsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Skip unavailable fragments for DASH, hlsnative and ISM downloads (default)
@@ -206,25 +105,12 @@ func (f *skipUnavailableFragmentsFlag) AsFlag() []string {
 //
 // SkipUnavailableFragments maps to cli flags: --skip-unavailable-fragments/--no-abort-on-unavailable-fragments.
 func (ff *DownloadBuilder) SkipUnavailableFragments() *DownloadBuilder {
-	ff.parent.addFlag(&skipUnavailableFragmentsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "skip_unavailable_fragments",
+		Flag: "--skip-unavailable-fragments",
+		Args: nil,
+	})
 	return ff
-}
-
-type abortOnUnavailableFragmentsFlag struct {
-}
-
-var _ Flag = (*abortOnUnavailableFragmentsFlag)(nil) // ensure abortOnUnavailableFragmentsFlag implements Flag interface.
-
-func (f *abortOnUnavailableFragmentsFlag) ID() string {
-	return "skip_unavailable_fragments"
-}
-
-func (f *abortOnUnavailableFragmentsFlag) String() string {
-	return "TODO"
-}
-
-func (f *abortOnUnavailableFragmentsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Abort download if a fragment is unavailable (Alias:
@@ -232,103 +118,48 @@ func (f *abortOnUnavailableFragmentsFlag) AsFlag() []string {
 //
 // AbortOnUnavailableFragments maps to cli flags: --abort-on-unavailable-fragments/--no-skip-unavailable-fragments.
 func (ff *DownloadBuilder) AbortOnUnavailableFragments() *DownloadBuilder {
-	ff.parent.addFlag(&abortOnUnavailableFragmentsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "skip_unavailable_fragments",
+		Flag: "--abort-on-unavailable-fragments",
+		Args: nil,
+	})
 	return ff
-}
-
-type keepFragmentsFlag struct {
-}
-
-var _ Flag = (*keepFragmentsFlag)(nil) // ensure keepFragmentsFlag implements Flag interface.
-
-func (f *keepFragmentsFlag) ID() string {
-	return "keep_fragments"
-}
-
-func (f *keepFragmentsFlag) String() string {
-	return "TODO"
-}
-
-func (f *keepFragmentsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Keep downloaded fragments on disk after downloading is finished
 //
 // KeepFragments maps to cli flags: --keep-fragments.
 func (ff *DownloadBuilder) KeepFragments() *DownloadBuilder {
-	ff.parent.addFlag(&keepFragmentsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "keep_fragments",
+		Flag: "--keep-fragments",
+		Args: nil,
+	})
 	return ff
-}
-
-type noKeepFragmentsFlag struct {
-}
-
-var _ Flag = (*noKeepFragmentsFlag)(nil) // ensure noKeepFragmentsFlag implements Flag interface.
-
-func (f *noKeepFragmentsFlag) ID() string {
-	return "keep_fragments"
-}
-
-func (f *noKeepFragmentsFlag) String() string {
-	return "TODO"
-}
-
-func (f *noKeepFragmentsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Delete downloaded fragments after downloading is finished (default)
 //
 // NoKeepFragments maps to cli flags: --no-keep-fragments.
 func (ff *DownloadBuilder) NoKeepFragments() *DownloadBuilder {
-	ff.parent.addFlag(&noKeepFragmentsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "keep_fragments",
+		Flag: "--no-keep-fragments",
+		Args: nil,
+	})
 	return ff
-}
-
-type bufferSizeFlag struct {
-	args []string
-}
-
-var _ Flag = (*bufferSizeFlag)(nil) // ensure bufferSizeFlag implements Flag interface.
-
-func (f *bufferSizeFlag) ID() string {
-	return "buffersize"
-}
-
-func (f *bufferSizeFlag) String() string {
-	return "TODO"
-}
-
-func (f *bufferSizeFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Size of download buffer, e.g. 1024 or 16K (default is %default)
 //
 // BufferSize maps to cli flags: --buffer-size=SIZE.
 func (ff *DownloadBuilder) BufferSize(size string) *DownloadBuilder {
-	ff.parent.addFlag(&bufferSizeFlag{
-		args: []string{size},
+	ff.parent.addFlag(&Flag{
+		ID:   "buffersize",
+		Flag: "--buffer-size",
+		Args: []string{size},
 	})
 	return ff
-}
-
-type resizeBufferFlag struct {
-}
-
-var _ Flag = (*resizeBufferFlag)(nil) // ensure resizeBufferFlag implements Flag interface.
-
-func (f *resizeBufferFlag) ID() string {
-	return "noresizebuffer"
-}
-
-func (f *resizeBufferFlag) String() string {
-	return "TODO"
-}
-
-func (f *resizeBufferFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // The buffer size is automatically resized from an initial value of --buffer-size
@@ -336,51 +167,24 @@ func (f *resizeBufferFlag) AsFlag() []string {
 //
 // ResizeBuffer maps to cli flags: --resize-buffer.
 func (ff *DownloadBuilder) ResizeBuffer() *DownloadBuilder {
-	ff.parent.addFlag(&resizeBufferFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "noresizebuffer",
+		Flag: "--resize-buffer",
+		Args: nil,
+	})
 	return ff
-}
-
-type noResizeBufferFlag struct {
-}
-
-var _ Flag = (*noResizeBufferFlag)(nil) // ensure noResizeBufferFlag implements Flag interface.
-
-func (f *noResizeBufferFlag) ID() string {
-	return "noresizebuffer"
-}
-
-func (f *noResizeBufferFlag) String() string {
-	return "TODO"
-}
-
-func (f *noResizeBufferFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not automatically adjust the buffer size
 //
 // NoResizeBuffer maps to cli flags: --no-resize-buffer.
 func (ff *DownloadBuilder) NoResizeBuffer() *DownloadBuilder {
-	ff.parent.addFlag(&noResizeBufferFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "noresizebuffer",
+		Flag: "--no-resize-buffer",
+		Args: nil,
+	})
 	return ff
-}
-
-type httpChunkSizeFlag struct {
-	args []string
-}
-
-var _ Flag = (*httpChunkSizeFlag)(nil) // ensure httpChunkSizeFlag implements Flag interface.
-
-func (f *httpChunkSizeFlag) ID() string {
-	return "http_chunk_size"
-}
-
-func (f *httpChunkSizeFlag) String() string {
-	return "TODO"
-}
-
-func (f *httpChunkSizeFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Size of a chunk for chunk-based HTTP downloading, e.g. 10485760 or 10M (default
@@ -389,127 +193,60 @@ func (f *httpChunkSizeFlag) AsFlag() []string {
 //
 // HttpChunkSize maps to cli flags: --http-chunk-size=SIZE.
 func (ff *DownloadBuilder) HttpChunkSize(size string) *DownloadBuilder {
-	ff.parent.addFlag(&httpChunkSizeFlag{
-		args: []string{size},
+	ff.parent.addFlag(&Flag{
+		ID:   "http_chunk_size",
+		Flag: "--http-chunk-size",
+		Args: []string{size},
 	})
 	return ff
-}
-
-type testFlag struct {
-}
-
-var _ Flag = (*testFlag)(nil) // ensure testFlag implements Flag interface.
-
-func (f *testFlag) ID() string {
-	return "test"
-}
-
-func (f *testFlag) String() string {
-	return "TODO"
-}
-
-func (f *testFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Test sets the "test" flag to "true".
 //
 // Test maps to cli flags: --test.
 func (ff *DownloadBuilder) Test() *DownloadBuilder {
-	ff.parent.addFlag(&testFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "test",
+		Flag: "--test",
+		Args: nil,
+	})
 	return ff
-}
-
-type playlistReverseFlag struct {
-}
-
-var _ Flag = (*playlistReverseFlag)(nil) // ensure playlistReverseFlag implements Flag interface.
-
-func (f *playlistReverseFlag) ID() string {
-	return "playlist_reverse"
-}
-
-func (f *playlistReverseFlag) String() string {
-	return "TODO"
-}
-
-func (f *playlistReverseFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // PlaylistReverse sets the "playlist-reverse" flag to "true".
 //
 // PlaylistReverse maps to cli flags: --playlist-reverse.
 func (ff *DownloadBuilder) PlaylistReverse() *DownloadBuilder {
-	ff.parent.addFlag(&playlistReverseFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "playlist_reverse",
+		Flag: "--playlist-reverse",
+		Args: nil,
+	})
 	return ff
-}
-
-type noPlaylistReverseFlag struct {
-}
-
-var _ Flag = (*noPlaylistReverseFlag)(nil) // ensure noPlaylistReverseFlag implements Flag interface.
-
-func (f *noPlaylistReverseFlag) ID() string {
-	return "playlist_reverse"
-}
-
-func (f *noPlaylistReverseFlag) String() string {
-	return "TODO"
-}
-
-func (f *noPlaylistReverseFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // NoPlaylistReverse sets the "no-playlist-reverse" flag to "false".
 //
 // NoPlaylistReverse maps to cli flags: --no-playlist-reverse.
 func (ff *DownloadBuilder) NoPlaylistReverse() *DownloadBuilder {
-	ff.parent.addFlag(&noPlaylistReverseFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "playlist_reverse",
+		Flag: "--no-playlist-reverse",
+		Args: nil,
+	})
 	return ff
-}
-
-type playlistRandomFlag struct {
-}
-
-var _ Flag = (*playlistRandomFlag)(nil) // ensure playlistRandomFlag implements Flag interface.
-
-func (f *playlistRandomFlag) ID() string {
-	return "playlist_random"
-}
-
-func (f *playlistRandomFlag) String() string {
-	return "TODO"
-}
-
-func (f *playlistRandomFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Download playlist videos in random order
 //
 // PlaylistRandom maps to cli flags: --playlist-random.
 func (ff *DownloadBuilder) PlaylistRandom() *DownloadBuilder {
-	ff.parent.addFlag(&playlistRandomFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "playlist_random",
+		Flag: "--playlist-random",
+		Args: nil,
+	})
 	return ff
-}
-
-type lazyPlaylistFlag struct {
-}
-
-var _ Flag = (*lazyPlaylistFlag)(nil) // ensure lazyPlaylistFlag implements Flag interface.
-
-func (f *lazyPlaylistFlag) ID() string {
-	return "lazy_playlist"
-}
-
-func (f *lazyPlaylistFlag) String() string {
-	return "TODO"
-}
-
-func (f *lazyPlaylistFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Process entries in the playlist as they are received. This disables n_entries,
@@ -517,25 +254,12 @@ func (f *lazyPlaylistFlag) AsFlag() []string {
 //
 // LazyPlaylist maps to cli flags: --lazy-playlist.
 func (ff *DownloadBuilder) LazyPlaylist() *DownloadBuilder {
-	ff.parent.addFlag(&lazyPlaylistFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "lazy_playlist",
+		Flag: "--lazy-playlist",
+		Args: nil,
+	})
 	return ff
-}
-
-type noLazyPlaylistFlag struct {
-}
-
-var _ Flag = (*noLazyPlaylistFlag)(nil) // ensure noLazyPlaylistFlag implements Flag interface.
-
-func (f *noLazyPlaylistFlag) ID() string {
-	return "lazy_playlist"
-}
-
-func (f *noLazyPlaylistFlag) String() string {
-	return "TODO"
-}
-
-func (f *noLazyPlaylistFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Process videos in the playlist only after the entire playlist is parsed
@@ -543,100 +267,48 @@ func (f *noLazyPlaylistFlag) AsFlag() []string {
 //
 // NoLazyPlaylist maps to cli flags: --no-lazy-playlist.
 func (ff *DownloadBuilder) NoLazyPlaylist() *DownloadBuilder {
-	ff.parent.addFlag(&noLazyPlaylistFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "lazy_playlist",
+		Flag: "--no-lazy-playlist",
+		Args: nil,
+	})
 	return ff
-}
-
-type xattrSetFilesizeFlag struct {
-}
-
-var _ Flag = (*xattrSetFilesizeFlag)(nil) // ensure xattrSetFilesizeFlag implements Flag interface.
-
-func (f *xattrSetFilesizeFlag) ID() string {
-	return "xattr_set_filesize"
-}
-
-func (f *xattrSetFilesizeFlag) String() string {
-	return "TODO"
-}
-
-func (f *xattrSetFilesizeFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Set file xattribute ytdl.filesize with expected file size
 //
 // XattrSetFilesize maps to cli flags: --xattr-set-filesize.
 func (ff *DownloadBuilder) XattrSetFilesize() *DownloadBuilder {
-	ff.parent.addFlag(&xattrSetFilesizeFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "xattr_set_filesize",
+		Flag: "--xattr-set-filesize",
+		Args: nil,
+	})
 	return ff
-}
-
-type hlsPreferNativeFlag struct {
-}
-
-var _ Flag = (*hlsPreferNativeFlag)(nil) // ensure hlsPreferNativeFlag implements Flag interface.
-
-func (f *hlsPreferNativeFlag) ID() string {
-	return "hls_prefer_native"
-}
-
-func (f *hlsPreferNativeFlag) String() string {
-	return "TODO"
-}
-
-func (f *hlsPreferNativeFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // HlsPreferNative sets the "hls-prefer-native" flag to "true".
 //
 // HlsPreferNative maps to cli flags: --hls-prefer-native.
 func (ff *DownloadBuilder) HlsPreferNative() *DownloadBuilder {
-	ff.parent.addFlag(&hlsPreferNativeFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "hls_prefer_native",
+		Flag: "--hls-prefer-native",
+		Args: nil,
+	})
 	return ff
-}
-
-type hlsPreferFfmpegFlag struct {
-}
-
-var _ Flag = (*hlsPreferFfmpegFlag)(nil) // ensure hlsPreferFfmpegFlag implements Flag interface.
-
-func (f *hlsPreferFfmpegFlag) ID() string {
-	return "hls_prefer_native"
-}
-
-func (f *hlsPreferFfmpegFlag) String() string {
-	return "TODO"
-}
-
-func (f *hlsPreferFfmpegFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // HlsPreferFfmpeg sets the "hls-prefer-ffmpeg" flag to "false".
 //
 // HlsPreferFfmpeg maps to cli flags: --hls-prefer-ffmpeg.
 func (ff *DownloadBuilder) HlsPreferFfmpeg() *DownloadBuilder {
-	ff.parent.addFlag(&hlsPreferFfmpegFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "hls_prefer_native",
+		Flag: "--hls-prefer-ffmpeg",
+		Args: nil,
+	})
 	return ff
-}
-
-type hlsUseMpegtsFlag struct {
-}
-
-var _ Flag = (*hlsUseMpegtsFlag)(nil) // ensure hlsUseMpegtsFlag implements Flag interface.
-
-func (f *hlsUseMpegtsFlag) ID() string {
-	return "hls_use_mpegts"
-}
-
-func (f *hlsUseMpegtsFlag) String() string {
-	return "TODO"
-}
-
-func (f *hlsUseMpegtsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Use the mpegts container for HLS videos; allowing some players to play the video
@@ -645,25 +317,12 @@ func (f *hlsUseMpegtsFlag) AsFlag() []string {
 //
 // HlsUseMpegts maps to cli flags: --hls-use-mpegts.
 func (ff *DownloadBuilder) HlsUseMpegts() *DownloadBuilder {
-	ff.parent.addFlag(&hlsUseMpegtsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "hls_use_mpegts",
+		Flag: "--hls-use-mpegts",
+		Args: nil,
+	})
 	return ff
-}
-
-type noHlsUseMpegtsFlag struct {
-}
-
-var _ Flag = (*noHlsUseMpegtsFlag)(nil) // ensure noHlsUseMpegtsFlag implements Flag interface.
-
-func (f *noHlsUseMpegtsFlag) ID() string {
-	return "hls_use_mpegts"
-}
-
-func (f *noHlsUseMpegtsFlag) String() string {
-	return "TODO"
-}
-
-func (f *noHlsUseMpegtsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Do not use the mpegts container for HLS videos. This is default when not
@@ -671,6 +330,10 @@ func (f *noHlsUseMpegtsFlag) AsFlag() []string {
 //
 // NoHlsUseMpegts maps to cli flags: --no-hls-use-mpegts.
 func (ff *DownloadBuilder) NoHlsUseMpegts() *DownloadBuilder {
-	ff.parent.addFlag(&noHlsUseMpegtsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "hls_use_mpegts",
+		Flag: "--no-hls-use-mpegts",
+		Args: nil,
+	})
 	return ff
 }

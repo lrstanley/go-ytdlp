@@ -8,78 +8,42 @@
 
 package ytdlp
 
+import (
+	"strconv"
+)
+
 type VideoSelectionBuilder struct {
 	parent *Command
 }
 
-type playlistStartFlag struct {
-	args []int
-}
-
-var _ Flag = (*playlistStartFlag)(nil) // ensure playlistStartFlag implements Flag interface.
-
-func (f *playlistStartFlag) ID() string {
-	return "playliststart"
-}
-
-func (f *playlistStartFlag) String() string {
-	return "TODO"
-}
-
-func (f *playlistStartFlag) AsFlag() []string {
-	return []string{"TODO"}
+// Then jumps back to the base command builder, if you want to add additional flags
+// from another flag builder.
+func (ff *VideoSelectionBuilder) Then() *Command {
+	return ff.parent
 }
 
 // PlaylistStart maps to cli flags: --playlist-start=NUMBER.
 func (ff *VideoSelectionBuilder) PlaylistStart(number int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&playlistStartFlag{
-		args: []int{number},
+	ff.parent.addFlag(&Flag{
+		ID:   "playliststart",
+		Flag: "--playlist-start",
+		Args: []string{
+			strconv.Itoa(number),
+		},
 	})
 	return ff
-}
-
-type playlistEndFlag struct {
-	args []int
-}
-
-var _ Flag = (*playlistEndFlag)(nil) // ensure playlistEndFlag implements Flag interface.
-
-func (f *playlistEndFlag) ID() string {
-	return "playlistend"
-}
-
-func (f *playlistEndFlag) String() string {
-	return "TODO"
-}
-
-func (f *playlistEndFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // PlaylistEnd maps to cli flags: --playlist-end=NUMBER.
 func (ff *VideoSelectionBuilder) PlaylistEnd(number int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&playlistEndFlag{
-		args: []int{number},
+	ff.parent.addFlag(&Flag{
+		ID:   "playlistend",
+		Flag: "--playlist-end",
+		Args: []string{
+			strconv.Itoa(number),
+		},
 	})
 	return ff
-}
-
-type playlistItemsFlag struct {
-	args []string
-}
-
-var _ Flag = (*playlistItemsFlag)(nil) // ensure playlistItemsFlag implements Flag interface.
-
-func (f *playlistItemsFlag) ID() string {
-	return "playlist_items"
-}
-
-func (f *playlistItemsFlag) String() string {
-	return "TODO"
-}
-
-func (f *playlistItemsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Comma separated playlist_index of the items to download. You can specify a range
@@ -90,136 +54,56 @@ func (f *playlistItemsFlag) AsFlag() []string {
 //
 // PlaylistItems maps to cli flags: -I/--playlist-items=ITEM_SPEC.
 func (ff *VideoSelectionBuilder) PlaylistItems(itemSpec string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&playlistItemsFlag{
-		args: []string{itemSpec},
+	ff.parent.addFlag(&Flag{
+		ID:   "playlist_items",
+		Flag: "--playlist-items",
+		Args: []string{itemSpec},
 	})
 	return ff
-}
-
-type matchTitleFlag struct {
-	args []string
-}
-
-var _ Flag = (*matchTitleFlag)(nil) // ensure matchTitleFlag implements Flag interface.
-
-func (f *matchTitleFlag) ID() string {
-	return "matchtitle"
-}
-
-func (f *matchTitleFlag) String() string {
-	return "TODO"
-}
-
-func (f *matchTitleFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // MatchTitle maps to cli flags: --match-title=REGEX.
 func (ff *VideoSelectionBuilder) MatchTitle(regex string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&matchTitleFlag{
-		args: []string{regex},
+	ff.parent.addFlag(&Flag{
+		ID:   "matchtitle",
+		Flag: "--match-title",
+		Args: []string{regex},
 	})
 	return ff
-}
-
-type rejectTitleFlag struct {
-	args []string
-}
-
-var _ Flag = (*rejectTitleFlag)(nil) // ensure rejectTitleFlag implements Flag interface.
-
-func (f *rejectTitleFlag) ID() string {
-	return "rejecttitle"
-}
-
-func (f *rejectTitleFlag) String() string {
-	return "TODO"
-}
-
-func (f *rejectTitleFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // RejectTitle maps to cli flags: --reject-title=REGEX.
 func (ff *VideoSelectionBuilder) RejectTitle(regex string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&rejectTitleFlag{
-		args: []string{regex},
+	ff.parent.addFlag(&Flag{
+		ID:   "rejecttitle",
+		Flag: "--reject-title",
+		Args: []string{regex},
 	})
 	return ff
-}
-
-type minFilesizeFlag struct {
-	args []string
-}
-
-var _ Flag = (*minFilesizeFlag)(nil) // ensure minFilesizeFlag implements Flag interface.
-
-func (f *minFilesizeFlag) ID() string {
-	return "min_filesize"
-}
-
-func (f *minFilesizeFlag) String() string {
-	return "TODO"
-}
-
-func (f *minFilesizeFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Abort download if filesize is smaller than SIZE, e.g. 50k or 44.6M
 //
 // MinFilesize maps to cli flags: --min-filesize=SIZE.
 func (ff *VideoSelectionBuilder) MinFilesize(size string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&minFilesizeFlag{
-		args: []string{size},
+	ff.parent.addFlag(&Flag{
+		ID:   "min_filesize",
+		Flag: "--min-filesize",
+		Args: []string{size},
 	})
 	return ff
-}
-
-type maxFilesizeFlag struct {
-	args []string
-}
-
-var _ Flag = (*maxFilesizeFlag)(nil) // ensure maxFilesizeFlag implements Flag interface.
-
-func (f *maxFilesizeFlag) ID() string {
-	return "max_filesize"
-}
-
-func (f *maxFilesizeFlag) String() string {
-	return "TODO"
-}
-
-func (f *maxFilesizeFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Abort download if filesize is larger than SIZE, e.g. 50k or 44.6M
 //
 // MaxFilesize maps to cli flags: --max-filesize=SIZE.
 func (ff *VideoSelectionBuilder) MaxFilesize(size string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&maxFilesizeFlag{
-		args: []string{size},
+	ff.parent.addFlag(&Flag{
+		ID:   "max_filesize",
+		Flag: "--max-filesize",
+		Args: []string{size},
 	})
 	return ff
-}
-
-type dateFlag struct {
-	args []string
-}
-
-var _ Flag = (*dateFlag)(nil) // ensure dateFlag implements Flag interface.
-
-func (f *dateFlag) ID() string {
-	return "date"
-}
-
-func (f *dateFlag) String() string {
-	return "TODO"
-}
-
-func (f *dateFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Download only videos uploaded on this date. The date can be "YYYYMMDD" or in the
@@ -228,28 +112,12 @@ func (f *dateFlag) AsFlag() []string {
 //
 // Date maps to cli flags: --date=DATE.
 func (ff *VideoSelectionBuilder) Date(date string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&dateFlag{
-		args: []string{date},
+	ff.parent.addFlag(&Flag{
+		ID:   "date",
+		Flag: "--date",
+		Args: []string{date},
 	})
 	return ff
-}
-
-type datebeforeFlag struct {
-	args []string
-}
-
-var _ Flag = (*datebeforeFlag)(nil) // ensure datebeforeFlag implements Flag interface.
-
-func (f *datebeforeFlag) ID() string {
-	return "datebefore"
-}
-
-func (f *datebeforeFlag) String() string {
-	return "TODO"
-}
-
-func (f *datebeforeFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Download only videos uploaded on or before this date. The date formats accepted
@@ -257,28 +125,12 @@ func (f *datebeforeFlag) AsFlag() []string {
 //
 // Datebefore maps to cli flags: --datebefore=DATE.
 func (ff *VideoSelectionBuilder) Datebefore(date string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&datebeforeFlag{
-		args: []string{date},
+	ff.parent.addFlag(&Flag{
+		ID:   "datebefore",
+		Flag: "--datebefore",
+		Args: []string{date},
 	})
 	return ff
-}
-
-type dateafterFlag struct {
-	args []string
-}
-
-var _ Flag = (*dateafterFlag)(nil) // ensure dateafterFlag implements Flag interface.
-
-func (f *dateafterFlag) ID() string {
-	return "dateafter"
-}
-
-func (f *dateafterFlag) String() string {
-	return "TODO"
-}
-
-func (f *dateafterFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Download only videos uploaded on or after this date. The date formats accepted
@@ -286,192 +138,74 @@ func (f *dateafterFlag) AsFlag() []string {
 //
 // Dateafter maps to cli flags: --dateafter=DATE.
 func (ff *VideoSelectionBuilder) Dateafter(date string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&dateafterFlag{
-		args: []string{date},
+	ff.parent.addFlag(&Flag{
+		ID:   "dateafter",
+		Flag: "--dateafter",
+		Args: []string{date},
 	})
 	return ff
-}
-
-type minViewsFlag struct {
-	args []int
-}
-
-var _ Flag = (*minViewsFlag)(nil) // ensure minViewsFlag implements Flag interface.
-
-func (f *minViewsFlag) ID() string {
-	return "min_views"
-}
-
-func (f *minViewsFlag) String() string {
-	return "TODO"
-}
-
-func (f *minViewsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // MinViews maps to cli flags: --min-views=COUNT.
 func (ff *VideoSelectionBuilder) MinViews(count int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&minViewsFlag{
-		args: []int{count},
+	ff.parent.addFlag(&Flag{
+		ID:   "min_views",
+		Flag: "--min-views",
+		Args: []string{
+			strconv.Itoa(count),
+		},
 	})
 	return ff
-}
-
-type maxViewsFlag struct {
-	args []int
-}
-
-var _ Flag = (*maxViewsFlag)(nil) // ensure maxViewsFlag implements Flag interface.
-
-func (f *maxViewsFlag) ID() string {
-	return "max_views"
-}
-
-func (f *maxViewsFlag) String() string {
-	return "TODO"
-}
-
-func (f *maxViewsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // MaxViews maps to cli flags: --max-views=COUNT.
 func (ff *VideoSelectionBuilder) MaxViews(count int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&maxViewsFlag{
-		args: []int{count},
+	ff.parent.addFlag(&Flag{
+		ID:   "max_views",
+		Flag: "--max-views",
+		Args: []string{
+			strconv.Itoa(count),
+		},
 	})
 	return ff
-}
-
-type noMatchFiltersFlag struct {
-}
-
-var _ Flag = (*noMatchFiltersFlag)(nil) // ensure noMatchFiltersFlag implements Flag interface.
-
-func (f *noMatchFiltersFlag) ID() string {
-	return "match_filter"
-}
-
-func (f *noMatchFiltersFlag) String() string {
-	return "TODO"
-}
-
-func (f *noMatchFiltersFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type noBreakMatchFiltersFlag struct {
-}
-
-var _ Flag = (*noBreakMatchFiltersFlag)(nil) // ensure noBreakMatchFiltersFlag implements Flag interface.
-
-func (f *noBreakMatchFiltersFlag) ID() string {
-	return "breaking_match_filter"
-}
-
-func (f *noBreakMatchFiltersFlag) String() string {
-	return "TODO"
-}
-
-func (f *noBreakMatchFiltersFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type noPlaylistFlag struct {
-}
-
-var _ Flag = (*noPlaylistFlag)(nil) // ensure noPlaylistFlag implements Flag interface.
-
-func (f *noPlaylistFlag) ID() string {
-	return "noplaylist"
-}
-
-func (f *noPlaylistFlag) String() string {
-	return "TODO"
-}
-
-func (f *noPlaylistFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Download only the video, if the URL refers to a video and a playlist
 //
 // NoPlaylist maps to cli flags: --no-playlist.
 func (ff *VideoSelectionBuilder) NoPlaylist() *VideoSelectionBuilder {
-	ff.parent.addFlag(&noPlaylistFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "noplaylist",
+		Flag: "--no-playlist",
+		Args: nil,
+	})
 	return ff
-}
-
-type yesPlaylistFlag struct {
-}
-
-var _ Flag = (*yesPlaylistFlag)(nil) // ensure yesPlaylistFlag implements Flag interface.
-
-func (f *yesPlaylistFlag) ID() string {
-	return "noplaylist"
-}
-
-func (f *yesPlaylistFlag) String() string {
-	return "TODO"
-}
-
-func (f *yesPlaylistFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Download the playlist, if the URL refers to a video and a playlist
 //
 // YesPlaylist maps to cli flags: --yes-playlist.
 func (ff *VideoSelectionBuilder) YesPlaylist() *VideoSelectionBuilder {
-	ff.parent.addFlag(&yesPlaylistFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "noplaylist",
+		Flag: "--yes-playlist",
+		Args: nil,
+	})
 	return ff
-}
-
-type ageLimitFlag struct {
-	args []int
-}
-
-var _ Flag = (*ageLimitFlag)(nil) // ensure ageLimitFlag implements Flag interface.
-
-func (f *ageLimitFlag) ID() string {
-	return "age_limit"
-}
-
-func (f *ageLimitFlag) String() string {
-	return "TODO"
-}
-
-func (f *ageLimitFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Download only videos suitable for the given age
 //
 // AgeLimit maps to cli flags: --age-limit=YEARS.
 func (ff *VideoSelectionBuilder) AgeLimit(years int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&ageLimitFlag{
-		args: []int{years},
+	ff.parent.addFlag(&Flag{
+		ID:   "age_limit",
+		Flag: "--age-limit",
+		Args: []string{
+			strconv.Itoa(years),
+		},
 	})
 	return ff
-}
-
-type downloadArchiveFlag struct {
-	args []string
-}
-
-var _ Flag = (*downloadArchiveFlag)(nil) // ensure downloadArchiveFlag implements Flag interface.
-
-func (f *downloadArchiveFlag) ID() string {
-	return "download_archive"
-}
-
-func (f *downloadArchiveFlag) String() string {
-	return "TODO"
-}
-
-func (f *downloadArchiveFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Download only videos not listed in the archive file. Record the IDs of all
@@ -479,122 +213,50 @@ func (f *downloadArchiveFlag) AsFlag() []string {
 //
 // DownloadArchive maps to cli flags: --download-archive=FILE.
 func (ff *VideoSelectionBuilder) DownloadArchive(file string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&downloadArchiveFlag{
-		args: []string{file},
+	ff.parent.addFlag(&Flag{
+		ID:   "download_archive",
+		Flag: "--download-archive",
+		Args: []string{file},
 	})
 	return ff
-}
-
-type noDownloadArchiveFlag struct {
-}
-
-var _ Flag = (*noDownloadArchiveFlag)(nil) // ensure noDownloadArchiveFlag implements Flag interface.
-
-func (f *noDownloadArchiveFlag) ID() string {
-	return "download_archive"
-}
-
-func (f *noDownloadArchiveFlag) String() string {
-	return "TODO"
-}
-
-func (f *noDownloadArchiveFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type maxDownloadsFlag struct {
-	args []int
-}
-
-var _ Flag = (*maxDownloadsFlag)(nil) // ensure maxDownloadsFlag implements Flag interface.
-
-func (f *maxDownloadsFlag) ID() string {
-	return "max_downloads"
-}
-
-func (f *maxDownloadsFlag) String() string {
-	return "TODO"
-}
-
-func (f *maxDownloadsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Abort after downloading NUMBER files
 //
 // MaxDownloads maps to cli flags: --max-downloads=NUMBER.
 func (ff *VideoSelectionBuilder) MaxDownloads(number int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&maxDownloadsFlag{
-		args: []int{number},
+	ff.parent.addFlag(&Flag{
+		ID:   "max_downloads",
+		Flag: "--max-downloads",
+		Args: []string{
+			strconv.Itoa(number),
+		},
 	})
 	return ff
-}
-
-type breakOnExistingFlag struct {
-}
-
-var _ Flag = (*breakOnExistingFlag)(nil) // ensure breakOnExistingFlag implements Flag interface.
-
-func (f *breakOnExistingFlag) ID() string {
-	return "break_on_existing"
-}
-
-func (f *breakOnExistingFlag) String() string {
-	return "TODO"
-}
-
-func (f *breakOnExistingFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Stop the download process when encountering a file that is in the archive
 //
 // BreakOnExisting maps to cli flags: --break-on-existing.
 func (ff *VideoSelectionBuilder) BreakOnExisting() *VideoSelectionBuilder {
-	ff.parent.addFlag(&breakOnExistingFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "break_on_existing",
+		Flag: "--break-on-existing",
+		Args: nil,
+	})
 	return ff
-}
-
-type breakOnRejectFlag struct {
-}
-
-var _ Flag = (*breakOnRejectFlag)(nil) // ensure breakOnRejectFlag implements Flag interface.
-
-func (f *breakOnRejectFlag) ID() string {
-	return "break_on_reject"
-}
-
-func (f *breakOnRejectFlag) String() string {
-	return "TODO"
-}
-
-func (f *breakOnRejectFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // BreakOnReject sets the "break-on-reject" flag to "true".
 //
 // BreakOnReject maps to cli flags: --break-on-reject.
 func (ff *VideoSelectionBuilder) BreakOnReject() *VideoSelectionBuilder {
-	ff.parent.addFlag(&breakOnRejectFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "break_on_reject",
+		Flag: "--break-on-reject",
+		Args: nil,
+	})
 	return ff
-}
-
-type breakPerInputFlag struct {
-}
-
-var _ Flag = (*breakPerInputFlag)(nil) // ensure breakPerInputFlag implements Flag interface.
-
-func (f *breakPerInputFlag) ID() string {
-	return "break_per_url"
-}
-
-func (f *breakPerInputFlag) String() string {
-	return "TODO"
-}
-
-func (f *breakPerInputFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Alters --max-downloads, --break-on-existing, --break-match-filter, and
@@ -602,109 +264,60 @@ func (f *breakPerInputFlag) AsFlag() []string {
 //
 // BreakPerInput maps to cli flags: --break-per-input.
 func (ff *VideoSelectionBuilder) BreakPerInput() *VideoSelectionBuilder {
-	ff.parent.addFlag(&breakPerInputFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "break_per_url",
+		Flag: "--break-per-input",
+		Args: nil,
+	})
 	return ff
-}
-
-type noBreakPerInputFlag struct {
-}
-
-var _ Flag = (*noBreakPerInputFlag)(nil) // ensure noBreakPerInputFlag implements Flag interface.
-
-func (f *noBreakPerInputFlag) ID() string {
-	return "break_per_url"
-}
-
-func (f *noBreakPerInputFlag) String() string {
-	return "TODO"
-}
-
-func (f *noBreakPerInputFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // --break-on-existing and similar options terminates the entire download queue
 //
 // NoBreakPerInput maps to cli flags: --no-break-per-input.
 func (ff *VideoSelectionBuilder) NoBreakPerInput() *VideoSelectionBuilder {
-	ff.parent.addFlag(&noBreakPerInputFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "break_per_url",
+		Flag: "--no-break-per-input",
+		Args: nil,
+	})
 	return ff
-}
-
-type skipPlaylistAfterErrorsFlag struct {
-	args []int
-}
-
-var _ Flag = (*skipPlaylistAfterErrorsFlag)(nil) // ensure skipPlaylistAfterErrorsFlag implements Flag interface.
-
-func (f *skipPlaylistAfterErrorsFlag) ID() string {
-	return "skip_playlist_after_errors"
-}
-
-func (f *skipPlaylistAfterErrorsFlag) String() string {
-	return "TODO"
-}
-
-func (f *skipPlaylistAfterErrorsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // Number of allowed failures until the rest of the playlist is skipped
 //
 // SkipPlaylistAfterErrors maps to cli flags: --skip-playlist-after-errors=N.
 func (ff *VideoSelectionBuilder) SkipPlaylistAfterErrors(n int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&skipPlaylistAfterErrorsFlag{
-		args: []int{n},
+	ff.parent.addFlag(&Flag{
+		ID:   "skip_playlist_after_errors",
+		Flag: "--skip-playlist-after-errors",
+		Args: []string{
+			strconv.Itoa(n),
+		},
 	})
 	return ff
-}
-
-type includeAdsFlag struct {
-}
-
-var _ Flag = (*includeAdsFlag)(nil) // ensure includeAdsFlag implements Flag interface.
-
-func (f *includeAdsFlag) ID() string {
-	return "include_ads"
-}
-
-func (f *includeAdsFlag) String() string {
-	return "TODO"
-}
-
-func (f *includeAdsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // IncludeAds sets the "include-ads" flag to "true".
 //
 // IncludeAds maps to cli flags: --include-ads.
 func (ff *VideoSelectionBuilder) IncludeAds() *VideoSelectionBuilder {
-	ff.parent.addFlag(&includeAdsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "include_ads",
+		Flag: "--include-ads",
+		Args: nil,
+	})
 	return ff
-}
-
-type noIncludeAdsFlag struct {
-}
-
-var _ Flag = (*noIncludeAdsFlag)(nil) // ensure noIncludeAdsFlag implements Flag interface.
-
-func (f *noIncludeAdsFlag) ID() string {
-	return "include_ads"
-}
-
-func (f *noIncludeAdsFlag) String() string {
-	return "TODO"
-}
-
-func (f *noIncludeAdsFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // NoIncludeAds sets the "no-include-ads" flag to "false".
 //
 // NoIncludeAds maps to cli flags: --no-include-ads.
 func (ff *VideoSelectionBuilder) NoIncludeAds() *VideoSelectionBuilder {
-	ff.parent.addFlag(&noIncludeAdsFlag{})
+	ff.parent.addFlag(&Flag{
+		ID:   "include_ads",
+		Flag: "--no-include-ads",
+		Args: nil,
+	})
 	return ff
 }

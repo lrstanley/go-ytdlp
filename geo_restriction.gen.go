@@ -12,22 +12,10 @@ type GeoRestrictionBuilder struct {
 	parent *Command
 }
 
-type geoVerificationProxyFlag struct {
-	args []string
-}
-
-var _ Flag = (*geoVerificationProxyFlag)(nil) // ensure geoVerificationProxyFlag implements Flag interface.
-
-func (f *geoVerificationProxyFlag) ID() string {
-	return "geo_verification_proxy"
-}
-
-func (f *geoVerificationProxyFlag) String() string {
-	return "TODO"
-}
-
-func (f *geoVerificationProxyFlag) AsFlag() []string {
-	return []string{"TODO"}
+// Then jumps back to the base command builder, if you want to add additional flags
+// from another flag builder.
+func (ff *GeoRestrictionBuilder) Then() *Command {
+	return ff.parent
 }
 
 // Use this proxy to verify the IP address for some geo-restricted sites. The
@@ -36,54 +24,22 @@ func (f *geoVerificationProxyFlag) AsFlag() []string {
 //
 // GeoVerificationProxy maps to cli flags: --geo-verification-proxy=URL.
 func (ff *GeoRestrictionBuilder) GeoVerificationProxy(url string) *GeoRestrictionBuilder {
-	ff.parent.addFlag(&geoVerificationProxyFlag{
-		args: []string{url},
+	ff.parent.addFlag(&Flag{
+		ID:   "geo_verification_proxy",
+		Flag: "--geo-verification-proxy",
+		Args: []string{url},
 	})
 	return ff
-}
-
-type cnVerificationProxyFlag struct {
-	args []string
-}
-
-var _ Flag = (*cnVerificationProxyFlag)(nil) // ensure cnVerificationProxyFlag implements Flag interface.
-
-func (f *cnVerificationProxyFlag) ID() string {
-	return "cn_verification_proxy"
-}
-
-func (f *cnVerificationProxyFlag) String() string {
-	return "TODO"
-}
-
-func (f *cnVerificationProxyFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // CnVerificationProxy maps to cli flags: --cn-verification-proxy=URL.
 func (ff *GeoRestrictionBuilder) CnVerificationProxy(url string) *GeoRestrictionBuilder {
-	ff.parent.addFlag(&cnVerificationProxyFlag{
-		args: []string{url},
+	ff.parent.addFlag(&Flag{
+		ID:   "cn_verification_proxy",
+		Flag: "--cn-verification-proxy",
+		Args: []string{url},
 	})
 	return ff
-}
-
-type xffFlag struct {
-	args []string
-}
-
-var _ Flag = (*xffFlag)(nil) // ensure xffFlag implements Flag interface.
-
-func (f *xffFlag) ID() string {
-	return "geo_bypass"
-}
-
-func (f *xffFlag) String() string {
-	return "TODO"
-}
-
-func (f *xffFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // How to fake X-Forwarded-For HTTP header to try bypassing geographic restriction.
@@ -92,94 +48,30 @@ func (f *xffFlag) AsFlag() []string {
 //
 // Xff maps to cli flags: --xff=VALUE.
 func (ff *GeoRestrictionBuilder) Xff(value string) *GeoRestrictionBuilder {
-	ff.parent.addFlag(&xffFlag{
-		args: []string{value},
+	ff.parent.addFlag(&Flag{
+		ID:   "geo_bypass",
+		Flag: "--xff",
+		Args: []string{value},
 	})
 	return ff
-}
-
-type geoBypassFlag struct {
-}
-
-var _ Flag = (*geoBypassFlag)(nil) // ensure geoBypassFlag implements Flag interface.
-
-func (f *geoBypassFlag) ID() string {
-	return "geo_bypass"
-}
-
-func (f *geoBypassFlag) String() string {
-	return "TODO"
-}
-
-func (f *geoBypassFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type noGeoBypassFlag struct {
-}
-
-var _ Flag = (*noGeoBypassFlag)(nil) // ensure noGeoBypassFlag implements Flag interface.
-
-func (f *noGeoBypassFlag) ID() string {
-	return "geo_bypass"
-}
-
-func (f *noGeoBypassFlag) String() string {
-	return "TODO"
-}
-
-func (f *noGeoBypassFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
-type geoBypassCountryFlag struct {
-	args []string
-}
-
-var _ Flag = (*geoBypassCountryFlag)(nil) // ensure geoBypassCountryFlag implements Flag interface.
-
-func (f *geoBypassCountryFlag) ID() string {
-	return "geo_bypass"
-}
-
-func (f *geoBypassCountryFlag) String() string {
-	return "TODO"
-}
-
-func (f *geoBypassCountryFlag) AsFlag() []string {
-	return []string{"TODO"}
 }
 
 // GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE.
 func (ff *GeoRestrictionBuilder) GeoBypassCountry(code string) *GeoRestrictionBuilder {
-	ff.parent.addFlag(&geoBypassCountryFlag{
-		args: []string{code},
+	ff.parent.addFlag(&Flag{
+		ID:   "geo_bypass",
+		Flag: "--geo-bypass-country",
+		Args: []string{code},
 	})
 	return ff
 }
 
-type geoBypassIpBlockFlag struct {
-	args []string
-}
-
-var _ Flag = (*geoBypassIpBlockFlag)(nil) // ensure geoBypassIpBlockFlag implements Flag interface.
-
-func (f *geoBypassIpBlockFlag) ID() string {
-	return "geo_bypass"
-}
-
-func (f *geoBypassIpBlockFlag) String() string {
-	return "TODO"
-}
-
-func (f *geoBypassIpBlockFlag) AsFlag() []string {
-	return []string{"TODO"}
-}
-
 // GeoBypassIpBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK.
 func (ff *GeoRestrictionBuilder) GeoBypassIpBlock(ipBlock string) *GeoRestrictionBuilder {
-	ff.parent.addFlag(&geoBypassIpBlockFlag{
-		args: []string{ipBlock},
+	ff.parent.addFlag(&Flag{
+		ID:   "geo_bypass",
+		Flag: "--geo-bypass-ip-block",
+		Args: []string{ipBlock},
 	})
 	return ff
 }
