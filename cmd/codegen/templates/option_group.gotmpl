@@ -1,0 +1,79 @@
+{{/* global variables */}}
+{{- $id :=  .Name | to_camel | trimSuffix "s" -}}
+{{- $id_lower := to_lower_camel $id -}}
+
+{{/* template helpers */}}
+{{- define "optionHelp" -}}
+{{- if .Help }}
+// {{ wrap 80 .Help | replace "\n" "\n// " }}
+{{- else if eq .Type "bool" }}
+// {{ .Name | to_camel }} sets the {{ .Name | quote }} flag to {{ if eq .Action "store_true" }}"true"{{ else }}"false"{{ end }}.
+{{- end }}{{/* end if help */}}
+//
+// {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}.
+{{- end -}}
+
+{{- /* start of actual file */ -}}
+{{ header }}
+//
+// {{ .Name }} Option Group
+{{- if .Description }} -- Description:
+//   {{ wrap 80 .Description | replace "\n" "\n//   " }}
+{{- end }}
+
+package ytdlp
+
+type {{ $id }}Builder struct {
+    parent *Command
+}
+
+{{ range $index, $option := .Options }}
+{{/* iterator skipping logic */}}
+{{- if $option.IsExecutable }}{{ continue }}{{ end -}}
+
+{{/* actual code generation */}}
+type {{ $option.Name | to_lower_camel }}Flag struct {
+{{- if gt $option.NArgs 0 }}
+    args []{{ $option.Type }}
+{{- end }}{{/* end if nargs */}}
+}
+
+var _ Flag = (*{{ $option.Name | to_lower_camel }}Flag)(nil) // ensure {{ $option.Name | to_lower_camel }}Flag implements Flag interface.
+
+func (f *{{ $option.Name | to_lower_camel }}Flag) ID() string {
+    return {{ $option.Dest | quote }}
+}
+
+func (f *{{ $option.Name | to_lower_camel }}Flag) String() string {
+    return "TODO"
+}
+
+func (f *{{ $option.Name | to_lower_camel }}Flag) AsFlag() []string {
+    return []string{"TODO"}
+}
+
+{{- if $option.Choices }}
+var {{ $option.Name | to_lower_camel }}Choices = []string{
+{{- range $index, $choice := $option.Choices }}
+    {{ $choice | quote }},
+{{- end }}
+}
+{{- end }}{{/* end if choices */}}
+
+{{- if eq $option.Type "bool" }}
+{{ template "optionHelp" $option }}
+func (ff *{{ $id }}Builder) {{ $option.Name | to_camel }}() *{{ $id }}Builder {
+    ff.parent.addFlag(&{{ $option.Name | to_lower_camel }}Flag{})
+    return ff
+}
+{{- else if gt $option.NArgs 0 }}
+{{ template "optionHelp" $option }}
+func (ff *{{ $id }}Builder) {{ $option.Name | to_camel }}({{ $option.MetaVarFuncArgs | join ", " }} {{ $option.Type }}) *{{ $id }}Builder {
+    ff.parent.addFlag(&{{ $option.Name | to_lower_camel }}Flag{
+        args: []{{ $option.Type }}{ {{ $option.MetaVarFuncArgs | join ", " }} },
+    })
+    return ff
+}
+{{- end }}{{/* end if type */}}
+
+{{ end }}{{/* end option range */}}

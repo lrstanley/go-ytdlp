@@ -1,0 +1,7 @@
+*.test
+*.prof
+bin/*
+*.lock
+*.txt
+*.log
+.env
