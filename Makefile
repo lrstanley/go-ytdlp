@@ -18,13 +18,16 @@ go-upgrade-deps-patch:
 	go get -u=patch ./...
 	go mod tidy
 
+patch:
+	./cmd/patch-ytdlp/run.sh 2023.07.06
+
 commit: generate
 	git add --all *.gen.go
 	git commit -m "chore(codegen): generate updated cli bindings"
 
 generate: license go-fetch
 	rm -rf *.gen.go
-	go run github.com/lrstanley/go-ytdlp/cmd/codegen ./yt-dlp-example-export.json
+	go run github.com/lrstanley/go-ytdlp/cmd/codegen ./cmd/patch-ytdlp/export.json
 	gofmt -e -s -w *.go
 	go vet *.go
 	go test -v ./...
