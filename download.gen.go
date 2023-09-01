@@ -27,6 +27,13 @@ func (c *Command) ConcurrentFragments(n int) *Command {
 	return c
 }
 
+// UnsetConcurrentFragments unsets any flags that were previously set by
+// ConcurrentFragments().
+func (c *Command) UnsetConcurrentFragments() *Command {
+	c.removeFlagByID("concurrent_fragment_downloads")
+	return c
+}
+
 // Maximum download rate in bytes per second, e.g. 50K or 4.2M
 //
 // LimitRate maps to cli flags: -r/--limit-rate/--rate-limit=RATE.
@@ -36,6 +43,13 @@ func (c *Command) LimitRate(rate string) *Command {
 		Flag: "--limit-rate",
 		Args: []string{rate},
 	})
+	return c
+}
+
+// UnsetLimitRate unsets any flags that were previously set by
+// LimitRate().
+func (c *Command) UnsetLimitRate() *Command {
+	c.removeFlagByID("ratelimit")
 	return c
 }
 
@@ -52,6 +66,13 @@ func (c *Command) ThrottledRate(rate string) *Command {
 	return c
 }
 
+// UnsetThrottledRate unsets any flags that were previously set by
+// ThrottledRate().
+func (c *Command) UnsetThrottledRate() *Command {
+	c.removeFlagByID("throttledratelimit")
+	return c
+}
+
 // Number of retries (default is 10), or "infinite"
 //
 // Retries maps to cli flags: -R/--retries=RETRIES.
@@ -64,6 +85,13 @@ func (c *Command) Retries(retries string) *Command {
 	return c
 }
 
+// UnsetRetries unsets any flags that were previously set by
+// Retries().
+func (c *Command) UnsetRetries() *Command {
+	c.removeFlagByID("retries")
+	return c
+}
+
 // Number of times to retry on file access error (default is 3), or "infinite"
 //
 // FileAccessRetries maps to cli flags: --file-access-retries=RETRIES.
@@ -73,6 +101,13 @@ func (c *Command) FileAccessRetries(retries string) *Command {
 		Flag: "--file-access-retries",
 		Args: []string{retries},
 	})
+	return c
+}
+
+// UnsetFileAccessRetries unsets any flags that were previously set by
+// FileAccessRetries().
+func (c *Command) UnsetFileAccessRetries() *Command {
+	c.removeFlagByID("file_access_retries")
 	return c
 }
 
@@ -89,6 +124,13 @@ func (c *Command) FragmentRetries(retries string) *Command {
 	return c
 }
 
+// UnsetFragmentRetries unsets any flags that were previously set by
+// FragmentRetries().
+func (c *Command) UnsetFragmentRetries() *Command {
+	c.removeFlagByID("fragment_retries")
+	return c
+}
+
 // Time to sleep between retries in seconds (optionally) prefixed by the type of
 // retry (http (default), fragment, file_access, extractor) to apply the sleep to.
 // EXPR can be a number, linear=START[:END[:STEP=1]] or exp=START[:END[:BASE=2]].
@@ -102,6 +144,13 @@ func (c *Command) RetrySleep(expr string) *Command {
 		Flag: "--retry-sleep",
 		Args: []string{expr},
 	})
+	return c
+}
+
+// UnsetRetrySleep unsets any flags that were previously set by
+// RetrySleep().
+func (c *Command) UnsetRetrySleep() *Command {
+	c.removeFlagByID("retry_sleep")
 	return c
 }
 
@@ -167,6 +216,13 @@ func (c *Command) BufferSize(size string) *Command {
 	return c
 }
 
+// UnsetBufferSize unsets any flags that were previously set by
+// BufferSize().
+func (c *Command) UnsetBufferSize() *Command {
+	c.removeFlagByID("buffersize")
+	return c
+}
+
 // The buffer size is automatically resized from an initial value of --buffer-size
 // (default)
 //
@@ -203,6 +259,13 @@ func (c *Command) HttpChunkSize(size string) *Command {
 		Flag: "--http-chunk-size",
 		Args: []string{size},
 	})
+	return c
+}
+
+// UnsetHttpChunkSize unsets any flags that were previously set by
+// HttpChunkSize().
+func (c *Command) UnsetHttpChunkSize() *Command {
+	c.removeFlagByID("http_chunk_size")
 	return c
 }
 
@@ -360,6 +423,13 @@ func (c *Command) DownloadSections(regex string) *Command {
 	return c
 }
 
+// UnsetDownloadSections unsets any flags that were previously set by
+// DownloadSections().
+func (c *Command) UnsetDownloadSections() *Command {
+	c.removeFlagByID("download_ranges")
+	return c
+}
+
 // Name or path of the external downloader to use (optionally) prefixed by the
 // protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently
 // supports native, aria2c, avconv, axel, curl, ffmpeg, httpie, wget. You can use
@@ -378,6 +448,13 @@ func (c *Command) Downloader(name string) *Command {
 	return c
 }
 
+// UnsetDownloader unsets any flags that were previously set by
+// Downloader().
+func (c *Command) UnsetDownloader() *Command {
+	c.removeFlagByID("external_downloader")
+	return c
+}
+
 // Give these arguments to the external downloader. Specify the downloader name and
 // the arguments separated by a colon ":". For ffmpeg, arguments can be passed to
 // different positions using the same syntax as --postprocessor-args. You can use
@@ -391,5 +468,12 @@ func (c *Command) DownloaderArgs(nameargs string) *Command {
 		Flag: "--downloader-args",
 		Args: []string{nameargs},
 	})
+	return c
+}
+
+// UnsetDownloaderArgs unsets any flags that were previously set by
+// DownloaderArgs().
+func (c *Command) UnsetDownloaderArgs() *Command {
+	c.removeFlagByID("external_downloader_args")
 	return c
 }

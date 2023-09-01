@@ -81,10 +81,13 @@ func (c *Command) addFlag(f *Flag) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
-	for i, ff := range c.flags {
-		if ff.ID == f.ID {
-			c.flags[i] = f
-			return
+	// If boolean flag, ensure it's not duplicated.
+	if f.Args == nil {
+		for i, ff := range c.flags {
+			if ff.ID == f.ID {
+				c.flags[i] = f
+				return
+			}
 		}
 	}
 
