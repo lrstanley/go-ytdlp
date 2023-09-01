@@ -81,7 +81,8 @@ func (o *Option) Generate() {
 	if !strings.HasPrefix(o.Action, "store") ||
 		strings.HasPrefix(o.Dest, "print_") ||
 		strings.HasPrefix(o.Dest, "list_") ||
-		strings.HasPrefix(o.Dest, "update_") {
+		strings.HasPrefix(o.Dest, "update_") ||
+		strings.HasPrefix(o.Dest, "dump_") {
 		o.IsExecutable = true
 	}
 

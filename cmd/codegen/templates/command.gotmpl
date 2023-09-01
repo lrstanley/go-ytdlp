@@ -11,7 +11,7 @@ import (
 )
 
 func New() *Command {
-	cmd := &Command{}
+	cmd := &Command{env: make(map[string]string)}
 
 {{ range $index, $group := .OptionGroups }}
 {{- $id :=  .Name | to_camel | trimSuffix "s" }}
@@ -34,8 +34,11 @@ type Command struct {
     {{ $id }} *{{ $id }}Builder
 {{- end }}
 
-    mu    sync.RWMutex
-    flags []*Flag
+    mu         sync.RWMutex
+    executable string
+    directory  string
+    env        map[string]string
+    flags      []*Flag
 }
 
 func (c *Command) Clone() *Command {

@@ -44,18 +44,6 @@ func (ff *GeneralBuilder) AbortOnError() *GeneralBuilder {
 	return ff
 }
 
-// Display the current user-agent and exit
-//
-// DumpUserAgent maps to cli flags: --dump-user-agent.
-func (ff *GeneralBuilder) DumpUserAgent() *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
-		ID:   "dump_user_agent",
-		Flag: "--dump-user-agent",
-		Args: nil,
-	})
-	return ff
-}
-
 // ForceGenericExtractor sets the "force-generic-extractor" flag to "true".
 //
 // ForceGenericExtractor maps to cli flags: --force-generic-extractor.

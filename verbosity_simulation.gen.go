@@ -224,20 +224,6 @@ func (ff *VerbositySimulationBuilder) DumpJson() *VerbositySimulationBuilder {
 	return ff
 }
 
-// Quiet, but print JSON information for each url or infojson passed. Simulate
-// unless --no-simulate is used. If the URL refers to a playlist, the whole
-// playlist information is dumped in a single line
-//
-// DumpSingleJson maps to cli flags: -J/--dump-single-json.
-func (ff *VerbositySimulationBuilder) DumpSingleJson() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&Flag{
-		ID:   "dump_single_json",
-		Flag: "--dump-single-json",
-		Args: nil,
-	})
-	return ff
-}
-
 // Force download archive entries to be written as far as no errors occur, even if
 // -s or another simulation option is used (Alias: --force-download-archive)
 //
@@ -306,18 +292,6 @@ func (ff *VerbositySimulationBuilder) Verbose() *VerbositySimulationBuilder {
 	ff.parent.addFlag(&Flag{
 		ID:   "verbose",
 		Flag: "--verbose",
-		Args: nil,
-	})
-	return ff
-}
-
-// Print downloaded pages encoded using base64 to debug problems (very verbose)
-//
-// DumpPages maps to cli flags: --dump-pages/--dump-intermediate-pages.
-func (ff *VerbositySimulationBuilder) DumpPages() *VerbositySimulationBuilder {
-	ff.parent.addFlag(&Flag{
-		ID:   "dump_intermediate_pages",
-		Flag: "--dump-pages",
 		Args: nil,
 	})
 	return ff

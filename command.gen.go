@@ -11,7 +11,7 @@ import (
 )
 
 func New() *Command {
-	cmd := &Command{}
+	cmd := &Command{env: make(map[string]string)}
 
 	cmd.General = &GeneralBuilder{parent: cmd}
 	cmd.Network = &NetworkBuilder{parent: cmd}
@@ -70,8 +70,11 @@ type Command struct {
 	// Extractor Option Group
 	Extractor *ExtractorBuilder
 
-	mu    sync.RWMutex
-	flags []*Flag
+	mu         sync.RWMutex
+	executable string
+	directory  string
+	env        map[string]string
+	flags      []*Flag
 }
 
 func (c *Command) Clone() *Command {
