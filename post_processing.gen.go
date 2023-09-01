@@ -77,6 +77,30 @@ func (c *Command) RecodeVideo(format string) *Command {
 	return c
 }
 
+// Give these arguments to the postprocessors. Specify the postprocessor/executable
+// name and the arguments separated by a colon ":" to give the argument to the
+// specified postprocessor/executable. Supported PP are: Merger, ModifyChapters,
+// SplitChapters, ExtractAudio, VideoRemuxer, VideoConvertor, Metadata,
+// EmbedSubtitle, EmbedThumbnail, SubtitlesConvertor, ThumbnailsConvertor,
+// FixupStretched, FixupM4a, FixupM3u8, FixupTimestamp and FixupDuration. The
+// supported executables are: AtomicParsley, FFmpeg and FFprobe. You can also
+// specify "PP+EXE:ARGS" to give the arguments to the specified executable only
+// when being used by the specified postprocessor. Additionally, for
+// ffmpeg/ffprobe, "_i"/"_o" can be appended to the prefix optionally followed by a
+// number to pass the argument before the specified input/output file, e.g. --ppa
+// "Merger+ffmpeg_i1:-v quiet". You can use this option multiple times to give
+// different arguments to different postprocessors. (Alias: --ppa)
+//
+// PostprocessorArgs maps to cli flags: --postprocessor-args/--ppa=NAME:ARGS.
+func (c *Command) PostprocessorArgs(nameargs string) *Command {
+	c.addFlag(&Flag{
+		ID:   "postprocessor_args",
+		Flag: "--postprocessor-args",
+		Args: []string{nameargs},
+	})
+	return c
+}
+
 // Keep the intermediate video file on disk after post-processing
 //
 // KeepVideo maps to cli flags: -k/--keep-video.
@@ -256,6 +280,34 @@ func (c *Command) MetadataFromTitle(format string) *Command {
 	return c
 }
 
+// Parse additional metadata like title/artist from other fields; see "MODIFYING
+// METADATA" for details. Supported values of "WHEN" are the same as that of
+// --use-postprocessor (default: pre_process)
+//
+// ParseMetadata maps to cli flags: --parse-metadata=[WHEN:]FROM:TO.
+func (c *Command) ParseMetadata(fromto string) *Command {
+	c.addFlag(&Flag{
+		ID:   "parse_metadata",
+		Flag: "--parse-metadata",
+		Args: []string{fromto},
+	})
+	return c
+}
+
+// Replace text in a metadata field using the given regex. This option can be used
+// multiple times. Supported values of "WHEN" are the same as that of
+// --use-postprocessor (default: pre_process)
+//
+// ReplaceInMetadata maps to cli flags: --replace-in-metadata=[WHEN:]FIELDS REGEX REPLACE.
+func (c *Command) ReplaceInMetadata(fields, regex, replace string) *Command {
+	c.addFlag(&Flag{
+		ID:   "parse_metadata",
+		Flag: "--replace-in-metadata",
+		Args: []string{fields, regex, replace},
+	})
+	return c
+}
+
 // Write metadata to the video file's xattrs (using dublin core and xdg standards)
 //
 // Xattrs maps to cli flags: --xattrs/--xattr.
@@ -349,6 +401,33 @@ func (c *Command) FfmpegLocation(path string) *Command {
 	return c
 }
 
+// Execute a command, optionally prefixed with when to execute it, separated by a
+// ":". Supported values of "WHEN" are the same as that of --use-postprocessor
+// (default: after_move). Same syntax as the output template can be used to pass
+// any field as arguments to the command. If no fields are passed,
+// %(filepath,_filename|)q is appended to the end of the command. This option can
+// be used multiple times
+//
+// Exec maps to cli flags: --exec=[WHEN:]CMD.
+func (c *Command) Exec(cmd string) *Command {
+	c.addFlag(&Flag{
+		ID:   "exec_cmd",
+		Flag: "--exec",
+		Args: []string{cmd},
+	})
+	return c
+}
+
+// ExecBeforeDownload maps to cli flags: --exec-before-download=CMD.
+func (c *Command) ExecBeforeDownload(cmd string) *Command {
+	c.addFlag(&Flag{
+		ID:   "exec_before_dl_cmd",
+		Flag: "--exec-before-download",
+		Args: []string{cmd},
+	})
+	return c
+}
+
 // Convert the subtitles to another format (currently supported: ass, lrc, srt,
 // vtt) (Alias: --convert-subtitles)
 //
@@ -401,6 +480,19 @@ func (c *Command) NoSplitChapters() *Command {
 	return c
 }
 
+// Remove chapters whose title matches the given regular expression. The syntax is
+// the same as --download-sections. This option can be used multiple times
+//
+// RemoveChapters maps to cli flags: --remove-chapters=REGEX.
+func (c *Command) RemoveChapters(regex string) *Command {
+	c.addFlag(&Flag{
+		ID:   "remove_chapters",
+		Flag: "--remove-chapters",
+		Args: []string{regex},
+	})
+	return c
+}
+
 // Force keyframes at cuts when downloading/splitting/removing sections. This is
 // slow due to needing a re-encode, but the resulting video may have fewer
 // artifacts around the cuts
@@ -423,6 +515,27 @@ func (c *Command) NoForceKeyframesAtCuts() *Command {
 		ID:   "force_keyframes_at_cuts",
 		Flag: "--no-force-keyframes-at-cuts",
 		Args: nil,
+	})
+	return c
+}
+
+// The (case sensitive) name of plugin postprocessors to be enabled, and
+// (optionally) arguments to be passed to it, separated by a colon ":". ARGS are a
+// semicolon ";" delimited list of NAME=VALUE. The "when" argument determines when
+// the postprocessor is invoked. It can be one of "pre_process" (after video
+// extraction), "after_filter" (after video passes filter), "video" (after
+// --format; before --print/--output), "before_dl" (before each video download),
+// "post_process" (after each video download; default), "after_move" (after moving
+// video file to it's final locations), "after_video" (after downloading and
+// processing all formats of a video), or "playlist" (at end of playlist). This
+// option can be used multiple times to add different postprocessors
+//
+// UsePostprocessor maps to cli flags: --use-postprocessor=NAME[:ARGS].
+func (c *Command) UsePostprocessor(name string) *Command {
+	c.addFlag(&Flag{
+		ID:   "add_postprocessors",
+		Flag: "--use-postprocessor",
+		Args: []string{name},
 	})
 	return c
 }

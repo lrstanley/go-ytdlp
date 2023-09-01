@@ -82,6 +82,19 @@ func (c *Command) Referer(url string) *Command {
 	return c
 }
 
+// Specify a custom HTTP header and its value, separated by a colon ":". You can
+// use this option multiple times
+//
+// AddHeaders maps to cli flags: --add-headers=FIELD:VALUE.
+func (c *Command) AddHeaders(fieldvalue string) *Command {
+	c.addFlag(&Flag{
+		ID:   "headers",
+		Flag: "--add-headers",
+		Args: []string{fieldvalue},
+	})
+	return c
+}
+
 // Work around terminals that lack bidirectional text support. Requires bidiv or
 // fribidi executable in PATH
 //

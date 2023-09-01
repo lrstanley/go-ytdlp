@@ -37,6 +37,35 @@ func (c *Command) Id() *Command {
 	return c
 }
 
+// The paths where the files should be downloaded. Specify the type of file and the
+// path separated by a colon ":". All the same TYPES as --output are supported.
+// Additionally, you can also provide "home" (default) and "temp" paths. All
+// intermediary files are first downloaded to the temp path and then the final
+// files are moved over to the home path after download is finished. This option is
+// ignored if --output is an absolute path
+//
+// Paths maps to cli flags: -P/--paths=[TYPES:]PATH.
+func (c *Command) Paths(path string) *Command {
+	c.addFlag(&Flag{
+		ID:   "paths",
+		Flag: "--paths",
+		Args: []string{path},
+	})
+	return c
+}
+
+// Output filename template; see "OUTPUT TEMPLATE" for details
+//
+// Output maps to cli flags: -o/--output=[TYPES:]TEMPLATE.
+func (c *Command) Output(template string) *Command {
+	c.addFlag(&Flag{
+		ID:   "outtmpl",
+		Flag: "--output",
+		Args: []string{template},
+	})
+	return c
+}
+
 // Placeholder for unavailable fields in "OUTPUT TEMPLATE" (default: "%default")
 //
 // OutputNaPlaceholder maps to cli flags: --output-na-placeholder=TEXT.
@@ -417,7 +446,7 @@ func (c *Command) Cookies(file string) *Command {
 // containers of the most recently accessed profile are used. Currently supported
 // keyrings are: basictext, gnomekeyring, kwallet, kwallet5, kwallet6
 //
-// CookiesFromBrowser maps to cli flags: --cookies-from-browser=BROWSER.
+// CookiesFromBrowser maps to cli flags: --cookies-from-browser=BROWSER[+KEYRING][:PROFILE][::CONTAINER].
 func (c *Command) CookiesFromBrowser(browser string) *Command {
 	c.addFlag(&Flag{
 		ID:   "cookiesfrombrowser",

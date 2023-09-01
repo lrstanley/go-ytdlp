@@ -11,6 +11,39 @@
 
 package ytdlp
 
+// SponsorBlock categories to create chapters for, separated by commas. Available
+// categories are sponsor, intro, outro, selfpromo, preview, filler, interaction,
+// music_offtopic, poi_highlight, chapter, all and default (=all). You can prefix
+// the category with a "-" to exclude it. See [1] for description of the
+// categories. E.g. --sponsorblock-mark all,-preview [1]
+// https://wiki.sponsor.ajay.app/w/Segment_Categories
+//
+// SponsorblockMark maps to cli flags: --sponsorblock-mark=CATS.
+func (c *Command) SponsorblockMark(cats string) *Command {
+	c.addFlag(&Flag{
+		ID:   "sponsorblock_mark",
+		Flag: "--sponsorblock-mark",
+		Args: []string{cats},
+	})
+	return c
+}
+
+// SponsorBlock categories to be removed from the video file, separated by commas.
+// If a category is present in both mark and remove, remove takes precedence. The
+// syntax and available categories are the same as for --sponsorblock-mark except
+// that "default" refers to "all,-filler" and poi_highlight, chapter are not
+// available
+//
+// SponsorblockRemove maps to cli flags: --sponsorblock-remove=CATS.
+func (c *Command) SponsorblockRemove(cats string) *Command {
+	c.addFlag(&Flag{
+		ID:   "sponsorblock_remove",
+		Flag: "--sponsorblock-remove",
+		Args: []string{cats},
+	})
+	return c
+}
+
 // An output template for the title of the SponsorBlock chapters created by
 // --sponsorblock-mark. The only available fields are start_time, end_time,
 // category, categories, name, category_names. Defaults to "%default"

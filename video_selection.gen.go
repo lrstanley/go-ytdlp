@@ -160,6 +160,41 @@ func (c *Command) MaxViews(count int) *Command {
 	return c
 }
 
+// Generic video filter. Any "OUTPUT TEMPLATE" field can be compared with a number
+// or a string using the operators defined in "Filtering Formats". You can also
+// simply specify a field to match if the field is present, use "!field" to check
+// if the field is not present, and "&" to check multiple conditions. Use a "\" to
+// escape "&" or quotes if needed. If used multiple times, the filter matches if
+// atleast one of the conditions are met. E.g. --match-filter !is_live
+// --match-filter "like_count>?100 & description~='(?i)\bcats \& dogs\b'" matches
+// only videos that are not live OR those that have a like count more than 100 (or
+// the like field is not available) and also has a description that contains the
+// phrase "cats & dogs" (caseless). Use "--match-filter -" to interactively ask
+// whether to download each video
+//
+// MatchFilters maps to cli flags: --match-filters=FILTER.
+func (c *Command) MatchFilters(filter string) *Command {
+	c.addFlag(&Flag{
+		ID:   "match_filter",
+		Flag: "--match-filters",
+		Args: []string{filter},
+	})
+	return c
+}
+
+// Same as "--match-filters" but stops the download process when a video is
+// rejected
+//
+// BreakMatchFilters maps to cli flags: --break-match-filters=FILTER.
+func (c *Command) BreakMatchFilters(filter string) *Command {
+	c.addFlag(&Flag{
+		ID:   "breaking_match_filter",
+		Flag: "--break-match-filters",
+		Args: []string{filter},
+	})
+	return c
+}
+
 // Download only the video, if the URL refers to a video and a playlist
 //
 // NoPlaylist maps to cli flags: --no-playlist.

@@ -6,10 +6,34 @@ package main
 
 import (
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/iancoleman/strcase"
 )
+
+var ignoredFlags = []string{
+	"--help",
+	"--export-options",
+	"--alias",
+}
+
+var disallowedNames = []string{
+	"",
+	"type",
+	"any",
+	"str",
+	"int",
+	"int32",
+	"int64",
+	"float",
+	"float32",
+	"float64",
+	"bool",
+	"true",
+	"false",
+	"none",
+}
 
 type CommandData struct {
 	OptionGroups []OptionGroup  `json:"option_groups"`
@@ -43,6 +67,11 @@ func (o *OptionGroup) Generate() {
 			o.NeedsStrconv = true
 		}
 	}
+
+	// Remove any ignored flags.
+	o.Options = slices.DeleteFunc(o.Options, func(o Option) bool {
+		return slices.Contains(ignoredFlags, o.Flag)
+	})
 }
 
 type Option struct {
@@ -78,14 +107,6 @@ func (o *Option) Generate() {
 		o.Flag = o.Short[0]
 	}
 
-	if !strings.HasPrefix(o.Action, "store") ||
-		strings.HasPrefix(o.Dest, "print_") ||
-		strings.HasPrefix(o.Dest, "list_") ||
-		strings.HasPrefix(o.Dest, "update_") ||
-		strings.HasPrefix(o.Dest, "dump_") {
-		o.IsExecutable = true
-	}
-
 	if o.Help == "SUPPRESSHELP" {
 		o.Help = ""
 	}
@@ -108,12 +129,24 @@ func (o *Option) Generate() {
 		o.Type = "float64"
 	}
 
+	if (o.Type == "" && o.NArgs < 1) ||
+		strings.HasPrefix(o.Dest, "print_") ||
+		strings.HasPrefix(o.Dest, "list_") ||
+		strings.HasPrefix(o.Dest, "update_") ||
+		strings.HasPrefix(o.Dest, "dump_") {
+		o.IsExecutable = true
+	}
+
 	// Clean up [prefix:] syntax from MetaVar, since we don't care about the optional prefix type.
 	re := regexp.MustCompile(`\[.*\]`)
-	o.MetaVar = re.ReplaceAllString(o.MetaVar, "")
+	meta := re.ReplaceAllString(o.MetaVar, "")
+
+	if slices.Contains(disallowedNames, meta) {
+		meta = "value"
+	}
 
 	// Convert MetaVar to function arguments.
-	for _, v := range strings.Split(o.MetaVar, " ") {
+	for _, v := range strings.Split(meta, " ") {
 		o.MetaVarFuncArgs = append(o.MetaVarFuncArgs, strcase.ToLowerCamel(strings.ToLower(v)))
 	}
 

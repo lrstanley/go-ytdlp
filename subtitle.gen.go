@@ -92,3 +92,18 @@ func (c *Command) SubFormat(format string) *Command {
 	})
 	return c
 }
+
+// Languages of the subtitles to download (can be regex) or "all" separated by
+// commas, e.g. --sub-langs "en.*,ja". You can prefix the language code with a "-"
+// to exclude it from the requested languages, e.g. --sub-langs all,-live_chat. Use
+// --list-subs for a list of available language tags
+//
+// SubLangs maps to cli flags: --sub-langs/--srt-langs=LANGS.
+func (c *Command) SubLangs(langs string) *Command {
+	c.addFlag(&Flag{
+		ID:   "subtitleslangs",
+		Flag: "--sub-langs",
+		Args: []string{langs},
+	})
+	return c
+}

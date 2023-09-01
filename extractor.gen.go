@@ -70,6 +70,20 @@ func (c *Command) NoHlsSplitDiscontinuity() *Command {
 	return c
 }
 
+// Pass ARGS arguments to the IE_KEY extractor. See "EXTRACTOR ARGUMENTS" for
+// details. You can use this option multiple times to give arguments for different
+// extractors
+//
+// ExtractorArgs maps to cli flags: --extractor-args=IE_KEY:ARGS.
+func (c *Command) ExtractorArgs(ieKeyargs string) *Command {
+	c.addFlag(&Flag{
+		ID:   "extractor_args",
+		Flag: "--extractor-args",
+		Args: []string{ieKeyargs},
+	})
+	return c
+}
+
 // YoutubeIncludeDashManifest sets the "youtube-include-dash-manifest" flag (no description specified).
 //
 // YoutubeIncludeDashManifest maps to cli flags: --youtube-include-dash-manifest/--no-youtube-skip-dash-manifest.

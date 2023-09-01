@@ -20,6 +20,18 @@ func (c *Command) Format(format string) *Command {
 	return c
 }
 
+// Sort the formats by the fields given, see "Sorting Formats" for more details
+//
+// FormatSort maps to cli flags: -S/--format-sort=SORTORDER.
+func (c *Command) FormatSort(sortorder string) *Command {
+	c.addFlag(&Flag{
+		ID:   "format_sort",
+		Flag: "--format-sort",
+		Args: []string{sortorder},
+	})
+	return c
+}
+
 // Force user specified sort order to have precedence over all fields, see "Sorting
 // Formats" for more details (Alias: --S-force)
 //

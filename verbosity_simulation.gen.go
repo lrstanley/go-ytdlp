@@ -105,6 +105,22 @@ func (c *Command) SkipDownload() *Command {
 	return c
 }
 
+// Field name or output template to print to screen, optionally prefixed with when
+// to print it, separated by a ":". Supported values of "WHEN" are the same as that
+// of --use-postprocessor (default: video). Implies --quiet. Implies --simulate
+// unless --no-simulate or later stages of WHEN are used. This option can be used
+// multiple times
+//
+// Print maps to cli flags: -O/--print=[WHEN:]TEMPLATE.
+func (c *Command) Print(template string) *Command {
+	c.addFlag(&Flag{
+		ID:   "forceprint",
+		Flag: "--print",
+		Args: []string{template},
+	})
+	return c
+}
+
 // GetUrl sets the "get-url" flag (no description specified).
 //
 // GetUrl maps to cli flags: -g/--get-url.
@@ -271,6 +287,23 @@ func (c *Command) ConsoleTitle() *Command {
 		ID:   "consoletitle",
 		Flag: "--console-title",
 		Args: nil,
+	})
+	return c
+}
+
+// Template for progress outputs, optionally prefixed with one of "download:"
+// (default), "download-title:" (the console title), "postprocess:",  or
+// "postprocess-title:". The video's fields are accessible under the "info" key and
+// the progress attributes are accessible under "progress" key. E.g.
+// --console-title --progress-template
+// "download-title:%(info.id)s-%(progress.eta)s"
+//
+// ProgressTemplate maps to cli flags: --progress-template=[TYPES:]TEMPLATE.
+func (c *Command) ProgressTemplate(template string) *Command {
+	c.addFlag(&Flag{
+		ID:   "progress_template",
+		Flag: "--progress-template",
+		Args: []string{template},
 	})
 	return c
 }

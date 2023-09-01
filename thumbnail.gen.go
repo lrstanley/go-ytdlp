@@ -8,6 +8,18 @@
 
 package ytdlp
 
+// Write thumbnail image to disk
+//
+// WriteThumbnail maps to cli flags: --write-thumbnail.
+func (c *Command) WriteThumbnail(value string) *Command {
+	c.addFlag(&Flag{
+		ID:   "writethumbnail",
+		Flag: "--write-thumbnail",
+		Args: []string{value},
+	})
+	return c
+}
+
 // Do not write thumbnail image to disk (default)
 //
 // NoWriteThumbnail maps to cli flags: --no-write-thumbnail.

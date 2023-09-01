@@ -90,6 +90,22 @@ func (c *Command) FragmentRetries(retries string) *Command {
 	return c
 }
 
+// Time to sleep between retries in seconds (optionally) prefixed by the type of
+// retry (http (default), fragment, file_access, extractor) to apply the sleep to.
+// EXPR can be a number, linear=START[:END[:STEP=1]] or exp=START[:END[:BASE=2]].
+// This option can be used multiple times to set the sleep for the different retry
+// types, e.g. --retry-sleep linear=1::2 --retry-sleep fragment:exp=1:20
+//
+// RetrySleep maps to cli flags: --retry-sleep=[TYPE:]EXPR.
+func (c *Command) RetrySleep(expr string) *Command {
+	c.addFlag(&Flag{
+		ID:   "retry_sleep",
+		Flag: "--retry-sleep",
+		Args: []string{expr},
+	})
+	return c
+}
+
 // Skip unavailable fragments for DASH, hlsnative and ISM downloads (default)
 // (Alias: --no-abort-on-unavailable-fragments)
 //
@@ -324,6 +340,57 @@ func (c *Command) NoHlsUseMpegts() *Command {
 		ID:   "hls_use_mpegts",
 		Flag: "--no-hls-use-mpegts",
 		Args: nil,
+	})
+	return c
+}
+
+// Download only chapters that match the regular expression. A "*" prefix denotes
+// time-range instead of chapter. Negative timestamps are calculated from the end.
+// "*from-url" can be used to download between the "start_time" and "end_time"
+// extracted from the URL. Needs ffmpeg. This option can be used multiple times to
+// download multiple sections, e.g. --download-sections "*10:15-inf"
+// --download-sections "intro"
+//
+// DownloadSections maps to cli flags: --download-sections=REGEX.
+func (c *Command) DownloadSections(regex string) *Command {
+	c.addFlag(&Flag{
+		ID:   "download_ranges",
+		Flag: "--download-sections",
+		Args: []string{regex},
+	})
+	return c
+}
+
+// Name or path of the external downloader to use (optionally) prefixed by the
+// protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently
+// supports native, aria2c, avconv, axel, curl, ffmpeg, httpie, wget. You can use
+// this option multiple times to set different downloaders for different protocols.
+// E.g. --downloader aria2c --downloader "dash,m3u8:native" will use aria2c for
+// http/ftp downloads, and the native downloader for dash/m3u8 downloads (Alias:
+// --external-downloader)
+//
+// Downloader maps to cli flags: --downloader/--external-downloader=[PROTO:]NAME.
+func (c *Command) Downloader(name string) *Command {
+	c.addFlag(&Flag{
+		ID:   "external_downloader",
+		Flag: "--downloader",
+		Args: []string{name},
+	})
+	return c
+}
+
+// Give these arguments to the external downloader. Specify the downloader name and
+// the arguments separated by a colon ":". For ffmpeg, arguments can be passed to
+// different positions using the same syntax as --postprocessor-args. You can use
+// this option multiple times to give different arguments to different downloaders
+// (Alias: --external-downloader-args)
+//
+// DownloaderArgs maps to cli flags: --downloader-args/--external-downloader-args=NAME:ARGS.
+func (c *Command) DownloaderArgs(nameargs string) *Command {
+	c.addFlag(&Flag{
+		ID:   "external_downloader_args",
+		Flag: "--downloader-args",
+		Args: []string{nameargs},
 	})
 	return c
 }

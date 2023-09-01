@@ -34,6 +34,21 @@ func (c *Command) AbortOnError() *Command {
 	return c
 }
 
+// Extractor names to use separated by commas. You can also use regexes, "all",
+// "default" and "end" (end URL matching); e.g. --ies "holodex.*,end,youtube".
+// Prefix the name with a "-" to exclude it, e.g. --ies default,-generic. Use
+// --list-extractors for a list of extractor names. (Alias: --ies)
+//
+// UseExtractors maps to cli flags: --use-extractors/--ies=NAMES.
+func (c *Command) UseExtractors(names string) *Command {
+	c.addFlag(&Flag{
+		ID:   "allowed_extractors",
+		Flag: "--use-extractors",
+		Args: []string{names},
+	})
+	return c
+}
+
 // ForceGenericExtractor sets the "force-generic-extractor" flag (no description specified).
 //
 // ForceGenericExtractor maps to cli flags: --force-generic-extractor.
@@ -73,6 +88,20 @@ func (c *Command) IgnoreConfig() *Command {
 		ID:   "ignoreconfig",
 		Flag: "--ignore-config",
 		Args: nil,
+	})
+	return c
+}
+
+// Location of the main configuration file; either the path to the config or its
+// containing directory ("-" for stdin). Can be used multiple times and inside
+// other configuration files
+//
+// ConfigLocations maps to cli flags: --config-locations=PATH.
+func (c *Command) ConfigLocations(path string) *Command {
+	c.addFlag(&Flag{
+		ID:   "config_locations",
+		Flag: "--config-locations",
+		Args: []string{path},
 	})
 	return c
 }
@@ -117,7 +146,7 @@ func (c *Command) NoLiveFromStart() *Command {
 // Wait for scheduled streams to become available. Pass the minimum number of
 // seconds (or range) to wait between retries
 //
-// WaitForVideo maps to cli flags: --wait-for-video=MIN.
+// WaitForVideo maps to cli flags: --wait-for-video=MIN[-MAX].
 func (c *Command) WaitForVideo(min string) *Command {
 	c.addFlag(&Flag{
 		ID:   "wait_for_video",
@@ -147,6 +176,35 @@ func (c *Command) NoMarkWatched() *Command {
 		ID:   "mark_watched",
 		Flag: "--no-mark-watched",
 		Args: nil,
+	})
+	return c
+}
+
+// Whether to emit color codes in output, optionally prefixed by the STREAM (stdout
+// or stderr) to apply the setting to. Can be one of "always", "auto" (default),
+// "never", or "no_color" (use non color terminal sequences). Can be used multiple
+// times
+//
+// Color maps to cli flags: --color=[STREAM:]POLICY.
+func (c *Command) Color(policy string) *Command {
+	c.addFlag(&Flag{
+		ID:   "color",
+		Flag: "--color",
+		Args: []string{policy},
+	})
+	return c
+}
+
+// Options that can help keep compatibility with youtube-dl or youtube-dlc
+// configurations by reverting some of the changes made in yt-dlp. See "Differences
+// in default behavior" for details
+//
+// CompatOptions maps to cli flags: --compat-options=OPTS.
+func (c *Command) CompatOptions(opts string) *Command {
+	c.addFlag(&Flag{
+		ID:   "compat_opts",
+		Flag: "--compat-options",
+		Args: []string{opts},
 	})
 	return c
 }
