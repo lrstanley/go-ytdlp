@@ -25,6 +25,13 @@ func (c *Command) BatchFile(file string) *Command {
 	return c
 }
 
+// UnsetBatchFile unsets any flags that were previously set by
+// BatchFile().
+func (c *Command) UnsetBatchFile() *Command {
+	c.removeFlagByID("batchfile")
+	return c
+}
+
 // Id sets the "id" flag (no description specified).
 //
 // Id maps to cli flags: --id (hidden).
@@ -54,6 +61,13 @@ func (c *Command) Paths(path string) *Command {
 	return c
 }
 
+// UnsetPaths unsets any flags that were previously set by
+// Paths().
+func (c *Command) UnsetPaths() *Command {
+	c.removeFlagByID("paths")
+	return c
+}
+
 // Output filename template; see "OUTPUT TEMPLATE" for details
 //
 // Output maps to cli flags: -o/--output=[TYPES:]TEMPLATE.
@@ -63,6 +77,13 @@ func (c *Command) Output(template string) *Command {
 		Flag: "--output",
 		Args: []string{template},
 	})
+	return c
+}
+
+// UnsetOutput unsets any flags that were previously set by
+// Output().
+func (c *Command) UnsetOutput() *Command {
+	c.removeFlagByID("outtmpl")
 	return c
 }
 
@@ -78,6 +99,13 @@ func (c *Command) OutputNaPlaceholder(text string) *Command {
 	return c
 }
 
+// UnsetOutputNaPlaceholder unsets any flags that were previously set by
+// OutputNaPlaceholder().
+func (c *Command) UnsetOutputNaPlaceholder() *Command {
+	c.removeFlagByID("outtmpl_na_placeholder")
+	return c
+}
+
 // AutonumberSize maps to cli flags: --autonumber-size=NUMBER (hidden).
 func (c *Command) AutonumberSize(number int) *Command {
 	c.addFlag(&Flag{
@@ -90,6 +118,13 @@ func (c *Command) AutonumberSize(number int) *Command {
 	return c
 }
 
+// UnsetAutonumberSize unsets any flags that were previously set by
+// AutonumberSize().
+func (c *Command) UnsetAutonumberSize() *Command {
+	c.removeFlagByID("autonumber_size")
+	return c
+}
+
 // AutonumberStart maps to cli flags: --autonumber-start=NUMBER (hidden).
 func (c *Command) AutonumberStart(number int) *Command {
 	c.addFlag(&Flag{
@@ -99,6 +134,13 @@ func (c *Command) AutonumberStart(number int) *Command {
 			strconv.Itoa(number),
 		},
 	})
+	return c
+}
+
+// UnsetAutonumberStart unsets any flags that were previously set by
+// AutonumberStart().
+func (c *Command) UnsetAutonumberStart() *Command {
+	c.removeFlagByID("autonumber_start")
 	return c
 }
 
@@ -163,6 +205,13 @@ func (c *Command) TrimFilenames(length int) *Command {
 			strconv.Itoa(length),
 		},
 	})
+	return c
+}
+
+// UnsetTrimFilenames unsets any flags that were previously set by
+// TrimFilenames().
+func (c *Command) UnsetTrimFilenames() *Command {
+	c.removeFlagByID("trim_file_name")
 	return c
 }
 
@@ -426,6 +475,13 @@ func (c *Command) LoadInfoJson(file string) *Command {
 	return c
 }
 
+// UnsetLoadInfoJson unsets any flags that were previously set by
+// LoadInfoJson().
+func (c *Command) UnsetLoadInfoJson() *Command {
+	c.removeFlagByID("load_info_filename")
+	return c
+}
+
 // Netscape formatted file to read cookies from and dump cookie jar in
 //
 // Cookies maps to cli flags: --cookies=FILE.
@@ -435,6 +491,13 @@ func (c *Command) Cookies(file string) *Command {
 		Flag: "--cookies",
 		Args: []string{file},
 	})
+	return c
+}
+
+// UnsetCookies unsets any flags that were previously set by
+// Cookies().
+func (c *Command) UnsetCookies() *Command {
+	c.removeFlagByID("cookiefile")
 	return c
 }
 
@@ -456,6 +519,13 @@ func (c *Command) CookiesFromBrowser(browser string) *Command {
 	return c
 }
 
+// UnsetCookiesFromBrowser unsets any flags that were previously set by
+// CookiesFromBrowser().
+func (c *Command) UnsetCookiesFromBrowser() *Command {
+	c.removeFlagByID("cookiesfrombrowser")
+	return c
+}
+
 // Location in the filesystem where yt-dlp can store some downloaded information
 // (such as client ids and signatures) permanently. By default
 // ${XDG_CACHE_HOME}/yt-dlp
@@ -467,6 +537,13 @@ func (c *Command) CacheDir(dir string) *Command {
 		Flag: "--cache-dir",
 		Args: []string{dir},
 	})
+	return c
+}
+
+// UnsetCacheDir unsets any flags that were previously set by
+// CacheDir().
+func (c *Command) UnsetCacheDir() *Command {
+	c.removeFlagByID("cachedir")
 	return c
 }
 

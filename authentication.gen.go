@@ -20,6 +20,13 @@ func (c *Command) Username(username string) *Command {
 	return c
 }
 
+// UnsetUsername unsets any flags that were previously set by
+// Username().
+func (c *Command) UnsetUsername() *Command {
+	c.removeFlagByID("username")
+	return c
+}
+
 // Account password. If this option is left out, yt-dlp will ask interactively
 //
 // Password maps to cli flags: -p/--password=PASSWORD.
@@ -32,6 +39,13 @@ func (c *Command) Password(password string) *Command {
 	return c
 }
 
+// UnsetPassword unsets any flags that were previously set by
+// Password().
+func (c *Command) UnsetPassword() *Command {
+	c.removeFlagByID("password")
+	return c
+}
+
 // Two-factor authentication code
 //
 // Twofactor maps to cli flags: -2/--twofactor=TWOFACTOR.
@@ -41,6 +55,13 @@ func (c *Command) Twofactor(twofactor string) *Command {
 		Flag: "--twofactor",
 		Args: []string{twofactor},
 	})
+	return c
+}
+
+// UnsetTwofactor unsets any flags that were previously set by
+// Twofactor().
+func (c *Command) UnsetTwofactor() *Command {
+	c.removeFlagByID("twofactor")
 	return c
 }
 
@@ -69,6 +90,13 @@ func (c *Command) NetrcLocation(path string) *Command {
 	return c
 }
 
+// UnsetNetrcLocation unsets any flags that were previously set by
+// NetrcLocation().
+func (c *Command) UnsetNetrcLocation() *Command {
+	c.removeFlagByID("netrc_location")
+	return c
+}
+
 // Command to execute to get the credentials for an extractor.
 //
 // NetrcCmd maps to cli flags: --netrc-cmd=NETRC_CMD.
@@ -81,6 +109,13 @@ func (c *Command) NetrcCmd(netrcCmd string) *Command {
 	return c
 }
 
+// UnsetNetrcCmd unsets any flags that were previously set by
+// NetrcCmd().
+func (c *Command) UnsetNetrcCmd() *Command {
+	c.removeFlagByID("netrc_cmd")
+	return c
+}
+
 // Video password (vimeo, youku)
 //
 // VideoPassword maps to cli flags: --video-password=PASSWORD.
@@ -90,6 +125,13 @@ func (c *Command) VideoPassword(password string) *Command {
 		Flag: "--video-password",
 		Args: []string{password},
 	})
+	return c
+}
+
+// UnsetVideoPassword unsets any flags that were previously set by
+// VideoPassword().
+func (c *Command) UnsetVideoPassword() *Command {
+	c.removeFlagByID("videopassword")
 	return c
 }
 
@@ -106,6 +148,13 @@ func (c *Command) ApMso(mso string) *Command {
 	return c
 }
 
+// UnsetApMso unsets any flags that were previously set by
+// ApMso().
+func (c *Command) UnsetApMso() *Command {
+	c.removeFlagByID("ap_mso")
+	return c
+}
+
 // Multiple-system operator account login
 //
 // ApUsername maps to cli flags: --ap-username=USERNAME.
@@ -115,6 +164,13 @@ func (c *Command) ApUsername(username string) *Command {
 		Flag: "--ap-username",
 		Args: []string{username},
 	})
+	return c
+}
+
+// UnsetApUsername unsets any flags that were previously set by
+// ApUsername().
+func (c *Command) UnsetApUsername() *Command {
+	c.removeFlagByID("ap_username")
 	return c
 }
 
@@ -128,6 +184,13 @@ func (c *Command) ApPassword(password string) *Command {
 		Flag: "--ap-password",
 		Args: []string{password},
 	})
+	return c
+}
+
+// UnsetApPassword unsets any flags that were previously set by
+// ApPassword().
+func (c *Command) UnsetApPassword() *Command {
+	c.removeFlagByID("ap_password")
 	return c
 }
 
@@ -155,6 +218,13 @@ func (c *Command) ClientCertificate(certfile string) *Command {
 	return c
 }
 
+// UnsetClientCertificate unsets any flags that were previously set by
+// ClientCertificate().
+func (c *Command) UnsetClientCertificate() *Command {
+	c.removeFlagByID("client_certificate")
+	return c
+}
+
 // Path to private key file for client certificate
 //
 // ClientCertificateKey maps to cli flags: --client-certificate-key=KEYFILE.
@@ -164,6 +234,13 @@ func (c *Command) ClientCertificateKey(keyfile string) *Command {
 		Flag: "--client-certificate-key",
 		Args: []string{keyfile},
 	})
+	return c
+}
+
+// UnsetClientCertificateKey unsets any flags that were previously set by
+// ClientCertificateKey().
+func (c *Command) UnsetClientCertificateKey() *Command {
+	c.removeFlagByID("client_certificate_key")
 	return c
 }
 
@@ -177,5 +254,12 @@ func (c *Command) ClientCertificatePassword(password string) *Command {
 		Flag: "--client-certificate-password",
 		Args: []string{password},
 	})
+	return c
+}
+
+// UnsetClientCertificatePassword unsets any flags that were previously set by
+// ClientCertificatePassword().
+func (c *Command) UnsetClientCertificatePassword() *Command {
+	c.removeFlagByID("client_certificate_password")
 	return c
 }

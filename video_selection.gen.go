@@ -24,6 +24,13 @@ func (c *Command) PlaylistStart(number int) *Command {
 	return c
 }
 
+// UnsetPlaylistStart unsets any flags that were previously set by
+// PlaylistStart().
+func (c *Command) UnsetPlaylistStart() *Command {
+	c.removeFlagByID("playliststart")
+	return c
+}
+
 // PlaylistEnd maps to cli flags: --playlist-end=NUMBER (hidden).
 func (c *Command) PlaylistEnd(number int) *Command {
 	c.addFlag(&Flag{
@@ -33,6 +40,13 @@ func (c *Command) PlaylistEnd(number int) *Command {
 			strconv.Itoa(number),
 		},
 	})
+	return c
+}
+
+// UnsetPlaylistEnd unsets any flags that were previously set by
+// PlaylistEnd().
+func (c *Command) UnsetPlaylistEnd() *Command {
+	c.removeFlagByID("playlistend")
 	return c
 }
 
@@ -52,6 +66,13 @@ func (c *Command) PlaylistItems(itemSpec string) *Command {
 	return c
 }
 
+// UnsetPlaylistItems unsets any flags that were previously set by
+// PlaylistItems().
+func (c *Command) UnsetPlaylistItems() *Command {
+	c.removeFlagByID("playlist_items")
+	return c
+}
+
 // MatchTitle maps to cli flags: --match-title=REGEX (hidden).
 func (c *Command) MatchTitle(regex string) *Command {
 	c.addFlag(&Flag{
@@ -62,6 +83,13 @@ func (c *Command) MatchTitle(regex string) *Command {
 	return c
 }
 
+// UnsetMatchTitle unsets any flags that were previously set by
+// MatchTitle().
+func (c *Command) UnsetMatchTitle() *Command {
+	c.removeFlagByID("matchtitle")
+	return c
+}
+
 // RejectTitle maps to cli flags: --reject-title=REGEX (hidden).
 func (c *Command) RejectTitle(regex string) *Command {
 	c.addFlag(&Flag{
@@ -69,6 +97,13 @@ func (c *Command) RejectTitle(regex string) *Command {
 		Flag: "--reject-title",
 		Args: []string{regex},
 	})
+	return c
+}
+
+// UnsetRejectTitle unsets any flags that were previously set by
+// RejectTitle().
+func (c *Command) UnsetRejectTitle() *Command {
+	c.removeFlagByID("rejecttitle")
 	return c
 }
 
@@ -84,6 +119,13 @@ func (c *Command) MinFilesize(size string) *Command {
 	return c
 }
 
+// UnsetMinFilesize unsets any flags that were previously set by
+// MinFilesize().
+func (c *Command) UnsetMinFilesize() *Command {
+	c.removeFlagByID("min_filesize")
+	return c
+}
+
 // Abort download if filesize is larger than SIZE, e.g. 50k or 44.6M
 //
 // MaxFilesize maps to cli flags: --max-filesize=SIZE.
@@ -93,6 +135,13 @@ func (c *Command) MaxFilesize(size string) *Command {
 		Flag: "--max-filesize",
 		Args: []string{size},
 	})
+	return c
+}
+
+// UnsetMaxFilesize unsets any flags that were previously set by
+// MaxFilesize().
+func (c *Command) UnsetMaxFilesize() *Command {
+	c.removeFlagByID("max_filesize")
 	return c
 }
 
@@ -110,6 +159,13 @@ func (c *Command) Date(date string) *Command {
 	return c
 }
 
+// UnsetDate unsets any flags that were previously set by
+// Date().
+func (c *Command) UnsetDate() *Command {
+	c.removeFlagByID("date")
+	return c
+}
+
 // Download only videos uploaded on or before this date. The date formats accepted
 // is the same as --date
 //
@@ -120,6 +176,13 @@ func (c *Command) Datebefore(date string) *Command {
 		Flag: "--datebefore",
 		Args: []string{date},
 	})
+	return c
+}
+
+// UnsetDatebefore unsets any flags that were previously set by
+// Datebefore().
+func (c *Command) UnsetDatebefore() *Command {
+	c.removeFlagByID("datebefore")
 	return c
 }
 
@@ -136,6 +199,13 @@ func (c *Command) Dateafter(date string) *Command {
 	return c
 }
 
+// UnsetDateafter unsets any flags that were previously set by
+// Dateafter().
+func (c *Command) UnsetDateafter() *Command {
+	c.removeFlagByID("dateafter")
+	return c
+}
+
 // MinViews maps to cli flags: --min-views=COUNT (hidden).
 func (c *Command) MinViews(count int) *Command {
 	c.addFlag(&Flag{
@@ -148,6 +218,13 @@ func (c *Command) MinViews(count int) *Command {
 	return c
 }
 
+// UnsetMinViews unsets any flags that were previously set by
+// MinViews().
+func (c *Command) UnsetMinViews() *Command {
+	c.removeFlagByID("min_views")
+	return c
+}
+
 // MaxViews maps to cli flags: --max-views=COUNT (hidden).
 func (c *Command) MaxViews(count int) *Command {
 	c.addFlag(&Flag{
@@ -157,6 +234,13 @@ func (c *Command) MaxViews(count int) *Command {
 			strconv.Itoa(count),
 		},
 	})
+	return c
+}
+
+// UnsetMaxViews unsets any flags that were previously set by
+// MaxViews().
+func (c *Command) UnsetMaxViews() *Command {
+	c.removeFlagByID("max_views")
 	return c
 }
 
@@ -182,6 +266,13 @@ func (c *Command) MatchFilters(filter string) *Command {
 	return c
 }
 
+// UnsetMatchFilters unsets any flags that were previously set by
+// MatchFilters().
+func (c *Command) UnsetMatchFilters() *Command {
+	c.removeFlagByID("match_filter")
+	return c
+}
+
 // Same as "--match-filters" but stops the download process when a video is
 // rejected
 //
@@ -192,6 +283,13 @@ func (c *Command) BreakMatchFilters(filter string) *Command {
 		Flag: "--break-match-filters",
 		Args: []string{filter},
 	})
+	return c
+}
+
+// UnsetBreakMatchFilters unsets any flags that were previously set by
+// BreakMatchFilters().
+func (c *Command) UnsetBreakMatchFilters() *Command {
+	c.removeFlagByID("breaking_match_filter")
 	return c
 }
 
@@ -233,6 +331,13 @@ func (c *Command) AgeLimit(years int) *Command {
 	return c
 }
 
+// UnsetAgeLimit unsets any flags that were previously set by
+// AgeLimit().
+func (c *Command) UnsetAgeLimit() *Command {
+	c.removeFlagByID("age_limit")
+	return c
+}
+
 // Download only videos not listed in the archive file. Record the IDs of all
 // downloaded videos in it
 //
@@ -243,6 +348,13 @@ func (c *Command) DownloadArchive(file string) *Command {
 		Flag: "--download-archive",
 		Args: []string{file},
 	})
+	return c
+}
+
+// UnsetDownloadArchive unsets any flags that were previously set by
+// DownloadArchive().
+func (c *Command) UnsetDownloadArchive() *Command {
+	c.removeFlagByID("download_archive")
 	return c
 }
 
@@ -257,6 +369,13 @@ func (c *Command) MaxDownloads(number int) *Command {
 			strconv.Itoa(number),
 		},
 	})
+	return c
+}
+
+// UnsetMaxDownloads unsets any flags that were previously set by
+// MaxDownloads().
+func (c *Command) UnsetMaxDownloads() *Command {
+	c.removeFlagByID("max_downloads")
 	return c
 }
 
@@ -320,6 +439,13 @@ func (c *Command) SkipPlaylistAfterErrors(n int) *Command {
 			strconv.Itoa(n),
 		},
 	})
+	return c
+}
+
+// UnsetSkipPlaylistAfterErrors unsets any flags that were previously set by
+// SkipPlaylistAfterErrors().
+func (c *Command) UnsetSkipPlaylistAfterErrors() *Command {
+	c.removeFlagByID("skip_playlist_after_errors")
 	return c
 }
 

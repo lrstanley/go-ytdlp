@@ -102,7 +102,7 @@ func (c *Command) removeFlagByID(id string) {
 	for i, f := range c.flags {
 		if f.ID == id {
 			c.flags = append(c.flags[:i], c.flags[i+1:]...)
-			return
+			// don't return as there might be multiple.
 		}
 	}
 }

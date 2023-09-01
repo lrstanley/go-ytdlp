@@ -93,6 +93,13 @@ func (c *Command) SubFormat(format string) *Command {
 	return c
 }
 
+// UnsetSubFormat unsets any flags that were previously set by
+// SubFormat().
+func (c *Command) UnsetSubFormat() *Command {
+	c.removeFlagByID("subtitlesformat")
+	return c
+}
+
 // Languages of the subtitles to download (can be regex) or "all" separated by
 // commas, e.g. --sub-langs "en.*,ja". You can prefix the language code with a "-"
 // to exclude it from the requested languages, e.g. --sub-langs all,-live_chat. Use
@@ -105,5 +112,12 @@ func (c *Command) SubLangs(langs string) *Command {
 		Flag: "--sub-langs",
 		Args: []string{langs},
 	})
+	return c
+}
+
+// UnsetSubLangs unsets any flags that were previously set by
+// SubLangs().
+func (c *Command) UnsetSubLangs() *Command {
+	c.removeFlagByID("subtitleslangs")
 	return c
 }

@@ -49,6 +49,13 @@ func (c *Command) UseExtractors(names string) *Command {
 	return c
 }
 
+// UnsetUseExtractors unsets any flags that were previously set by
+// UseExtractors().
+func (c *Command) UnsetUseExtractors() *Command {
+	c.removeFlagByID("allowed_extractors")
+	return c
+}
+
 // ForceGenericExtractor sets the "force-generic-extractor" flag (no description specified).
 //
 // ForceGenericExtractor maps to cli flags: --force-generic-extractor (hidden).
@@ -74,6 +81,13 @@ func (c *Command) DefaultSearch(prefix string) *Command {
 		Flag: "--default-search",
 		Args: []string{prefix},
 	})
+	return c
+}
+
+// UnsetDefaultSearch unsets any flags that were previously set by
+// DefaultSearch().
+func (c *Command) UnsetDefaultSearch() *Command {
+	c.removeFlagByID("default_search")
 	return c
 }
 
@@ -103,6 +117,13 @@ func (c *Command) ConfigLocations(path string) *Command {
 		Flag: "--config-locations",
 		Args: []string{path},
 	})
+	return c
+}
+
+// UnsetConfigLocations unsets any flags that were previously set by
+// ConfigLocations().
+func (c *Command) UnsetConfigLocations() *Command {
+	c.removeFlagByID("config_locations")
 	return c
 }
 
@@ -156,6 +177,13 @@ func (c *Command) WaitForVideo(min string) *Command {
 	return c
 }
 
+// UnsetWaitForVideo unsets any flags that were previously set by
+// WaitForVideo().
+func (c *Command) UnsetWaitForVideo() *Command {
+	c.removeFlagByID("wait_for_video")
+	return c
+}
+
 // Mark videos watched (even with --simulate)
 //
 // MarkWatched maps to cli flags: --mark-watched.
@@ -195,6 +223,13 @@ func (c *Command) Color(policy string) *Command {
 	return c
 }
 
+// UnsetColor unsets any flags that were previously set by
+// Color().
+func (c *Command) UnsetColor() *Command {
+	c.removeFlagByID("color")
+	return c
+}
+
 // Options that can help keep compatibility with youtube-dl or youtube-dlc
 // configurations by reverting some of the changes made in yt-dlp. See "Differences
 // in default behavior" for details
@@ -206,5 +241,12 @@ func (c *Command) CompatOptions(opts string) *Command {
 		Flag: "--compat-options",
 		Args: []string{opts},
 	})
+	return c
+}
+
+// UnsetCompatOptions unsets any flags that were previously set by
+// CompatOptions().
+func (c *Command) UnsetCompatOptions() *Command {
+	c.removeFlagByID("compat_opts")
 	return c
 }

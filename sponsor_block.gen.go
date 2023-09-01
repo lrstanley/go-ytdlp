@@ -28,6 +28,13 @@ func (c *Command) SponsorblockMark(cats string) *Command {
 	return c
 }
 
+// UnsetSponsorblockMark unsets any flags that were previously set by
+// SponsorblockMark().
+func (c *Command) UnsetSponsorblockMark() *Command {
+	c.removeFlagByID("sponsorblock_mark")
+	return c
+}
+
 // SponsorBlock categories to be removed from the video file, separated by commas.
 // If a category is present in both mark and remove, remove takes precedence. The
 // syntax and available categories are the same as for --sponsorblock-mark except
@@ -44,6 +51,13 @@ func (c *Command) SponsorblockRemove(cats string) *Command {
 	return c
 }
 
+// UnsetSponsorblockRemove unsets any flags that were previously set by
+// SponsorblockRemove().
+func (c *Command) UnsetSponsorblockRemove() *Command {
+	c.removeFlagByID("sponsorblock_remove")
+	return c
+}
+
 // An output template for the title of the SponsorBlock chapters created by
 // --sponsorblock-mark. The only available fields are start_time, end_time,
 // category, categories, name, category_names. Defaults to "[SponsorBlock]:
@@ -56,6 +70,13 @@ func (c *Command) SponsorblockChapterTitle(template string) *Command {
 		Flag: "--sponsorblock-chapter-title",
 		Args: []string{template},
 	})
+	return c
+}
+
+// UnsetSponsorblockChapterTitle unsets any flags that were previously set by
+// SponsorblockChapterTitle().
+func (c *Command) UnsetSponsorblockChapterTitle() *Command {
+	c.removeFlagByID("sponsorblock_chapter_title")
 	return c
 }
 
@@ -80,6 +101,13 @@ func (c *Command) SponsorblockApi(url string) *Command {
 		Flag: "--sponsorblock-api",
 		Args: []string{url},
 	})
+	return c
+}
+
+// UnsetSponsorblockApi unsets any flags that were previously set by
+// SponsorblockApi().
+func (c *Command) UnsetSponsorblockApi() *Command {
+	c.removeFlagByID("sponsorblock_api")
 	return c
 }
 
@@ -165,6 +193,13 @@ func (c *Command) SponskrubLocation(path string) *Command {
 	return c
 }
 
+// UnsetSponskrubLocation unsets any flags that were previously set by
+// SponskrubLocation().
+func (c *Command) UnsetSponskrubLocation() *Command {
+	c.removeFlagByID("sponskrub_path")
+	return c
+}
+
 // SponskrubArgs maps to cli flags: --sponskrub-args=ARGS (hidden).
 func (c *Command) SponskrubArgs(args string) *Command {
 	c.addFlag(&Flag{
@@ -172,5 +207,12 @@ func (c *Command) SponskrubArgs(args string) *Command {
 		Flag: "--sponskrub-args",
 		Args: []string{args},
 	})
+	return c
+}
+
+// UnsetSponskrubArgs unsets any flags that were previously set by
+// SponskrubArgs().
+func (c *Command) UnsetSponskrubArgs() *Command {
+	c.removeFlagByID("sponskrub_args")
 	return c
 }

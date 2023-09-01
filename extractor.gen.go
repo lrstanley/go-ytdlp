@@ -20,6 +20,13 @@ func (c *Command) ExtractorRetries(retries string) *Command {
 	return c
 }
 
+// UnsetExtractorRetries unsets any flags that were previously set by
+// ExtractorRetries().
+func (c *Command) UnsetExtractorRetries() *Command {
+	c.removeFlagByID("extractor_retries")
+	return c
+}
+
 // Process dynamic DASH manifests (default) (Alias: --no-ignore-dynamic-mpd)
 //
 // AllowDynamicMpd maps to cli flags: --allow-dynamic-mpd/--no-ignore-dynamic-mpd.
@@ -80,6 +87,13 @@ func (c *Command) ExtractorArgs(ieKeyargs string) *Command {
 		Flag: "--extractor-args",
 		Args: []string{ieKeyargs},
 	})
+	return c
+}
+
+// UnsetExtractorArgs unsets any flags that were previously set by
+// ExtractorArgs().
+func (c *Command) UnsetExtractorArgs() *Command {
+	c.removeFlagByID("extractor_args")
 	return c
 }
 

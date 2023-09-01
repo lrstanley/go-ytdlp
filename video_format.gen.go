@@ -20,6 +20,13 @@ func (c *Command) Format(format string) *Command {
 	return c
 }
 
+// UnsetFormat unsets any flags that were previously set by
+// Format().
+func (c *Command) UnsetFormat() *Command {
+	c.removeFlagByID("format")
+	return c
+}
+
 // Sort the formats by the fields given, see "Sorting Formats" for more details
 //
 // FormatSort maps to cli flags: -S/--format-sort=SORTORDER.
@@ -29,6 +36,13 @@ func (c *Command) FormatSort(sortorder string) *Command {
 		Flag: "--format-sort",
 		Args: []string{sortorder},
 	})
+	return c
+}
+
+// UnsetFormatSort unsets any flags that were previously set by
+// FormatSort().
+func (c *Command) UnsetFormatSort() *Command {
+	c.removeFlagByID("format_sort")
 	return c
 }
 
@@ -201,6 +215,13 @@ func (c *Command) MergeOutputFormat(format string) *Command {
 		Flag: "--merge-output-format",
 		Args: []string{format},
 	})
+	return c
+}
+
+// UnsetMergeOutputFormat unsets any flags that were previously set by
+// MergeOutputFormat().
+func (c *Command) UnsetMergeOutputFormat() *Command {
+	c.removeFlagByID("merge_output_format")
 	return c
 }
 

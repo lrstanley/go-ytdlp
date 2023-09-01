@@ -34,6 +34,13 @@ func (c *Command) AudioFormat(format string) *Command {
 	return c
 }
 
+// UnsetAudioFormat unsets any flags that were previously set by
+// AudioFormat().
+func (c *Command) UnsetAudioFormat() *Command {
+	c.removeFlagByID("audioformat")
+	return c
+}
+
 // Specify ffmpeg audio quality to use when converting the audio with -x. Insert a
 // value between 0 (best) and 10 (worst) for VBR or a specific bitrate like 128K
 // (default 5)
@@ -45,6 +52,13 @@ func (c *Command) AudioQuality(quality string) *Command {
 		Flag: "--audio-quality",
 		Args: []string{quality},
 	})
+	return c
+}
+
+// UnsetAudioQuality unsets any flags that were previously set by
+// AudioQuality().
+func (c *Command) UnsetAudioQuality() *Command {
+	c.removeFlagByID("audioquality")
 	return c
 }
 
@@ -64,6 +78,13 @@ func (c *Command) RemuxVideo(format string) *Command {
 	return c
 }
 
+// UnsetRemuxVideo unsets any flags that were previously set by
+// RemuxVideo().
+func (c *Command) UnsetRemuxVideo() *Command {
+	c.removeFlagByID("remuxvideo")
+	return c
+}
+
 // Re-encode the video into another format if necessary. The syntax and supported
 // formats are the same as --remux-video
 //
@@ -74,6 +95,13 @@ func (c *Command) RecodeVideo(format string) *Command {
 		Flag: "--recode-video",
 		Args: []string{format},
 	})
+	return c
+}
+
+// UnsetRecodeVideo unsets any flags that were previously set by
+// RecodeVideo().
+func (c *Command) UnsetRecodeVideo() *Command {
+	c.removeFlagByID("recodevideo")
 	return c
 }
 
@@ -98,6 +126,13 @@ func (c *Command) PostprocessorArgs(nameargs string) *Command {
 		Flag: "--postprocessor-args",
 		Args: []string{nameargs},
 	})
+	return c
+}
+
+// UnsetPostprocessorArgs unsets any flags that were previously set by
+// PostprocessorArgs().
+func (c *Command) UnsetPostprocessorArgs() *Command {
+	c.removeFlagByID("postprocessor_args")
 	return c
 }
 
@@ -280,6 +315,13 @@ func (c *Command) MetadataFromTitle(format string) *Command {
 	return c
 }
 
+// UnsetMetadataFromTitle unsets any flags that were previously set by
+// MetadataFromTitle().
+func (c *Command) UnsetMetadataFromTitle() *Command {
+	c.removeFlagByID("metafromtitle")
+	return c
+}
+
 // Parse additional metadata like title/artist from other fields; see "MODIFYING
 // METADATA" for details. Supported values of "WHEN" are the same as that of
 // --use-postprocessor (default: pre_process)
@@ -294,6 +336,13 @@ func (c *Command) ParseMetadata(fromto string) *Command {
 	return c
 }
 
+// UnsetParseMetadata unsets any flags that were previously set by
+// ParseMetadata().
+func (c *Command) UnsetParseMetadata() *Command {
+	c.removeFlagByID("parse_metadata")
+	return c
+}
+
 // Replace text in a metadata field using the given regex. This option can be used
 // multiple times. Supported values of "WHEN" are the same as that of
 // --use-postprocessor (default: pre_process)
@@ -305,6 +354,13 @@ func (c *Command) ReplaceInMetadata(fields, regex, replace string) *Command {
 		Flag: "--replace-in-metadata",
 		Args: []string{fields, regex, replace},
 	})
+	return c
+}
+
+// UnsetReplaceInMetadata unsets any flags that were previously set by
+// ReplaceInMetadata().
+func (c *Command) UnsetReplaceInMetadata() *Command {
+	c.removeFlagByID("parse_metadata")
 	return c
 }
 
@@ -342,6 +398,13 @@ func (c *Command) ConcatPlaylist(policy string) *Command {
 	return c
 }
 
+// UnsetConcatPlaylist unsets any flags that were previously set by
+// ConcatPlaylist().
+func (c *Command) UnsetConcatPlaylist() *Command {
+	c.removeFlagByID("concat_playlist")
+	return c
+}
+
 var fixupChoices = []string{
 	"never",
 	"ignore",
@@ -361,6 +424,13 @@ func (c *Command) Fixup(policy string) *Command {
 		Flag: "--fixup",
 		Args: []string{policy},
 	})
+	return c
+}
+
+// UnsetFixup unsets any flags that were previously set by
+// Fixup().
+func (c *Command) UnsetFixup() *Command {
+	c.removeFlagByID("fixup")
 	return c
 }
 
@@ -401,6 +471,13 @@ func (c *Command) FfmpegLocation(path string) *Command {
 	return c
 }
 
+// UnsetFfmpegLocation unsets any flags that were previously set by
+// FfmpegLocation().
+func (c *Command) UnsetFfmpegLocation() *Command {
+	c.removeFlagByID("ffmpeg_location")
+	return c
+}
+
 // Execute a command, optionally prefixed with when to execute it, separated by a
 // ":". Supported values of "WHEN" are the same as that of --use-postprocessor
 // (default: after_move). Same syntax as the output template can be used to pass
@@ -418,6 +495,13 @@ func (c *Command) Exec(cmd string) *Command {
 	return c
 }
 
+// UnsetExec unsets any flags that were previously set by
+// Exec().
+func (c *Command) UnsetExec() *Command {
+	c.removeFlagByID("exec_cmd")
+	return c
+}
+
 // ExecBeforeDownload maps to cli flags: --exec-before-download=CMD (hidden).
 func (c *Command) ExecBeforeDownload(cmd string) *Command {
 	c.addFlag(&Flag{
@@ -425,6 +509,13 @@ func (c *Command) ExecBeforeDownload(cmd string) *Command {
 		Flag: "--exec-before-download",
 		Args: []string{cmd},
 	})
+	return c
+}
+
+// UnsetExecBeforeDownload unsets any flags that were previously set by
+// ExecBeforeDownload().
+func (c *Command) UnsetExecBeforeDownload() *Command {
+	c.removeFlagByID("exec_before_dl_cmd")
 	return c
 }
 
@@ -441,6 +532,13 @@ func (c *Command) ConvertSubs(format string) *Command {
 	return c
 }
 
+// UnsetConvertSubs unsets any flags that were previously set by
+// ConvertSubs().
+func (c *Command) UnsetConvertSubs() *Command {
+	c.removeFlagByID("convertsubtitles")
+	return c
+}
+
 // Convert the thumbnails to another format (currently supported: jpg, png, webp).
 // You can specify multiple rules using similar syntax as --remux-video
 //
@@ -451,6 +549,13 @@ func (c *Command) ConvertThumbnails(format string) *Command {
 		Flag: "--convert-thumbnails",
 		Args: []string{format},
 	})
+	return c
+}
+
+// UnsetConvertThumbnails unsets any flags that were previously set by
+// ConvertThumbnails().
+func (c *Command) UnsetConvertThumbnails() *Command {
+	c.removeFlagByID("convertthumbnails")
 	return c
 }
 
@@ -490,6 +595,13 @@ func (c *Command) RemoveChapters(regex string) *Command {
 		Flag: "--remove-chapters",
 		Args: []string{regex},
 	})
+	return c
+}
+
+// UnsetRemoveChapters unsets any flags that were previously set by
+// RemoveChapters().
+func (c *Command) UnsetRemoveChapters() *Command {
+	c.removeFlagByID("remove_chapters")
 	return c
 }
 
@@ -537,5 +649,12 @@ func (c *Command) UsePostprocessor(name string) *Command {
 		Flag: "--use-postprocessor",
 		Args: []string{name},
 	})
+	return c
+}
+
+// UnsetUsePostprocessor unsets any flags that were previously set by
+// UsePostprocessor().
+func (c *Command) UnsetUsePostprocessor() *Command {
+	c.removeFlagByID("add_postprocessors")
 	return c
 }

@@ -22,6 +22,13 @@ func (c *Command) GeoVerificationProxy(url string) *Command {
 	return c
 }
 
+// UnsetGeoVerificationProxy unsets any flags that were previously set by
+// GeoVerificationProxy().
+func (c *Command) UnsetGeoVerificationProxy() *Command {
+	c.removeFlagByID("geo_verification_proxy")
+	return c
+}
+
 // CnVerificationProxy maps to cli flags: --cn-verification-proxy=URL (hidden).
 func (c *Command) CnVerificationProxy(url string) *Command {
 	c.addFlag(&Flag{
@@ -29,6 +36,13 @@ func (c *Command) CnVerificationProxy(url string) *Command {
 		Flag: "--cn-verification-proxy",
 		Args: []string{url},
 	})
+	return c
+}
+
+// UnsetCnVerificationProxy unsets any flags that were previously set by
+// CnVerificationProxy().
+func (c *Command) UnsetCnVerificationProxy() *Command {
+	c.removeFlagByID("cn_verification_proxy")
 	return c
 }
 
@@ -46,6 +60,13 @@ func (c *Command) Xff(value string) *Command {
 	return c
 }
 
+// UnsetXff unsets any flags that were previously set by
+// Xff().
+func (c *Command) UnsetXff() *Command {
+	c.removeFlagByID("geo_bypass")
+	return c
+}
+
 // GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE (hidden).
 func (c *Command) GeoBypassCountry(code string) *Command {
 	c.addFlag(&Flag{
@@ -56,6 +77,13 @@ func (c *Command) GeoBypassCountry(code string) *Command {
 	return c
 }
 
+// UnsetGeoBypassCountry unsets any flags that were previously set by
+// GeoBypassCountry().
+func (c *Command) UnsetGeoBypassCountry() *Command {
+	c.removeFlagByID("geo_bypass")
+	return c
+}
+
 // GeoBypassIpBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK (hidden).
 func (c *Command) GeoBypassIpBlock(ipBlock string) *Command {
 	c.addFlag(&Flag{
@@ -63,5 +91,12 @@ func (c *Command) GeoBypassIpBlock(ipBlock string) *Command {
 		Flag: "--geo-bypass-ip-block",
 		Args: []string{ipBlock},
 	})
+	return c
+}
+
+// UnsetGeoBypassIpBlock unsets any flags that were previously set by
+// GeoBypassIpBlock().
+func (c *Command) UnsetGeoBypassIpBlock() *Command {
+	c.removeFlagByID("geo_bypass")
 	return c
 }

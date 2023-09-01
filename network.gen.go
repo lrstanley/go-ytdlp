@@ -26,6 +26,13 @@ func (c *Command) Proxy(url string) *Command {
 	return c
 }
 
+// UnsetProxy unsets any flags that were previously set by
+// Proxy().
+func (c *Command) UnsetProxy() *Command {
+	c.removeFlagByID("proxy")
+	return c
+}
+
 // Time to wait before giving up, in seconds
 //
 // SocketTimeout maps to cli flags: --socket-timeout=SECONDS.
@@ -40,6 +47,13 @@ func (c *Command) SocketTimeout(seconds float64) *Command {
 	return c
 }
 
+// UnsetSocketTimeout unsets any flags that were previously set by
+// SocketTimeout().
+func (c *Command) UnsetSocketTimeout() *Command {
+	c.removeFlagByID("socket_timeout")
+	return c
+}
+
 // Client-side IP address to bind to
 //
 // SourceAddress maps to cli flags: --source-address=IP.
@@ -49,6 +63,13 @@ func (c *Command) SourceAddress(ip string) *Command {
 		Flag: "--source-address",
 		Args: []string{ip},
 	})
+	return c
+}
+
+// UnsetSourceAddress unsets any flags that were previously set by
+// SourceAddress().
+func (c *Command) UnsetSourceAddress() *Command {
+	c.removeFlagByID("source_address")
 	return c
 }
 

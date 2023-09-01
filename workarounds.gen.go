@@ -24,6 +24,13 @@ func (c *Command) Encoding(encoding string) *Command {
 	return c
 }
 
+// UnsetEncoding unsets any flags that were previously set by
+// Encoding().
+func (c *Command) UnsetEncoding() *Command {
+	c.removeFlagByID("encoding")
+	return c
+}
+
 // Explicitly allow HTTPS connection to servers that do not support RFC 5746 secure
 // renegotiation
 //
@@ -72,6 +79,13 @@ func (c *Command) UserAgent(ua string) *Command {
 	return c
 }
 
+// UnsetUserAgent unsets any flags that were previously set by
+// UserAgent().
+func (c *Command) UnsetUserAgent() *Command {
+	c.removeFlagByID("user_agent")
+	return c
+}
+
 // Referer maps to cli flags: --referer=URL (hidden).
 func (c *Command) Referer(url string) *Command {
 	c.addFlag(&Flag{
@@ -79,6 +93,13 @@ func (c *Command) Referer(url string) *Command {
 		Flag: "--referer",
 		Args: []string{url},
 	})
+	return c
+}
+
+// UnsetReferer unsets any flags that were previously set by
+// Referer().
+func (c *Command) UnsetReferer() *Command {
+	c.removeFlagByID("referer")
 	return c
 }
 
@@ -92,6 +113,13 @@ func (c *Command) AddHeaders(fieldvalue string) *Command {
 		Flag: "--add-headers",
 		Args: []string{fieldvalue},
 	})
+	return c
+}
+
+// UnsetAddHeaders unsets any flags that were previously set by
+// AddHeaders().
+func (c *Command) UnsetAddHeaders() *Command {
+	c.removeFlagByID("headers")
 	return c
 }
 
@@ -122,6 +150,13 @@ func (c *Command) SleepRequests(seconds float64) *Command {
 	return c
 }
 
+// UnsetSleepRequests unsets any flags that were previously set by
+// SleepRequests().
+func (c *Command) UnsetSleepRequests() *Command {
+	c.removeFlagByID("sleep_interval_requests")
+	return c
+}
+
 // Number of seconds to sleep before each download. This is the minimum time to
 // sleep when used along with --max-sleep-interval (Alias: --min-sleep-interval)
 //
@@ -134,6 +169,13 @@ func (c *Command) SleepInterval(seconds float64) *Command {
 			strconv.FormatFloat(seconds, 'g', -1, 64),
 		},
 	})
+	return c
+}
+
+// UnsetSleepInterval unsets any flags that were previously set by
+// SleepInterval().
+func (c *Command) UnsetSleepInterval() *Command {
+	c.removeFlagByID("sleep_interval")
 	return c
 }
 
@@ -152,6 +194,13 @@ func (c *Command) MaxSleepInterval(seconds float64) *Command {
 	return c
 }
 
+// UnsetMaxSleepInterval unsets any flags that were previously set by
+// MaxSleepInterval().
+func (c *Command) UnsetMaxSleepInterval() *Command {
+	c.removeFlagByID("max_sleep_interval")
+	return c
+}
+
 // Number of seconds to sleep before each subtitle download
 //
 // SleepSubtitles maps to cli flags: --sleep-subtitles=SECONDS.
@@ -163,5 +212,12 @@ func (c *Command) SleepSubtitles(seconds int) *Command {
 			strconv.Itoa(seconds),
 		},
 	})
+	return c
+}
+
+// UnsetSleepSubtitles unsets any flags that were previously set by
+// SleepSubtitles().
+func (c *Command) UnsetSleepSubtitles() *Command {
+	c.removeFlagByID("sleep_interval_subtitles")
 	return c
 }

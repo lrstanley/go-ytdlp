@@ -121,6 +121,13 @@ func (c *Command) Print(template string) *Command {
 	return c
 }
 
+// UnsetPrint unsets any flags that were previously set by
+// Print().
+func (c *Command) UnsetPrint() *Command {
+	c.removeFlagByID("forceprint")
+	return c
+}
+
 // GetUrl sets the "get-url" flag (no description specified).
 //
 // GetUrl maps to cli flags: -g/--get-url (hidden).
@@ -305,6 +312,13 @@ func (c *Command) ProgressTemplate(template string) *Command {
 		Flag: "--progress-template",
 		Args: []string{template},
 	})
+	return c
+}
+
+// UnsetProgressTemplate unsets any flags that were previously set by
+// ProgressTemplate().
+func (c *Command) UnsetProgressTemplate() *Command {
+	c.removeFlagByID("progress_template")
 	return c
 }
 
