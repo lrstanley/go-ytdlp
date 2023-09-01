@@ -5,3 +5,4 @@ bin/*
 *.txt
 *.log
 .env
+*.mp4
