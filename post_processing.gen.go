@@ -36,7 +36,7 @@ func (c *Command) AudioFormat(format string) *Command {
 
 // Specify ffmpeg audio quality to use when converting the audio with -x. Insert a
 // value between 0 (best) and 10 (worst) for VBR or a specific bitrate like 128K
-// (default %default)
+// (default 5)
 //
 // AudioQuality maps to cli flags: --audio-quality=QUALITY.
 func (c *Command) AudioQuality(quality string) *Command {

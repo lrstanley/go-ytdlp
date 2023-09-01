@@ -13,7 +13,7 @@ import (
 )
 
 // Number of fragments of a dash/hlsnative video that should be downloaded
-// concurrently (default is %default)
+// concurrently (default is 1)
 //
 // ConcurrentFragments maps to cli flags: -N/--concurrent-fragments=N.
 func (c *Command) ConcurrentFragments(n int) *Command {
@@ -52,7 +52,7 @@ func (c *Command) ThrottledRate(rate string) *Command {
 	return c
 }
 
-// Number of retries (default is %default), or "infinite"
+// Number of retries (default is 10), or "infinite"
 //
 // Retries maps to cli flags: -R/--retries=RETRIES.
 func (c *Command) Retries(retries string) *Command {
@@ -64,8 +64,7 @@ func (c *Command) Retries(retries string) *Command {
 	return c
 }
 
-// Number of times to retry on file access error (default is %default), or
-// "infinite"
+// Number of times to retry on file access error (default is 3), or "infinite"
 //
 // FileAccessRetries maps to cli flags: --file-access-retries=RETRIES.
 func (c *Command) FileAccessRetries(retries string) *Command {
@@ -77,8 +76,8 @@ func (c *Command) FileAccessRetries(retries string) *Command {
 	return c
 }
 
-// Number of retries for a fragment (default is %default), or "infinite" (DASH,
-// hlsnative and ISM)
+// Number of retries for a fragment (default is 10), or "infinite" (DASH, hlsnative
+// and ISM)
 //
 // FragmentRetries maps to cli flags: --fragment-retries=RETRIES.
 func (c *Command) FragmentRetries(retries string) *Command {
@@ -156,7 +155,7 @@ func (c *Command) NoKeepFragments() *Command {
 	return c
 }
 
-// Size of download buffer, e.g. 1024 or 16K (default is %default)
+// Size of download buffer, e.g. 1024 or 16K (default is 1024)
 //
 // BufferSize maps to cli flags: --buffer-size=SIZE.
 func (c *Command) BufferSize(size string) *Command {

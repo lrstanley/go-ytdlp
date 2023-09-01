@@ -46,7 +46,8 @@ func (c *Command) SponsorblockRemove(cats string) *Command {
 
 // An output template for the title of the SponsorBlock chapters created by
 // --sponsorblock-mark. The only available fields are start_time, end_time,
-// category, categories, name, category_names. Defaults to "%default"
+// category, categories, name, category_names. Defaults to "[SponsorBlock]:
+// %(category_names)l"
 //
 // SponsorblockChapterTitle maps to cli flags: --sponsorblock-chapter-title=TEMPLATE.
 func (c *Command) SponsorblockChapterTitle(template string) *Command {
@@ -70,7 +71,7 @@ func (c *Command) NoSponsorblock() *Command {
 	return c
 }
 
-// SponsorBlock API location, defaults to %default
+// SponsorBlock API location, defaults to https://sponsor.ajay.app
 //
 // SponsorblockApi maps to cli flags: --sponsorblock-api=URL.
 func (c *Command) SponsorblockApi(url string) *Command {

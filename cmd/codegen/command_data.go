@@ -5,6 +5,7 @@
 package main
 
 import (
+	"fmt"
 	"regexp"
 	"slices"
 	"strings"
@@ -42,7 +43,7 @@ type CommandData struct {
 
 func (c *CommandData) Generate() {
 	for i := range c.OptionGroups {
-		c.OptionGroups[i].Generate()
+		c.OptionGroups[i].Generate(c)
 	}
 }
 
@@ -57,11 +58,11 @@ type OptionGroup struct {
 	Options       []Option `json:"options"`
 }
 
-func (o *OptionGroup) Generate() {
+func (o *OptionGroup) Generate(data *CommandData) {
 	o.Name = optionGroupReplacer.Replace(o.OriginalTitle)
 
 	for i := range o.Options {
-		o.Options[i].Generate()
+		o.Options[i].Generate(data)
 
 		if !o.Options[i].IsExecutable && (o.Options[i].Type == "int" || o.Options[i].Type == "float64") {
 			o.NeedsStrconv = true
@@ -96,7 +97,7 @@ type Option struct {
 	NArgs   int      `json:"nargs"`
 }
 
-func (o *Option) Generate() {
+func (o *Option) Generate(data *CommandData) {
 	o.AllFlags = append(o.Short, o.Long...) //nolint:gocritic
 
 	if len(o.Long) > 0 {
@@ -109,6 +110,12 @@ func (o *Option) Generate() {
 
 	if o.Help == "SUPPRESSHELP" {
 		o.Help = ""
+	}
+
+	if strings.Contains(o.Help, "%default") {
+		if v, ok := data.Defaults[o.Dest]; ok {
+			o.Help = strings.ReplaceAll(o.Help, "%default", fmt.Sprintf("%v", v))
+		}
 	}
 
 	switch o.Type {

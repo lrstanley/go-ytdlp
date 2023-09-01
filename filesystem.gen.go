@@ -66,7 +66,7 @@ func (c *Command) Output(template string) *Command {
 	return c
 }
 
-// Placeholder for unavailable fields in "OUTPUT TEMPLATE" (default: "%default")
+// Placeholder for unavailable fields in "OUTPUT TEMPLATE" (default: "NA")
 //
 // OutputNaPlaceholder maps to cli flags: --output-na-placeholder=TEXT.
 func (c *Command) OutputNaPlaceholder(text string) *Command {

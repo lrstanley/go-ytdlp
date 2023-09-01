@@ -8,8 +8,7 @@
 
 package ytdlp
 
-// Number of retries for known extractor errors (default is %default), or
-// "infinite"
+// Number of retries for known extractor errors (default is 3), or "infinite"
 //
 // ExtractorRetries maps to cli flags: --extractor-retries=RETRIES.
 func (c *Command) ExtractorRetries(retries string) *Command {
