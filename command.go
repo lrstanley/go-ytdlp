@@ -103,7 +103,7 @@ func (c *Command) removeFlagByID(id string) {
 	}
 }
 
-func (c *Command) Run(ctx context.Context, args ...string) *Results {
+func (c *Command) Run(ctx context.Context, args ...string) (*Results, error) {
 	var cmdArgs []string
 
 	for _, f := range c.flags {
@@ -146,24 +146,23 @@ func (c *Command) Run(ctx context.Context, args ...string) *Results {
 
 	err := cmd.Run()
 
-	return &Results{
+	result := &Results{
 		Executable: cmd.Path,
 		Args:       cmd.Args[1:],
 		ExitCode:   cmd.ProcessState.ExitCode(),
-		Stdout:     stdout.Bytes(),
-		Stderr:     stderr.Bytes(),
-		Error:      err,
+		Stdout:     stdout.String(),
+		Stderr:     stderr.String(),
 	}
+
+	return result, err
 }
 
 type Results struct {
 	Executable string
 	Args       []string
 	ExitCode   int
-	Stdout     []byte
-	Stderr     []byte
-
-	Error error
+	Stdout     string
+	Stderr     string
 }
 
 type Flag struct {
