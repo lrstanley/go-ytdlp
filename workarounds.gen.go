@@ -12,153 +12,143 @@ import (
 	"strconv"
 )
 
-type WorkaroundBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *WorkaroundBuilder) Then() *Command {
-	return ff.parent
-}
-
 // Force the specified encoding (experimental)
 //
 // Encoding maps to cli flags: --encoding=ENCODING.
-func (ff *WorkaroundBuilder) Encoding(encoding string) *WorkaroundBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Encoding(encoding string) *Command {
+	c.addFlag(&Flag{
 		ID:   "encoding",
 		Flag: "--encoding",
 		Args: []string{encoding},
 	})
-	return ff
+	return c
 }
 
 // Explicitly allow HTTPS connection to servers that do not support RFC 5746 secure
 // renegotiation
 //
 // LegacyServerConnect maps to cli flags: --legacy-server-connect.
-func (ff *WorkaroundBuilder) LegacyServerConnect() *WorkaroundBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) LegacyServerConnect() *Command {
+	c.addFlag(&Flag{
 		ID:   "legacy_server_connect",
 		Flag: "--legacy-server-connect",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Suppress HTTPS certificate validation
 //
 // NoCheckCertificates maps to cli flags: --no-check-certificates.
-func (ff *WorkaroundBuilder) NoCheckCertificates() *WorkaroundBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoCheckCertificates() *Command {
+	c.addFlag(&Flag{
 		ID:   "no_check_certificate",
 		Flag: "--no-check-certificates",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Use an unencrypted connection to retrieve information about the video (Currently
 // supported only for YouTube)
 //
 // PreferInsecure maps to cli flags: --prefer-insecure/--prefer-unsecure.
-func (ff *WorkaroundBuilder) PreferInsecure() *WorkaroundBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) PreferInsecure() *Command {
+	c.addFlag(&Flag{
 		ID:   "prefer_insecure",
 		Flag: "--prefer-insecure",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // UserAgent maps to cli flags: --user-agent=UA.
-func (ff *WorkaroundBuilder) UserAgent(ua string) *WorkaroundBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) UserAgent(ua string) *Command {
+	c.addFlag(&Flag{
 		ID:   "user_agent",
 		Flag: "--user-agent",
 		Args: []string{ua},
 	})
-	return ff
+	return c
 }
 
 // Referer maps to cli flags: --referer=URL.
-func (ff *WorkaroundBuilder) Referer(url string) *WorkaroundBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Referer(url string) *Command {
+	c.addFlag(&Flag{
 		ID:   "referer",
 		Flag: "--referer",
 		Args: []string{url},
 	})
-	return ff
+	return c
 }
 
 // Work around terminals that lack bidirectional text support. Requires bidiv or
 // fribidi executable in PATH
 //
 // BidiWorkaround maps to cli flags: --bidi-workaround.
-func (ff *WorkaroundBuilder) BidiWorkaround() *WorkaroundBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) BidiWorkaround() *Command {
+	c.addFlag(&Flag{
 		ID:   "bidi_workaround",
 		Flag: "--bidi-workaround",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Number of seconds to sleep between requests during data extraction
 //
 // SleepRequests maps to cli flags: --sleep-requests=SECONDS.
-func (ff *WorkaroundBuilder) SleepRequests(seconds float64) *WorkaroundBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SleepRequests(seconds float64) *Command {
+	c.addFlag(&Flag{
 		ID:   "sleep_interval_requests",
 		Flag: "--sleep-requests",
 		Args: []string{
 			strconv.FormatFloat(seconds, 'g', -1, 64),
 		},
 	})
-	return ff
+	return c
 }
 
 // Number of seconds to sleep before each download. This is the minimum time to
 // sleep when used along with --max-sleep-interval (Alias: --min-sleep-interval)
 //
 // SleepInterval maps to cli flags: --sleep-interval/--min-sleep-interval=SECONDS.
-func (ff *WorkaroundBuilder) SleepInterval(seconds float64) *WorkaroundBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SleepInterval(seconds float64) *Command {
+	c.addFlag(&Flag{
 		ID:   "sleep_interval",
 		Flag: "--sleep-interval",
 		Args: []string{
 			strconv.FormatFloat(seconds, 'g', -1, 64),
 		},
 	})
-	return ff
+	return c
 }
 
 // Maximum number of seconds to sleep. Can only be used along with
 // --min-sleep-interval
 //
 // MaxSleepInterval maps to cli flags: --max-sleep-interval=SECONDS.
-func (ff *WorkaroundBuilder) MaxSleepInterval(seconds float64) *WorkaroundBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) MaxSleepInterval(seconds float64) *Command {
+	c.addFlag(&Flag{
 		ID:   "max_sleep_interval",
 		Flag: "--max-sleep-interval",
 		Args: []string{
 			strconv.FormatFloat(seconds, 'g', -1, 64),
 		},
 	})
-	return ff
+	return c
 }
 
 // Number of seconds to sleep before each subtitle download
 //
 // SleepSubtitles maps to cli flags: --sleep-subtitles=SECONDS.
-func (ff *WorkaroundBuilder) SleepSubtitles(seconds int) *WorkaroundBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SleepSubtitles(seconds int) *Command {
+	c.addFlag(&Flag{
 		ID:   "sleep_interval_subtitles",
 		Flag: "--sleep-subtitles",
 		Args: []string{
 			strconv.Itoa(seconds),
 		},
 	})
-	return ff
+	return c
 }

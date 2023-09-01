@@ -8,97 +8,87 @@
 
 package ytdlp
 
-type SubtitleBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *SubtitleBuilder) Then() *Command {
-	return ff.parent
-}
-
 // Write subtitle file
 //
 // WriteSubs maps to cli flags: --write-subs/--write-srt.
-func (ff *SubtitleBuilder) WriteSubs() *SubtitleBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WriteSubs() *Command {
+	c.addFlag(&Flag{
 		ID:   "writesubtitles",
 		Flag: "--write-subs",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not write subtitle file (default)
 //
 // NoWriteSubs maps to cli flags: --no-write-subs/--no-write-srt.
-func (ff *SubtitleBuilder) NoWriteSubs() *SubtitleBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoWriteSubs() *Command {
+	c.addFlag(&Flag{
 		ID:   "writesubtitles",
 		Flag: "--no-write-subs",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Write automatically generated subtitle file (Alias: --write-automatic-subs)
 //
 // WriteAutoSubs maps to cli flags: --write-auto-subs/--write-automatic-subs.
-func (ff *SubtitleBuilder) WriteAutoSubs() *SubtitleBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WriteAutoSubs() *Command {
+	c.addFlag(&Flag{
 		ID:   "writeautomaticsub",
 		Flag: "--write-auto-subs",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not write auto-generated subtitles (default) (Alias:
 // --no-write-automatic-subs)
 //
 // NoWriteAutoSubs maps to cli flags: --no-write-auto-subs/--no-write-automatic-subs.
-func (ff *SubtitleBuilder) NoWriteAutoSubs() *SubtitleBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoWriteAutoSubs() *Command {
+	c.addFlag(&Flag{
 		ID:   "writeautomaticsub",
 		Flag: "--no-write-auto-subs",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// AllSubs sets the "all-subs" flag to "true".
+// AllSubs sets the "all-subs" flag (no description specified).
 //
 // AllSubs maps to cli flags: --all-subs.
-func (ff *SubtitleBuilder) AllSubs() *SubtitleBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) AllSubs() *Command {
+	c.addFlag(&Flag{
 		ID:   "allsubtitles",
 		Flag: "--all-subs",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // List available subtitles of each video. Simulate unless --no-simulate is used
 //
 // ListSubs maps to cli flags: --list-subs.
-func (ff *SubtitleBuilder) ListSubs() *SubtitleBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ListSubs() *Command {
+	c.addFlag(&Flag{
 		ID:   "listsubtitles",
 		Flag: "--list-subs",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Subtitle format; accepts formats preference, e.g. "srt" or "ass/srt/best"
 //
 // SubFormat maps to cli flags: --sub-format=FORMAT.
-func (ff *SubtitleBuilder) SubFormat(format string) *SubtitleBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SubFormat(format string) *Command {
+	c.addFlag(&Flag{
 		ID:   "subtitlesformat",
 		Flag: "--sub-format",
 		Args: []string{format},
 	})
-	return ff
+	return c
 }

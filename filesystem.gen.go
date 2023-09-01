@@ -12,359 +12,349 @@ import (
 	"strconv"
 )
 
-type FilesystemBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *FilesystemBuilder) Then() *Command {
-	return ff.parent
-}
-
 // File containing URLs to download ("-" for stdin), one URL per line. Lines
 // starting with "#", ";" or "]" are considered as comments and ignored
 //
 // BatchFile maps to cli flags: -a/--batch-file=FILE.
-func (ff *FilesystemBuilder) BatchFile(file string) *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) BatchFile(file string) *Command {
+	c.addFlag(&Flag{
 		ID:   "batchfile",
 		Flag: "--batch-file",
 		Args: []string{file},
 	})
-	return ff
+	return c
 }
 
-// Id sets the "id" flag to "true".
+// Id sets the "id" flag (no description specified).
 //
 // Id maps to cli flags: --id.
-func (ff *FilesystemBuilder) Id() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Id() *Command {
+	c.addFlag(&Flag{
 		ID:   "useid",
 		Flag: "--id",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Placeholder for unavailable fields in "OUTPUT TEMPLATE" (default: "%default")
 //
 // OutputNaPlaceholder maps to cli flags: --output-na-placeholder=TEXT.
-func (ff *FilesystemBuilder) OutputNaPlaceholder(text string) *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) OutputNaPlaceholder(text string) *Command {
+	c.addFlag(&Flag{
 		ID:   "outtmpl_na_placeholder",
 		Flag: "--output-na-placeholder",
 		Args: []string{text},
 	})
-	return ff
+	return c
 }
 
 // AutonumberSize maps to cli flags: --autonumber-size=NUMBER.
-func (ff *FilesystemBuilder) AutonumberSize(number int) *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) AutonumberSize(number int) *Command {
+	c.addFlag(&Flag{
 		ID:   "autonumber_size",
 		Flag: "--autonumber-size",
 		Args: []string{
 			strconv.Itoa(number),
 		},
 	})
-	return ff
+	return c
 }
 
 // AutonumberStart maps to cli flags: --autonumber-start=NUMBER.
-func (ff *FilesystemBuilder) AutonumberStart(number int) *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) AutonumberStart(number int) *Command {
+	c.addFlag(&Flag{
 		ID:   "autonumber_start",
 		Flag: "--autonumber-start",
 		Args: []string{
 			strconv.Itoa(number),
 		},
 	})
-	return ff
+	return c
 }
 
 // Restrict filenames to only ASCII characters, and avoid "&" and spaces in
 // filenames
 //
 // RestrictFilenames maps to cli flags: --restrict-filenames.
-func (ff *FilesystemBuilder) RestrictFilenames() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) RestrictFilenames() *Command {
+	c.addFlag(&Flag{
 		ID:   "restrictfilenames",
 		Flag: "--restrict-filenames",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Allow Unicode characters, "&" and spaces in filenames (default)
 //
 // NoRestrictFilenames maps to cli flags: --no-restrict-filenames.
-func (ff *FilesystemBuilder) NoRestrictFilenames() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoRestrictFilenames() *Command {
+	c.addFlag(&Flag{
 		ID:   "restrictfilenames",
 		Flag: "--no-restrict-filenames",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Force filenames to be Windows-compatible
 //
 // WindowsFilenames maps to cli flags: --windows-filenames.
-func (ff *FilesystemBuilder) WindowsFilenames() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WindowsFilenames() *Command {
+	c.addFlag(&Flag{
 		ID:   "windowsfilenames",
 		Flag: "--windows-filenames",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Make filenames Windows-compatible only if using Windows (default)
 //
 // NoWindowsFilenames maps to cli flags: --no-windows-filenames.
-func (ff *FilesystemBuilder) NoWindowsFilenames() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoWindowsFilenames() *Command {
+	c.addFlag(&Flag{
 		ID:   "windowsfilenames",
 		Flag: "--no-windows-filenames",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Limit the filename length (excluding extension) to the specified number of
 // characters
 //
 // TrimFilenames maps to cli flags: --trim-filenames/--trim-file-names=LENGTH.
-func (ff *FilesystemBuilder) TrimFilenames(length int) *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) TrimFilenames(length int) *Command {
+	c.addFlag(&Flag{
 		ID:   "trim_file_name",
 		Flag: "--trim-filenames",
 		Args: []string{
 			strconv.Itoa(length),
 		},
 	})
-	return ff
+	return c
 }
 
 // Do not overwrite any files
 //
 // NoOverwrites maps to cli flags: -w/--no-overwrites.
-func (ff *FilesystemBuilder) NoOverwrites() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoOverwrites() *Command {
+	c.addFlag(&Flag{
 		ID:   "overwrites",
 		Flag: "--no-overwrites",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Overwrite all video and metadata files. This option includes --no-continue
 //
 // ForceOverwrites maps to cli flags: --force-overwrites/--yes-overwrites.
-func (ff *FilesystemBuilder) ForceOverwrites() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ForceOverwrites() *Command {
+	c.addFlag(&Flag{
 		ID:   "overwrites",
 		Flag: "--force-overwrites",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Resume partially downloaded files/fragments (default)
 //
 // Continue maps to cli flags: -c/--continue.
-func (ff *FilesystemBuilder) Continue() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Continue() *Command {
+	c.addFlag(&Flag{
 		ID:   "continue_dl",
 		Flag: "--continue",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not resume partially downloaded fragments. If the file is not fragmented,
 // restart download of the entire file
 //
 // NoContinue maps to cli flags: --no-continue.
-func (ff *FilesystemBuilder) NoContinue() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoContinue() *Command {
+	c.addFlag(&Flag{
 		ID:   "continue_dl",
 		Flag: "--no-continue",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Use .part files instead of writing directly into output file (default)
 //
 // Part maps to cli flags: --part.
-func (ff *FilesystemBuilder) Part() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Part() *Command {
+	c.addFlag(&Flag{
 		ID:   "nopart",
 		Flag: "--part",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not use .part files - write directly into output file
 //
 // NoPart maps to cli flags: --no-part.
-func (ff *FilesystemBuilder) NoPart() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoPart() *Command {
+	c.addFlag(&Flag{
 		ID:   "nopart",
 		Flag: "--no-part",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Use the Last-modified header to set the file modification time (default)
 //
 // Mtime maps to cli flags: --mtime.
-func (ff *FilesystemBuilder) Mtime() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Mtime() *Command {
+	c.addFlag(&Flag{
 		ID:   "updatetime",
 		Flag: "--mtime",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not use the Last-modified header to set the file modification time
 //
 // NoMtime maps to cli flags: --no-mtime.
-func (ff *FilesystemBuilder) NoMtime() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoMtime() *Command {
+	c.addFlag(&Flag{
 		ID:   "updatetime",
 		Flag: "--no-mtime",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Write video description to a .description file
 //
 // WriteDescription maps to cli flags: --write-description.
-func (ff *FilesystemBuilder) WriteDescription() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WriteDescription() *Command {
+	c.addFlag(&Flag{
 		ID:   "writedescription",
 		Flag: "--write-description",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not write video description (default)
 //
 // NoWriteDescription maps to cli flags: --no-write-description.
-func (ff *FilesystemBuilder) NoWriteDescription() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoWriteDescription() *Command {
+	c.addFlag(&Flag{
 		ID:   "writedescription",
 		Flag: "--no-write-description",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Write video metadata to a .info.json file (this may contain personal
 // information)
 //
 // WriteInfoJson maps to cli flags: --write-info-json.
-func (ff *FilesystemBuilder) WriteInfoJson() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WriteInfoJson() *Command {
+	c.addFlag(&Flag{
 		ID:   "writeinfojson",
 		Flag: "--write-info-json",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not write video metadata (default)
 //
 // NoWriteInfoJson maps to cli flags: --no-write-info-json.
-func (ff *FilesystemBuilder) NoWriteInfoJson() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoWriteInfoJson() *Command {
+	c.addFlag(&Flag{
 		ID:   "writeinfojson",
 		Flag: "--no-write-info-json",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// WriteAnnotations sets the "write-annotations" flag to "true".
+// WriteAnnotations sets the "write-annotations" flag (no description specified).
 //
 // WriteAnnotations maps to cli flags: --write-annotations.
-func (ff *FilesystemBuilder) WriteAnnotations() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WriteAnnotations() *Command {
+	c.addFlag(&Flag{
 		ID:   "writeannotations",
 		Flag: "--write-annotations",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// NoWriteAnnotations sets the "no-write-annotations" flag to "false".
+// NoWriteAnnotations sets the "no-write-annotations" flag (no description specified).
 //
 // NoWriteAnnotations maps to cli flags: --no-write-annotations.
-func (ff *FilesystemBuilder) NoWriteAnnotations() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoWriteAnnotations() *Command {
+	c.addFlag(&Flag{
 		ID:   "writeannotations",
 		Flag: "--no-write-annotations",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Write playlist metadata in addition to the video metadata when using
 // --write-info-json, --write-description etc. (default)
 //
 // WritePlaylistMetafiles maps to cli flags: --write-playlist-metafiles.
-func (ff *FilesystemBuilder) WritePlaylistMetafiles() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WritePlaylistMetafiles() *Command {
+	c.addFlag(&Flag{
 		ID:   "allow_playlist_files",
 		Flag: "--write-playlist-metafiles",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not write playlist metadata when using --write-info-json, --write-description
 // etc.
 //
 // NoWritePlaylistMetafiles maps to cli flags: --no-write-playlist-metafiles.
-func (ff *FilesystemBuilder) NoWritePlaylistMetafiles() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoWritePlaylistMetafiles() *Command {
+	c.addFlag(&Flag{
 		ID:   "allow_playlist_files",
 		Flag: "--no-write-playlist-metafiles",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Remove some internal metadata such as filenames from the infojson (default)
 //
 // CleanInfoJson maps to cli flags: --clean-info-json/--clean-infojson.
-func (ff *FilesystemBuilder) CleanInfoJson() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) CleanInfoJson() *Command {
+	c.addFlag(&Flag{
 		ID:   "clean_infojson",
 		Flag: "--clean-info-json",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Write all fields to the infojson
 //
 // NoCleanInfoJson maps to cli flags: --no-clean-info-json/--no-clean-infojson.
-func (ff *FilesystemBuilder) NoCleanInfoJson() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoCleanInfoJson() *Command {
+	c.addFlag(&Flag{
 		ID:   "clean_infojson",
 		Flag: "--no-clean-info-json",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Retrieve video comments to be placed in the infojson. The comments are fetched
@@ -372,51 +362,51 @@ func (ff *FilesystemBuilder) NoCleanInfoJson() *FilesystemBuilder {
 // --get-comments)
 //
 // WriteComments maps to cli flags: --write-comments/--get-comments.
-func (ff *FilesystemBuilder) WriteComments() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WriteComments() *Command {
+	c.addFlag(&Flag{
 		ID:   "getcomments",
 		Flag: "--write-comments",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not retrieve video comments unless the extraction is known to be quick
 // (Alias: --no-get-comments)
 //
 // NoWriteComments maps to cli flags: --no-write-comments/--no-get-comments.
-func (ff *FilesystemBuilder) NoWriteComments() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoWriteComments() *Command {
+	c.addFlag(&Flag{
 		ID:   "getcomments",
 		Flag: "--no-write-comments",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // JSON file containing the video information (created with the "--write-info-json"
 // option)
 //
 // LoadInfoJson maps to cli flags: --load-info-json/--load-info=FILE.
-func (ff *FilesystemBuilder) LoadInfoJson(file string) *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) LoadInfoJson(file string) *Command {
+	c.addFlag(&Flag{
 		ID:   "load_info_filename",
 		Flag: "--load-info-json",
 		Args: []string{file},
 	})
-	return ff
+	return c
 }
 
 // Netscape formatted file to read cookies from and dump cookie jar in
 //
 // Cookies maps to cli flags: --cookies=FILE.
-func (ff *FilesystemBuilder) Cookies(file string) *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Cookies(file string) *Command {
+	c.addFlag(&Flag{
 		ID:   "cookiefile",
 		Flag: "--cookies",
 		Args: []string{file},
 	})
-	return ff
+	return c
 }
 
 // The name of the browser to load cookies from. Currently supported browsers are:
@@ -428,13 +418,13 @@ func (ff *FilesystemBuilder) Cookies(file string) *FilesystemBuilder {
 // keyrings are: basictext, gnomekeyring, kwallet, kwallet5, kwallet6
 //
 // CookiesFromBrowser maps to cli flags: --cookies-from-browser=BROWSER.
-func (ff *FilesystemBuilder) CookiesFromBrowser(browser string) *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) CookiesFromBrowser(browser string) *Command {
+	c.addFlag(&Flag{
 		ID:   "cookiesfrombrowser",
 		Flag: "--cookies-from-browser",
 		Args: []string{browser},
 	})
-	return ff
+	return c
 }
 
 // Location in the filesystem where yt-dlp can store some downloaded information
@@ -442,35 +432,35 @@ func (ff *FilesystemBuilder) CookiesFromBrowser(browser string) *FilesystemBuild
 // ${XDG_CACHE_HOME}/yt-dlp
 //
 // CacheDir maps to cli flags: --cache-dir=DIR.
-func (ff *FilesystemBuilder) CacheDir(dir string) *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) CacheDir(dir string) *Command {
+	c.addFlag(&Flag{
 		ID:   "cachedir",
 		Flag: "--cache-dir",
 		Args: []string{dir},
 	})
-	return ff
+	return c
 }
 
 // Disable filesystem caching
 //
 // NoCacheDir maps to cli flags: --no-cache-dir.
-func (ff *FilesystemBuilder) NoCacheDir() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoCacheDir() *Command {
+	c.addFlag(&Flag{
 		ID:   "cachedir",
 		Flag: "--no-cache-dir",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Delete all filesystem cache files
 //
 // RmCacheDir maps to cli flags: --rm-cache-dir.
-func (ff *FilesystemBuilder) RmCacheDir() *FilesystemBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) RmCacheDir() *Command {
+	c.addFlag(&Flag{
 		ID:   "rm_cachedir",
 		Flag: "--rm-cache-dir",
 		Args: nil,
 	})
-	return ff
+	return c
 }

@@ -8,24 +8,14 @@
 
 package ytdlp
 
-type ThumbnailBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *ThumbnailBuilder) Then() *Command {
-	return ff.parent
-}
-
 // Do not write thumbnail image to disk (default)
 //
 // NoWriteThumbnail maps to cli flags: --no-write-thumbnail.
-func (ff *ThumbnailBuilder) NoWriteThumbnail() *ThumbnailBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoWriteThumbnail() *Command {
+	c.addFlag(&Flag{
 		ID:   "writethumbnail",
 		Flag: "--no-write-thumbnail",
 		Args: nil,
 	})
-	return ff
+	return c
 }

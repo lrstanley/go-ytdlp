@@ -7,7 +7,7 @@
 {{- if .Help }}
 // {{ wrap 80 .Help | replace "\n" "\n// " }}
 {{- else if eq .Type "bool" }}
-// {{ .Name | to_camel }} sets the {{ .Name | quote }} flag to {{ if eq .Action "store_true" }}"true"{{ else }}"false"{{ end }}.
+// {{ .Name | to_camel }} sets the {{ .Name | quote }} flag (no description specified).
 {{- end }}{{/* end if help */}}
 //
 // {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}.
@@ -36,16 +36,6 @@ import (
 )
 {{ end }}{{/* if needs strconv */}}
 
-type {{ $id }}Builder struct {
-    parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *{{ $id }}Builder) Then() *Command {
-    return ff.parent
-}
-
 {{ range $index, $option := .Options }}
 {{/* iterator skipping logic */}}
 {{- if $option.IsExecutable }}{{ continue }}{{ end -}}
@@ -61,18 +51,18 @@ var {{ $option.Name | to_lower_camel }}Choices = []string{
 
 {{- if eq $option.Type "bool" }}
 {{ template "optionHelp" $option }}
-func (ff *{{ $id }}Builder) {{ $option.Name | to_camel }}() *{{ $id }}Builder {
-    ff.parent.addFlag(&Flag{
+func (c *Command) {{ $option.Name | to_camel }}() *Command {
+    c.addFlag(&Flag{
         ID: {{ $option.Dest | quote }},
         Flag: {{ $option.Flag | quote }},
         Args: nil,
     })
-    return ff
+    return c
 }
 {{- else if gt $option.NArgs 0 }}
 {{ template "optionHelp" $option }}
-func (ff *{{ $id }}Builder) {{ $option.Name | to_camel }}({{ $option.MetaVarFuncArgs | join ", " }} {{ $option.Type }}) *{{ $id }}Builder {
-    ff.parent.addFlag(&Flag{
+func (c *Command) {{ $option.Name | to_camel }}({{ $option.MetaVarFuncArgs | join ", " }} {{ $option.Type }}) *Command {
+    c.addFlag(&Flag{
         ID: {{ $option.Dest | quote }},
         Flag: {{ $option.Flag | quote }},
         Args: []string{
@@ -87,7 +77,7 @@ func (ff *{{ $id }}Builder) {{ $option.Name | to_camel }}({{ $option.MetaVarFunc
             {{- end }}{{/* end range for args */}}
         },
     })
-    return ff
+    return c
 }
 {{- end }}{{/* end if type */}}
 

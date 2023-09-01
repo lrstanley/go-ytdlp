@@ -12,179 +12,169 @@ import (
 	"strconv"
 )
 
-type DownloadBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *DownloadBuilder) Then() *Command {
-	return ff.parent
-}
-
 // Number of fragments of a dash/hlsnative video that should be downloaded
 // concurrently (default is %default)
 //
 // ConcurrentFragments maps to cli flags: -N/--concurrent-fragments=N.
-func (ff *DownloadBuilder) ConcurrentFragments(n int) *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ConcurrentFragments(n int) *Command {
+	c.addFlag(&Flag{
 		ID:   "concurrent_fragment_downloads",
 		Flag: "--concurrent-fragments",
 		Args: []string{
 			strconv.Itoa(n),
 		},
 	})
-	return ff
+	return c
 }
 
 // Maximum download rate in bytes per second, e.g. 50K or 4.2M
 //
 // LimitRate maps to cli flags: -r/--limit-rate/--rate-limit=RATE.
-func (ff *DownloadBuilder) LimitRate(rate string) *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) LimitRate(rate string) *Command {
+	c.addFlag(&Flag{
 		ID:   "ratelimit",
 		Flag: "--limit-rate",
 		Args: []string{rate},
 	})
-	return ff
+	return c
 }
 
 // Minimum download rate in bytes per second below which throttling is assumed and
 // the video data is re-extracted, e.g. 100K
 //
 // ThrottledRate maps to cli flags: --throttled-rate=RATE.
-func (ff *DownloadBuilder) ThrottledRate(rate string) *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ThrottledRate(rate string) *Command {
+	c.addFlag(&Flag{
 		ID:   "throttledratelimit",
 		Flag: "--throttled-rate",
 		Args: []string{rate},
 	})
-	return ff
+	return c
 }
 
 // Number of retries (default is %default), or "infinite"
 //
 // Retries maps to cli flags: -R/--retries=RETRIES.
-func (ff *DownloadBuilder) Retries(retries string) *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Retries(retries string) *Command {
+	c.addFlag(&Flag{
 		ID:   "retries",
 		Flag: "--retries",
 		Args: []string{retries},
 	})
-	return ff
+	return c
 }
 
 // Number of times to retry on file access error (default is %default), or
 // "infinite"
 //
 // FileAccessRetries maps to cli flags: --file-access-retries=RETRIES.
-func (ff *DownloadBuilder) FileAccessRetries(retries string) *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) FileAccessRetries(retries string) *Command {
+	c.addFlag(&Flag{
 		ID:   "file_access_retries",
 		Flag: "--file-access-retries",
 		Args: []string{retries},
 	})
-	return ff
+	return c
 }
 
 // Number of retries for a fragment (default is %default), or "infinite" (DASH,
 // hlsnative and ISM)
 //
 // FragmentRetries maps to cli flags: --fragment-retries=RETRIES.
-func (ff *DownloadBuilder) FragmentRetries(retries string) *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) FragmentRetries(retries string) *Command {
+	c.addFlag(&Flag{
 		ID:   "fragment_retries",
 		Flag: "--fragment-retries",
 		Args: []string{retries},
 	})
-	return ff
+	return c
 }
 
 // Skip unavailable fragments for DASH, hlsnative and ISM downloads (default)
 // (Alias: --no-abort-on-unavailable-fragments)
 //
 // SkipUnavailableFragments maps to cli flags: --skip-unavailable-fragments/--no-abort-on-unavailable-fragments.
-func (ff *DownloadBuilder) SkipUnavailableFragments() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SkipUnavailableFragments() *Command {
+	c.addFlag(&Flag{
 		ID:   "skip_unavailable_fragments",
 		Flag: "--skip-unavailable-fragments",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Abort download if a fragment is unavailable (Alias:
 // --no-skip-unavailable-fragments)
 //
 // AbortOnUnavailableFragments maps to cli flags: --abort-on-unavailable-fragments/--no-skip-unavailable-fragments.
-func (ff *DownloadBuilder) AbortOnUnavailableFragments() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) AbortOnUnavailableFragments() *Command {
+	c.addFlag(&Flag{
 		ID:   "skip_unavailable_fragments",
 		Flag: "--abort-on-unavailable-fragments",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Keep downloaded fragments on disk after downloading is finished
 //
 // KeepFragments maps to cli flags: --keep-fragments.
-func (ff *DownloadBuilder) KeepFragments() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) KeepFragments() *Command {
+	c.addFlag(&Flag{
 		ID:   "keep_fragments",
 		Flag: "--keep-fragments",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Delete downloaded fragments after downloading is finished (default)
 //
 // NoKeepFragments maps to cli flags: --no-keep-fragments.
-func (ff *DownloadBuilder) NoKeepFragments() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoKeepFragments() *Command {
+	c.addFlag(&Flag{
 		ID:   "keep_fragments",
 		Flag: "--no-keep-fragments",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Size of download buffer, e.g. 1024 or 16K (default is %default)
 //
 // BufferSize maps to cli flags: --buffer-size=SIZE.
-func (ff *DownloadBuilder) BufferSize(size string) *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) BufferSize(size string) *Command {
+	c.addFlag(&Flag{
 		ID:   "buffersize",
 		Flag: "--buffer-size",
 		Args: []string{size},
 	})
-	return ff
+	return c
 }
 
 // The buffer size is automatically resized from an initial value of --buffer-size
 // (default)
 //
 // ResizeBuffer maps to cli flags: --resize-buffer.
-func (ff *DownloadBuilder) ResizeBuffer() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ResizeBuffer() *Command {
+	c.addFlag(&Flag{
 		ID:   "noresizebuffer",
 		Flag: "--resize-buffer",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not automatically adjust the buffer size
 //
 // NoResizeBuffer maps to cli flags: --no-resize-buffer.
-func (ff *DownloadBuilder) NoResizeBuffer() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoResizeBuffer() *Command {
+	c.addFlag(&Flag{
 		ID:   "noresizebuffer",
 		Flag: "--no-resize-buffer",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Size of a chunk for chunk-based HTTP downloading, e.g. 10485760 or 10M (default
@@ -192,123 +182,123 @@ func (ff *DownloadBuilder) NoResizeBuffer() *DownloadBuilder {
 // webserver (experimental)
 //
 // HttpChunkSize maps to cli flags: --http-chunk-size=SIZE.
-func (ff *DownloadBuilder) HttpChunkSize(size string) *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) HttpChunkSize(size string) *Command {
+	c.addFlag(&Flag{
 		ID:   "http_chunk_size",
 		Flag: "--http-chunk-size",
 		Args: []string{size},
 	})
-	return ff
+	return c
 }
 
-// Test sets the "test" flag to "true".
+// Test sets the "test" flag (no description specified).
 //
 // Test maps to cli flags: --test.
-func (ff *DownloadBuilder) Test() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Test() *Command {
+	c.addFlag(&Flag{
 		ID:   "test",
 		Flag: "--test",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// PlaylistReverse sets the "playlist-reverse" flag to "true".
+// PlaylistReverse sets the "playlist-reverse" flag (no description specified).
 //
 // PlaylistReverse maps to cli flags: --playlist-reverse.
-func (ff *DownloadBuilder) PlaylistReverse() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) PlaylistReverse() *Command {
+	c.addFlag(&Flag{
 		ID:   "playlist_reverse",
 		Flag: "--playlist-reverse",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// NoPlaylistReverse sets the "no-playlist-reverse" flag to "false".
+// NoPlaylistReverse sets the "no-playlist-reverse" flag (no description specified).
 //
 // NoPlaylistReverse maps to cli flags: --no-playlist-reverse.
-func (ff *DownloadBuilder) NoPlaylistReverse() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoPlaylistReverse() *Command {
+	c.addFlag(&Flag{
 		ID:   "playlist_reverse",
 		Flag: "--no-playlist-reverse",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Download playlist videos in random order
 //
 // PlaylistRandom maps to cli flags: --playlist-random.
-func (ff *DownloadBuilder) PlaylistRandom() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) PlaylistRandom() *Command {
+	c.addFlag(&Flag{
 		ID:   "playlist_random",
 		Flag: "--playlist-random",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Process entries in the playlist as they are received. This disables n_entries,
 // --playlist-random and --playlist-reverse
 //
 // LazyPlaylist maps to cli flags: --lazy-playlist.
-func (ff *DownloadBuilder) LazyPlaylist() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) LazyPlaylist() *Command {
+	c.addFlag(&Flag{
 		ID:   "lazy_playlist",
 		Flag: "--lazy-playlist",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Process videos in the playlist only after the entire playlist is parsed
 // (default)
 //
 // NoLazyPlaylist maps to cli flags: --no-lazy-playlist.
-func (ff *DownloadBuilder) NoLazyPlaylist() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoLazyPlaylist() *Command {
+	c.addFlag(&Flag{
 		ID:   "lazy_playlist",
 		Flag: "--no-lazy-playlist",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Set file xattribute ytdl.filesize with expected file size
 //
 // XattrSetFilesize maps to cli flags: --xattr-set-filesize.
-func (ff *DownloadBuilder) XattrSetFilesize() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) XattrSetFilesize() *Command {
+	c.addFlag(&Flag{
 		ID:   "xattr_set_filesize",
 		Flag: "--xattr-set-filesize",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// HlsPreferNative sets the "hls-prefer-native" flag to "true".
+// HlsPreferNative sets the "hls-prefer-native" flag (no description specified).
 //
 // HlsPreferNative maps to cli flags: --hls-prefer-native.
-func (ff *DownloadBuilder) HlsPreferNative() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) HlsPreferNative() *Command {
+	c.addFlag(&Flag{
 		ID:   "hls_prefer_native",
 		Flag: "--hls-prefer-native",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// HlsPreferFfmpeg sets the "hls-prefer-ffmpeg" flag to "false".
+// HlsPreferFfmpeg sets the "hls-prefer-ffmpeg" flag (no description specified).
 //
 // HlsPreferFfmpeg maps to cli flags: --hls-prefer-ffmpeg.
-func (ff *DownloadBuilder) HlsPreferFfmpeg() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) HlsPreferFfmpeg() *Command {
+	c.addFlag(&Flag{
 		ID:   "hls_prefer_native",
 		Flag: "--hls-prefer-ffmpeg",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Use the mpegts container for HLS videos; allowing some players to play the video
@@ -316,24 +306,24 @@ func (ff *DownloadBuilder) HlsPreferFfmpeg() *DownloadBuilder {
 // interrupted. This is enabled by default for live streams
 //
 // HlsUseMpegts maps to cli flags: --hls-use-mpegts.
-func (ff *DownloadBuilder) HlsUseMpegts() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) HlsUseMpegts() *Command {
+	c.addFlag(&Flag{
 		ID:   "hls_use_mpegts",
 		Flag: "--hls-use-mpegts",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not use the mpegts container for HLS videos. This is default when not
 // downloading live streams
 //
 // NoHlsUseMpegts maps to cli flags: --no-hls-use-mpegts.
-func (ff *DownloadBuilder) NoHlsUseMpegts() *DownloadBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoHlsUseMpegts() *Command {
+	c.addFlag(&Flag{
 		ID:   "hls_use_mpegts",
 		Flag: "--no-hls-use-mpegts",
 		Args: nil,
 	})
-	return ff
+	return c
 }

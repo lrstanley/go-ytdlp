@@ -8,38 +8,28 @@
 
 package ytdlp
 
-type GeoRestrictionBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *GeoRestrictionBuilder) Then() *Command {
-	return ff.parent
-}
-
 // Use this proxy to verify the IP address for some geo-restricted sites. The
 // default proxy specified by --proxy (or none, if the option is not present) is
 // used for the actual downloading
 //
 // GeoVerificationProxy maps to cli flags: --geo-verification-proxy=URL.
-func (ff *GeoRestrictionBuilder) GeoVerificationProxy(url string) *GeoRestrictionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) GeoVerificationProxy(url string) *Command {
+	c.addFlag(&Flag{
 		ID:   "geo_verification_proxy",
 		Flag: "--geo-verification-proxy",
 		Args: []string{url},
 	})
-	return ff
+	return c
 }
 
 // CnVerificationProxy maps to cli flags: --cn-verification-proxy=URL.
-func (ff *GeoRestrictionBuilder) CnVerificationProxy(url string) *GeoRestrictionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) CnVerificationProxy(url string) *Command {
+	c.addFlag(&Flag{
 		ID:   "cn_verification_proxy",
 		Flag: "--cn-verification-proxy",
 		Args: []string{url},
 	})
-	return ff
+	return c
 }
 
 // How to fake X-Forwarded-For HTTP header to try bypassing geographic restriction.
@@ -47,31 +37,31 @@ func (ff *GeoRestrictionBuilder) CnVerificationProxy(url string) *GeoRestriction
 // notation, or a two-letter ISO 3166-2 country code
 //
 // Xff maps to cli flags: --xff=VALUE.
-func (ff *GeoRestrictionBuilder) Xff(value string) *GeoRestrictionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Xff(value string) *Command {
+	c.addFlag(&Flag{
 		ID:   "geo_bypass",
 		Flag: "--xff",
 		Args: []string{value},
 	})
-	return ff
+	return c
 }
 
 // GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE.
-func (ff *GeoRestrictionBuilder) GeoBypassCountry(code string) *GeoRestrictionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) GeoBypassCountry(code string) *Command {
+	c.addFlag(&Flag{
 		ID:   "geo_bypass",
 		Flag: "--geo-bypass-country",
 		Args: []string{code},
 	})
-	return ff
+	return c
 }
 
 // GeoBypassIpBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK.
-func (ff *GeoRestrictionBuilder) GeoBypassIpBlock(ipBlock string) *GeoRestrictionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) GeoBypassIpBlock(ipBlock string) *Command {
+	c.addFlag(&Flag{
 		ID:   "geo_bypass",
 		Flag: "--geo-bypass-ip-block",
 		Args: []string{ipBlock},
 	})
-	return ff
+	return c
 }

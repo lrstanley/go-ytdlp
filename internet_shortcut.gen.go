@@ -8,62 +8,52 @@
 
 package ytdlp
 
-type InternetShortcutBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *InternetShortcutBuilder) Then() *Command {
-	return ff.parent
-}
-
 // Write an internet shortcut file, depending on the current platform (.url,
 // .webloc or .desktop). The URL may be cached by the OS
 //
 // WriteLink maps to cli flags: --write-link.
-func (ff *InternetShortcutBuilder) WriteLink() *InternetShortcutBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WriteLink() *Command {
+	c.addFlag(&Flag{
 		ID:   "writelink",
 		Flag: "--write-link",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Write a .url Windows internet shortcut. The OS caches the URL based on the file
 // path
 //
 // WriteUrlLink maps to cli flags: --write-url-link.
-func (ff *InternetShortcutBuilder) WriteUrlLink() *InternetShortcutBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WriteUrlLink() *Command {
+	c.addFlag(&Flag{
 		ID:   "writeurllink",
 		Flag: "--write-url-link",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Write a .webloc macOS internet shortcut
 //
 // WriteWeblocLink maps to cli flags: --write-webloc-link.
-func (ff *InternetShortcutBuilder) WriteWeblocLink() *InternetShortcutBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WriteWeblocLink() *Command {
+	c.addFlag(&Flag{
 		ID:   "writewebloclink",
 		Flag: "--write-webloc-link",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Write a .desktop Linux internet shortcut
 //
 // WriteDesktopLink maps to cli flags: --write-desktop-link.
-func (ff *InternetShortcutBuilder) WriteDesktopLink() *InternetShortcutBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WriteDesktopLink() *Command {
+	c.addFlag(&Flag{
 		ID:   "writedesktoplink",
 		Flag: "--write-desktop-link",
 		Args: nil,
 	})
-	return ff
+	return c
 }

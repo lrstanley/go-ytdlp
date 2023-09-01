@@ -12,38 +12,28 @@ import (
 	"strconv"
 )
 
-type VideoSelectionBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *VideoSelectionBuilder) Then() *Command {
-	return ff.parent
-}
-
 // PlaylistStart maps to cli flags: --playlist-start=NUMBER.
-func (ff *VideoSelectionBuilder) PlaylistStart(number int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) PlaylistStart(number int) *Command {
+	c.addFlag(&Flag{
 		ID:   "playliststart",
 		Flag: "--playlist-start",
 		Args: []string{
 			strconv.Itoa(number),
 		},
 	})
-	return ff
+	return c
 }
 
 // PlaylistEnd maps to cli flags: --playlist-end=NUMBER.
-func (ff *VideoSelectionBuilder) PlaylistEnd(number int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) PlaylistEnd(number int) *Command {
+	c.addFlag(&Flag{
 		ID:   "playlistend",
 		Flag: "--playlist-end",
 		Args: []string{
 			strconv.Itoa(number),
 		},
 	})
-	return ff
+	return c
 }
 
 // Comma separated playlist_index of the items to download. You can specify a range
@@ -53,57 +43,57 @@ func (ff *VideoSelectionBuilder) PlaylistEnd(number int) *VideoSelectionBuilder 
 // will download the items at index 1,2,3,7,11,13,15
 //
 // PlaylistItems maps to cli flags: -I/--playlist-items=ITEM_SPEC.
-func (ff *VideoSelectionBuilder) PlaylistItems(itemSpec string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) PlaylistItems(itemSpec string) *Command {
+	c.addFlag(&Flag{
 		ID:   "playlist_items",
 		Flag: "--playlist-items",
 		Args: []string{itemSpec},
 	})
-	return ff
+	return c
 }
 
 // MatchTitle maps to cli flags: --match-title=REGEX.
-func (ff *VideoSelectionBuilder) MatchTitle(regex string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) MatchTitle(regex string) *Command {
+	c.addFlag(&Flag{
 		ID:   "matchtitle",
 		Flag: "--match-title",
 		Args: []string{regex},
 	})
-	return ff
+	return c
 }
 
 // RejectTitle maps to cli flags: --reject-title=REGEX.
-func (ff *VideoSelectionBuilder) RejectTitle(regex string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) RejectTitle(regex string) *Command {
+	c.addFlag(&Flag{
 		ID:   "rejecttitle",
 		Flag: "--reject-title",
 		Args: []string{regex},
 	})
-	return ff
+	return c
 }
 
 // Abort download if filesize is smaller than SIZE, e.g. 50k or 44.6M
 //
 // MinFilesize maps to cli flags: --min-filesize=SIZE.
-func (ff *VideoSelectionBuilder) MinFilesize(size string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) MinFilesize(size string) *Command {
+	c.addFlag(&Flag{
 		ID:   "min_filesize",
 		Flag: "--min-filesize",
 		Args: []string{size},
 	})
-	return ff
+	return c
 }
 
 // Abort download if filesize is larger than SIZE, e.g. 50k or 44.6M
 //
 // MaxFilesize maps to cli flags: --max-filesize=SIZE.
-func (ff *VideoSelectionBuilder) MaxFilesize(size string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) MaxFilesize(size string) *Command {
+	c.addFlag(&Flag{
 		ID:   "max_filesize",
 		Flag: "--max-filesize",
 		Args: []string{size},
 	})
-	return ff
+	return c
 }
 
 // Download only videos uploaded on this date. The date can be "YYYYMMDD" or in the
@@ -111,213 +101,213 @@ func (ff *VideoSelectionBuilder) MaxFilesize(size string) *VideoSelectionBuilder
 // today-2weeks" downloads only videos uploaded on the same day two weeks ago
 //
 // Date maps to cli flags: --date=DATE.
-func (ff *VideoSelectionBuilder) Date(date string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Date(date string) *Command {
+	c.addFlag(&Flag{
 		ID:   "date",
 		Flag: "--date",
 		Args: []string{date},
 	})
-	return ff
+	return c
 }
 
 // Download only videos uploaded on or before this date. The date formats accepted
 // is the same as --date
 //
 // Datebefore maps to cli flags: --datebefore=DATE.
-func (ff *VideoSelectionBuilder) Datebefore(date string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Datebefore(date string) *Command {
+	c.addFlag(&Flag{
 		ID:   "datebefore",
 		Flag: "--datebefore",
 		Args: []string{date},
 	})
-	return ff
+	return c
 }
 
 // Download only videos uploaded on or after this date. The date formats accepted
 // is the same as --date
 //
 // Dateafter maps to cli flags: --dateafter=DATE.
-func (ff *VideoSelectionBuilder) Dateafter(date string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Dateafter(date string) *Command {
+	c.addFlag(&Flag{
 		ID:   "dateafter",
 		Flag: "--dateafter",
 		Args: []string{date},
 	})
-	return ff
+	return c
 }
 
 // MinViews maps to cli flags: --min-views=COUNT.
-func (ff *VideoSelectionBuilder) MinViews(count int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) MinViews(count int) *Command {
+	c.addFlag(&Flag{
 		ID:   "min_views",
 		Flag: "--min-views",
 		Args: []string{
 			strconv.Itoa(count),
 		},
 	})
-	return ff
+	return c
 }
 
 // MaxViews maps to cli flags: --max-views=COUNT.
-func (ff *VideoSelectionBuilder) MaxViews(count int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) MaxViews(count int) *Command {
+	c.addFlag(&Flag{
 		ID:   "max_views",
 		Flag: "--max-views",
 		Args: []string{
 			strconv.Itoa(count),
 		},
 	})
-	return ff
+	return c
 }
 
 // Download only the video, if the URL refers to a video and a playlist
 //
 // NoPlaylist maps to cli flags: --no-playlist.
-func (ff *VideoSelectionBuilder) NoPlaylist() *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoPlaylist() *Command {
+	c.addFlag(&Flag{
 		ID:   "noplaylist",
 		Flag: "--no-playlist",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Download the playlist, if the URL refers to a video and a playlist
 //
 // YesPlaylist maps to cli flags: --yes-playlist.
-func (ff *VideoSelectionBuilder) YesPlaylist() *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) YesPlaylist() *Command {
+	c.addFlag(&Flag{
 		ID:   "noplaylist",
 		Flag: "--yes-playlist",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Download only videos suitable for the given age
 //
 // AgeLimit maps to cli flags: --age-limit=YEARS.
-func (ff *VideoSelectionBuilder) AgeLimit(years int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) AgeLimit(years int) *Command {
+	c.addFlag(&Flag{
 		ID:   "age_limit",
 		Flag: "--age-limit",
 		Args: []string{
 			strconv.Itoa(years),
 		},
 	})
-	return ff
+	return c
 }
 
 // Download only videos not listed in the archive file. Record the IDs of all
 // downloaded videos in it
 //
 // DownloadArchive maps to cli flags: --download-archive=FILE.
-func (ff *VideoSelectionBuilder) DownloadArchive(file string) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) DownloadArchive(file string) *Command {
+	c.addFlag(&Flag{
 		ID:   "download_archive",
 		Flag: "--download-archive",
 		Args: []string{file},
 	})
-	return ff
+	return c
 }
 
 // Abort after downloading NUMBER files
 //
 // MaxDownloads maps to cli flags: --max-downloads=NUMBER.
-func (ff *VideoSelectionBuilder) MaxDownloads(number int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) MaxDownloads(number int) *Command {
+	c.addFlag(&Flag{
 		ID:   "max_downloads",
 		Flag: "--max-downloads",
 		Args: []string{
 			strconv.Itoa(number),
 		},
 	})
-	return ff
+	return c
 }
 
 // Stop the download process when encountering a file that is in the archive
 //
 // BreakOnExisting maps to cli flags: --break-on-existing.
-func (ff *VideoSelectionBuilder) BreakOnExisting() *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) BreakOnExisting() *Command {
+	c.addFlag(&Flag{
 		ID:   "break_on_existing",
 		Flag: "--break-on-existing",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// BreakOnReject sets the "break-on-reject" flag to "true".
+// BreakOnReject sets the "break-on-reject" flag (no description specified).
 //
 // BreakOnReject maps to cli flags: --break-on-reject.
-func (ff *VideoSelectionBuilder) BreakOnReject() *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) BreakOnReject() *Command {
+	c.addFlag(&Flag{
 		ID:   "break_on_reject",
 		Flag: "--break-on-reject",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Alters --max-downloads, --break-on-existing, --break-match-filter, and
 // autonumber to reset per input URL
 //
 // BreakPerInput maps to cli flags: --break-per-input.
-func (ff *VideoSelectionBuilder) BreakPerInput() *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) BreakPerInput() *Command {
+	c.addFlag(&Flag{
 		ID:   "break_per_url",
 		Flag: "--break-per-input",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // --break-on-existing and similar options terminates the entire download queue
 //
 // NoBreakPerInput maps to cli flags: --no-break-per-input.
-func (ff *VideoSelectionBuilder) NoBreakPerInput() *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoBreakPerInput() *Command {
+	c.addFlag(&Flag{
 		ID:   "break_per_url",
 		Flag: "--no-break-per-input",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Number of allowed failures until the rest of the playlist is skipped
 //
 // SkipPlaylistAfterErrors maps to cli flags: --skip-playlist-after-errors=N.
-func (ff *VideoSelectionBuilder) SkipPlaylistAfterErrors(n int) *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SkipPlaylistAfterErrors(n int) *Command {
+	c.addFlag(&Flag{
 		ID:   "skip_playlist_after_errors",
 		Flag: "--skip-playlist-after-errors",
 		Args: []string{
 			strconv.Itoa(n),
 		},
 	})
-	return ff
+	return c
 }
 
-// IncludeAds sets the "include-ads" flag to "true".
+// IncludeAds sets the "include-ads" flag (no description specified).
 //
 // IncludeAds maps to cli flags: --include-ads.
-func (ff *VideoSelectionBuilder) IncludeAds() *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) IncludeAds() *Command {
+	c.addFlag(&Flag{
 		ID:   "include_ads",
 		Flag: "--include-ads",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// NoIncludeAds sets the "no-include-ads" flag to "false".
+// NoIncludeAds sets the "no-include-ads" flag (no description specified).
 //
 // NoIncludeAds maps to cli flags: --no-include-ads.
-func (ff *VideoSelectionBuilder) NoIncludeAds() *VideoSelectionBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoIncludeAds() *Command {
+	c.addFlag(&Flag{
 		ID:   "include_ads",
 		Flag: "--no-include-ads",
 		Args: nil,
 	})
-	return ff
+	return c
 }

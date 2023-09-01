@@ -11,142 +11,132 @@
 
 package ytdlp
 
-type SponsorBlockBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *SponsorBlockBuilder) Then() *Command {
-	return ff.parent
-}
-
 // An output template for the title of the SponsorBlock chapters created by
 // --sponsorblock-mark. The only available fields are start_time, end_time,
 // category, categories, name, category_names. Defaults to "%default"
 //
 // SponsorblockChapterTitle maps to cli flags: --sponsorblock-chapter-title=TEMPLATE.
-func (ff *SponsorBlockBuilder) SponsorblockChapterTitle(template string) *SponsorBlockBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SponsorblockChapterTitle(template string) *Command {
+	c.addFlag(&Flag{
 		ID:   "sponsorblock_chapter_title",
 		Flag: "--sponsorblock-chapter-title",
 		Args: []string{template},
 	})
-	return ff
+	return c
 }
 
 // Disable both --sponsorblock-mark and --sponsorblock-remove
 //
 // NoSponsorblock maps to cli flags: --no-sponsorblock.
-func (ff *SponsorBlockBuilder) NoSponsorblock() *SponsorBlockBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoSponsorblock() *Command {
+	c.addFlag(&Flag{
 		ID:   "no_sponsorblock",
 		Flag: "--no-sponsorblock",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // SponsorBlock API location, defaults to %default
 //
 // SponsorblockApi maps to cli flags: --sponsorblock-api=URL.
-func (ff *SponsorBlockBuilder) SponsorblockApi(url string) *SponsorBlockBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SponsorblockApi(url string) *Command {
+	c.addFlag(&Flag{
 		ID:   "sponsorblock_api",
 		Flag: "--sponsorblock-api",
 		Args: []string{url},
 	})
-	return ff
+	return c
 }
 
-// Sponskrub sets the "sponskrub" flag to "true".
+// Sponskrub sets the "sponskrub" flag (no description specified).
 //
 // Sponskrub maps to cli flags: --sponskrub.
-func (ff *SponsorBlockBuilder) Sponskrub() *SponsorBlockBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Sponskrub() *Command {
+	c.addFlag(&Flag{
 		ID:   "sponskrub",
 		Flag: "--sponskrub",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// NoSponskrub sets the "no-sponskrub" flag to "false".
+// NoSponskrub sets the "no-sponskrub" flag (no description specified).
 //
 // NoSponskrub maps to cli flags: --no-sponskrub.
-func (ff *SponsorBlockBuilder) NoSponskrub() *SponsorBlockBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoSponskrub() *Command {
+	c.addFlag(&Flag{
 		ID:   "sponskrub",
 		Flag: "--no-sponskrub",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// SponskrubCut sets the "sponskrub-cut" flag to "true".
+// SponskrubCut sets the "sponskrub-cut" flag (no description specified).
 //
 // SponskrubCut maps to cli flags: --sponskrub-cut.
-func (ff *SponsorBlockBuilder) SponskrubCut() *SponsorBlockBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SponskrubCut() *Command {
+	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
 		Flag: "--sponskrub-cut",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// NoSponskrubCut sets the "no-sponskrub-cut" flag to "false".
+// NoSponskrubCut sets the "no-sponskrub-cut" flag (no description specified).
 //
 // NoSponskrubCut maps to cli flags: --no-sponskrub-cut.
-func (ff *SponsorBlockBuilder) NoSponskrubCut() *SponsorBlockBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoSponskrubCut() *Command {
+	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
 		Flag: "--no-sponskrub-cut",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// SponskrubForce sets the "sponskrub-force" flag to "true".
+// SponskrubForce sets the "sponskrub-force" flag (no description specified).
 //
 // SponskrubForce maps to cli flags: --sponskrub-force.
-func (ff *SponsorBlockBuilder) SponskrubForce() *SponsorBlockBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SponskrubForce() *Command {
+	c.addFlag(&Flag{
 		ID:   "sponskrub_force",
 		Flag: "--sponskrub-force",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// NoSponskrubForce sets the "no-sponskrub-force" flag to "true".
+// NoSponskrubForce sets the "no-sponskrub-force" flag (no description specified).
 //
 // NoSponskrubForce maps to cli flags: --no-sponskrub-force.
-func (ff *SponsorBlockBuilder) NoSponskrubForce() *SponsorBlockBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoSponskrubForce() *Command {
+	c.addFlag(&Flag{
 		ID:   "sponskrub_force",
 		Flag: "--no-sponskrub-force",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // SponskrubLocation maps to cli flags: --sponskrub-location=PATH.
-func (ff *SponsorBlockBuilder) SponskrubLocation(path string) *SponsorBlockBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SponskrubLocation(path string) *Command {
+	c.addFlag(&Flag{
 		ID:   "sponskrub_path",
 		Flag: "--sponskrub-location",
 		Args: []string{path},
 	})
-	return ff
+	return c
 }
 
 // SponskrubArgs maps to cli flags: --sponskrub-args=ARGS.
-func (ff *SponsorBlockBuilder) SponskrubArgs(args string) *SponsorBlockBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SponskrubArgs(args string) *Command {
+	c.addFlag(&Flag{
 		ID:   "sponskrub_args",
 		Flag: "--sponskrub-args",
 		Args: []string{args},
 	})
-	return ff
+	return c
 }

@@ -8,184 +8,174 @@
 
 package ytdlp
 
-type VideoFormatBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *VideoFormatBuilder) Then() *Command {
-	return ff.parent
-}
-
 // Video format code, see "FORMAT SELECTION" for more details
 //
 // Format maps to cli flags: -f/--format=FORMAT.
-func (ff *VideoFormatBuilder) Format(format string) *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Format(format string) *Command {
+	c.addFlag(&Flag{
 		ID:   "format",
 		Flag: "--format",
 		Args: []string{format},
 	})
-	return ff
+	return c
 }
 
 // Force user specified sort order to have precedence over all fields, see "Sorting
 // Formats" for more details (Alias: --S-force)
 //
 // FormatSortForce maps to cli flags: --format-sort-force/--S-force=FORMAT.
-func (ff *VideoFormatBuilder) FormatSortForce() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) FormatSortForce() *Command {
+	c.addFlag(&Flag{
 		ID:   "format_sort_force",
 		Flag: "--format-sort-force",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Some fields have precedence over the user specified sort order (default)
 //
 // NoFormatSortForce maps to cli flags: --no-format-sort-force=FORMAT.
-func (ff *VideoFormatBuilder) NoFormatSortForce() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoFormatSortForce() *Command {
+	c.addFlag(&Flag{
 		ID:   "format_sort_force",
 		Flag: "--no-format-sort-force",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Allow multiple video streams to be merged into a single file
 //
 // VideoMultistreams maps to cli flags: --video-multistreams.
-func (ff *VideoFormatBuilder) VideoMultistreams() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) VideoMultistreams() *Command {
+	c.addFlag(&Flag{
 		ID:   "allow_multiple_video_streams",
 		Flag: "--video-multistreams",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Only one video stream is downloaded for each output file (default)
 //
 // NoVideoMultistreams maps to cli flags: --no-video-multistreams.
-func (ff *VideoFormatBuilder) NoVideoMultistreams() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoVideoMultistreams() *Command {
+	c.addFlag(&Flag{
 		ID:   "allow_multiple_video_streams",
 		Flag: "--no-video-multistreams",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Allow multiple audio streams to be merged into a single file
 //
 // AudioMultistreams maps to cli flags: --audio-multistreams.
-func (ff *VideoFormatBuilder) AudioMultistreams() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) AudioMultistreams() *Command {
+	c.addFlag(&Flag{
 		ID:   "allow_multiple_audio_streams",
 		Flag: "--audio-multistreams",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Only one audio stream is downloaded for each output file (default)
 //
 // NoAudioMultistreams maps to cli flags: --no-audio-multistreams.
-func (ff *VideoFormatBuilder) NoAudioMultistreams() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoAudioMultistreams() *Command {
+	c.addFlag(&Flag{
 		ID:   "allow_multiple_audio_streams",
 		Flag: "--no-audio-multistreams",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Prefer video formats with free containers over non-free ones of same quality.
 // Use with "-S ext" to strictly prefer free containers irrespective of quality
 //
 // PreferFreeFormats maps to cli flags: --prefer-free-formats.
-func (ff *VideoFormatBuilder) PreferFreeFormats() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) PreferFreeFormats() *Command {
+	c.addFlag(&Flag{
 		ID:   "prefer_free_formats",
 		Flag: "--prefer-free-formats",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Don't give any special preference to free containers (default)
 //
 // NoPreferFreeFormats maps to cli flags: --no-prefer-free-formats.
-func (ff *VideoFormatBuilder) NoPreferFreeFormats() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoPreferFreeFormats() *Command {
+	c.addFlag(&Flag{
 		ID:   "prefer_free_formats",
 		Flag: "--no-prefer-free-formats",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Check all formats for whether they are actually downloadable
 //
 // CheckAllFormats maps to cli flags: --check-all-formats.
-func (ff *VideoFormatBuilder) CheckAllFormats() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) CheckAllFormats() *Command {
+	c.addFlag(&Flag{
 		ID:   "check_formats",
 		Flag: "--check-all-formats",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not check that the formats are actually downloadable
 //
 // NoCheckFormats maps to cli flags: --no-check-formats.
-func (ff *VideoFormatBuilder) NoCheckFormats() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoCheckFormats() *Command {
+	c.addFlag(&Flag{
 		ID:   "check_formats",
 		Flag: "--no-check-formats",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // List available formats of each video. Simulate unless --no-simulate is used
 //
 // ListFormats maps to cli flags: -F/--list-formats.
-func (ff *VideoFormatBuilder) ListFormats() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ListFormats() *Command {
+	c.addFlag(&Flag{
 		ID:   "listformats",
 		Flag: "--list-formats",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// ListFormatsAsTable sets the "list-formats-as-table" flag to "true".
+// ListFormatsAsTable sets the "list-formats-as-table" flag (no description specified).
 //
 // ListFormatsAsTable maps to cli flags: --list-formats-as-table.
-func (ff *VideoFormatBuilder) ListFormatsAsTable() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ListFormatsAsTable() *Command {
+	c.addFlag(&Flag{
 		ID:   "listformats_table",
 		Flag: "--list-formats-as-table",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// ListFormatsOld sets the "list-formats-old" flag to "false".
+// ListFormatsOld sets the "list-formats-old" flag (no description specified).
 //
 // ListFormatsOld maps to cli flags: --list-formats-old/--no-list-formats-as-table.
-func (ff *VideoFormatBuilder) ListFormatsOld() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ListFormatsOld() *Command {
+	c.addFlag(&Flag{
 		ID:   "listformats_table",
 		Flag: "--list-formats-old",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Containers that may be used when merging formats, separated by "/", e.g.
@@ -193,35 +183,35 @@ func (ff *VideoFormatBuilder) ListFormatsOld() *VideoFormatBuilder {
 // mov, mp4, webm)
 //
 // MergeOutputFormat maps to cli flags: --merge-output-format=FORMAT.
-func (ff *VideoFormatBuilder) MergeOutputFormat(format string) *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) MergeOutputFormat(format string) *Command {
+	c.addFlag(&Flag{
 		ID:   "merge_output_format",
 		Flag: "--merge-output-format",
 		Args: []string{format},
 	})
-	return ff
+	return c
 }
 
-// AllowUnplayableFormats sets the "allow-unplayable-formats" flag to "true".
+// AllowUnplayableFormats sets the "allow-unplayable-formats" flag (no description specified).
 //
 // AllowUnplayableFormats maps to cli flags: --allow-unplayable-formats.
-func (ff *VideoFormatBuilder) AllowUnplayableFormats() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) AllowUnplayableFormats() *Command {
+	c.addFlag(&Flag{
 		ID:   "allow_unplayable_formats",
 		Flag: "--allow-unplayable-formats",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// NoAllowUnplayableFormats sets the "no-allow-unplayable-formats" flag to "false".
+// NoAllowUnplayableFormats sets the "no-allow-unplayable-formats" flag (no description specified).
 //
 // NoAllowUnplayableFormats maps to cli flags: --no-allow-unplayable-formats.
-func (ff *VideoFormatBuilder) NoAllowUnplayableFormats() *VideoFormatBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoAllowUnplayableFormats() *Command {
+	c.addFlag(&Flag{
 		ID:   "allow_unplayable_formats",
 		Flag: "--no-allow-unplayable-formats",
 		Args: nil,
 	})
-	return ff
+	return c
 }

@@ -8,52 +8,42 @@
 
 package ytdlp
 
-type GeneralBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *GeneralBuilder) Then() *Command {
-	return ff.parent
-}
-
 // Ignore download and postprocessing errors. The download will be considered
 // successful even if the postprocessing fails
 //
 // IgnoreErrors maps to cli flags: -i/--ignore-errors.
-func (ff *GeneralBuilder) IgnoreErrors() *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) IgnoreErrors() *Command {
+	c.addFlag(&Flag{
 		ID:   "ignoreerrors",
 		Flag: "--ignore-errors",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Abort downloading of further videos if an error occurs (Alias:
 // --no-ignore-errors)
 //
 // AbortOnError maps to cli flags: --abort-on-error/--no-ignore-errors.
-func (ff *GeneralBuilder) AbortOnError() *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) AbortOnError() *Command {
+	c.addFlag(&Flag{
 		ID:   "ignoreerrors",
 		Flag: "--abort-on-error",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// ForceGenericExtractor sets the "force-generic-extractor" flag to "true".
+// ForceGenericExtractor sets the "force-generic-extractor" flag (no description specified).
 //
 // ForceGenericExtractor maps to cli flags: --force-generic-extractor.
-func (ff *GeneralBuilder) ForceGenericExtractor() *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ForceGenericExtractor() *Command {
+	c.addFlag(&Flag{
 		ID:   "force_generic_extractor",
 		Flag: "--force-generic-extractor",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Use this prefix for unqualified URLs. E.g. "gvsearch2:python" downloads two
@@ -63,13 +53,13 @@ func (ff *GeneralBuilder) ForceGenericExtractor() *GeneralBuilder {
 // an error if this is not possible instead of searching
 //
 // DefaultSearch maps to cli flags: --default-search=PREFIX.
-func (ff *GeneralBuilder) DefaultSearch(prefix string) *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) DefaultSearch(prefix string) *Command {
+	c.addFlag(&Flag{
 		ID:   "default_search",
 		Flag: "--default-search",
 		Args: []string{prefix},
 	})
-	return ff
+	return c
 }
 
 // Don't load any more configuration files except those given by
@@ -78,85 +68,85 @@ func (ff *GeneralBuilder) DefaultSearch(prefix string) *GeneralBuilder {
 // --no-config)
 //
 // IgnoreConfig maps to cli flags: --ignore-config/--no-config.
-func (ff *GeneralBuilder) IgnoreConfig() *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) IgnoreConfig() *Command {
+	c.addFlag(&Flag{
 		ID:   "ignoreconfig",
 		Flag: "--ignore-config",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Fully extract the videos of a playlist (default)
 //
 // NoFlatPlaylist maps to cli flags: --no-flat-playlist.
-func (ff *GeneralBuilder) NoFlatPlaylist() *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoFlatPlaylist() *Command {
+	c.addFlag(&Flag{
 		ID:   "extract_flat",
 		Flag: "--no-flat-playlist",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Download livestreams from the start. Currently only supported for YouTube
 // (Experimental)
 //
 // LiveFromStart maps to cli flags: --live-from-start.
-func (ff *GeneralBuilder) LiveFromStart() *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) LiveFromStart() *Command {
+	c.addFlag(&Flag{
 		ID:   "live_from_start",
 		Flag: "--live-from-start",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Download livestreams from the current time (default)
 //
 // NoLiveFromStart maps to cli flags: --no-live-from-start.
-func (ff *GeneralBuilder) NoLiveFromStart() *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoLiveFromStart() *Command {
+	c.addFlag(&Flag{
 		ID:   "live_from_start",
 		Flag: "--no-live-from-start",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Wait for scheduled streams to become available. Pass the minimum number of
 // seconds (or range) to wait between retries
 //
 // WaitForVideo maps to cli flags: --wait-for-video=MIN.
-func (ff *GeneralBuilder) WaitForVideo(min string) *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) WaitForVideo(min string) *Command {
+	c.addFlag(&Flag{
 		ID:   "wait_for_video",
 		Flag: "--wait-for-video",
 		Args: []string{min},
 	})
-	return ff
+	return c
 }
 
 // Mark videos watched (even with --simulate)
 //
 // MarkWatched maps to cli flags: --mark-watched.
-func (ff *GeneralBuilder) MarkWatched() *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) MarkWatched() *Command {
+	c.addFlag(&Flag{
 		ID:   "mark_watched",
 		Flag: "--mark-watched",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not mark videos watched (default)
 //
 // NoMarkWatched maps to cli flags: --no-mark-watched.
-func (ff *GeneralBuilder) NoMarkWatched() *GeneralBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoMarkWatched() *Command {
+	c.addFlag(&Flag{
 		ID:   "mark_watched",
 		Flag: "--no-mark-watched",
 		Args: nil,
 	})
-	return ff
+	return c
 }

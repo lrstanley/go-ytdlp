@@ -10,7 +10,45 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
+	"sync"
 )
+
+func New() *Command {
+	cmd := &Command{
+		env: make(map[string]string),
+	}
+
+	return cmd
+}
+
+type Command struct {
+	mu         sync.RWMutex
+	executable string
+	directory  string
+	env        map[string]string
+	flags      []*Flag
+}
+
+func (c *Command) Clone() *Command {
+	c.mu.RLock()
+	cc := &Command{
+		executable: c.executable,
+		directory:  c.directory,
+		env:        make(map[string]string, len(c.env)),
+		flags:      make([]*Flag, len(c.flags)),
+	}
+
+	for k, v := range c.env {
+		cc.env[k] = v
+	}
+
+	for i, f := range c.flags {
+		cc.flags[i] = f.Clone()
+	}
+	c.mu.RUnlock()
+
+	return cc
+}
 
 // SetExecutable sets the executable path to yt-dlp for the command.
 func (c *Command) SetExecutable(path string) {
@@ -72,6 +110,8 @@ func (c *Command) Run(ctx context.Context, args ...string) *Results {
 		cmdArgs = append(cmdArgs, f.Raw()...)
 	}
 
+	cmdArgs = append(cmdArgs, args...) // URLs or similar.
+
 	var name string
 
 	c.mu.RLock()
@@ -131,6 +171,14 @@ type Flag struct {
 	Flag string // Actual flag, e.g. "--version".
 
 	Args []string // Optional args. If nil, it's a boolean flag.
+}
+
+func (f *Flag) Clone() *Flag {
+	return &Flag{
+		ID:   f.ID,
+		Flag: f.Flag,
+		Args: f.Args,
+	}
 }
 
 func (f *Flag) Raw() []string {

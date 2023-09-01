@@ -8,184 +8,174 @@
 
 package ytdlp
 
-type AuthenticationBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *AuthenticationBuilder) Then() *Command {
-	return ff.parent
-}
-
 // Login with this account ID
 //
 // Username maps to cli flags: -u/--username=USERNAME.
-func (ff *AuthenticationBuilder) Username(username string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Username(username string) *Command {
+	c.addFlag(&Flag{
 		ID:   "username",
 		Flag: "--username",
 		Args: []string{username},
 	})
-	return ff
+	return c
 }
 
 // Account password. If this option is left out, yt-dlp will ask interactively
 //
 // Password maps to cli flags: -p/--password=PASSWORD.
-func (ff *AuthenticationBuilder) Password(password string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Password(password string) *Command {
+	c.addFlag(&Flag{
 		ID:   "password",
 		Flag: "--password",
 		Args: []string{password},
 	})
-	return ff
+	return c
 }
 
 // Two-factor authentication code
 //
 // Twofactor maps to cli flags: -2/--twofactor=TWOFACTOR.
-func (ff *AuthenticationBuilder) Twofactor(twofactor string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Twofactor(twofactor string) *Command {
+	c.addFlag(&Flag{
 		ID:   "twofactor",
 		Flag: "--twofactor",
 		Args: []string{twofactor},
 	})
-	return ff
+	return c
 }
 
 // Use .netrc authentication data
 //
 // Netrc maps to cli flags: -n/--netrc.
-func (ff *AuthenticationBuilder) Netrc() *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Netrc() *Command {
+	c.addFlag(&Flag{
 		ID:   "usenetrc",
 		Flag: "--netrc",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Location of .netrc authentication data; either the path or its containing
 // directory. Defaults to ~/.netrc
 //
 // NetrcLocation maps to cli flags: --netrc-location=PATH.
-func (ff *AuthenticationBuilder) NetrcLocation(path string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NetrcLocation(path string) *Command {
+	c.addFlag(&Flag{
 		ID:   "netrc_location",
 		Flag: "--netrc-location",
 		Args: []string{path},
 	})
-	return ff
+	return c
 }
 
 // Command to execute to get the credentials for an extractor.
 //
 // NetrcCmd maps to cli flags: --netrc-cmd=NETRC_CMD.
-func (ff *AuthenticationBuilder) NetrcCmd(netrcCmd string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NetrcCmd(netrcCmd string) *Command {
+	c.addFlag(&Flag{
 		ID:   "netrc_cmd",
 		Flag: "--netrc-cmd",
 		Args: []string{netrcCmd},
 	})
-	return ff
+	return c
 }
 
 // Video password (vimeo, youku)
 //
 // VideoPassword maps to cli flags: --video-password=PASSWORD.
-func (ff *AuthenticationBuilder) VideoPassword(password string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) VideoPassword(password string) *Command {
+	c.addFlag(&Flag{
 		ID:   "videopassword",
 		Flag: "--video-password",
 		Args: []string{password},
 	})
-	return ff
+	return c
 }
 
 // Adobe Pass multiple-system operator (TV provider) identifier, use --ap-list-mso
 // for a list of available MSOs
 //
 // ApMso maps to cli flags: --ap-mso=MSO.
-func (ff *AuthenticationBuilder) ApMso(mso string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ApMso(mso string) *Command {
+	c.addFlag(&Flag{
 		ID:   "ap_mso",
 		Flag: "--ap-mso",
 		Args: []string{mso},
 	})
-	return ff
+	return c
 }
 
 // Multiple-system operator account login
 //
 // ApUsername maps to cli flags: --ap-username=USERNAME.
-func (ff *AuthenticationBuilder) ApUsername(username string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ApUsername(username string) *Command {
+	c.addFlag(&Flag{
 		ID:   "ap_username",
 		Flag: "--ap-username",
 		Args: []string{username},
 	})
-	return ff
+	return c
 }
 
 // Multiple-system operator account password. If this option is left out, yt-dlp
 // will ask interactively
 //
 // ApPassword maps to cli flags: --ap-password=PASSWORD.
-func (ff *AuthenticationBuilder) ApPassword(password string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ApPassword(password string) *Command {
+	c.addFlag(&Flag{
 		ID:   "ap_password",
 		Flag: "--ap-password",
 		Args: []string{password},
 	})
-	return ff
+	return c
 }
 
 // List all supported multiple-system operators
 //
 // ApListMso maps to cli flags: --ap-list-mso.
-func (ff *AuthenticationBuilder) ApListMso() *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ApListMso() *Command {
+	c.addFlag(&Flag{
 		ID:   "ap_list_mso",
 		Flag: "--ap-list-mso",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Path to client certificate file in PEM format. May include the private key
 //
 // ClientCertificate maps to cli flags: --client-certificate=CERTFILE.
-func (ff *AuthenticationBuilder) ClientCertificate(certfile string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ClientCertificate(certfile string) *Command {
+	c.addFlag(&Flag{
 		ID:   "client_certificate",
 		Flag: "--client-certificate",
 		Args: []string{certfile},
 	})
-	return ff
+	return c
 }
 
 // Path to private key file for client certificate
 //
 // ClientCertificateKey maps to cli flags: --client-certificate-key=KEYFILE.
-func (ff *AuthenticationBuilder) ClientCertificateKey(keyfile string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ClientCertificateKey(keyfile string) *Command {
+	c.addFlag(&Flag{
 		ID:   "client_certificate_key",
 		Flag: "--client-certificate-key",
 		Args: []string{keyfile},
 	})
-	return ff
+	return c
 }
 
 // Password for client certificate private key, if encrypted. If not provided, and
 // the key is encrypted, yt-dlp will ask interactively
 //
 // ClientCertificatePassword maps to cli flags: --client-certificate-password=PASSWORD.
-func (ff *AuthenticationBuilder) ClientCertificatePassword(password string) *AuthenticationBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ClientCertificatePassword(password string) *Command {
+	c.addFlag(&Flag{
 		ID:   "client_certificate_password",
 		Flag: "--client-certificate-password",
 		Args: []string{password},
 	})
-	return ff
+	return c
 }

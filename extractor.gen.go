@@ -8,122 +8,112 @@
 
 package ytdlp
 
-type ExtractorBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *ExtractorBuilder) Then() *Command {
-	return ff.parent
-}
-
 // Number of retries for known extractor errors (default is %default), or
 // "infinite"
 //
 // ExtractorRetries maps to cli flags: --extractor-retries=RETRIES.
-func (ff *ExtractorBuilder) ExtractorRetries(retries string) *ExtractorBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) ExtractorRetries(retries string) *Command {
+	c.addFlag(&Flag{
 		ID:   "extractor_retries",
 		Flag: "--extractor-retries",
 		Args: []string{retries},
 	})
-	return ff
+	return c
 }
 
 // Process dynamic DASH manifests (default) (Alias: --no-ignore-dynamic-mpd)
 //
 // AllowDynamicMpd maps to cli flags: --allow-dynamic-mpd/--no-ignore-dynamic-mpd.
-func (ff *ExtractorBuilder) AllowDynamicMpd() *ExtractorBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) AllowDynamicMpd() *Command {
+	c.addFlag(&Flag{
 		ID:   "dynamic_mpd",
 		Flag: "--allow-dynamic-mpd",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not process dynamic DASH manifests (Alias: --no-allow-dynamic-mpd)
 //
 // IgnoreDynamicMpd maps to cli flags: --ignore-dynamic-mpd/--no-allow-dynamic-mpd.
-func (ff *ExtractorBuilder) IgnoreDynamicMpd() *ExtractorBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) IgnoreDynamicMpd() *Command {
+	c.addFlag(&Flag{
 		ID:   "dynamic_mpd",
 		Flag: "--ignore-dynamic-mpd",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Split HLS playlists to different formats at discontinuities such as ad breaks
 //
 // HlsSplitDiscontinuity maps to cli flags: --hls-split-discontinuity.
-func (ff *ExtractorBuilder) HlsSplitDiscontinuity() *ExtractorBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) HlsSplitDiscontinuity() *Command {
+	c.addFlag(&Flag{
 		ID:   "hls_split_discontinuity",
 		Flag: "--hls-split-discontinuity",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
 // Do not split HLS playlists to different formats at discontinuities such as ad
 // breaks (default)
 //
 // NoHlsSplitDiscontinuity maps to cli flags: --no-hls-split-discontinuity.
-func (ff *ExtractorBuilder) NoHlsSplitDiscontinuity() *ExtractorBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) NoHlsSplitDiscontinuity() *Command {
+	c.addFlag(&Flag{
 		ID:   "hls_split_discontinuity",
 		Flag: "--no-hls-split-discontinuity",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// YoutubeIncludeDashManifest sets the "youtube-include-dash-manifest" flag to "true".
+// YoutubeIncludeDashManifest sets the "youtube-include-dash-manifest" flag (no description specified).
 //
 // YoutubeIncludeDashManifest maps to cli flags: --youtube-include-dash-manifest/--no-youtube-skip-dash-manifest.
-func (ff *ExtractorBuilder) YoutubeIncludeDashManifest() *ExtractorBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) YoutubeIncludeDashManifest() *Command {
+	c.addFlag(&Flag{
 		ID:   "youtube_include_dash_manifest",
 		Flag: "--youtube-include-dash-manifest",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// YoutubeSkipDashManifest sets the "youtube-skip-dash-manifest" flag to "false".
+// YoutubeSkipDashManifest sets the "youtube-skip-dash-manifest" flag (no description specified).
 //
 // YoutubeSkipDashManifest maps to cli flags: --youtube-skip-dash-manifest/--no-youtube-include-dash-manifest.
-func (ff *ExtractorBuilder) YoutubeSkipDashManifest() *ExtractorBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) YoutubeSkipDashManifest() *Command {
+	c.addFlag(&Flag{
 		ID:   "youtube_include_dash_manifest",
 		Flag: "--youtube-skip-dash-manifest",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// YoutubeIncludeHlsManifest sets the "youtube-include-hls-manifest" flag to "true".
+// YoutubeIncludeHlsManifest sets the "youtube-include-hls-manifest" flag (no description specified).
 //
 // YoutubeIncludeHlsManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest.
-func (ff *ExtractorBuilder) YoutubeIncludeHlsManifest() *ExtractorBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) YoutubeIncludeHlsManifest() *Command {
+	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",
 		Flag: "--youtube-include-hls-manifest",
 		Args: nil,
 	})
-	return ff
+	return c
 }
 
-// YoutubeSkipHlsManifest sets the "youtube-skip-hls-manifest" flag to "false".
+// YoutubeSkipHlsManifest sets the "youtube-skip-hls-manifest" flag (no description specified).
 //
 // YoutubeSkipHlsManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest.
-func (ff *ExtractorBuilder) YoutubeSkipHlsManifest() *ExtractorBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) YoutubeSkipHlsManifest() *Command {
+	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",
 		Flag: "--youtube-skip-hls-manifest",
 		Args: nil,
 	})
-	return ff
+	return c
 }

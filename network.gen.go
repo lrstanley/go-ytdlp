@@ -12,64 +12,54 @@ import (
 	"strconv"
 )
 
-type NetworkBuilder struct {
-	parent *Command
-}
-
-// Then jumps back to the base command builder, if you want to add additional flags
-// from another flag builder.
-func (ff *NetworkBuilder) Then() *Command {
-	return ff.parent
-}
-
 // Use the specified HTTP/HTTPS/SOCKS proxy. To enable SOCKS proxy, specify a
 // proper scheme, e.g. socks5://user:pass@127.0.0.1:1080/. Pass in an empty string
 // (--proxy "") for direct connection
 //
 // Proxy maps to cli flags: --proxy=URL.
-func (ff *NetworkBuilder) Proxy(url string) *NetworkBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) Proxy(url string) *Command {
+	c.addFlag(&Flag{
 		ID:   "proxy",
 		Flag: "--proxy",
 		Args: []string{url},
 	})
-	return ff
+	return c
 }
 
 // Time to wait before giving up, in seconds
 //
 // SocketTimeout maps to cli flags: --socket-timeout=SECONDS.
-func (ff *NetworkBuilder) SocketTimeout(seconds float64) *NetworkBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SocketTimeout(seconds float64) *Command {
+	c.addFlag(&Flag{
 		ID:   "socket_timeout",
 		Flag: "--socket-timeout",
 		Args: []string{
 			strconv.FormatFloat(seconds, 'g', -1, 64),
 		},
 	})
-	return ff
+	return c
 }
 
 // Client-side IP address to bind to
 //
 // SourceAddress maps to cli flags: --source-address=IP.
-func (ff *NetworkBuilder) SourceAddress(ip string) *NetworkBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) SourceAddress(ip string) *Command {
+	c.addFlag(&Flag{
 		ID:   "source_address",
 		Flag: "--source-address",
 		Args: []string{ip},
 	})
-	return ff
+	return c
 }
 
 // Enable file:// URLs. This is disabled by default for security reasons.
 //
 // EnableFileUrls maps to cli flags: --enable-file-urls.
-func (ff *NetworkBuilder) EnableFileUrls() *NetworkBuilder {
-	ff.parent.addFlag(&Flag{
+func (c *Command) EnableFileUrls() *Command {
+	c.addFlag(&Flag{
 		ID:   "enable_file_urls",
 		Flag: "--enable-file-urls",
 		Args: nil,
 	})
-	return ff
+	return c
 }
