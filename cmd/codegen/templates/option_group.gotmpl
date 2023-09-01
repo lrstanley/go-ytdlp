@@ -10,7 +10,7 @@
 // {{ .Name | to_camel }} sets the {{ .Name | quote }} flag (no description specified).
 {{- end }}{{/* end if help */}}
 //
-// {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}.
+// {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}{{ if .Hidden }} (hidden){{ end }}.
 {{- end -}}{{/* end define optionHelp */}}
 
 {{- /* start of actual file */ -}}

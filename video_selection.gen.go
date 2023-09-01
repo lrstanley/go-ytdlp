@@ -12,7 +12,7 @@ import (
 	"strconv"
 )
 
-// PlaylistStart maps to cli flags: --playlist-start=NUMBER.
+// PlaylistStart maps to cli flags: --playlist-start=NUMBER (hidden).
 func (c *Command) PlaylistStart(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "playliststart",
@@ -24,7 +24,7 @@ func (c *Command) PlaylistStart(number int) *Command {
 	return c
 }
 
-// PlaylistEnd maps to cli flags: --playlist-end=NUMBER.
+// PlaylistEnd maps to cli flags: --playlist-end=NUMBER (hidden).
 func (c *Command) PlaylistEnd(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "playlistend",
@@ -52,7 +52,7 @@ func (c *Command) PlaylistItems(itemSpec string) *Command {
 	return c
 }
 
-// MatchTitle maps to cli flags: --match-title=REGEX.
+// MatchTitle maps to cli flags: --match-title=REGEX (hidden).
 func (c *Command) MatchTitle(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "matchtitle",
@@ -62,7 +62,7 @@ func (c *Command) MatchTitle(regex string) *Command {
 	return c
 }
 
-// RejectTitle maps to cli flags: --reject-title=REGEX.
+// RejectTitle maps to cli flags: --reject-title=REGEX (hidden).
 func (c *Command) RejectTitle(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "rejecttitle",
@@ -136,7 +136,7 @@ func (c *Command) Dateafter(date string) *Command {
 	return c
 }
 
-// MinViews maps to cli flags: --min-views=COUNT.
+// MinViews maps to cli flags: --min-views=COUNT (hidden).
 func (c *Command) MinViews(count int) *Command {
 	c.addFlag(&Flag{
 		ID:   "min_views",
@@ -148,7 +148,7 @@ func (c *Command) MinViews(count int) *Command {
 	return c
 }
 
-// MaxViews maps to cli flags: --max-views=COUNT.
+// MaxViews maps to cli flags: --max-views=COUNT (hidden).
 func (c *Command) MaxViews(count int) *Command {
 	c.addFlag(&Flag{
 		ID:   "max_views",
@@ -274,7 +274,7 @@ func (c *Command) BreakOnExisting() *Command {
 
 // BreakOnReject sets the "break-on-reject" flag (no description specified).
 //
-// BreakOnReject maps to cli flags: --break-on-reject.
+// BreakOnReject maps to cli flags: --break-on-reject (hidden).
 func (c *Command) BreakOnReject() *Command {
 	c.addFlag(&Flag{
 		ID:   "break_on_reject",
@@ -325,7 +325,7 @@ func (c *Command) SkipPlaylistAfterErrors(n int) *Command {
 
 // IncludeAds sets the "include-ads" flag (no description specified).
 //
-// IncludeAds maps to cli flags: --include-ads.
+// IncludeAds maps to cli flags: --include-ads (hidden).
 func (c *Command) IncludeAds() *Command {
 	c.addFlag(&Flag{
 		ID:   "include_ads",
@@ -337,7 +337,7 @@ func (c *Command) IncludeAds() *Command {
 
 // NoIncludeAds sets the "no-include-ads" flag (no description specified).
 //
-// NoIncludeAds maps to cli flags: --no-include-ads.
+// NoIncludeAds maps to cli flags: --no-include-ads (hidden).
 func (c *Command) NoIncludeAds() *Command {
 	c.addFlag(&Flag{
 		ID:   "include_ads",

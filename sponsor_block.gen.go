@@ -85,7 +85,7 @@ func (c *Command) SponsorblockApi(url string) *Command {
 
 // Sponskrub sets the "sponskrub" flag (no description specified).
 //
-// Sponskrub maps to cli flags: --sponskrub.
+// Sponskrub maps to cli flags: --sponskrub (hidden).
 func (c *Command) Sponskrub() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub",
@@ -97,7 +97,7 @@ func (c *Command) Sponskrub() *Command {
 
 // NoSponskrub sets the "no-sponskrub" flag (no description specified).
 //
-// NoSponskrub maps to cli flags: --no-sponskrub.
+// NoSponskrub maps to cli flags: --no-sponskrub (hidden).
 func (c *Command) NoSponskrub() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub",
@@ -109,7 +109,7 @@ func (c *Command) NoSponskrub() *Command {
 
 // SponskrubCut sets the "sponskrub-cut" flag (no description specified).
 //
-// SponskrubCut maps to cli flags: --sponskrub-cut.
+// SponskrubCut maps to cli flags: --sponskrub-cut (hidden).
 func (c *Command) SponskrubCut() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
@@ -121,7 +121,7 @@ func (c *Command) SponskrubCut() *Command {
 
 // NoSponskrubCut sets the "no-sponskrub-cut" flag (no description specified).
 //
-// NoSponskrubCut maps to cli flags: --no-sponskrub-cut.
+// NoSponskrubCut maps to cli flags: --no-sponskrub-cut (hidden).
 func (c *Command) NoSponskrubCut() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
@@ -133,7 +133,7 @@ func (c *Command) NoSponskrubCut() *Command {
 
 // SponskrubForce sets the "sponskrub-force" flag (no description specified).
 //
-// SponskrubForce maps to cli flags: --sponskrub-force.
+// SponskrubForce maps to cli flags: --sponskrub-force (hidden).
 func (c *Command) SponskrubForce() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_force",
@@ -145,7 +145,7 @@ func (c *Command) SponskrubForce() *Command {
 
 // NoSponskrubForce sets the "no-sponskrub-force" flag (no description specified).
 //
-// NoSponskrubForce maps to cli flags: --no-sponskrub-force.
+// NoSponskrubForce maps to cli flags: --no-sponskrub-force (hidden).
 func (c *Command) NoSponskrubForce() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_force",
@@ -155,7 +155,7 @@ func (c *Command) NoSponskrubForce() *Command {
 	return c
 }
 
-// SponskrubLocation maps to cli flags: --sponskrub-location=PATH.
+// SponskrubLocation maps to cli flags: --sponskrub-location=PATH (hidden).
 func (c *Command) SponskrubLocation(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_path",
@@ -165,7 +165,7 @@ func (c *Command) SponskrubLocation(path string) *Command {
 	return c
 }
 
-// SponskrubArgs maps to cli flags: --sponskrub-args=ARGS.
+// SponskrubArgs maps to cli flags: --sponskrub-args=ARGS (hidden).
 func (c *Command) SponskrubArgs(args string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_args",

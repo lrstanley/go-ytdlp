@@ -62,7 +62,7 @@ func (c *Command) PreferInsecure() *Command {
 	return c
 }
 
-// UserAgent maps to cli flags: --user-agent=UA.
+// UserAgent maps to cli flags: --user-agent=UA (hidden).
 func (c *Command) UserAgent(ua string) *Command {
 	c.addFlag(&Flag{
 		ID:   "user_agent",
@@ -72,7 +72,7 @@ func (c *Command) UserAgent(ua string) *Command {
 	return c
 }
 
-// Referer maps to cli flags: --referer=URL.
+// Referer maps to cli flags: --referer=URL (hidden).
 func (c *Command) Referer(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "referer",

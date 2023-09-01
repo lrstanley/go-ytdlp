@@ -27,7 +27,7 @@ func (c *Command) BatchFile(file string) *Command {
 
 // Id sets the "id" flag (no description specified).
 //
-// Id maps to cli flags: --id.
+// Id maps to cli flags: --id (hidden).
 func (c *Command) Id() *Command {
 	c.addFlag(&Flag{
 		ID:   "useid",
@@ -78,7 +78,7 @@ func (c *Command) OutputNaPlaceholder(text string) *Command {
 	return c
 }
 
-// AutonumberSize maps to cli flags: --autonumber-size=NUMBER.
+// AutonumberSize maps to cli flags: --autonumber-size=NUMBER (hidden).
 func (c *Command) AutonumberSize(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "autonumber_size",
@@ -90,7 +90,7 @@ func (c *Command) AutonumberSize(number int) *Command {
 	return c
 }
 
-// AutonumberStart maps to cli flags: --autonumber-start=NUMBER.
+// AutonumberStart maps to cli flags: --autonumber-start=NUMBER (hidden).
 func (c *Command) AutonumberStart(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "autonumber_start",
@@ -314,7 +314,7 @@ func (c *Command) NoWriteInfoJson() *Command {
 
 // WriteAnnotations sets the "write-annotations" flag (no description specified).
 //
-// WriteAnnotations maps to cli flags: --write-annotations.
+// WriteAnnotations maps to cli flags: --write-annotations (hidden).
 func (c *Command) WriteAnnotations() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeannotations",
@@ -326,7 +326,7 @@ func (c *Command) WriteAnnotations() *Command {
 
 // NoWriteAnnotations sets the "no-write-annotations" flag (no description specified).
 //
-// NoWriteAnnotations maps to cli flags: --no-write-annotations.
+// NoWriteAnnotations maps to cli flags: --no-write-annotations (hidden).
 func (c *Command) NoWriteAnnotations() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeannotations",

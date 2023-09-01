@@ -123,7 +123,7 @@ func (c *Command) Print(template string) *Command {
 
 // GetUrl sets the "get-url" flag (no description specified).
 //
-// GetUrl maps to cli flags: -g/--get-url.
+// GetUrl maps to cli flags: -g/--get-url (hidden).
 func (c *Command) GetUrl() *Command {
 	c.addFlag(&Flag{
 		ID:   "geturl",
@@ -135,7 +135,7 @@ func (c *Command) GetUrl() *Command {
 
 // GetTitle sets the "get-title" flag (no description specified).
 //
-// GetTitle maps to cli flags: -e/--get-title.
+// GetTitle maps to cli flags: -e/--get-title (hidden).
 func (c *Command) GetTitle() *Command {
 	c.addFlag(&Flag{
 		ID:   "gettitle",
@@ -147,7 +147,7 @@ func (c *Command) GetTitle() *Command {
 
 // GetId sets the "get-id" flag (no description specified).
 //
-// GetId maps to cli flags: --get-id.
+// GetId maps to cli flags: --get-id (hidden).
 func (c *Command) GetId() *Command {
 	c.addFlag(&Flag{
 		ID:   "getid",
@@ -159,7 +159,7 @@ func (c *Command) GetId() *Command {
 
 // GetThumbnail sets the "get-thumbnail" flag (no description specified).
 //
-// GetThumbnail maps to cli flags: --get-thumbnail.
+// GetThumbnail maps to cli flags: --get-thumbnail (hidden).
 func (c *Command) GetThumbnail() *Command {
 	c.addFlag(&Flag{
 		ID:   "getthumbnail",
@@ -171,7 +171,7 @@ func (c *Command) GetThumbnail() *Command {
 
 // GetDescription sets the "get-description" flag (no description specified).
 //
-// GetDescription maps to cli flags: --get-description.
+// GetDescription maps to cli flags: --get-description (hidden).
 func (c *Command) GetDescription() *Command {
 	c.addFlag(&Flag{
 		ID:   "getdescription",
@@ -183,7 +183,7 @@ func (c *Command) GetDescription() *Command {
 
 // GetDuration sets the "get-duration" flag (no description specified).
 //
-// GetDuration maps to cli flags: --get-duration.
+// GetDuration maps to cli flags: --get-duration (hidden).
 func (c *Command) GetDuration() *Command {
 	c.addFlag(&Flag{
 		ID:   "getduration",
@@ -195,7 +195,7 @@ func (c *Command) GetDuration() *Command {
 
 // GetFilename sets the "get-filename" flag (no description specified).
 //
-// GetFilename maps to cli flags: --get-filename.
+// GetFilename maps to cli flags: --get-filename (hidden).
 func (c *Command) GetFilename() *Command {
 	c.addFlag(&Flag{
 		ID:   "getfilename",
@@ -207,7 +207,7 @@ func (c *Command) GetFilename() *Command {
 
 // GetFormat sets the "get-format" flag (no description specified).
 //
-// GetFormat maps to cli flags: --get-format.
+// GetFormat maps to cli flags: --get-format (hidden).
 func (c *Command) GetFormat() *Command {
 	c.addFlag(&Flag{
 		ID:   "getformat",
@@ -335,7 +335,7 @@ func (c *Command) WritePages() *Command {
 
 // LoadPages sets the "load-pages" flag (no description specified).
 //
-// LoadPages maps to cli flags: --load-pages.
+// LoadPages maps to cli flags: --load-pages (hidden).
 func (c *Command) LoadPages() *Command {
 	c.addFlag(&Flag{
 		ID:   "load_pages",
@@ -347,7 +347,7 @@ func (c *Command) LoadPages() *Command {
 
 // YoutubePrintSigCode sets the "youtube-print-sig-code" flag (no description specified).
 //
-// YoutubePrintSigCode maps to cli flags: --youtube-print-sig-code.
+// YoutubePrintSigCode maps to cli flags: --youtube-print-sig-code (hidden).
 func (c *Command) YoutubePrintSigCode() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_print_sig_code",
@@ -371,7 +371,7 @@ func (c *Command) PrintTraffic() *Command {
 
 // CallHome sets the "call-home" flag (no description specified).
 //
-// CallHome maps to cli flags: -C/--call-home.
+// CallHome maps to cli flags: -C/--call-home (hidden).
 func (c *Command) CallHome() *Command {
 	c.addFlag(&Flag{
 		ID:   "call_home",
@@ -383,7 +383,7 @@ func (c *Command) CallHome() *Command {
 
 // NoCallHome sets the "no-call-home" flag (no description specified).
 //
-// NoCallHome maps to cli flags: --no-call-home.
+// NoCallHome maps to cli flags: --no-call-home (hidden).
 func (c *Command) NoCallHome() *Command {
 	c.addFlag(&Flag{
 		ID:   "call_home",

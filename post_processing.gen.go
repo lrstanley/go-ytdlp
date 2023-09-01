@@ -270,7 +270,7 @@ func (c *Command) NoEmbedInfoJson() *Command {
 	return c
 }
 
-// MetadataFromTitle maps to cli flags: --metadata-from-title=FORMAT.
+// MetadataFromTitle maps to cli flags: --metadata-from-title=FORMAT (hidden).
 func (c *Command) MetadataFromTitle(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "metafromtitle",
@@ -366,7 +366,7 @@ func (c *Command) Fixup(policy string) *Command {
 
 // PreferAvconv sets the "prefer-avconv" flag (no description specified).
 //
-// PreferAvconv maps to cli flags: --prefer-avconv/--no-prefer-ffmpeg.
+// PreferAvconv maps to cli flags: --prefer-avconv/--no-prefer-ffmpeg (hidden).
 func (c *Command) PreferAvconv() *Command {
 	c.addFlag(&Flag{
 		ID:   "prefer_ffmpeg",
@@ -378,7 +378,7 @@ func (c *Command) PreferAvconv() *Command {
 
 // PreferFfmpeg sets the "prefer-ffmpeg" flag (no description specified).
 //
-// PreferFfmpeg maps to cli flags: --prefer-ffmpeg/--no-prefer-avconv.
+// PreferFfmpeg maps to cli flags: --prefer-ffmpeg/--no-prefer-avconv (hidden).
 func (c *Command) PreferFfmpeg() *Command {
 	c.addFlag(&Flag{
 		ID:   "prefer_ffmpeg",
@@ -418,7 +418,7 @@ func (c *Command) Exec(cmd string) *Command {
 	return c
 }
 
-// ExecBeforeDownload maps to cli flags: --exec-before-download=CMD.
+// ExecBeforeDownload maps to cli flags: --exec-before-download=CMD (hidden).
 func (c *Command) ExecBeforeDownload(cmd string) *Command {
 	c.addFlag(&Flag{
 		ID:   "exec_before_dl_cmd",

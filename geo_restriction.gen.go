@@ -22,7 +22,7 @@ func (c *Command) GeoVerificationProxy(url string) *Command {
 	return c
 }
 
-// CnVerificationProxy maps to cli flags: --cn-verification-proxy=URL.
+// CnVerificationProxy maps to cli flags: --cn-verification-proxy=URL (hidden).
 func (c *Command) CnVerificationProxy(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "cn_verification_proxy",
@@ -46,7 +46,7 @@ func (c *Command) Xff(value string) *Command {
 	return c
 }
 
-// GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE.
+// GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE (hidden).
 func (c *Command) GeoBypassCountry(code string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -56,7 +56,7 @@ func (c *Command) GeoBypassCountry(code string) *Command {
 	return c
 }
 
-// GeoBypassIpBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK.
+// GeoBypassIpBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK (hidden).
 func (c *Command) GeoBypassIpBlock(ipBlock string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",

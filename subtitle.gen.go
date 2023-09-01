@@ -59,7 +59,7 @@ func (c *Command) NoWriteAutoSubs() *Command {
 
 // AllSubs sets the "all-subs" flag (no description specified).
 //
-// AllSubs maps to cli flags: --all-subs.
+// AllSubs maps to cli flags: --all-subs (hidden).
 func (c *Command) AllSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "allsubtitles",

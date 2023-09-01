@@ -208,7 +208,7 @@ func (c *Command) HttpChunkSize(size string) *Command {
 
 // Test sets the "test" flag (no description specified).
 //
-// Test maps to cli flags: --test.
+// Test maps to cli flags: --test (hidden).
 func (c *Command) Test() *Command {
 	c.addFlag(&Flag{
 		ID:   "test",
@@ -220,7 +220,7 @@ func (c *Command) Test() *Command {
 
 // PlaylistReverse sets the "playlist-reverse" flag (no description specified).
 //
-// PlaylistReverse maps to cli flags: --playlist-reverse.
+// PlaylistReverse maps to cli flags: --playlist-reverse (hidden).
 func (c *Command) PlaylistReverse() *Command {
 	c.addFlag(&Flag{
 		ID:   "playlist_reverse",
@@ -232,7 +232,7 @@ func (c *Command) PlaylistReverse() *Command {
 
 // NoPlaylistReverse sets the "no-playlist-reverse" flag (no description specified).
 //
-// NoPlaylistReverse maps to cli flags: --no-playlist-reverse.
+// NoPlaylistReverse maps to cli flags: --no-playlist-reverse (hidden).
 func (c *Command) NoPlaylistReverse() *Command {
 	c.addFlag(&Flag{
 		ID:   "playlist_reverse",
@@ -294,7 +294,7 @@ func (c *Command) XattrSetFilesize() *Command {
 
 // HlsPreferNative sets the "hls-prefer-native" flag (no description specified).
 //
-// HlsPreferNative maps to cli flags: --hls-prefer-native.
+// HlsPreferNative maps to cli flags: --hls-prefer-native (hidden).
 func (c *Command) HlsPreferNative() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_prefer_native",
@@ -306,7 +306,7 @@ func (c *Command) HlsPreferNative() *Command {
 
 // HlsPreferFfmpeg sets the "hls-prefer-ffmpeg" flag (no description specified).
 //
-// HlsPreferFfmpeg maps to cli flags: --hls-prefer-ffmpeg.
+// HlsPreferFfmpeg maps to cli flags: --hls-prefer-ffmpeg (hidden).
 func (c *Command) HlsPreferFfmpeg() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_prefer_native",

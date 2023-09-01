@@ -51,7 +51,7 @@ func (c *Command) UseExtractors(names string) *Command {
 
 // ForceGenericExtractor sets the "force-generic-extractor" flag (no description specified).
 //
-// ForceGenericExtractor maps to cli flags: --force-generic-extractor.
+// ForceGenericExtractor maps to cli flags: --force-generic-extractor (hidden).
 func (c *Command) ForceGenericExtractor() *Command {
 	c.addFlag(&Flag{
 		ID:   "force_generic_extractor",

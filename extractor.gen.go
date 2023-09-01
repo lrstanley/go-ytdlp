@@ -85,7 +85,7 @@ func (c *Command) ExtractorArgs(ieKeyargs string) *Command {
 
 // YoutubeIncludeDashManifest sets the "youtube-include-dash-manifest" flag (no description specified).
 //
-// YoutubeIncludeDashManifest maps to cli flags: --youtube-include-dash-manifest/--no-youtube-skip-dash-manifest.
+// YoutubeIncludeDashManifest maps to cli flags: --youtube-include-dash-manifest/--no-youtube-skip-dash-manifest (hidden).
 func (c *Command) YoutubeIncludeDashManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_dash_manifest",
@@ -97,7 +97,7 @@ func (c *Command) YoutubeIncludeDashManifest() *Command {
 
 // YoutubeSkipDashManifest sets the "youtube-skip-dash-manifest" flag (no description specified).
 //
-// YoutubeSkipDashManifest maps to cli flags: --youtube-skip-dash-manifest/--no-youtube-include-dash-manifest.
+// YoutubeSkipDashManifest maps to cli flags: --youtube-skip-dash-manifest/--no-youtube-include-dash-manifest (hidden).
 func (c *Command) YoutubeSkipDashManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_dash_manifest",
@@ -109,7 +109,7 @@ func (c *Command) YoutubeSkipDashManifest() *Command {
 
 // YoutubeIncludeHlsManifest sets the "youtube-include-hls-manifest" flag (no description specified).
 //
-// YoutubeIncludeHlsManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest.
+// YoutubeIncludeHlsManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest (hidden).
 func (c *Command) YoutubeIncludeHlsManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",
@@ -121,7 +121,7 @@ func (c *Command) YoutubeIncludeHlsManifest() *Command {
 
 // YoutubeSkipHlsManifest sets the "youtube-skip-hls-manifest" flag (no description specified).
 //
-// YoutubeSkipHlsManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest.
+// YoutubeSkipHlsManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest (hidden).
 func (c *Command) YoutubeSkipHlsManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",

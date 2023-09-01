@@ -168,7 +168,7 @@ func (c *Command) ListFormats() *Command {
 
 // ListFormatsAsTable sets the "list-formats-as-table" flag (no description specified).
 //
-// ListFormatsAsTable maps to cli flags: --list-formats-as-table.
+// ListFormatsAsTable maps to cli flags: --list-formats-as-table (hidden).
 func (c *Command) ListFormatsAsTable() *Command {
 	c.addFlag(&Flag{
 		ID:   "listformats_table",
@@ -180,7 +180,7 @@ func (c *Command) ListFormatsAsTable() *Command {
 
 // ListFormatsOld sets the "list-formats-old" flag (no description specified).
 //
-// ListFormatsOld maps to cli flags: --list-formats-old/--no-list-formats-as-table.
+// ListFormatsOld maps to cli flags: --list-formats-old/--no-list-formats-as-table (hidden).
 func (c *Command) ListFormatsOld() *Command {
 	c.addFlag(&Flag{
 		ID:   "listformats_table",
@@ -206,7 +206,7 @@ func (c *Command) MergeOutputFormat(format string) *Command {
 
 // AllowUnplayableFormats sets the "allow-unplayable-formats" flag (no description specified).
 //
-// AllowUnplayableFormats maps to cli flags: --allow-unplayable-formats.
+// AllowUnplayableFormats maps to cli flags: --allow-unplayable-formats (hidden).
 func (c *Command) AllowUnplayableFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "allow_unplayable_formats",
@@ -218,7 +218,7 @@ func (c *Command) AllowUnplayableFormats() *Command {
 
 // NoAllowUnplayableFormats sets the "no-allow-unplayable-formats" flag (no description specified).
 //
-// NoAllowUnplayableFormats maps to cli flags: --no-allow-unplayable-formats.
+// NoAllowUnplayableFormats maps to cli flags: --no-allow-unplayable-formats (hidden).
 func (c *Command) NoAllowUnplayableFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "allow_unplayable_formats",
