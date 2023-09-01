@@ -44,7 +44,7 @@ var (
 			Funcs(funcMap).
 			ParseFiles(
 				"cmd/codegen/templates/option_group.gotmpl",
-			), // TODO: split out into multiple files.
+			),
 	)
 
 	optionGroupReplacer = strings.NewReplacer(
@@ -76,7 +76,8 @@ func createTemplateFile(name string, tmpl *template.Template, data any) {
 		panic(err)
 	}
 
-	if err := tmpl.Execute(f, data); err != nil {
+	err = tmpl.Execute(f, data)
+	if err != nil {
 		panic(err)
 	}
 
@@ -84,7 +85,7 @@ func createTemplateFile(name string, tmpl *template.Template, data any) {
 }
 
 func main() {
-	if len(os.Args) < 2 {
+	if len(os.Args) < 2 { //nolint:gomnd
 		panic("missing command data file")
 	}
 
@@ -96,7 +97,8 @@ func main() {
 	}
 	defer commandDataFile.Close()
 
-	if err := json.NewDecoder(commandDataFile).Decode(&data); err != nil {
+	err = json.NewDecoder(commandDataFile).Decode(&data)
+	if err != nil {
 		panic(err)
 	}
 

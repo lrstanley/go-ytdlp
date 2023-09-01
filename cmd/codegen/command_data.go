@@ -5,7 +5,6 @@
 package main
 
 import (
-	"fmt"
 	"regexp"
 	"slices"
 	"strings"
@@ -37,13 +36,12 @@ var disallowedNames = []string{
 }
 
 type CommandData struct {
-	OptionGroups []OptionGroup  `json:"option_groups"`
-	Defaults     map[string]any `json:"defaults"`
+	OptionGroups []OptionGroup `json:"option_groups"`
 }
 
 func (c *CommandData) Generate() {
 	for i := range c.OptionGroups {
-		c.OptionGroups[i].Generate(c)
+		c.OptionGroups[i].Generate()
 	}
 }
 
@@ -58,11 +56,11 @@ type OptionGroup struct {
 	Options       []Option `json:"options"`
 }
 
-func (o *OptionGroup) Generate(data *CommandData) {
+func (o *OptionGroup) Generate() {
 	o.Name = optionGroupReplacer.Replace(o.OriginalTitle)
 
 	for i := range o.Options {
-		o.Options[i].Generate(data)
+		o.Options[i].Generate()
 
 		if !o.Options[i].IsExecutable && (o.Options[i].Type == "int" || o.Options[i].Type == "float64") {
 			o.NeedsStrconv = true
@@ -89,6 +87,7 @@ type Option struct {
 	Default any      `json:"default"`
 	Dest    string   `json:"dest"`
 	Help    string   `json:"help"`
+	Hidden  bool     `json:"hidden"`
 	MetaVar string   `json:"metavar"`
 	Type    string   `json:"type"`
 	Long    []string `json:"long"`
@@ -97,7 +96,7 @@ type Option struct {
 	NArgs   int      `json:"nargs"`
 }
 
-func (o *Option) Generate(data *CommandData) {
+func (o *Option) Generate() {
 	o.AllFlags = append(o.Short, o.Long...) //nolint:gocritic
 
 	if len(o.Long) > 0 {
@@ -108,35 +107,14 @@ func (o *Option) Generate(data *CommandData) {
 		o.Flag = o.Short[0]
 	}
 
-	if o.Help == "SUPPRESSHELP" {
-		o.Help = ""
-	}
-
-	if strings.Contains(o.Help, "%default") {
-		if v, ok := data.Defaults[o.Dest]; ok {
-			o.Help = strings.ReplaceAll(o.Help, "%default", fmt.Sprintf("%v", v))
-		}
-	}
-
 	switch o.Type {
-	case "", "None":
-		switch o.Action {
-		case "store_true", "store_false":
-			o.Type = "bool"
-		default:
-			if o.NArgs > 0 {
-				o.Type = "string"
-			} else {
-				o.Type = ""
-			}
-		}
 	case "choice":
 		o.Type = "string"
 	case "float":
 		o.Type = "float64"
 	}
 
-	if (o.Type == "" && o.NArgs < 1) ||
+	if (o.Type == "") ||
 		strings.HasPrefix(o.Dest, "print_") ||
 		strings.HasPrefix(o.Dest, "list_") ||
 		strings.HasPrefix(o.Dest, "update_") ||
@@ -156,6 +134,4 @@ func (o *Option) Generate(data *CommandData) {
 	for _, v := range strings.Split(meta, " ") {
 		o.MetaVarFuncArgs = append(o.MetaVarFuncArgs, strcase.ToLowerCamel(strings.ToLower(v)))
 	}
-
-	// TODO: if choices, convert to ENUM, and make the enum type get passed in.
 }
