@@ -57,7 +57,8 @@ func (c *Command) SetExecutable(path string) {
 	c.mu.Unlock()
 }
 
-// SetWorkDir sets the working directory for the command.
+// SetWorkDir sets the working directory for the command. Defaults to current working
+// directory.
 func (c *Command) SetWorkDir(path string) {
 	c.mu.Lock()
 	c.directory = path
