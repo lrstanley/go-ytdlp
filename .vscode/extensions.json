@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "foxundermoon.shell-format",
+        "golang.go",
+        "jinliming2.vscode-go-template",
+        "timonwong.shellcheck"
+    ]
+}
