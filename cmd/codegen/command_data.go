@@ -36,6 +36,8 @@ var disallowedNames = []string{
 }
 
 type CommandData struct {
+	Channel      string        `json:"channel"`
+	Version      string        `json:"version"`
 	OptionGroups []OptionGroup `json:"option_groups"`
 }
 

@@ -39,6 +39,14 @@ var (
 		},
 	)
 
+	constantsTmpl = template.Must(
+		template.New("constants.gotmpl").
+			Funcs(funcMap).
+			ParseFiles(
+				"cmd/codegen/templates/constants.gotmpl",
+			),
+	)
+
 	optionGroupTmpl = template.Must(
 		template.New("option_group.gotmpl").
 			Funcs(funcMap).
@@ -103,6 +111,8 @@ func main() {
 	}
 
 	data.Generate()
+
+	createTemplateFile("constants.gen.go", constantsTmpl, data)
 
 	for _, group := range data.OptionGroups {
 		createTemplateFile(fmt.Sprintf("%s.gen.go", strcase.ToSnake(group.Name)), optionGroupTmpl, group)

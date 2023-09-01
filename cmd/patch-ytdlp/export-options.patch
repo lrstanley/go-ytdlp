@@ -1,5 +1,5 @@
 diff --git a/yt_dlp/options.py b/yt_dlp/options.py
-index 163809706..e207c2e5c 100644
+index 163809706..160c887f9 100644
 --- a/yt_dlp/options.py
 +++ b/yt_dlp/options.py
 @@ -7,6 +7,7 @@
@@ -10,13 +10,15 @@ index 163809706..e207c2e5c 100644
  
  from .compat import compat_expanduser
  from .cookies import SUPPORTED_BROWSERS, SUPPORTED_KEYRINGS
-@@ -264,6 +265,65 @@ def _dict_from_options_callback(
+@@ -264,6 +265,67 @@ def _dict_from_options_callback(
              out_dict[key] = out_dict.get(key, []) + [val] if append else val
          setattr(parser.values, option.dest, out_dict)
  
 +    def _export_options_callback(option, opt_str, value, parser: _YoutubeDLOptionParser):
 +        data = {
 +            'option_groups': [],
++            'channel': CHANNEL,
++            'version': __version__,
 +        }
 +
 +        for group in parser.option_groups:
@@ -76,7 +78,7 @@ index 163809706..e207c2e5c 100644
      def when_prefix(default):
          return {
              'default': {},
-@@ -493,6 +553,10 @@ def _alias_callback(option, opt_str, value, parser, opts, nargs):
+@@ -493,6 +555,10 @@ def _alias_callback(option, opt_str, value, parser, opts, nargs):
              'Alias options can trigger more aliases; so be careful to avoid defining recursive options. '
              f'As a safety measure, each alias may be triggered a maximum of {_YoutubeDLOptionParser.ALIAS_TRIGGER_LIMIT} times. '
              'This option can be used multiple times'))
