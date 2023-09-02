@@ -81,6 +81,17 @@ Below are a few guidelines if you would like to contribute:
 
 
 
+### :penguin: Bash/Posix-shell
+
+   * This project uses [shellcheck](https://github.com/koalaman/shellcheck)
+     for linting `bash` and `sh` scripts. It helps write proper scripts, and
+     should help catch any potential bugs/issues. This is available in VSCode
+     [here](https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck).
+   * `shfmt` should be used if possible, to auto-format shell scripts. The
+     flags that should generally be used are: `shfmt -s -bn -ci -sr`. This is
+     available in VSCode [here](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format).
+
+
 
 
 
