@@ -43,11 +43,14 @@ import (
 
 {{/* actual code generation */}}
 {{- if $option.Choices }}
-var {{ $option.Name | to_lower_camel }}Choices = []string{
+// {{ $option.Name | to_camel }}Option are parameter types for [{{ $option.Name | to_camel }}].
+type {{ $option.Name | to_camel }}Option {{ $option.Type }}
+
+var (
 {{- range $index, $choice := $option.Choices }}
-    {{ $choice | quote }},
+    {{ $option.Name | to_camel }}{{ $choice | to_camel }} {{ $option.Name | to_camel }}Option = {{ if eq $option.Type "string" }}{{ $choice | quote }}{{ else }}{{ $choice }}{{ end }}
 {{- end }}
-}
+)
 {{- end }}{{/* end if choices */}}
 
 {{- if eq $option.Type "bool" }}
@@ -62,12 +65,15 @@ func (c *Command) {{ $option.Name | to_camel }}() *Command {
 }
 {{- else if gt $option.NArgs 0 }}
 {{ template "optionHelp" $option }}
-func (c *Command) {{ $option.Name | to_camel }}({{ $option.MetaVarFuncArgs | join ", " }} {{ $option.Type }}) *Command {
+func (c *Command) {{ $option.Name | to_camel }}({{ $option.MetaVarFuncArgs | join ", " }} {{ if $option.Choices }}{{ $option.Name | to_camel }}Option{{ else }}{{ $option.Type }}{{ end }}) *Command {
     c.addFlag(&Flag{
         ID: {{ $option.Dest | quote }},
         Flag: {{ $option.Flag | quote }},
         Args: []string{
             {{- range $index, $arg := $option.MetaVarFuncArgs }}
+            {{- if $option.Choices }}{{/* if choices, type cast back to the original type when we pass in. */}}
+            {{- $arg = printf "%s(%s)" $option.Type $arg }}
+            {{- end }}{{/* end if choices */}}
             {{- if eq $option.Type "string" }}
             {{- $arg }},
             {{- else if eq $option.Type "int" }}
