@@ -39,6 +39,13 @@ func (c *Command) AllowDynamicMpd() *Command {
 	return c
 }
 
+// UnsetAllowDynamicMpd unsets any flags that were previously set by
+// AllowDynamicMpd().
+func (c *Command) UnsetAllowDynamicMpd() *Command {
+	c.removeFlagByID("dynamic_mpd")
+	return c
+}
+
 // Do not process dynamic DASH manifests (Alias: --no-allow-dynamic-mpd)
 //
 // IgnoreDynamicMpd maps to cli flags: --ignore-dynamic-mpd/--no-allow-dynamic-mpd.
@@ -48,6 +55,13 @@ func (c *Command) IgnoreDynamicMpd() *Command {
 		Flag: "--ignore-dynamic-mpd",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetIgnoreDynamicMpd unsets any flags that were previously set by
+// IgnoreDynamicMpd().
+func (c *Command) UnsetIgnoreDynamicMpd() *Command {
+	c.removeFlagByID("dynamic_mpd")
 	return c
 }
 
@@ -63,6 +77,13 @@ func (c *Command) HlsSplitDiscontinuity() *Command {
 	return c
 }
 
+// UnsetHlsSplitDiscontinuity unsets any flags that were previously set by
+// HlsSplitDiscontinuity().
+func (c *Command) UnsetHlsSplitDiscontinuity() *Command {
+	c.removeFlagByID("hls_split_discontinuity")
+	return c
+}
+
 // Do not split HLS playlists to different formats at discontinuities such as ad
 // breaks (default)
 //
@@ -73,6 +94,13 @@ func (c *Command) NoHlsSplitDiscontinuity() *Command {
 		Flag: "--no-hls-split-discontinuity",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoHlsSplitDiscontinuity unsets any flags that were previously set by
+// NoHlsSplitDiscontinuity().
+func (c *Command) UnsetNoHlsSplitDiscontinuity() *Command {
+	c.removeFlagByID("hls_split_discontinuity")
 	return c
 }
 
@@ -109,6 +137,13 @@ func (c *Command) YoutubeIncludeDashManifest() *Command {
 	return c
 }
 
+// UnsetYoutubeIncludeDashManifest unsets any flags that were previously set by
+// YoutubeIncludeDashManifest().
+func (c *Command) UnsetYoutubeIncludeDashManifest() *Command {
+	c.removeFlagByID("youtube_include_dash_manifest")
+	return c
+}
+
 // YoutubeSkipDashManifest sets the "youtube-skip-dash-manifest" flag (no description specified).
 //
 // YoutubeSkipDashManifest maps to cli flags: --youtube-skip-dash-manifest/--no-youtube-include-dash-manifest (hidden).
@@ -118,6 +153,13 @@ func (c *Command) YoutubeSkipDashManifest() *Command {
 		Flag: "--youtube-skip-dash-manifest",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetYoutubeSkipDashManifest unsets any flags that were previously set by
+// YoutubeSkipDashManifest().
+func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
+	c.removeFlagByID("youtube_include_dash_manifest")
 	return c
 }
 
@@ -133,6 +175,13 @@ func (c *Command) YoutubeIncludeHlsManifest() *Command {
 	return c
 }
 
+// UnsetYoutubeIncludeHlsManifest unsets any flags that were previously set by
+// YoutubeIncludeHlsManifest().
+func (c *Command) UnsetYoutubeIncludeHlsManifest() *Command {
+	c.removeFlagByID("youtube_include_hls_manifest")
+	return c
+}
+
 // YoutubeSkipHlsManifest sets the "youtube-skip-hls-manifest" flag (no description specified).
 //
 // YoutubeSkipHlsManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest (hidden).
@@ -142,5 +191,12 @@ func (c *Command) YoutubeSkipHlsManifest() *Command {
 		Flag: "--youtube-skip-hls-manifest",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetYoutubeSkipHlsManifest unsets any flags that were previously set by
+// YoutubeSkipHlsManifest().
+func (c *Command) UnsetYoutubeSkipHlsManifest() *Command {
+	c.removeFlagByID("youtube_include_hls_manifest")
 	return c
 }

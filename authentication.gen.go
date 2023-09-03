@@ -77,6 +77,13 @@ func (c *Command) Netrc() *Command {
 	return c
 }
 
+// UnsetNetrc unsets any flags that were previously set by
+// Netrc().
+func (c *Command) UnsetNetrc() *Command {
+	c.removeFlagByID("usenetrc")
+	return c
+}
+
 // Location of .netrc authentication data; either the path or its containing
 // directory. Defaults to ~/.netrc
 //
@@ -203,6 +210,13 @@ func (c *Command) ApListMso() *Command {
 		Flag: "--ap-list-mso",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetApListMso unsets any flags that were previously set by
+// ApListMso().
+func (c *Command) UnsetApListMso() *Command {
+	c.removeFlagByID("ap_list_mso")
 	return c
 }
 

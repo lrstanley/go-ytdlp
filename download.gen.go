@@ -167,6 +167,13 @@ func (c *Command) SkipUnavailableFragments() *Command {
 	return c
 }
 
+// UnsetSkipUnavailableFragments unsets any flags that were previously set by
+// SkipUnavailableFragments().
+func (c *Command) UnsetSkipUnavailableFragments() *Command {
+	c.removeFlagByID("skip_unavailable_fragments")
+	return c
+}
+
 // Abort download if a fragment is unavailable (Alias:
 // --no-skip-unavailable-fragments)
 //
@@ -177,6 +184,13 @@ func (c *Command) AbortOnUnavailableFragments() *Command {
 		Flag: "--abort-on-unavailable-fragments",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetAbortOnUnavailableFragments unsets any flags that were previously set by
+// AbortOnUnavailableFragments().
+func (c *Command) UnsetAbortOnUnavailableFragments() *Command {
+	c.removeFlagByID("skip_unavailable_fragments")
 	return c
 }
 
@@ -192,6 +206,13 @@ func (c *Command) KeepFragments() *Command {
 	return c
 }
 
+// UnsetKeepFragments unsets any flags that were previously set by
+// KeepFragments().
+func (c *Command) UnsetKeepFragments() *Command {
+	c.removeFlagByID("keep_fragments")
+	return c
+}
+
 // Delete downloaded fragments after downloading is finished (default)
 //
 // NoKeepFragments maps to cli flags: --no-keep-fragments.
@@ -201,6 +222,13 @@ func (c *Command) NoKeepFragments() *Command {
 		Flag: "--no-keep-fragments",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoKeepFragments unsets any flags that were previously set by
+// NoKeepFragments().
+func (c *Command) UnsetNoKeepFragments() *Command {
+	c.removeFlagByID("keep_fragments")
 	return c
 }
 
@@ -236,6 +264,13 @@ func (c *Command) ResizeBuffer() *Command {
 	return c
 }
 
+// UnsetResizeBuffer unsets any flags that were previously set by
+// ResizeBuffer().
+func (c *Command) UnsetResizeBuffer() *Command {
+	c.removeFlagByID("noresizebuffer")
+	return c
+}
+
 // Do not automatically adjust the buffer size
 //
 // NoResizeBuffer maps to cli flags: --no-resize-buffer.
@@ -245,6 +280,13 @@ func (c *Command) NoResizeBuffer() *Command {
 		Flag: "--no-resize-buffer",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoResizeBuffer unsets any flags that were previously set by
+// NoResizeBuffer().
+func (c *Command) UnsetNoResizeBuffer() *Command {
+	c.removeFlagByID("noresizebuffer")
 	return c
 }
 
@@ -281,6 +323,13 @@ func (c *Command) Test() *Command {
 	return c
 }
 
+// UnsetTest unsets any flags that were previously set by
+// Test().
+func (c *Command) UnsetTest() *Command {
+	c.removeFlagByID("test")
+	return c
+}
+
 // PlaylistReverse sets the "playlist-reverse" flag (no description specified).
 //
 // PlaylistReverse maps to cli flags: --playlist-reverse (hidden).
@@ -290,6 +339,13 @@ func (c *Command) PlaylistReverse() *Command {
 		Flag: "--playlist-reverse",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetPlaylistReverse unsets any flags that were previously set by
+// PlaylistReverse().
+func (c *Command) UnsetPlaylistReverse() *Command {
+	c.removeFlagByID("playlist_reverse")
 	return c
 }
 
@@ -305,6 +361,13 @@ func (c *Command) NoPlaylistReverse() *Command {
 	return c
 }
 
+// UnsetNoPlaylistReverse unsets any flags that were previously set by
+// NoPlaylistReverse().
+func (c *Command) UnsetNoPlaylistReverse() *Command {
+	c.removeFlagByID("playlist_reverse")
+	return c
+}
+
 // Download playlist videos in random order
 //
 // PlaylistRandom maps to cli flags: --playlist-random.
@@ -314,6 +377,13 @@ func (c *Command) PlaylistRandom() *Command {
 		Flag: "--playlist-random",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetPlaylistRandom unsets any flags that were previously set by
+// PlaylistRandom().
+func (c *Command) UnsetPlaylistRandom() *Command {
+	c.removeFlagByID("playlist_random")
 	return c
 }
 
@@ -330,6 +400,13 @@ func (c *Command) LazyPlaylist() *Command {
 	return c
 }
 
+// UnsetLazyPlaylist unsets any flags that were previously set by
+// LazyPlaylist().
+func (c *Command) UnsetLazyPlaylist() *Command {
+	c.removeFlagByID("lazy_playlist")
+	return c
+}
+
 // Process videos in the playlist only after the entire playlist is parsed
 // (default)
 //
@@ -340,6 +417,13 @@ func (c *Command) NoLazyPlaylist() *Command {
 		Flag: "--no-lazy-playlist",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoLazyPlaylist unsets any flags that were previously set by
+// NoLazyPlaylist().
+func (c *Command) UnsetNoLazyPlaylist() *Command {
+	c.removeFlagByID("lazy_playlist")
 	return c
 }
 
@@ -355,6 +439,13 @@ func (c *Command) XattrSetFilesize() *Command {
 	return c
 }
 
+// UnsetXattrSetFilesize unsets any flags that were previously set by
+// XattrSetFilesize().
+func (c *Command) UnsetXattrSetFilesize() *Command {
+	c.removeFlagByID("xattr_set_filesize")
+	return c
+}
+
 // HlsPreferNative sets the "hls-prefer-native" flag (no description specified).
 //
 // HlsPreferNative maps to cli flags: --hls-prefer-native (hidden).
@@ -367,6 +458,13 @@ func (c *Command) HlsPreferNative() *Command {
 	return c
 }
 
+// UnsetHlsPreferNative unsets any flags that were previously set by
+// HlsPreferNative().
+func (c *Command) UnsetHlsPreferNative() *Command {
+	c.removeFlagByID("hls_prefer_native")
+	return c
+}
+
 // HlsPreferFfmpeg sets the "hls-prefer-ffmpeg" flag (no description specified).
 //
 // HlsPreferFfmpeg maps to cli flags: --hls-prefer-ffmpeg (hidden).
@@ -376,6 +474,13 @@ func (c *Command) HlsPreferFfmpeg() *Command {
 		Flag: "--hls-prefer-ffmpeg",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetHlsPreferFfmpeg unsets any flags that were previously set by
+// HlsPreferFfmpeg().
+func (c *Command) UnsetHlsPreferFfmpeg() *Command {
+	c.removeFlagByID("hls_prefer_native")
 	return c
 }
 
@@ -393,6 +498,13 @@ func (c *Command) HlsUseMpegts() *Command {
 	return c
 }
 
+// UnsetHlsUseMpegts unsets any flags that were previously set by
+// HlsUseMpegts().
+func (c *Command) UnsetHlsUseMpegts() *Command {
+	c.removeFlagByID("hls_use_mpegts")
+	return c
+}
+
 // Do not use the mpegts container for HLS videos. This is default when not
 // downloading live streams
 //
@@ -403,6 +515,13 @@ func (c *Command) NoHlsUseMpegts() *Command {
 		Flag: "--no-hls-use-mpegts",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoHlsUseMpegts unsets any flags that were previously set by
+// NoHlsUseMpegts().
+func (c *Command) UnsetNoHlsUseMpegts() *Command {
+	c.removeFlagByID("hls_use_mpegts")
 	return c
 }
 

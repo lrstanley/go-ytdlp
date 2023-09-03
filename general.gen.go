@@ -21,6 +21,13 @@ func (c *Command) IgnoreErrors() *Command {
 	return c
 }
 
+// UnsetIgnoreErrors unsets any flags that were previously set by
+// IgnoreErrors().
+func (c *Command) UnsetIgnoreErrors() *Command {
+	c.removeFlagByID("ignoreerrors")
+	return c
+}
+
 // Abort downloading of further videos if an error occurs (Alias:
 // --no-ignore-errors)
 //
@@ -31,6 +38,13 @@ func (c *Command) AbortOnError() *Command {
 		Flag: "--abort-on-error",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetAbortOnError unsets any flags that were previously set by
+// AbortOnError().
+func (c *Command) UnsetAbortOnError() *Command {
+	c.removeFlagByID("ignoreerrors")
 	return c
 }
 
@@ -65,6 +79,13 @@ func (c *Command) ForceGenericExtractor() *Command {
 		Flag: "--force-generic-extractor",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetForceGenericExtractor unsets any flags that were previously set by
+// ForceGenericExtractor().
+func (c *Command) UnsetForceGenericExtractor() *Command {
+	c.removeFlagByID("force_generic_extractor")
 	return c
 }
 
@@ -106,6 +127,13 @@ func (c *Command) IgnoreConfig() *Command {
 	return c
 }
 
+// UnsetIgnoreConfig unsets any flags that were previously set by
+// IgnoreConfig().
+func (c *Command) UnsetIgnoreConfig() *Command {
+	c.removeFlagByID("ignoreconfig")
+	return c
+}
+
 // Location of the main configuration file; either the path to the config or its
 // containing directory ("-" for stdin). Can be used multiple times and inside
 // other configuration files
@@ -139,6 +167,13 @@ func (c *Command) NoFlatPlaylist() *Command {
 	return c
 }
 
+// UnsetNoFlatPlaylist unsets any flags that were previously set by
+// NoFlatPlaylist().
+func (c *Command) UnsetNoFlatPlaylist() *Command {
+	c.removeFlagByID("extract_flat")
+	return c
+}
+
 // Download livestreams from the start. Currently only supported for YouTube
 // (Experimental)
 //
@@ -152,6 +187,13 @@ func (c *Command) LiveFromStart() *Command {
 	return c
 }
 
+// UnsetLiveFromStart unsets any flags that were previously set by
+// LiveFromStart().
+func (c *Command) UnsetLiveFromStart() *Command {
+	c.removeFlagByID("live_from_start")
+	return c
+}
+
 // Download livestreams from the current time (default)
 //
 // NoLiveFromStart maps to cli flags: --no-live-from-start.
@@ -161,6 +203,13 @@ func (c *Command) NoLiveFromStart() *Command {
 		Flag: "--no-live-from-start",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoLiveFromStart unsets any flags that were previously set by
+// NoLiveFromStart().
+func (c *Command) UnsetNoLiveFromStart() *Command {
+	c.removeFlagByID("live_from_start")
 	return c
 }
 
@@ -196,6 +245,13 @@ func (c *Command) MarkWatched() *Command {
 	return c
 }
 
+// UnsetMarkWatched unsets any flags that were previously set by
+// MarkWatched().
+func (c *Command) UnsetMarkWatched() *Command {
+	c.removeFlagByID("mark_watched")
+	return c
+}
+
 // Do not mark videos watched (default)
 //
 // NoMarkWatched maps to cli flags: --no-mark-watched.
@@ -205,6 +261,13 @@ func (c *Command) NoMarkWatched() *Command {
 		Flag: "--no-mark-watched",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoMarkWatched unsets any flags that were previously set by
+// NoMarkWatched().
+func (c *Command) UnsetNoMarkWatched() *Command {
+	c.removeFlagByID("mark_watched")
 	return c
 }
 

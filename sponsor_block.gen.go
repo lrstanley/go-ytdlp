@@ -92,6 +92,13 @@ func (c *Command) NoSponsorblock() *Command {
 	return c
 }
 
+// UnsetNoSponsorblock unsets any flags that were previously set by
+// NoSponsorblock().
+func (c *Command) UnsetNoSponsorblock() *Command {
+	c.removeFlagByID("no_sponsorblock")
+	return c
+}
+
 // SponsorBlock API location, defaults to https://sponsor.ajay.app
 //
 // SponsorblockApi maps to cli flags: --sponsorblock-api=URL.
@@ -123,6 +130,13 @@ func (c *Command) Sponskrub() *Command {
 	return c
 }
 
+// UnsetSponskrub unsets any flags that were previously set by
+// Sponskrub().
+func (c *Command) UnsetSponskrub() *Command {
+	c.removeFlagByID("sponskrub")
+	return c
+}
+
 // NoSponskrub sets the "no-sponskrub" flag (no description specified).
 //
 // NoSponskrub maps to cli flags: --no-sponskrub (hidden).
@@ -132,6 +146,13 @@ func (c *Command) NoSponskrub() *Command {
 		Flag: "--no-sponskrub",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoSponskrub unsets any flags that were previously set by
+// NoSponskrub().
+func (c *Command) UnsetNoSponskrub() *Command {
+	c.removeFlagByID("sponskrub")
 	return c
 }
 
@@ -147,6 +168,13 @@ func (c *Command) SponskrubCut() *Command {
 	return c
 }
 
+// UnsetSponskrubCut unsets any flags that were previously set by
+// SponskrubCut().
+func (c *Command) UnsetSponskrubCut() *Command {
+	c.removeFlagByID("sponskrub_cut")
+	return c
+}
+
 // NoSponskrubCut sets the "no-sponskrub-cut" flag (no description specified).
 //
 // NoSponskrubCut maps to cli flags: --no-sponskrub-cut (hidden).
@@ -156,6 +184,13 @@ func (c *Command) NoSponskrubCut() *Command {
 		Flag: "--no-sponskrub-cut",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoSponskrubCut unsets any flags that were previously set by
+// NoSponskrubCut().
+func (c *Command) UnsetNoSponskrubCut() *Command {
+	c.removeFlagByID("sponskrub_cut")
 	return c
 }
 
@@ -171,6 +206,13 @@ func (c *Command) SponskrubForce() *Command {
 	return c
 }
 
+// UnsetSponskrubForce unsets any flags that were previously set by
+// SponskrubForce().
+func (c *Command) UnsetSponskrubForce() *Command {
+	c.removeFlagByID("sponskrub_force")
+	return c
+}
+
 // NoSponskrubForce sets the "no-sponskrub-force" flag (no description specified).
 //
 // NoSponskrubForce maps to cli flags: --no-sponskrub-force (hidden).
@@ -180,6 +222,13 @@ func (c *Command) NoSponskrubForce() *Command {
 		Flag: "--no-sponskrub-force",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoSponskrubForce unsets any flags that were previously set by
+// NoSponskrubForce().
+func (c *Command) UnsetNoSponskrubForce() *Command {
+	c.removeFlagByID("sponskrub_force")
 	return c
 }
 

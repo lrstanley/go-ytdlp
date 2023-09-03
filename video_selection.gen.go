@@ -305,6 +305,13 @@ func (c *Command) NoPlaylist() *Command {
 	return c
 }
 
+// UnsetNoPlaylist unsets any flags that were previously set by
+// NoPlaylist().
+func (c *Command) UnsetNoPlaylist() *Command {
+	c.removeFlagByID("noplaylist")
+	return c
+}
+
 // Download the playlist, if the URL refers to a video and a playlist
 //
 // YesPlaylist maps to cli flags: --yes-playlist.
@@ -314,6 +321,13 @@ func (c *Command) YesPlaylist() *Command {
 		Flag: "--yes-playlist",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetYesPlaylist unsets any flags that were previously set by
+// YesPlaylist().
+func (c *Command) UnsetYesPlaylist() *Command {
+	c.removeFlagByID("noplaylist")
 	return c
 }
 
@@ -391,6 +405,13 @@ func (c *Command) BreakOnExisting() *Command {
 	return c
 }
 
+// UnsetBreakOnExisting unsets any flags that were previously set by
+// BreakOnExisting().
+func (c *Command) UnsetBreakOnExisting() *Command {
+	c.removeFlagByID("break_on_existing")
+	return c
+}
+
 // BreakOnReject sets the "break-on-reject" flag (no description specified).
 //
 // BreakOnReject maps to cli flags: --break-on-reject (hidden).
@@ -400,6 +421,13 @@ func (c *Command) BreakOnReject() *Command {
 		Flag: "--break-on-reject",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetBreakOnReject unsets any flags that were previously set by
+// BreakOnReject().
+func (c *Command) UnsetBreakOnReject() *Command {
+	c.removeFlagByID("break_on_reject")
 	return c
 }
 
@@ -416,6 +444,13 @@ func (c *Command) BreakPerInput() *Command {
 	return c
 }
 
+// UnsetBreakPerInput unsets any flags that were previously set by
+// BreakPerInput().
+func (c *Command) UnsetBreakPerInput() *Command {
+	c.removeFlagByID("break_per_url")
+	return c
+}
+
 // --break-on-existing and similar options terminates the entire download queue
 //
 // NoBreakPerInput maps to cli flags: --no-break-per-input.
@@ -425,6 +460,13 @@ func (c *Command) NoBreakPerInput() *Command {
 		Flag: "--no-break-per-input",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoBreakPerInput unsets any flags that were previously set by
+// NoBreakPerInput().
+func (c *Command) UnsetNoBreakPerInput() *Command {
+	c.removeFlagByID("break_per_url")
 	return c
 }
 
@@ -461,6 +503,13 @@ func (c *Command) IncludeAds() *Command {
 	return c
 }
 
+// UnsetIncludeAds unsets any flags that were previously set by
+// IncludeAds().
+func (c *Command) UnsetIncludeAds() *Command {
+	c.removeFlagByID("include_ads")
+	return c
+}
+
 // NoIncludeAds sets the "no-include-ads" flag (no description specified).
 //
 // NoIncludeAds maps to cli flags: --no-include-ads (hidden).
@@ -470,5 +519,12 @@ func (c *Command) NoIncludeAds() *Command {
 		Flag: "--no-include-ads",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoIncludeAds unsets any flags that were previously set by
+// NoIncludeAds().
+func (c *Command) UnsetNoIncludeAds() *Command {
+	c.removeFlagByID("include_ads")
 	return c
 }

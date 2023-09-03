@@ -39,6 +39,13 @@ func (c *Command) NoWriteThumbnail() *Command {
 	return c
 }
 
+// UnsetNoWriteThumbnail unsets any flags that were previously set by
+// NoWriteThumbnail().
+func (c *Command) UnsetNoWriteThumbnail() *Command {
+	c.removeFlagByID("writethumbnail")
+	return c
+}
+
 // List available thumbnails of each video. Simulate unless --no-simulate is used
 //
 // ListThumbnails maps to cli flags: --list-thumbnails.
@@ -48,5 +55,12 @@ func (c *Command) ListThumbnails() *Command {
 		Flag: "--list-thumbnails",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetListThumbnails unsets any flags that were previously set by
+// ListThumbnails().
+func (c *Command) UnsetListThumbnails() *Command {
+	c.removeFlagByID("list_thumbnails")
 	return c
 }

@@ -84,3 +84,10 @@ func (c *Command) EnableFileUrls() *Command {
 	})
 	return c
 }
+
+// UnsetEnableFileUrls unsets any flags that were previously set by
+// EnableFileUrls().
+func (c *Command) UnsetEnableFileUrls() *Command {
+	c.removeFlagByID("enable_file_urls")
+	return c
+}

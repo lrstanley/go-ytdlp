@@ -44,6 +44,13 @@ func (c *Command) LegacyServerConnect() *Command {
 	return c
 }
 
+// UnsetLegacyServerConnect unsets any flags that were previously set by
+// LegacyServerConnect().
+func (c *Command) UnsetLegacyServerConnect() *Command {
+	c.removeFlagByID("legacy_server_connect")
+	return c
+}
+
 // Suppress HTTPS certificate validation
 //
 // NoCheckCertificates maps to cli flags: --no-check-certificates.
@@ -53,6 +60,13 @@ func (c *Command) NoCheckCertificates() *Command {
 		Flag: "--no-check-certificates",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoCheckCertificates unsets any flags that were previously set by
+// NoCheckCertificates().
+func (c *Command) UnsetNoCheckCertificates() *Command {
+	c.removeFlagByID("no_check_certificate")
 	return c
 }
 
@@ -66,6 +80,13 @@ func (c *Command) PreferInsecure() *Command {
 		Flag: "--prefer-insecure",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetPreferInsecure unsets any flags that were previously set by
+// PreferInsecure().
+func (c *Command) UnsetPreferInsecure() *Command {
+	c.removeFlagByID("prefer_insecure")
 	return c
 }
 
@@ -133,6 +154,13 @@ func (c *Command) BidiWorkaround() *Command {
 		Flag: "--bidi-workaround",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetBidiWorkaround unsets any flags that were previously set by
+// BidiWorkaround().
+func (c *Command) UnsetBidiWorkaround() *Command {
+	c.removeFlagByID("bidi_workaround")
 	return c
 }
 

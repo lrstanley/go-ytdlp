@@ -21,6 +21,13 @@ func (c *Command) WriteLink() *Command {
 	return c
 }
 
+// UnsetWriteLink unsets any flags that were previously set by
+// WriteLink().
+func (c *Command) UnsetWriteLink() *Command {
+	c.removeFlagByID("writelink")
+	return c
+}
+
 // Write a .url Windows internet shortcut. The OS caches the URL based on the file
 // path
 //
@@ -31,6 +38,13 @@ func (c *Command) WriteUrlLink() *Command {
 		Flag: "--write-url-link",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetWriteUrlLink unsets any flags that were previously set by
+// WriteUrlLink().
+func (c *Command) UnsetWriteUrlLink() *Command {
+	c.removeFlagByID("writeurllink")
 	return c
 }
 
@@ -46,6 +60,13 @@ func (c *Command) WriteWeblocLink() *Command {
 	return c
 }
 
+// UnsetWriteWeblocLink unsets any flags that were previously set by
+// WriteWeblocLink().
+func (c *Command) UnsetWriteWeblocLink() *Command {
+	c.removeFlagByID("writewebloclink")
+	return c
+}
+
 // Write a .desktop Linux internet shortcut
 //
 // WriteDesktopLink maps to cli flags: --write-desktop-link.
@@ -55,5 +76,12 @@ func (c *Command) WriteDesktopLink() *Command {
 		Flag: "--write-desktop-link",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetWriteDesktopLink unsets any flags that were previously set by
+// WriteDesktopLink().
+func (c *Command) UnsetWriteDesktopLink() *Command {
+	c.removeFlagByID("writedesktoplink")
 	return c
 }

@@ -44,6 +44,13 @@ func (c *Command) Id() *Command {
 	return c
 }
 
+// UnsetId unsets any flags that were previously set by
+// Id().
+func (c *Command) UnsetId() *Command {
+	c.removeFlagByID("useid")
+	return c
+}
+
 // The paths where the files should be downloaded. Specify the type of file and the
 // path separated by a colon ":". All the same TYPES as --output are supported.
 // Additionally, you can also provide "home" (default) and "temp" paths. All
@@ -157,6 +164,13 @@ func (c *Command) RestrictFilenames() *Command {
 	return c
 }
 
+// UnsetRestrictFilenames unsets any flags that were previously set by
+// RestrictFilenames().
+func (c *Command) UnsetRestrictFilenames() *Command {
+	c.removeFlagByID("restrictfilenames")
+	return c
+}
+
 // Allow Unicode characters, "&" and spaces in filenames (default)
 //
 // NoRestrictFilenames maps to cli flags: --no-restrict-filenames.
@@ -166,6 +180,13 @@ func (c *Command) NoRestrictFilenames() *Command {
 		Flag: "--no-restrict-filenames",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoRestrictFilenames unsets any flags that were previously set by
+// NoRestrictFilenames().
+func (c *Command) UnsetNoRestrictFilenames() *Command {
+	c.removeFlagByID("restrictfilenames")
 	return c
 }
 
@@ -181,6 +202,13 @@ func (c *Command) WindowsFilenames() *Command {
 	return c
 }
 
+// UnsetWindowsFilenames unsets any flags that were previously set by
+// WindowsFilenames().
+func (c *Command) UnsetWindowsFilenames() *Command {
+	c.removeFlagByID("windowsfilenames")
+	return c
+}
+
 // Make filenames Windows-compatible only if using Windows (default)
 //
 // NoWindowsFilenames maps to cli flags: --no-windows-filenames.
@@ -190,6 +218,13 @@ func (c *Command) NoWindowsFilenames() *Command {
 		Flag: "--no-windows-filenames",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoWindowsFilenames unsets any flags that were previously set by
+// NoWindowsFilenames().
+func (c *Command) UnsetNoWindowsFilenames() *Command {
+	c.removeFlagByID("windowsfilenames")
 	return c
 }
 
@@ -227,6 +262,13 @@ func (c *Command) NoOverwrites() *Command {
 	return c
 }
 
+// UnsetNoOverwrites unsets any flags that were previously set by
+// NoOverwrites().
+func (c *Command) UnsetNoOverwrites() *Command {
+	c.removeFlagByID("overwrites")
+	return c
+}
+
 // Overwrite all video and metadata files. This option includes --no-continue
 //
 // ForceOverwrites maps to cli flags: --force-overwrites/--yes-overwrites.
@@ -239,6 +281,13 @@ func (c *Command) ForceOverwrites() *Command {
 	return c
 }
 
+// UnsetForceOverwrites unsets any flags that were previously set by
+// ForceOverwrites().
+func (c *Command) UnsetForceOverwrites() *Command {
+	c.removeFlagByID("overwrites")
+	return c
+}
+
 // Resume partially downloaded files/fragments (default)
 //
 // Continue maps to cli flags: -c/--continue.
@@ -248,6 +297,13 @@ func (c *Command) Continue() *Command {
 		Flag: "--continue",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetContinue unsets any flags that were previously set by
+// Continue().
+func (c *Command) UnsetContinue() *Command {
+	c.removeFlagByID("continue_dl")
 	return c
 }
 
@@ -264,6 +320,13 @@ func (c *Command) NoContinue() *Command {
 	return c
 }
 
+// UnsetNoContinue unsets any flags that were previously set by
+// NoContinue().
+func (c *Command) UnsetNoContinue() *Command {
+	c.removeFlagByID("continue_dl")
+	return c
+}
+
 // Use .part files instead of writing directly into output file (default)
 //
 // Part maps to cli flags: --part.
@@ -273,6 +336,13 @@ func (c *Command) Part() *Command {
 		Flag: "--part",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetPart unsets any flags that were previously set by
+// Part().
+func (c *Command) UnsetPart() *Command {
+	c.removeFlagByID("nopart")
 	return c
 }
 
@@ -288,6 +358,13 @@ func (c *Command) NoPart() *Command {
 	return c
 }
 
+// UnsetNoPart unsets any flags that were previously set by
+// NoPart().
+func (c *Command) UnsetNoPart() *Command {
+	c.removeFlagByID("nopart")
+	return c
+}
+
 // Use the Last-modified header to set the file modification time (default)
 //
 // Mtime maps to cli flags: --mtime.
@@ -297,6 +374,13 @@ func (c *Command) Mtime() *Command {
 		Flag: "--mtime",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetMtime unsets any flags that were previously set by
+// Mtime().
+func (c *Command) UnsetMtime() *Command {
+	c.removeFlagByID("updatetime")
 	return c
 }
 
@@ -312,6 +396,13 @@ func (c *Command) NoMtime() *Command {
 	return c
 }
 
+// UnsetNoMtime unsets any flags that were previously set by
+// NoMtime().
+func (c *Command) UnsetNoMtime() *Command {
+	c.removeFlagByID("updatetime")
+	return c
+}
+
 // Write video description to a .description file
 //
 // WriteDescription maps to cli flags: --write-description.
@@ -324,6 +415,13 @@ func (c *Command) WriteDescription() *Command {
 	return c
 }
 
+// UnsetWriteDescription unsets any flags that were previously set by
+// WriteDescription().
+func (c *Command) UnsetWriteDescription() *Command {
+	c.removeFlagByID("writedescription")
+	return c
+}
+
 // Do not write video description (default)
 //
 // NoWriteDescription maps to cli flags: --no-write-description.
@@ -333,6 +431,13 @@ func (c *Command) NoWriteDescription() *Command {
 		Flag: "--no-write-description",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoWriteDescription unsets any flags that were previously set by
+// NoWriteDescription().
+func (c *Command) UnsetNoWriteDescription() *Command {
+	c.removeFlagByID("writedescription")
 	return c
 }
 
@@ -349,6 +454,13 @@ func (c *Command) WriteInfoJson() *Command {
 	return c
 }
 
+// UnsetWriteInfoJson unsets any flags that were previously set by
+// WriteInfoJson().
+func (c *Command) UnsetWriteInfoJson() *Command {
+	c.removeFlagByID("writeinfojson")
+	return c
+}
+
 // Do not write video metadata (default)
 //
 // NoWriteInfoJson maps to cli flags: --no-write-info-json.
@@ -358,6 +470,13 @@ func (c *Command) NoWriteInfoJson() *Command {
 		Flag: "--no-write-info-json",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoWriteInfoJson unsets any flags that were previously set by
+// NoWriteInfoJson().
+func (c *Command) UnsetNoWriteInfoJson() *Command {
+	c.removeFlagByID("writeinfojson")
 	return c
 }
 
@@ -373,6 +492,13 @@ func (c *Command) WriteAnnotations() *Command {
 	return c
 }
 
+// UnsetWriteAnnotations unsets any flags that were previously set by
+// WriteAnnotations().
+func (c *Command) UnsetWriteAnnotations() *Command {
+	c.removeFlagByID("writeannotations")
+	return c
+}
+
 // NoWriteAnnotations sets the "no-write-annotations" flag (no description specified).
 //
 // NoWriteAnnotations maps to cli flags: --no-write-annotations (hidden).
@@ -382,6 +508,13 @@ func (c *Command) NoWriteAnnotations() *Command {
 		Flag: "--no-write-annotations",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoWriteAnnotations unsets any flags that were previously set by
+// NoWriteAnnotations().
+func (c *Command) UnsetNoWriteAnnotations() *Command {
+	c.removeFlagByID("writeannotations")
 	return c
 }
 
@@ -398,6 +531,13 @@ func (c *Command) WritePlaylistMetafiles() *Command {
 	return c
 }
 
+// UnsetWritePlaylistMetafiles unsets any flags that were previously set by
+// WritePlaylistMetafiles().
+func (c *Command) UnsetWritePlaylistMetafiles() *Command {
+	c.removeFlagByID("allow_playlist_files")
+	return c
+}
+
 // Do not write playlist metadata when using --write-info-json, --write-description
 // etc.
 //
@@ -408,6 +548,13 @@ func (c *Command) NoWritePlaylistMetafiles() *Command {
 		Flag: "--no-write-playlist-metafiles",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoWritePlaylistMetafiles unsets any flags that were previously set by
+// NoWritePlaylistMetafiles().
+func (c *Command) UnsetNoWritePlaylistMetafiles() *Command {
+	c.removeFlagByID("allow_playlist_files")
 	return c
 }
 
@@ -423,6 +570,13 @@ func (c *Command) CleanInfoJson() *Command {
 	return c
 }
 
+// UnsetCleanInfoJson unsets any flags that were previously set by
+// CleanInfoJson().
+func (c *Command) UnsetCleanInfoJson() *Command {
+	c.removeFlagByID("clean_infojson")
+	return c
+}
+
 // Write all fields to the infojson
 //
 // NoCleanInfoJson maps to cli flags: --no-clean-info-json/--no-clean-infojson.
@@ -432,6 +586,13 @@ func (c *Command) NoCleanInfoJson() *Command {
 		Flag: "--no-clean-info-json",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoCleanInfoJson unsets any flags that were previously set by
+// NoCleanInfoJson().
+func (c *Command) UnsetNoCleanInfoJson() *Command {
+	c.removeFlagByID("clean_infojson")
 	return c
 }
 
@@ -449,6 +610,13 @@ func (c *Command) WriteComments() *Command {
 	return c
 }
 
+// UnsetWriteComments unsets any flags that were previously set by
+// WriteComments().
+func (c *Command) UnsetWriteComments() *Command {
+	c.removeFlagByID("getcomments")
+	return c
+}
+
 // Do not retrieve video comments unless the extraction is known to be quick
 // (Alias: --no-get-comments)
 //
@@ -459,6 +627,13 @@ func (c *Command) NoWriteComments() *Command {
 		Flag: "--no-write-comments",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoWriteComments unsets any flags that were previously set by
+// NoWriteComments().
+func (c *Command) UnsetNoWriteComments() *Command {
+	c.removeFlagByID("getcomments")
 	return c
 }
 
@@ -559,6 +734,13 @@ func (c *Command) NoCacheDir() *Command {
 	return c
 }
 
+// UnsetNoCacheDir unsets any flags that were previously set by
+// NoCacheDir().
+func (c *Command) UnsetNoCacheDir() *Command {
+	c.removeFlagByID("cachedir")
+	return c
+}
+
 // Delete all filesystem cache files
 //
 // RmCacheDir maps to cli flags: --rm-cache-dir.
@@ -568,5 +750,12 @@ func (c *Command) RmCacheDir() *Command {
 		Flag: "--rm-cache-dir",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetRmCacheDir unsets any flags that were previously set by
+// RmCacheDir().
+func (c *Command) UnsetRmCacheDir() *Command {
+	c.removeFlagByID("rm_cachedir")
 	return c
 }

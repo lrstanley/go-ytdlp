@@ -20,6 +20,13 @@ func (c *Command) WriteSubs() *Command {
 	return c
 }
 
+// UnsetWriteSubs unsets any flags that were previously set by
+// WriteSubs().
+func (c *Command) UnsetWriteSubs() *Command {
+	c.removeFlagByID("writesubtitles")
+	return c
+}
+
 // Do not write subtitle file (default)
 //
 // NoWriteSubs maps to cli flags: --no-write-subs/--no-write-srt.
@@ -32,6 +39,13 @@ func (c *Command) NoWriteSubs() *Command {
 	return c
 }
 
+// UnsetNoWriteSubs unsets any flags that were previously set by
+// NoWriteSubs().
+func (c *Command) UnsetNoWriteSubs() *Command {
+	c.removeFlagByID("writesubtitles")
+	return c
+}
+
 // Write automatically generated subtitle file (Alias: --write-automatic-subs)
 //
 // WriteAutoSubs maps to cli flags: --write-auto-subs/--write-automatic-subs.
@@ -41,6 +55,13 @@ func (c *Command) WriteAutoSubs() *Command {
 		Flag: "--write-auto-subs",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetWriteAutoSubs unsets any flags that were previously set by
+// WriteAutoSubs().
+func (c *Command) UnsetWriteAutoSubs() *Command {
+	c.removeFlagByID("writeautomaticsub")
 	return c
 }
 
@@ -57,6 +78,13 @@ func (c *Command) NoWriteAutoSubs() *Command {
 	return c
 }
 
+// UnsetNoWriteAutoSubs unsets any flags that were previously set by
+// NoWriteAutoSubs().
+func (c *Command) UnsetNoWriteAutoSubs() *Command {
+	c.removeFlagByID("writeautomaticsub")
+	return c
+}
+
 // AllSubs sets the "all-subs" flag (no description specified).
 //
 // AllSubs maps to cli flags: --all-subs (hidden).
@@ -69,6 +97,13 @@ func (c *Command) AllSubs() *Command {
 	return c
 }
 
+// UnsetAllSubs unsets any flags that were previously set by
+// AllSubs().
+func (c *Command) UnsetAllSubs() *Command {
+	c.removeFlagByID("allsubtitles")
+	return c
+}
+
 // List available subtitles of each video. Simulate unless --no-simulate is used
 //
 // ListSubs maps to cli flags: --list-subs.
@@ -78,6 +113,13 @@ func (c *Command) ListSubs() *Command {
 		Flag: "--list-subs",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetListSubs unsets any flags that were previously set by
+// ListSubs().
+func (c *Command) UnsetListSubs() *Command {
+	c.removeFlagByID("listsubtitles")
 	return c
 }
 

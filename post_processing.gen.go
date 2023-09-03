@@ -20,6 +20,13 @@ func (c *Command) ExtractAudio() *Command {
 	return c
 }
 
+// UnsetExtractAudio unsets any flags that were previously set by
+// ExtractAudio().
+func (c *Command) UnsetExtractAudio() *Command {
+	c.removeFlagByID("extractaudio")
+	return c
+}
+
 // Format to convert the audio to when -x is used. (currently supported: best
 // (default), aac, alac, flac, m4a, mp3, opus, vorbis, wav). You can specify
 // multiple rules using similar syntax as --remux-video
@@ -148,6 +155,13 @@ func (c *Command) KeepVideo() *Command {
 	return c
 }
 
+// UnsetKeepVideo unsets any flags that were previously set by
+// KeepVideo().
+func (c *Command) UnsetKeepVideo() *Command {
+	c.removeFlagByID("keepvideo")
+	return c
+}
+
 // Delete the intermediate video file after post-processing (default)
 //
 // NoKeepVideo maps to cli flags: --no-keep-video.
@@ -157,6 +171,13 @@ func (c *Command) NoKeepVideo() *Command {
 		Flag: "--no-keep-video",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoKeepVideo unsets any flags that were previously set by
+// NoKeepVideo().
+func (c *Command) UnsetNoKeepVideo() *Command {
+	c.removeFlagByID("keepvideo")
 	return c
 }
 
@@ -172,6 +193,13 @@ func (c *Command) PostOverwrites() *Command {
 	return c
 }
 
+// UnsetPostOverwrites unsets any flags that were previously set by
+// PostOverwrites().
+func (c *Command) UnsetPostOverwrites() *Command {
+	c.removeFlagByID("nopostoverwrites")
+	return c
+}
+
 // Do not overwrite post-processed files
 //
 // NoPostOverwrites maps to cli flags: --no-post-overwrites.
@@ -181,6 +209,13 @@ func (c *Command) NoPostOverwrites() *Command {
 		Flag: "--no-post-overwrites",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoPostOverwrites unsets any flags that were previously set by
+// NoPostOverwrites().
+func (c *Command) UnsetNoPostOverwrites() *Command {
+	c.removeFlagByID("nopostoverwrites")
 	return c
 }
 
@@ -196,6 +231,13 @@ func (c *Command) EmbedSubs() *Command {
 	return c
 }
 
+// UnsetEmbedSubs unsets any flags that were previously set by
+// EmbedSubs().
+func (c *Command) UnsetEmbedSubs() *Command {
+	c.removeFlagByID("embedsubtitles")
+	return c
+}
+
 // Do not embed subtitles (default)
 //
 // NoEmbedSubs maps to cli flags: --no-embed-subs.
@@ -205,6 +247,13 @@ func (c *Command) NoEmbedSubs() *Command {
 		Flag: "--no-embed-subs",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoEmbedSubs unsets any flags that were previously set by
+// NoEmbedSubs().
+func (c *Command) UnsetNoEmbedSubs() *Command {
+	c.removeFlagByID("embedsubtitles")
 	return c
 }
 
@@ -220,6 +269,13 @@ func (c *Command) EmbedThumbnail() *Command {
 	return c
 }
 
+// UnsetEmbedThumbnail unsets any flags that were previously set by
+// EmbedThumbnail().
+func (c *Command) UnsetEmbedThumbnail() *Command {
+	c.removeFlagByID("embedthumbnail")
+	return c
+}
+
 // Do not embed thumbnail (default)
 //
 // NoEmbedThumbnail maps to cli flags: --no-embed-thumbnail.
@@ -229,6 +285,13 @@ func (c *Command) NoEmbedThumbnail() *Command {
 		Flag: "--no-embed-thumbnail",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoEmbedThumbnail unsets any flags that were previously set by
+// NoEmbedThumbnail().
+func (c *Command) UnsetNoEmbedThumbnail() *Command {
+	c.removeFlagByID("embedthumbnail")
 	return c
 }
 
@@ -245,6 +308,13 @@ func (c *Command) EmbedMetadata() *Command {
 	return c
 }
 
+// UnsetEmbedMetadata unsets any flags that were previously set by
+// EmbedMetadata().
+func (c *Command) UnsetEmbedMetadata() *Command {
+	c.removeFlagByID("addmetadata")
+	return c
+}
+
 // Do not add metadata to file (default) (Alias: --no-add-metadata)
 //
 // NoEmbedMetadata maps to cli flags: --no-embed-metadata/--no-add-metadata.
@@ -254,6 +324,13 @@ func (c *Command) NoEmbedMetadata() *Command {
 		Flag: "--no-embed-metadata",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoEmbedMetadata unsets any flags that were previously set by
+// NoEmbedMetadata().
+func (c *Command) UnsetNoEmbedMetadata() *Command {
+	c.removeFlagByID("addmetadata")
 	return c
 }
 
@@ -269,6 +346,13 @@ func (c *Command) EmbedChapters() *Command {
 	return c
 }
 
+// UnsetEmbedChapters unsets any flags that were previously set by
+// EmbedChapters().
+func (c *Command) UnsetEmbedChapters() *Command {
+	c.removeFlagByID("addchapters")
+	return c
+}
+
 // Do not add chapter markers (default) (Alias: --no-add-chapters)
 //
 // NoEmbedChapters maps to cli flags: --no-embed-chapters/--no-add-chapters.
@@ -278,6 +362,13 @@ func (c *Command) NoEmbedChapters() *Command {
 		Flag: "--no-embed-chapters",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoEmbedChapters unsets any flags that were previously set by
+// NoEmbedChapters().
+func (c *Command) UnsetNoEmbedChapters() *Command {
+	c.removeFlagByID("addchapters")
 	return c
 }
 
@@ -293,6 +384,13 @@ func (c *Command) EmbedInfoJson() *Command {
 	return c
 }
 
+// UnsetEmbedInfoJson unsets any flags that were previously set by
+// EmbedInfoJson().
+func (c *Command) UnsetEmbedInfoJson() *Command {
+	c.removeFlagByID("embed_infojson")
+	return c
+}
+
 // Do not embed the infojson as an attachment to the video file
 //
 // NoEmbedInfoJson maps to cli flags: --no-embed-info-json.
@@ -302,6 +400,13 @@ func (c *Command) NoEmbedInfoJson() *Command {
 		Flag: "--no-embed-info-json",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoEmbedInfoJson unsets any flags that were previously set by
+// NoEmbedInfoJson().
+func (c *Command) UnsetNoEmbedInfoJson() *Command {
+	c.removeFlagByID("embed_infojson")
 	return c
 }
 
@@ -376,6 +481,13 @@ func (c *Command) Xattrs() *Command {
 	return c
 }
 
+// UnsetXattrs unsets any flags that were previously set by
+// Xattrs().
+func (c *Command) UnsetXattrs() *Command {
+	c.removeFlagByID("xattrs")
+	return c
+}
+
 var concatPlaylistChoices = []string{
 	"never",
 	"always",
@@ -446,6 +558,13 @@ func (c *Command) PreferAvconv() *Command {
 	return c
 }
 
+// UnsetPreferAvconv unsets any flags that were previously set by
+// PreferAvconv().
+func (c *Command) UnsetPreferAvconv() *Command {
+	c.removeFlagByID("prefer_ffmpeg")
+	return c
+}
+
 // PreferFfmpeg sets the "prefer-ffmpeg" flag (no description specified).
 //
 // PreferFfmpeg maps to cli flags: --prefer-ffmpeg/--no-prefer-avconv (hidden).
@@ -455,6 +574,13 @@ func (c *Command) PreferFfmpeg() *Command {
 		Flag: "--prefer-ffmpeg",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetPreferFfmpeg unsets any flags that were previously set by
+// PreferFfmpeg().
+func (c *Command) UnsetPreferFfmpeg() *Command {
+	c.removeFlagByID("prefer_ffmpeg")
 	return c
 }
 
@@ -573,6 +699,13 @@ func (c *Command) SplitChapters() *Command {
 	return c
 }
 
+// UnsetSplitChapters unsets any flags that were previously set by
+// SplitChapters().
+func (c *Command) UnsetSplitChapters() *Command {
+	c.removeFlagByID("split_chapters")
+	return c
+}
+
 // Do not split video based on chapters (default)
 //
 // NoSplitChapters maps to cli flags: --no-split-chapters/--no-split-tracks.
@@ -582,6 +715,13 @@ func (c *Command) NoSplitChapters() *Command {
 		Flag: "--no-split-chapters",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoSplitChapters unsets any flags that were previously set by
+// NoSplitChapters().
+func (c *Command) UnsetNoSplitChapters() *Command {
+	c.removeFlagByID("split_chapters")
 	return c
 }
 
@@ -619,6 +759,13 @@ func (c *Command) ForceKeyframesAtCuts() *Command {
 	return c
 }
 
+// UnsetForceKeyframesAtCuts unsets any flags that were previously set by
+// ForceKeyframesAtCuts().
+func (c *Command) UnsetForceKeyframesAtCuts() *Command {
+	c.removeFlagByID("force_keyframes_at_cuts")
+	return c
+}
+
 // Do not force keyframes around the chapters when cutting/splitting (default)
 //
 // NoForceKeyframesAtCuts maps to cli flags: --no-force-keyframes-at-cuts.
@@ -628,6 +775,13 @@ func (c *Command) NoForceKeyframesAtCuts() *Command {
 		Flag: "--no-force-keyframes-at-cuts",
 		Args: nil,
 	})
+	return c
+}
+
+// UnsetNoForceKeyframesAtCuts unsets any flags that were previously set by
+// NoForceKeyframesAtCuts().
+func (c *Command) UnsetNoForceKeyframesAtCuts() *Command {
+	c.removeFlagByID("force_keyframes_at_cuts")
 	return c
 }
 
