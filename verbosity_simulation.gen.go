@@ -128,6 +128,27 @@ func (c *Command) UnsetPrint() *Command {
 	return c
 }
 
+// Append given template to the file. The values of WHEN and TEMPLATE are same as
+// that of --print. FILE uses the same syntax as the output template. This option
+// can be used multiple times
+//
+// PrintToFile maps to cli flags: --print-to-file=[WHEN:]TEMPLATE FILE.
+func (c *Command) PrintToFile(template, file string) *Command {
+	c.addFlag(&Flag{
+		ID:   "print_to_file",
+		Flag: "--print-to-file",
+		Args: []string{template, file},
+	})
+	return c
+}
+
+// UnsetPrintToFile unsets any flags that were previously set by
+// PrintToFile().
+func (c *Command) UnsetPrintToFile() *Command {
+	c.removeFlagByID("print_to_file")
+	return c
+}
+
 // GetUrl sets the "get-url" flag (no description specified).
 //
 // GetUrl maps to cli flags: -g/--get-url (hidden).
@@ -237,6 +258,32 @@ func (c *Command) DumpJson() *Command {
 	return c
 }
 
+// Quiet, but print JSON information for each url or infojson passed. Simulate
+// unless --no-simulate is used. If the URL refers to a playlist, the whole
+// playlist information is dumped in a single line
+//
+// DumpSingleJson maps to cli flags: -J/--dump-single-json.
+func (c *Command) DumpSingleJson() *Command {
+	c.addFlag(&Flag{
+		ID:   "dump_single_json",
+		Flag: "--dump-single-json",
+		Args: nil,
+	})
+	return c
+}
+
+// PrintJson sets the "print-json" flag (no description specified).
+//
+// PrintJson maps to cli flags: --print-json (hidden).
+func (c *Command) PrintJson() *Command {
+	c.addFlag(&Flag{
+		ID:   "print_json",
+		Flag: "--print-json",
+		Args: nil,
+	})
+	return c
+}
+
 // Force download archive entries to be written as far as no errors occur, even if
 // -s or another simulation option is used (Alias: --force-download-archive)
 //
@@ -329,6 +376,18 @@ func (c *Command) Verbose() *Command {
 	c.addFlag(&Flag{
 		ID:   "verbose",
 		Flag: "--verbose",
+		Args: nil,
+	})
+	return c
+}
+
+// Print downloaded pages encoded using base64 to debug problems (very verbose)
+//
+// DumpPages maps to cli flags: --dump-pages/--dump-intermediate-pages.
+func (c *Command) DumpPages() *Command {
+	c.addFlag(&Flag{
+		ID:   "dump_intermediate_pages",
+		Flag: "--dump-pages",
 		Args: nil,
 	})
 	return c

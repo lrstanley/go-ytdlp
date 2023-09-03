@@ -38,3 +38,15 @@ func (c *Command) NoWriteThumbnail() *Command {
 	})
 	return c
 }
+
+// List available thumbnails of each video. Simulate unless --no-simulate is used
+//
+// ListThumbnails maps to cli flags: --list-thumbnails.
+func (c *Command) ListThumbnails() *Command {
+	c.addFlag(&Flag{
+		ID:   "list_thumbnails",
+		Flag: "--list-thumbnails",
+		Args: nil,
+	})
+	return c
+}

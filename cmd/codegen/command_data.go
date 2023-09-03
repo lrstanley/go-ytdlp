@@ -18,6 +18,14 @@ var ignoredFlags = []string{
 	"--alias",
 }
 
+var knownExecutableDest = []string{
+	"dump_user_agent",
+	"list_extractor_descriptions",
+	"list_extractors",
+	"print_help",
+	"update_self",
+}
+
 var disallowedNames = []string{
 	"",
 	"type",
@@ -116,11 +124,7 @@ func (o *Option) Generate() {
 		o.Type = "float64"
 	}
 
-	if (o.Type == "") ||
-		strings.HasPrefix(o.Dest, "print_") ||
-		strings.HasPrefix(o.Dest, "list_") ||
-		strings.HasPrefix(o.Dest, "update_") ||
-		strings.HasPrefix(o.Dest, "dump_") {
+	if o.Type == "" || slices.Contains(knownExecutableDest, o.Dest) {
 		o.IsExecutable = true
 	}
 
