@@ -10,7 +10,8 @@ package ytdlp
 
 // Activate quiet mode. If used with --verbose, print the log to stderr
 //
-// Quiet maps to cli flags: -q/--quiet.
+//   - See also [UnsetQuiet], for unsetting the flag.
+//   - Quiet maps to cli flags: -q/--quiet.
 func (c *Command) Quiet() *Command {
 	c.addFlag(&Flag{
 		ID:   "quiet",
@@ -21,7 +22,7 @@ func (c *Command) Quiet() *Command {
 }
 
 // UnsetQuiet unsets any flags that were previously set by
-// Quiet().
+// [Quiet].
 func (c *Command) UnsetQuiet() *Command {
 	c.removeFlagByID("quiet")
 	return c
@@ -29,7 +30,8 @@ func (c *Command) UnsetQuiet() *Command {
 
 // Deactivate quiet mode. (Default)
 //
-// NoQuiet maps to cli flags: --no-quiet.
+//   - See also [UnsetNoQuiet], for unsetting the flag.
+//   - NoQuiet maps to cli flags: --no-quiet.
 func (c *Command) NoQuiet() *Command {
 	c.addFlag(&Flag{
 		ID:   "quiet",
@@ -40,7 +42,7 @@ func (c *Command) NoQuiet() *Command {
 }
 
 // UnsetNoQuiet unsets any flags that were previously set by
-// NoQuiet().
+// [NoQuiet].
 func (c *Command) UnsetNoQuiet() *Command {
 	c.removeFlagByID("quiet")
 	return c
@@ -48,7 +50,8 @@ func (c *Command) UnsetNoQuiet() *Command {
 
 // Ignore warnings
 //
-// NoWarnings maps to cli flags: --no-warnings.
+//   - See also [UnsetNoWarnings], for unsetting the flag.
+//   - NoWarnings maps to cli flags: --no-warnings.
 func (c *Command) NoWarnings() *Command {
 	c.addFlag(&Flag{
 		ID:   "no_warnings",
@@ -59,7 +62,7 @@ func (c *Command) NoWarnings() *Command {
 }
 
 // UnsetNoWarnings unsets any flags that were previously set by
-// NoWarnings().
+// [NoWarnings].
 func (c *Command) UnsetNoWarnings() *Command {
 	c.removeFlagByID("no_warnings")
 	return c
@@ -67,7 +70,8 @@ func (c *Command) UnsetNoWarnings() *Command {
 
 // Do not download the video and do not write anything to disk
 //
-// Simulate maps to cli flags: -s/--simulate.
+//   - See also [UnsetSimulate], for unsetting the flag.
+//   - Simulate maps to cli flags: -s/--simulate.
 func (c *Command) Simulate() *Command {
 	c.addFlag(&Flag{
 		ID:   "simulate",
@@ -78,7 +82,7 @@ func (c *Command) Simulate() *Command {
 }
 
 // UnsetSimulate unsets any flags that were previously set by
-// Simulate().
+// [Simulate].
 func (c *Command) UnsetSimulate() *Command {
 	c.removeFlagByID("simulate")
 	return c
@@ -86,7 +90,8 @@ func (c *Command) UnsetSimulate() *Command {
 
 // Download the video even if printing/listing options are used
 //
-// NoSimulate maps to cli flags: --no-simulate.
+//   - See also [UnsetNoSimulate], for unsetting the flag.
+//   - NoSimulate maps to cli flags: --no-simulate.
 func (c *Command) NoSimulate() *Command {
 	c.addFlag(&Flag{
 		ID:   "simulate",
@@ -97,7 +102,7 @@ func (c *Command) NoSimulate() *Command {
 }
 
 // UnsetNoSimulate unsets any flags that were previously set by
-// NoSimulate().
+// [NoSimulate].
 func (c *Command) UnsetNoSimulate() *Command {
 	c.removeFlagByID("simulate")
 	return c
@@ -106,7 +111,8 @@ func (c *Command) UnsetNoSimulate() *Command {
 // Ignore "No video formats" error. Useful for extracting metadata even if the
 // videos are not actually available for download (experimental)
 //
-// IgnoreNoFormatsError maps to cli flags: --ignore-no-formats-error.
+//   - See also [UnsetIgnoreNoFormatsError], for unsetting the flag.
+//   - IgnoreNoFormatsError maps to cli flags: --ignore-no-formats-error.
 func (c *Command) IgnoreNoFormatsError() *Command {
 	c.addFlag(&Flag{
 		ID:   "ignore_no_formats_error",
@@ -117,7 +123,7 @@ func (c *Command) IgnoreNoFormatsError() *Command {
 }
 
 // UnsetIgnoreNoFormatsError unsets any flags that were previously set by
-// IgnoreNoFormatsError().
+// [IgnoreNoFormatsError].
 func (c *Command) UnsetIgnoreNoFormatsError() *Command {
 	c.removeFlagByID("ignore_no_formats_error")
 	return c
@@ -125,7 +131,8 @@ func (c *Command) UnsetIgnoreNoFormatsError() *Command {
 
 // Throw error when no downloadable video formats are found (default)
 //
-// NoIgnoreNoFormatsError maps to cli flags: --no-ignore-no-formats-error.
+//   - See also [UnsetNoIgnoreNoFormatsError], for unsetting the flag.
+//   - NoIgnoreNoFormatsError maps to cli flags: --no-ignore-no-formats-error.
 func (c *Command) NoIgnoreNoFormatsError() *Command {
 	c.addFlag(&Flag{
 		ID:   "ignore_no_formats_error",
@@ -136,7 +143,7 @@ func (c *Command) NoIgnoreNoFormatsError() *Command {
 }
 
 // UnsetNoIgnoreNoFormatsError unsets any flags that were previously set by
-// NoIgnoreNoFormatsError().
+// [NoIgnoreNoFormatsError].
 func (c *Command) UnsetNoIgnoreNoFormatsError() *Command {
 	c.removeFlagByID("ignore_no_formats_error")
 	return c
@@ -144,7 +151,8 @@ func (c *Command) UnsetNoIgnoreNoFormatsError() *Command {
 
 // Do not download the video but write all related files (Alias: --no-download)
 //
-// SkipDownload maps to cli flags: --skip-download/--no-download.
+//   - See also [UnsetSkipDownload], for unsetting the flag.
+//   - SkipDownload maps to cli flags: --skip-download/--no-download.
 func (c *Command) SkipDownload() *Command {
 	c.addFlag(&Flag{
 		ID:   "skip_download",
@@ -155,7 +163,7 @@ func (c *Command) SkipDownload() *Command {
 }
 
 // UnsetSkipDownload unsets any flags that were previously set by
-// SkipDownload().
+// [SkipDownload].
 func (c *Command) UnsetSkipDownload() *Command {
 	c.removeFlagByID("skip_download")
 	return c
@@ -167,7 +175,8 @@ func (c *Command) UnsetSkipDownload() *Command {
 // unless --no-simulate or later stages of WHEN are used. This option can be used
 // multiple times
 //
-// Print maps to cli flags: -O/--print=[WHEN:]TEMPLATE.
+//   - See also [UnsetPrint], for unsetting the flag.
+//   - Print maps to cli flags: -O/--print=[WHEN:]TEMPLATE.
 func (c *Command) Print(template string) *Command {
 	c.addFlag(&Flag{
 		ID:   "forceprint",
@@ -178,7 +187,7 @@ func (c *Command) Print(template string) *Command {
 }
 
 // UnsetPrint unsets any flags that were previously set by
-// Print().
+// [Print].
 func (c *Command) UnsetPrint() *Command {
 	c.removeFlagByID("forceprint")
 	return c
@@ -188,7 +197,8 @@ func (c *Command) UnsetPrint() *Command {
 // that of --print. FILE uses the same syntax as the output template. This option
 // can be used multiple times
 //
-// PrintToFile maps to cli flags: --print-to-file=[WHEN:]TEMPLATE FILE.
+//   - See also [UnsetPrintToFile], for unsetting the flag.
+//   - PrintToFile maps to cli flags: --print-to-file=[WHEN:]TEMPLATE FILE.
 func (c *Command) PrintToFile(template, file string) *Command {
 	c.addFlag(&Flag{
 		ID:   "print_to_file",
@@ -199,7 +209,7 @@ func (c *Command) PrintToFile(template, file string) *Command {
 }
 
 // UnsetPrintToFile unsets any flags that were previously set by
-// PrintToFile().
+// [PrintToFile].
 func (c *Command) UnsetPrintToFile() *Command {
 	c.removeFlagByID("print_to_file")
 	return c
@@ -207,7 +217,8 @@ func (c *Command) UnsetPrintToFile() *Command {
 
 // GetUrl sets the "get-url" flag (no description specified).
 //
-// GetUrl maps to cli flags: -g/--get-url (hidden).
+//   - See also [UnsetGetUrl], for unsetting the flag.
+//   - GetUrl maps to cli flags: -g/--get-url (hidden).
 func (c *Command) GetUrl() *Command {
 	c.addFlag(&Flag{
 		ID:   "geturl",
@@ -218,7 +229,7 @@ func (c *Command) GetUrl() *Command {
 }
 
 // UnsetGetUrl unsets any flags that were previously set by
-// GetUrl().
+// [GetUrl].
 func (c *Command) UnsetGetUrl() *Command {
 	c.removeFlagByID("geturl")
 	return c
@@ -226,7 +237,8 @@ func (c *Command) UnsetGetUrl() *Command {
 
 // GetTitle sets the "get-title" flag (no description specified).
 //
-// GetTitle maps to cli flags: -e/--get-title (hidden).
+//   - See also [UnsetGetTitle], for unsetting the flag.
+//   - GetTitle maps to cli flags: -e/--get-title (hidden).
 func (c *Command) GetTitle() *Command {
 	c.addFlag(&Flag{
 		ID:   "gettitle",
@@ -237,7 +249,7 @@ func (c *Command) GetTitle() *Command {
 }
 
 // UnsetGetTitle unsets any flags that were previously set by
-// GetTitle().
+// [GetTitle].
 func (c *Command) UnsetGetTitle() *Command {
 	c.removeFlagByID("gettitle")
 	return c
@@ -245,7 +257,8 @@ func (c *Command) UnsetGetTitle() *Command {
 
 // GetId sets the "get-id" flag (no description specified).
 //
-// GetId maps to cli flags: --get-id (hidden).
+//   - See also [UnsetGetId], for unsetting the flag.
+//   - GetId maps to cli flags: --get-id (hidden).
 func (c *Command) GetId() *Command {
 	c.addFlag(&Flag{
 		ID:   "getid",
@@ -256,7 +269,7 @@ func (c *Command) GetId() *Command {
 }
 
 // UnsetGetId unsets any flags that were previously set by
-// GetId().
+// [GetId].
 func (c *Command) UnsetGetId() *Command {
 	c.removeFlagByID("getid")
 	return c
@@ -264,7 +277,8 @@ func (c *Command) UnsetGetId() *Command {
 
 // GetThumbnail sets the "get-thumbnail" flag (no description specified).
 //
-// GetThumbnail maps to cli flags: --get-thumbnail (hidden).
+//   - See also [UnsetGetThumbnail], for unsetting the flag.
+//   - GetThumbnail maps to cli flags: --get-thumbnail (hidden).
 func (c *Command) GetThumbnail() *Command {
 	c.addFlag(&Flag{
 		ID:   "getthumbnail",
@@ -275,7 +289,7 @@ func (c *Command) GetThumbnail() *Command {
 }
 
 // UnsetGetThumbnail unsets any flags that were previously set by
-// GetThumbnail().
+// [GetThumbnail].
 func (c *Command) UnsetGetThumbnail() *Command {
 	c.removeFlagByID("getthumbnail")
 	return c
@@ -283,7 +297,8 @@ func (c *Command) UnsetGetThumbnail() *Command {
 
 // GetDescription sets the "get-description" flag (no description specified).
 //
-// GetDescription maps to cli flags: --get-description (hidden).
+//   - See also [UnsetGetDescription], for unsetting the flag.
+//   - GetDescription maps to cli flags: --get-description (hidden).
 func (c *Command) GetDescription() *Command {
 	c.addFlag(&Flag{
 		ID:   "getdescription",
@@ -294,7 +309,7 @@ func (c *Command) GetDescription() *Command {
 }
 
 // UnsetGetDescription unsets any flags that were previously set by
-// GetDescription().
+// [GetDescription].
 func (c *Command) UnsetGetDescription() *Command {
 	c.removeFlagByID("getdescription")
 	return c
@@ -302,7 +317,8 @@ func (c *Command) UnsetGetDescription() *Command {
 
 // GetDuration sets the "get-duration" flag (no description specified).
 //
-// GetDuration maps to cli flags: --get-duration (hidden).
+//   - See also [UnsetGetDuration], for unsetting the flag.
+//   - GetDuration maps to cli flags: --get-duration (hidden).
 func (c *Command) GetDuration() *Command {
 	c.addFlag(&Flag{
 		ID:   "getduration",
@@ -313,7 +329,7 @@ func (c *Command) GetDuration() *Command {
 }
 
 // UnsetGetDuration unsets any flags that were previously set by
-// GetDuration().
+// [GetDuration].
 func (c *Command) UnsetGetDuration() *Command {
 	c.removeFlagByID("getduration")
 	return c
@@ -321,7 +337,8 @@ func (c *Command) UnsetGetDuration() *Command {
 
 // GetFilename sets the "get-filename" flag (no description specified).
 //
-// GetFilename maps to cli flags: --get-filename (hidden).
+//   - See also [UnsetGetFilename], for unsetting the flag.
+//   - GetFilename maps to cli flags: --get-filename (hidden).
 func (c *Command) GetFilename() *Command {
 	c.addFlag(&Flag{
 		ID:   "getfilename",
@@ -332,7 +349,7 @@ func (c *Command) GetFilename() *Command {
 }
 
 // UnsetGetFilename unsets any flags that were previously set by
-// GetFilename().
+// [GetFilename].
 func (c *Command) UnsetGetFilename() *Command {
 	c.removeFlagByID("getfilename")
 	return c
@@ -340,7 +357,8 @@ func (c *Command) UnsetGetFilename() *Command {
 
 // GetFormat sets the "get-format" flag (no description specified).
 //
-// GetFormat maps to cli flags: --get-format (hidden).
+//   - See also [UnsetGetFormat], for unsetting the flag.
+//   - GetFormat maps to cli flags: --get-format (hidden).
 func (c *Command) GetFormat() *Command {
 	c.addFlag(&Flag{
 		ID:   "getformat",
@@ -351,7 +369,7 @@ func (c *Command) GetFormat() *Command {
 }
 
 // UnsetGetFormat unsets any flags that were previously set by
-// GetFormat().
+// [GetFormat].
 func (c *Command) UnsetGetFormat() *Command {
 	c.removeFlagByID("getformat")
 	return c
@@ -360,7 +378,8 @@ func (c *Command) UnsetGetFormat() *Command {
 // Quiet, but print JSON information for each video. Simulate unless --no-simulate
 // is used. See "OUTPUT TEMPLATE" for a description of available keys
 //
-// DumpJson maps to cli flags: -j/--dump-json.
+//   - See also [UnsetDumpJson], for unsetting the flag.
+//   - DumpJson maps to cli flags: -j/--dump-json.
 func (c *Command) DumpJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "dumpjson",
@@ -371,7 +390,7 @@ func (c *Command) DumpJson() *Command {
 }
 
 // UnsetDumpJson unsets any flags that were previously set by
-// DumpJson().
+// [DumpJson].
 func (c *Command) UnsetDumpJson() *Command {
 	c.removeFlagByID("dumpjson")
 	return c
@@ -381,7 +400,8 @@ func (c *Command) UnsetDumpJson() *Command {
 // unless --no-simulate is used. If the URL refers to a playlist, the whole
 // playlist information is dumped in a single line
 //
-// DumpSingleJson maps to cli flags: -J/--dump-single-json.
+//   - See also [UnsetDumpSingleJson], for unsetting the flag.
+//   - DumpSingleJson maps to cli flags: -J/--dump-single-json.
 func (c *Command) DumpSingleJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "dump_single_json",
@@ -392,7 +412,7 @@ func (c *Command) DumpSingleJson() *Command {
 }
 
 // UnsetDumpSingleJson unsets any flags that were previously set by
-// DumpSingleJson().
+// [DumpSingleJson].
 func (c *Command) UnsetDumpSingleJson() *Command {
 	c.removeFlagByID("dump_single_json")
 	return c
@@ -400,7 +420,8 @@ func (c *Command) UnsetDumpSingleJson() *Command {
 
 // PrintJson sets the "print-json" flag (no description specified).
 //
-// PrintJson maps to cli flags: --print-json (hidden).
+//   - See also [UnsetPrintJson], for unsetting the flag.
+//   - PrintJson maps to cli flags: --print-json (hidden).
 func (c *Command) PrintJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "print_json",
@@ -411,7 +432,7 @@ func (c *Command) PrintJson() *Command {
 }
 
 // UnsetPrintJson unsets any flags that were previously set by
-// PrintJson().
+// [PrintJson].
 func (c *Command) UnsetPrintJson() *Command {
 	c.removeFlagByID("print_json")
 	return c
@@ -420,7 +441,8 @@ func (c *Command) UnsetPrintJson() *Command {
 // Force download archive entries to be written as far as no errors occur, even if
 // -s or another simulation option is used (Alias: --force-download-archive)
 //
-// ForceWriteArchive maps to cli flags: --force-write-archive/--force-write-download-archive/--force-download-archive.
+//   - See also [UnsetForceWriteArchive], for unsetting the flag.
+//   - ForceWriteArchive maps to cli flags: --force-write-archive/--force-write-download-archive/--force-download-archive.
 func (c *Command) ForceWriteArchive() *Command {
 	c.addFlag(&Flag{
 		ID:   "force_write_download_archive",
@@ -431,7 +453,7 @@ func (c *Command) ForceWriteArchive() *Command {
 }
 
 // UnsetForceWriteArchive unsets any flags that were previously set by
-// ForceWriteArchive().
+// [ForceWriteArchive].
 func (c *Command) UnsetForceWriteArchive() *Command {
 	c.removeFlagByID("force_write_download_archive")
 	return c
@@ -439,7 +461,8 @@ func (c *Command) UnsetForceWriteArchive() *Command {
 
 // Output progress bar as new lines
 //
-// Newline maps to cli flags: --newline.
+//   - See also [UnsetNewline], for unsetting the flag.
+//   - Newline maps to cli flags: --newline.
 func (c *Command) Newline() *Command {
 	c.addFlag(&Flag{
 		ID:   "progress_with_newline",
@@ -450,7 +473,7 @@ func (c *Command) Newline() *Command {
 }
 
 // UnsetNewline unsets any flags that were previously set by
-// Newline().
+// [Newline].
 func (c *Command) UnsetNewline() *Command {
 	c.removeFlagByID("progress_with_newline")
 	return c
@@ -458,7 +481,8 @@ func (c *Command) UnsetNewline() *Command {
 
 // Do not print progress bar
 //
-// NoProgress maps to cli flags: --no-progress.
+//   - See also [UnsetNoProgress], for unsetting the flag.
+//   - NoProgress maps to cli flags: --no-progress.
 func (c *Command) NoProgress() *Command {
 	c.addFlag(&Flag{
 		ID:   "noprogress",
@@ -469,7 +493,7 @@ func (c *Command) NoProgress() *Command {
 }
 
 // UnsetNoProgress unsets any flags that were previously set by
-// NoProgress().
+// [NoProgress].
 func (c *Command) UnsetNoProgress() *Command {
 	c.removeFlagByID("noprogress")
 	return c
@@ -477,7 +501,8 @@ func (c *Command) UnsetNoProgress() *Command {
 
 // Show progress bar, even if in quiet mode
 //
-// Progress maps to cli flags: --progress.
+//   - See also [UnsetProgress], for unsetting the flag.
+//   - Progress maps to cli flags: --progress.
 func (c *Command) Progress() *Command {
 	c.addFlag(&Flag{
 		ID:   "noprogress",
@@ -488,7 +513,7 @@ func (c *Command) Progress() *Command {
 }
 
 // UnsetProgress unsets any flags that were previously set by
-// Progress().
+// [Progress].
 func (c *Command) UnsetProgress() *Command {
 	c.removeFlagByID("noprogress")
 	return c
@@ -496,7 +521,8 @@ func (c *Command) UnsetProgress() *Command {
 
 // Display progress in console titlebar
 //
-// ConsoleTitle maps to cli flags: --console-title.
+//   - See also [UnsetConsoleTitle], for unsetting the flag.
+//   - ConsoleTitle maps to cli flags: --console-title.
 func (c *Command) ConsoleTitle() *Command {
 	c.addFlag(&Flag{
 		ID:   "consoletitle",
@@ -507,7 +533,7 @@ func (c *Command) ConsoleTitle() *Command {
 }
 
 // UnsetConsoleTitle unsets any flags that were previously set by
-// ConsoleTitle().
+// [ConsoleTitle].
 func (c *Command) UnsetConsoleTitle() *Command {
 	c.removeFlagByID("consoletitle")
 	return c
@@ -520,7 +546,8 @@ func (c *Command) UnsetConsoleTitle() *Command {
 // --console-title --progress-template
 // "download-title:%(info.id)s-%(progress.eta)s"
 //
-// ProgressTemplate maps to cli flags: --progress-template=[TYPES:]TEMPLATE.
+//   - See also [UnsetProgressTemplate], for unsetting the flag.
+//   - ProgressTemplate maps to cli flags: --progress-template=[TYPES:]TEMPLATE.
 func (c *Command) ProgressTemplate(template string) *Command {
 	c.addFlag(&Flag{
 		ID:   "progress_template",
@@ -531,7 +558,7 @@ func (c *Command) ProgressTemplate(template string) *Command {
 }
 
 // UnsetProgressTemplate unsets any flags that were previously set by
-// ProgressTemplate().
+// [ProgressTemplate].
 func (c *Command) UnsetProgressTemplate() *Command {
 	c.removeFlagByID("progress_template")
 	return c
@@ -539,7 +566,8 @@ func (c *Command) UnsetProgressTemplate() *Command {
 
 // Print various debugging information
 //
-// Verbose maps to cli flags: -v/--verbose.
+//   - See also [UnsetVerbose], for unsetting the flag.
+//   - Verbose maps to cli flags: -v/--verbose.
 func (c *Command) Verbose() *Command {
 	c.addFlag(&Flag{
 		ID:   "verbose",
@@ -550,7 +578,7 @@ func (c *Command) Verbose() *Command {
 }
 
 // UnsetVerbose unsets any flags that were previously set by
-// Verbose().
+// [Verbose].
 func (c *Command) UnsetVerbose() *Command {
 	c.removeFlagByID("verbose")
 	return c
@@ -558,7 +586,8 @@ func (c *Command) UnsetVerbose() *Command {
 
 // Print downloaded pages encoded using base64 to debug problems (very verbose)
 //
-// DumpPages maps to cli flags: --dump-pages/--dump-intermediate-pages.
+//   - See also [UnsetDumpPages], for unsetting the flag.
+//   - DumpPages maps to cli flags: --dump-pages/--dump-intermediate-pages.
 func (c *Command) DumpPages() *Command {
 	c.addFlag(&Flag{
 		ID:   "dump_intermediate_pages",
@@ -569,7 +598,7 @@ func (c *Command) DumpPages() *Command {
 }
 
 // UnsetDumpPages unsets any flags that were previously set by
-// DumpPages().
+// [DumpPages].
 func (c *Command) UnsetDumpPages() *Command {
 	c.removeFlagByID("dump_intermediate_pages")
 	return c
@@ -578,7 +607,8 @@ func (c *Command) UnsetDumpPages() *Command {
 // Write downloaded intermediary pages to files in the current directory to debug
 // problems
 //
-// WritePages maps to cli flags: --write-pages.
+//   - See also [UnsetWritePages], for unsetting the flag.
+//   - WritePages maps to cli flags: --write-pages.
 func (c *Command) WritePages() *Command {
 	c.addFlag(&Flag{
 		ID:   "write_pages",
@@ -589,7 +619,7 @@ func (c *Command) WritePages() *Command {
 }
 
 // UnsetWritePages unsets any flags that were previously set by
-// WritePages().
+// [WritePages].
 func (c *Command) UnsetWritePages() *Command {
 	c.removeFlagByID("write_pages")
 	return c
@@ -597,7 +627,8 @@ func (c *Command) UnsetWritePages() *Command {
 
 // LoadPages sets the "load-pages" flag (no description specified).
 //
-// LoadPages maps to cli flags: --load-pages (hidden).
+//   - See also [UnsetLoadPages], for unsetting the flag.
+//   - LoadPages maps to cli flags: --load-pages (hidden).
 func (c *Command) LoadPages() *Command {
 	c.addFlag(&Flag{
 		ID:   "load_pages",
@@ -608,7 +639,7 @@ func (c *Command) LoadPages() *Command {
 }
 
 // UnsetLoadPages unsets any flags that were previously set by
-// LoadPages().
+// [LoadPages].
 func (c *Command) UnsetLoadPages() *Command {
 	c.removeFlagByID("load_pages")
 	return c
@@ -616,7 +647,8 @@ func (c *Command) UnsetLoadPages() *Command {
 
 // YoutubePrintSigCode sets the "youtube-print-sig-code" flag (no description specified).
 //
-// YoutubePrintSigCode maps to cli flags: --youtube-print-sig-code (hidden).
+//   - See also [UnsetYoutubePrintSigCode], for unsetting the flag.
+//   - YoutubePrintSigCode maps to cli flags: --youtube-print-sig-code (hidden).
 func (c *Command) YoutubePrintSigCode() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_print_sig_code",
@@ -627,7 +659,7 @@ func (c *Command) YoutubePrintSigCode() *Command {
 }
 
 // UnsetYoutubePrintSigCode unsets any flags that were previously set by
-// YoutubePrintSigCode().
+// [YoutubePrintSigCode].
 func (c *Command) UnsetYoutubePrintSigCode() *Command {
 	c.removeFlagByID("youtube_print_sig_code")
 	return c
@@ -635,7 +667,8 @@ func (c *Command) UnsetYoutubePrintSigCode() *Command {
 
 // Display sent and read HTTP traffic
 //
-// PrintTraffic maps to cli flags: --print-traffic/--dump-headers.
+//   - See also [UnsetPrintTraffic], for unsetting the flag.
+//   - PrintTraffic maps to cli flags: --print-traffic/--dump-headers.
 func (c *Command) PrintTraffic() *Command {
 	c.addFlag(&Flag{
 		ID:   "debug_printtraffic",
@@ -646,7 +679,7 @@ func (c *Command) PrintTraffic() *Command {
 }
 
 // UnsetPrintTraffic unsets any flags that were previously set by
-// PrintTraffic().
+// [PrintTraffic].
 func (c *Command) UnsetPrintTraffic() *Command {
 	c.removeFlagByID("debug_printtraffic")
 	return c
@@ -654,7 +687,8 @@ func (c *Command) UnsetPrintTraffic() *Command {
 
 // CallHome sets the "call-home" flag (no description specified).
 //
-// CallHome maps to cli flags: -C/--call-home (hidden).
+//   - See also [UnsetCallHome], for unsetting the flag.
+//   - CallHome maps to cli flags: -C/--call-home (hidden).
 func (c *Command) CallHome() *Command {
 	c.addFlag(&Flag{
 		ID:   "call_home",
@@ -665,7 +699,7 @@ func (c *Command) CallHome() *Command {
 }
 
 // UnsetCallHome unsets any flags that were previously set by
-// CallHome().
+// [CallHome].
 func (c *Command) UnsetCallHome() *Command {
 	c.removeFlagByID("call_home")
 	return c
@@ -673,7 +707,8 @@ func (c *Command) UnsetCallHome() *Command {
 
 // NoCallHome sets the "no-call-home" flag (no description specified).
 //
-// NoCallHome maps to cli flags: --no-call-home (hidden).
+//   - See also [UnsetNoCallHome], for unsetting the flag.
+//   - NoCallHome maps to cli flags: --no-call-home (hidden).
 func (c *Command) NoCallHome() *Command {
 	c.addFlag(&Flag{
 		ID:   "call_home",
@@ -684,7 +719,7 @@ func (c *Command) NoCallHome() *Command {
 }
 
 // UnsetNoCallHome unsets any flags that were previously set by
-// NoCallHome().
+// [NoCallHome].
 func (c *Command) UnsetNoCallHome() *Command {
 	c.removeFlagByID("call_home")
 	return c

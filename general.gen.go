@@ -11,7 +11,8 @@ package ytdlp
 // Ignore download and postprocessing errors. The download will be considered
 // successful even if the postprocessing fails
 //
-// IgnoreErrors maps to cli flags: -i/--ignore-errors.
+//   - See also [UnsetIgnoreErrors], for unsetting the flag.
+//   - IgnoreErrors maps to cli flags: -i/--ignore-errors.
 func (c *Command) IgnoreErrors() *Command {
 	c.addFlag(&Flag{
 		ID:   "ignoreerrors",
@@ -22,7 +23,7 @@ func (c *Command) IgnoreErrors() *Command {
 }
 
 // UnsetIgnoreErrors unsets any flags that were previously set by
-// IgnoreErrors().
+// [IgnoreErrors].
 func (c *Command) UnsetIgnoreErrors() *Command {
 	c.removeFlagByID("ignoreerrors")
 	return c
@@ -31,7 +32,8 @@ func (c *Command) UnsetIgnoreErrors() *Command {
 // Abort downloading of further videos if an error occurs (Alias:
 // --no-ignore-errors)
 //
-// AbortOnError maps to cli flags: --abort-on-error/--no-ignore-errors.
+//   - See also [UnsetAbortOnError], for unsetting the flag.
+//   - AbortOnError maps to cli flags: --abort-on-error/--no-ignore-errors.
 func (c *Command) AbortOnError() *Command {
 	c.addFlag(&Flag{
 		ID:   "ignoreerrors",
@@ -42,7 +44,7 @@ func (c *Command) AbortOnError() *Command {
 }
 
 // UnsetAbortOnError unsets any flags that were previously set by
-// AbortOnError().
+// [AbortOnError].
 func (c *Command) UnsetAbortOnError() *Command {
 	c.removeFlagByID("ignoreerrors")
 	return c
@@ -53,7 +55,8 @@ func (c *Command) UnsetAbortOnError() *Command {
 // Prefix the name with a "-" to exclude it, e.g. --ies default,-generic. Use
 // --list-extractors for a list of extractor names. (Alias: --ies)
 //
-// UseExtractors maps to cli flags: --use-extractors/--ies=NAMES.
+//   - See also [UnsetUseExtractors], for unsetting the flag.
+//   - UseExtractors maps to cli flags: --use-extractors/--ies=NAMES.
 func (c *Command) UseExtractors(names string) *Command {
 	c.addFlag(&Flag{
 		ID:   "allowed_extractors",
@@ -64,7 +67,7 @@ func (c *Command) UseExtractors(names string) *Command {
 }
 
 // UnsetUseExtractors unsets any flags that were previously set by
-// UseExtractors().
+// [UseExtractors].
 func (c *Command) UnsetUseExtractors() *Command {
 	c.removeFlagByID("allowed_extractors")
 	return c
@@ -72,7 +75,8 @@ func (c *Command) UnsetUseExtractors() *Command {
 
 // ForceGenericExtractor sets the "force-generic-extractor" flag (no description specified).
 //
-// ForceGenericExtractor maps to cli flags: --force-generic-extractor (hidden).
+//   - See also [UnsetForceGenericExtractor], for unsetting the flag.
+//   - ForceGenericExtractor maps to cli flags: --force-generic-extractor (hidden).
 func (c *Command) ForceGenericExtractor() *Command {
 	c.addFlag(&Flag{
 		ID:   "force_generic_extractor",
@@ -83,7 +87,7 @@ func (c *Command) ForceGenericExtractor() *Command {
 }
 
 // UnsetForceGenericExtractor unsets any flags that were previously set by
-// ForceGenericExtractor().
+// [ForceGenericExtractor].
 func (c *Command) UnsetForceGenericExtractor() *Command {
 	c.removeFlagByID("force_generic_extractor")
 	return c
@@ -95,7 +99,8 @@ func (c *Command) UnsetForceGenericExtractor() *Command {
 // throws an error. The default value "fixup_error" repairs broken URLs, but emits
 // an error if this is not possible instead of searching
 //
-// DefaultSearch maps to cli flags: --default-search=PREFIX.
+//   - See also [UnsetDefaultSearch], for unsetting the flag.
+//   - DefaultSearch maps to cli flags: --default-search=PREFIX.
 func (c *Command) DefaultSearch(prefix string) *Command {
 	c.addFlag(&Flag{
 		ID:   "default_search",
@@ -106,7 +111,7 @@ func (c *Command) DefaultSearch(prefix string) *Command {
 }
 
 // UnsetDefaultSearch unsets any flags that were previously set by
-// DefaultSearch().
+// [DefaultSearch].
 func (c *Command) UnsetDefaultSearch() *Command {
 	c.removeFlagByID("default_search")
 	return c
@@ -117,7 +122,8 @@ func (c *Command) UnsetDefaultSearch() *Command {
 // the system configuration file, the user configuration is not loaded. (Alias:
 // --no-config)
 //
-// IgnoreConfig maps to cli flags: --ignore-config/--no-config.
+//   - See also [UnsetIgnoreConfig], for unsetting the flag.
+//   - IgnoreConfig maps to cli flags: --ignore-config/--no-config.
 func (c *Command) IgnoreConfig() *Command {
 	c.addFlag(&Flag{
 		ID:   "ignoreconfig",
@@ -128,7 +134,7 @@ func (c *Command) IgnoreConfig() *Command {
 }
 
 // UnsetIgnoreConfig unsets any flags that were previously set by
-// IgnoreConfig().
+// [IgnoreConfig].
 func (c *Command) UnsetIgnoreConfig() *Command {
 	c.removeFlagByID("ignoreconfig")
 	return c
@@ -138,7 +144,8 @@ func (c *Command) UnsetIgnoreConfig() *Command {
 // containing directory ("-" for stdin). Can be used multiple times and inside
 // other configuration files
 //
-// ConfigLocations maps to cli flags: --config-locations=PATH.
+//   - See also [UnsetConfigLocations], for unsetting the flag.
+//   - ConfigLocations maps to cli flags: --config-locations=PATH.
 func (c *Command) ConfigLocations(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "config_locations",
@@ -149,7 +156,7 @@ func (c *Command) ConfigLocations(path string) *Command {
 }
 
 // UnsetConfigLocations unsets any flags that were previously set by
-// ConfigLocations().
+// [ConfigLocations].
 func (c *Command) UnsetConfigLocations() *Command {
 	c.removeFlagByID("config_locations")
 	return c
@@ -157,7 +164,8 @@ func (c *Command) UnsetConfigLocations() *Command {
 
 // Fully extract the videos of a playlist (default)
 //
-// NoFlatPlaylist maps to cli flags: --no-flat-playlist.
+//   - See also [UnsetNoFlatPlaylist], for unsetting the flag.
+//   - NoFlatPlaylist maps to cli flags: --no-flat-playlist.
 func (c *Command) NoFlatPlaylist() *Command {
 	c.addFlag(&Flag{
 		ID:   "extract_flat",
@@ -168,7 +176,7 @@ func (c *Command) NoFlatPlaylist() *Command {
 }
 
 // UnsetNoFlatPlaylist unsets any flags that were previously set by
-// NoFlatPlaylist().
+// [NoFlatPlaylist].
 func (c *Command) UnsetNoFlatPlaylist() *Command {
 	c.removeFlagByID("extract_flat")
 	return c
@@ -177,7 +185,8 @@ func (c *Command) UnsetNoFlatPlaylist() *Command {
 // Download livestreams from the start. Currently only supported for YouTube
 // (Experimental)
 //
-// LiveFromStart maps to cli flags: --live-from-start.
+//   - See also [UnsetLiveFromStart], for unsetting the flag.
+//   - LiveFromStart maps to cli flags: --live-from-start.
 func (c *Command) LiveFromStart() *Command {
 	c.addFlag(&Flag{
 		ID:   "live_from_start",
@@ -188,7 +197,7 @@ func (c *Command) LiveFromStart() *Command {
 }
 
 // UnsetLiveFromStart unsets any flags that were previously set by
-// LiveFromStart().
+// [LiveFromStart].
 func (c *Command) UnsetLiveFromStart() *Command {
 	c.removeFlagByID("live_from_start")
 	return c
@@ -196,7 +205,8 @@ func (c *Command) UnsetLiveFromStart() *Command {
 
 // Download livestreams from the current time (default)
 //
-// NoLiveFromStart maps to cli flags: --no-live-from-start.
+//   - See also [UnsetNoLiveFromStart], for unsetting the flag.
+//   - NoLiveFromStart maps to cli flags: --no-live-from-start.
 func (c *Command) NoLiveFromStart() *Command {
 	c.addFlag(&Flag{
 		ID:   "live_from_start",
@@ -207,7 +217,7 @@ func (c *Command) NoLiveFromStart() *Command {
 }
 
 // UnsetNoLiveFromStart unsets any flags that were previously set by
-// NoLiveFromStart().
+// [NoLiveFromStart].
 func (c *Command) UnsetNoLiveFromStart() *Command {
 	c.removeFlagByID("live_from_start")
 	return c
@@ -216,7 +226,8 @@ func (c *Command) UnsetNoLiveFromStart() *Command {
 // Wait for scheduled streams to become available. Pass the minimum number of
 // seconds (or range) to wait between retries
 //
-// WaitForVideo maps to cli flags: --wait-for-video=MIN[-MAX].
+//   - See also [UnsetWaitForVideo], for unsetting the flag.
+//   - WaitForVideo maps to cli flags: --wait-for-video=MIN[-MAX].
 func (c *Command) WaitForVideo(min string) *Command {
 	c.addFlag(&Flag{
 		ID:   "wait_for_video",
@@ -227,7 +238,7 @@ func (c *Command) WaitForVideo(min string) *Command {
 }
 
 // UnsetWaitForVideo unsets any flags that were previously set by
-// WaitForVideo().
+// [WaitForVideo].
 func (c *Command) UnsetWaitForVideo() *Command {
 	c.removeFlagByID("wait_for_video")
 	return c
@@ -235,7 +246,8 @@ func (c *Command) UnsetWaitForVideo() *Command {
 
 // Mark videos watched (even with --simulate)
 //
-// MarkWatched maps to cli flags: --mark-watched.
+//   - See also [UnsetMarkWatched], for unsetting the flag.
+//   - MarkWatched maps to cli flags: --mark-watched.
 func (c *Command) MarkWatched() *Command {
 	c.addFlag(&Flag{
 		ID:   "mark_watched",
@@ -246,7 +258,7 @@ func (c *Command) MarkWatched() *Command {
 }
 
 // UnsetMarkWatched unsets any flags that were previously set by
-// MarkWatched().
+// [MarkWatched].
 func (c *Command) UnsetMarkWatched() *Command {
 	c.removeFlagByID("mark_watched")
 	return c
@@ -254,7 +266,8 @@ func (c *Command) UnsetMarkWatched() *Command {
 
 // Do not mark videos watched (default)
 //
-// NoMarkWatched maps to cli flags: --no-mark-watched.
+//   - See also [UnsetNoMarkWatched], for unsetting the flag.
+//   - NoMarkWatched maps to cli flags: --no-mark-watched.
 func (c *Command) NoMarkWatched() *Command {
 	c.addFlag(&Flag{
 		ID:   "mark_watched",
@@ -265,7 +278,7 @@ func (c *Command) NoMarkWatched() *Command {
 }
 
 // UnsetNoMarkWatched unsets any flags that were previously set by
-// NoMarkWatched().
+// [NoMarkWatched].
 func (c *Command) UnsetNoMarkWatched() *Command {
 	c.removeFlagByID("mark_watched")
 	return c
@@ -276,7 +289,8 @@ func (c *Command) UnsetNoMarkWatched() *Command {
 // "never", or "no_color" (use non color terminal sequences). Can be used multiple
 // times
 //
-// Color maps to cli flags: --color=[STREAM:]POLICY.
+//   - See also [UnsetColor], for unsetting the flag.
+//   - Color maps to cli flags: --color=[STREAM:]POLICY.
 func (c *Command) Color(policy string) *Command {
 	c.addFlag(&Flag{
 		ID:   "color",
@@ -287,7 +301,7 @@ func (c *Command) Color(policy string) *Command {
 }
 
 // UnsetColor unsets any flags that were previously set by
-// Color().
+// [Color].
 func (c *Command) UnsetColor() *Command {
 	c.removeFlagByID("color")
 	return c
@@ -297,7 +311,8 @@ func (c *Command) UnsetColor() *Command {
 // configurations by reverting some of the changes made in yt-dlp. See "Differences
 // in default behavior" for details
 //
-// CompatOptions maps to cli flags: --compat-options=OPTS.
+//   - See also [UnsetCompatOptions], for unsetting the flag.
+//   - CompatOptions maps to cli flags: --compat-options=OPTS.
 func (c *Command) CompatOptions(opts string) *Command {
 	c.addFlag(&Flag{
 		ID:   "compat_opts",
@@ -308,7 +323,7 @@ func (c *Command) CompatOptions(opts string) *Command {
 }
 
 // UnsetCompatOptions unsets any flags that were previously set by
-// CompatOptions().
+// [CompatOptions].
 func (c *Command) UnsetCompatOptions() *Command {
 	c.removeFlagByID("compat_opts")
 	return c

@@ -10,7 +10,8 @@ package ytdlp
 
 // Login with this account ID
 //
-// Username maps to cli flags: -u/--username=USERNAME.
+//   - See also [UnsetUsername], for unsetting the flag.
+//   - Username maps to cli flags: -u/--username=USERNAME.
 func (c *Command) Username(username string) *Command {
 	c.addFlag(&Flag{
 		ID:   "username",
@@ -21,7 +22,7 @@ func (c *Command) Username(username string) *Command {
 }
 
 // UnsetUsername unsets any flags that were previously set by
-// Username().
+// [Username].
 func (c *Command) UnsetUsername() *Command {
 	c.removeFlagByID("username")
 	return c
@@ -29,7 +30,8 @@ func (c *Command) UnsetUsername() *Command {
 
 // Account password. If this option is left out, yt-dlp will ask interactively
 //
-// Password maps to cli flags: -p/--password=PASSWORD.
+//   - See also [UnsetPassword], for unsetting the flag.
+//   - Password maps to cli flags: -p/--password=PASSWORD.
 func (c *Command) Password(password string) *Command {
 	c.addFlag(&Flag{
 		ID:   "password",
@@ -40,7 +42,7 @@ func (c *Command) Password(password string) *Command {
 }
 
 // UnsetPassword unsets any flags that were previously set by
-// Password().
+// [Password].
 func (c *Command) UnsetPassword() *Command {
 	c.removeFlagByID("password")
 	return c
@@ -48,7 +50,8 @@ func (c *Command) UnsetPassword() *Command {
 
 // Two-factor authentication code
 //
-// Twofactor maps to cli flags: -2/--twofactor=TWOFACTOR.
+//   - See also [UnsetTwofactor], for unsetting the flag.
+//   - Twofactor maps to cli flags: -2/--twofactor=TWOFACTOR.
 func (c *Command) Twofactor(twofactor string) *Command {
 	c.addFlag(&Flag{
 		ID:   "twofactor",
@@ -59,7 +62,7 @@ func (c *Command) Twofactor(twofactor string) *Command {
 }
 
 // UnsetTwofactor unsets any flags that were previously set by
-// Twofactor().
+// [Twofactor].
 func (c *Command) UnsetTwofactor() *Command {
 	c.removeFlagByID("twofactor")
 	return c
@@ -67,7 +70,8 @@ func (c *Command) UnsetTwofactor() *Command {
 
 // Use .netrc authentication data
 //
-// Netrc maps to cli flags: -n/--netrc.
+//   - See also [UnsetNetrc], for unsetting the flag.
+//   - Netrc maps to cli flags: -n/--netrc.
 func (c *Command) Netrc() *Command {
 	c.addFlag(&Flag{
 		ID:   "usenetrc",
@@ -78,7 +82,7 @@ func (c *Command) Netrc() *Command {
 }
 
 // UnsetNetrc unsets any flags that were previously set by
-// Netrc().
+// [Netrc].
 func (c *Command) UnsetNetrc() *Command {
 	c.removeFlagByID("usenetrc")
 	return c
@@ -87,7 +91,8 @@ func (c *Command) UnsetNetrc() *Command {
 // Location of .netrc authentication data; either the path or its containing
 // directory. Defaults to ~/.netrc
 //
-// NetrcLocation maps to cli flags: --netrc-location=PATH.
+//   - See also [UnsetNetrcLocation], for unsetting the flag.
+//   - NetrcLocation maps to cli flags: --netrc-location=PATH.
 func (c *Command) NetrcLocation(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "netrc_location",
@@ -98,7 +103,7 @@ func (c *Command) NetrcLocation(path string) *Command {
 }
 
 // UnsetNetrcLocation unsets any flags that were previously set by
-// NetrcLocation().
+// [NetrcLocation].
 func (c *Command) UnsetNetrcLocation() *Command {
 	c.removeFlagByID("netrc_location")
 	return c
@@ -106,7 +111,8 @@ func (c *Command) UnsetNetrcLocation() *Command {
 
 // Command to execute to get the credentials for an extractor.
 //
-// NetrcCmd maps to cli flags: --netrc-cmd=NETRC_CMD.
+//   - See also [UnsetNetrcCmd], for unsetting the flag.
+//   - NetrcCmd maps to cli flags: --netrc-cmd=NETRC_CMD.
 func (c *Command) NetrcCmd(netrcCmd string) *Command {
 	c.addFlag(&Flag{
 		ID:   "netrc_cmd",
@@ -117,7 +123,7 @@ func (c *Command) NetrcCmd(netrcCmd string) *Command {
 }
 
 // UnsetNetrcCmd unsets any flags that were previously set by
-// NetrcCmd().
+// [NetrcCmd].
 func (c *Command) UnsetNetrcCmd() *Command {
 	c.removeFlagByID("netrc_cmd")
 	return c
@@ -125,7 +131,8 @@ func (c *Command) UnsetNetrcCmd() *Command {
 
 // Video password (vimeo, youku)
 //
-// VideoPassword maps to cli flags: --video-password=PASSWORD.
+//   - See also [UnsetVideoPassword], for unsetting the flag.
+//   - VideoPassword maps to cli flags: --video-password=PASSWORD.
 func (c *Command) VideoPassword(password string) *Command {
 	c.addFlag(&Flag{
 		ID:   "videopassword",
@@ -136,7 +143,7 @@ func (c *Command) VideoPassword(password string) *Command {
 }
 
 // UnsetVideoPassword unsets any flags that were previously set by
-// VideoPassword().
+// [VideoPassword].
 func (c *Command) UnsetVideoPassword() *Command {
 	c.removeFlagByID("videopassword")
 	return c
@@ -145,7 +152,8 @@ func (c *Command) UnsetVideoPassword() *Command {
 // Adobe Pass multiple-system operator (TV provider) identifier, use --ap-list-mso
 // for a list of available MSOs
 //
-// ApMso maps to cli flags: --ap-mso=MSO.
+//   - See also [UnsetApMso], for unsetting the flag.
+//   - ApMso maps to cli flags: --ap-mso=MSO.
 func (c *Command) ApMso(mso string) *Command {
 	c.addFlag(&Flag{
 		ID:   "ap_mso",
@@ -156,7 +164,7 @@ func (c *Command) ApMso(mso string) *Command {
 }
 
 // UnsetApMso unsets any flags that were previously set by
-// ApMso().
+// [ApMso].
 func (c *Command) UnsetApMso() *Command {
 	c.removeFlagByID("ap_mso")
 	return c
@@ -164,7 +172,8 @@ func (c *Command) UnsetApMso() *Command {
 
 // Multiple-system operator account login
 //
-// ApUsername maps to cli flags: --ap-username=USERNAME.
+//   - See also [UnsetApUsername], for unsetting the flag.
+//   - ApUsername maps to cli flags: --ap-username=USERNAME.
 func (c *Command) ApUsername(username string) *Command {
 	c.addFlag(&Flag{
 		ID:   "ap_username",
@@ -175,7 +184,7 @@ func (c *Command) ApUsername(username string) *Command {
 }
 
 // UnsetApUsername unsets any flags that were previously set by
-// ApUsername().
+// [ApUsername].
 func (c *Command) UnsetApUsername() *Command {
 	c.removeFlagByID("ap_username")
 	return c
@@ -184,7 +193,8 @@ func (c *Command) UnsetApUsername() *Command {
 // Multiple-system operator account password. If this option is left out, yt-dlp
 // will ask interactively
 //
-// ApPassword maps to cli flags: --ap-password=PASSWORD.
+//   - See also [UnsetApPassword], for unsetting the flag.
+//   - ApPassword maps to cli flags: --ap-password=PASSWORD.
 func (c *Command) ApPassword(password string) *Command {
 	c.addFlag(&Flag{
 		ID:   "ap_password",
@@ -195,7 +205,7 @@ func (c *Command) ApPassword(password string) *Command {
 }
 
 // UnsetApPassword unsets any flags that were previously set by
-// ApPassword().
+// [ApPassword].
 func (c *Command) UnsetApPassword() *Command {
 	c.removeFlagByID("ap_password")
 	return c
@@ -203,7 +213,8 @@ func (c *Command) UnsetApPassword() *Command {
 
 // List all supported multiple-system operators
 //
-// ApListMso maps to cli flags: --ap-list-mso.
+//   - See also [UnsetApListMso], for unsetting the flag.
+//   - ApListMso maps to cli flags: --ap-list-mso.
 func (c *Command) ApListMso() *Command {
 	c.addFlag(&Flag{
 		ID:   "ap_list_mso",
@@ -214,7 +225,7 @@ func (c *Command) ApListMso() *Command {
 }
 
 // UnsetApListMso unsets any flags that were previously set by
-// ApListMso().
+// [ApListMso].
 func (c *Command) UnsetApListMso() *Command {
 	c.removeFlagByID("ap_list_mso")
 	return c
@@ -222,7 +233,8 @@ func (c *Command) UnsetApListMso() *Command {
 
 // Path to client certificate file in PEM format. May include the private key
 //
-// ClientCertificate maps to cli flags: --client-certificate=CERTFILE.
+//   - See also [UnsetClientCertificate], for unsetting the flag.
+//   - ClientCertificate maps to cli flags: --client-certificate=CERTFILE.
 func (c *Command) ClientCertificate(certfile string) *Command {
 	c.addFlag(&Flag{
 		ID:   "client_certificate",
@@ -233,7 +245,7 @@ func (c *Command) ClientCertificate(certfile string) *Command {
 }
 
 // UnsetClientCertificate unsets any flags that were previously set by
-// ClientCertificate().
+// [ClientCertificate].
 func (c *Command) UnsetClientCertificate() *Command {
 	c.removeFlagByID("client_certificate")
 	return c
@@ -241,7 +253,8 @@ func (c *Command) UnsetClientCertificate() *Command {
 
 // Path to private key file for client certificate
 //
-// ClientCertificateKey maps to cli flags: --client-certificate-key=KEYFILE.
+//   - See also [UnsetClientCertificateKey], for unsetting the flag.
+//   - ClientCertificateKey maps to cli flags: --client-certificate-key=KEYFILE.
 func (c *Command) ClientCertificateKey(keyfile string) *Command {
 	c.addFlag(&Flag{
 		ID:   "client_certificate_key",
@@ -252,7 +265,7 @@ func (c *Command) ClientCertificateKey(keyfile string) *Command {
 }
 
 // UnsetClientCertificateKey unsets any flags that were previously set by
-// ClientCertificateKey().
+// [ClientCertificateKey].
 func (c *Command) UnsetClientCertificateKey() *Command {
 	c.removeFlagByID("client_certificate_key")
 	return c
@@ -261,7 +274,8 @@ func (c *Command) UnsetClientCertificateKey() *Command {
 // Password for client certificate private key, if encrypted. If not provided, and
 // the key is encrypted, yt-dlp will ask interactively
 //
-// ClientCertificatePassword maps to cli flags: --client-certificate-password=PASSWORD.
+//   - See also [UnsetClientCertificatePassword], for unsetting the flag.
+//   - ClientCertificatePassword maps to cli flags: --client-certificate-password=PASSWORD.
 func (c *Command) ClientCertificatePassword(password string) *Command {
 	c.addFlag(&Flag{
 		ID:   "client_certificate_password",
@@ -272,7 +286,7 @@ func (c *Command) ClientCertificatePassword(password string) *Command {
 }
 
 // UnsetClientCertificatePassword unsets any flags that were previously set by
-// ClientCertificatePassword().
+// [ClientCertificatePassword].
 func (c *Command) UnsetClientCertificatePassword() *Command {
 	c.removeFlagByID("client_certificate_password")
 	return c

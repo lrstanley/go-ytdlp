@@ -18,7 +18,8 @@ package ytdlp
 // categories. E.g. --sponsorblock-mark all,-preview [1]
 // https://wiki.sponsor.ajay.app/w/Segment_Categories
 //
-// SponsorblockMark maps to cli flags: --sponsorblock-mark=CATS.
+//   - See also [UnsetSponsorblockMark], for unsetting the flag.
+//   - SponsorblockMark maps to cli flags: --sponsorblock-mark=CATS.
 func (c *Command) SponsorblockMark(cats string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponsorblock_mark",
@@ -29,7 +30,7 @@ func (c *Command) SponsorblockMark(cats string) *Command {
 }
 
 // UnsetSponsorblockMark unsets any flags that were previously set by
-// SponsorblockMark().
+// [SponsorblockMark].
 func (c *Command) UnsetSponsorblockMark() *Command {
 	c.removeFlagByID("sponsorblock_mark")
 	return c
@@ -41,7 +42,8 @@ func (c *Command) UnsetSponsorblockMark() *Command {
 // that "default" refers to "all,-filler" and poi_highlight, chapter are not
 // available
 //
-// SponsorblockRemove maps to cli flags: --sponsorblock-remove=CATS.
+//   - See also [UnsetSponsorblockRemove], for unsetting the flag.
+//   - SponsorblockRemove maps to cli flags: --sponsorblock-remove=CATS.
 func (c *Command) SponsorblockRemove(cats string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponsorblock_remove",
@@ -52,7 +54,7 @@ func (c *Command) SponsorblockRemove(cats string) *Command {
 }
 
 // UnsetSponsorblockRemove unsets any flags that were previously set by
-// SponsorblockRemove().
+// [SponsorblockRemove].
 func (c *Command) UnsetSponsorblockRemove() *Command {
 	c.removeFlagByID("sponsorblock_remove")
 	return c
@@ -63,7 +65,8 @@ func (c *Command) UnsetSponsorblockRemove() *Command {
 // category, categories, name, category_names. Defaults to "[SponsorBlock]:
 // %(category_names)l"
 //
-// SponsorblockChapterTitle maps to cli flags: --sponsorblock-chapter-title=TEMPLATE.
+//   - See also [UnsetSponsorblockChapterTitle], for unsetting the flag.
+//   - SponsorblockChapterTitle maps to cli flags: --sponsorblock-chapter-title=TEMPLATE.
 func (c *Command) SponsorblockChapterTitle(template string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponsorblock_chapter_title",
@@ -74,7 +77,7 @@ func (c *Command) SponsorblockChapterTitle(template string) *Command {
 }
 
 // UnsetSponsorblockChapterTitle unsets any flags that were previously set by
-// SponsorblockChapterTitle().
+// [SponsorblockChapterTitle].
 func (c *Command) UnsetSponsorblockChapterTitle() *Command {
 	c.removeFlagByID("sponsorblock_chapter_title")
 	return c
@@ -82,7 +85,8 @@ func (c *Command) UnsetSponsorblockChapterTitle() *Command {
 
 // Disable both --sponsorblock-mark and --sponsorblock-remove
 //
-// NoSponsorblock maps to cli flags: --no-sponsorblock.
+//   - See also [UnsetNoSponsorblock], for unsetting the flag.
+//   - NoSponsorblock maps to cli flags: --no-sponsorblock.
 func (c *Command) NoSponsorblock() *Command {
 	c.addFlag(&Flag{
 		ID:   "no_sponsorblock",
@@ -93,7 +97,7 @@ func (c *Command) NoSponsorblock() *Command {
 }
 
 // UnsetNoSponsorblock unsets any flags that were previously set by
-// NoSponsorblock().
+// [NoSponsorblock].
 func (c *Command) UnsetNoSponsorblock() *Command {
 	c.removeFlagByID("no_sponsorblock")
 	return c
@@ -101,7 +105,8 @@ func (c *Command) UnsetNoSponsorblock() *Command {
 
 // SponsorBlock API location, defaults to https://sponsor.ajay.app
 //
-// SponsorblockApi maps to cli flags: --sponsorblock-api=URL.
+//   - See also [UnsetSponsorblockApi], for unsetting the flag.
+//   - SponsorblockApi maps to cli flags: --sponsorblock-api=URL.
 func (c *Command) SponsorblockApi(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponsorblock_api",
@@ -112,7 +117,7 @@ func (c *Command) SponsorblockApi(url string) *Command {
 }
 
 // UnsetSponsorblockApi unsets any flags that were previously set by
-// SponsorblockApi().
+// [SponsorblockApi].
 func (c *Command) UnsetSponsorblockApi() *Command {
 	c.removeFlagByID("sponsorblock_api")
 	return c
@@ -120,7 +125,8 @@ func (c *Command) UnsetSponsorblockApi() *Command {
 
 // Sponskrub sets the "sponskrub" flag (no description specified).
 //
-// Sponskrub maps to cli flags: --sponskrub (hidden).
+//   - See also [UnsetSponskrub], for unsetting the flag.
+//   - Sponskrub maps to cli flags: --sponskrub (hidden).
 func (c *Command) Sponskrub() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub",
@@ -131,7 +137,7 @@ func (c *Command) Sponskrub() *Command {
 }
 
 // UnsetSponskrub unsets any flags that were previously set by
-// Sponskrub().
+// [Sponskrub].
 func (c *Command) UnsetSponskrub() *Command {
 	c.removeFlagByID("sponskrub")
 	return c
@@ -139,7 +145,8 @@ func (c *Command) UnsetSponskrub() *Command {
 
 // NoSponskrub sets the "no-sponskrub" flag (no description specified).
 //
-// NoSponskrub maps to cli flags: --no-sponskrub (hidden).
+//   - See also [UnsetNoSponskrub], for unsetting the flag.
+//   - NoSponskrub maps to cli flags: --no-sponskrub (hidden).
 func (c *Command) NoSponskrub() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub",
@@ -150,7 +157,7 @@ func (c *Command) NoSponskrub() *Command {
 }
 
 // UnsetNoSponskrub unsets any flags that were previously set by
-// NoSponskrub().
+// [NoSponskrub].
 func (c *Command) UnsetNoSponskrub() *Command {
 	c.removeFlagByID("sponskrub")
 	return c
@@ -158,7 +165,8 @@ func (c *Command) UnsetNoSponskrub() *Command {
 
 // SponskrubCut sets the "sponskrub-cut" flag (no description specified).
 //
-// SponskrubCut maps to cli flags: --sponskrub-cut (hidden).
+//   - See also [UnsetSponskrubCut], for unsetting the flag.
+//   - SponskrubCut maps to cli flags: --sponskrub-cut (hidden).
 func (c *Command) SponskrubCut() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
@@ -169,7 +177,7 @@ func (c *Command) SponskrubCut() *Command {
 }
 
 // UnsetSponskrubCut unsets any flags that were previously set by
-// SponskrubCut().
+// [SponskrubCut].
 func (c *Command) UnsetSponskrubCut() *Command {
 	c.removeFlagByID("sponskrub_cut")
 	return c
@@ -177,7 +185,8 @@ func (c *Command) UnsetSponskrubCut() *Command {
 
 // NoSponskrubCut sets the "no-sponskrub-cut" flag (no description specified).
 //
-// NoSponskrubCut maps to cli flags: --no-sponskrub-cut (hidden).
+//   - See also [UnsetNoSponskrubCut], for unsetting the flag.
+//   - NoSponskrubCut maps to cli flags: --no-sponskrub-cut (hidden).
 func (c *Command) NoSponskrubCut() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
@@ -188,7 +197,7 @@ func (c *Command) NoSponskrubCut() *Command {
 }
 
 // UnsetNoSponskrubCut unsets any flags that were previously set by
-// NoSponskrubCut().
+// [NoSponskrubCut].
 func (c *Command) UnsetNoSponskrubCut() *Command {
 	c.removeFlagByID("sponskrub_cut")
 	return c
@@ -196,7 +205,8 @@ func (c *Command) UnsetNoSponskrubCut() *Command {
 
 // SponskrubForce sets the "sponskrub-force" flag (no description specified).
 //
-// SponskrubForce maps to cli flags: --sponskrub-force (hidden).
+//   - See also [UnsetSponskrubForce], for unsetting the flag.
+//   - SponskrubForce maps to cli flags: --sponskrub-force (hidden).
 func (c *Command) SponskrubForce() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_force",
@@ -207,7 +217,7 @@ func (c *Command) SponskrubForce() *Command {
 }
 
 // UnsetSponskrubForce unsets any flags that were previously set by
-// SponskrubForce().
+// [SponskrubForce].
 func (c *Command) UnsetSponskrubForce() *Command {
 	c.removeFlagByID("sponskrub_force")
 	return c
@@ -215,7 +225,8 @@ func (c *Command) UnsetSponskrubForce() *Command {
 
 // NoSponskrubForce sets the "no-sponskrub-force" flag (no description specified).
 //
-// NoSponskrubForce maps to cli flags: --no-sponskrub-force (hidden).
+//   - See also [UnsetNoSponskrubForce], for unsetting the flag.
+//   - NoSponskrubForce maps to cli flags: --no-sponskrub-force (hidden).
 func (c *Command) NoSponskrubForce() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_force",
@@ -226,13 +237,14 @@ func (c *Command) NoSponskrubForce() *Command {
 }
 
 // UnsetNoSponskrubForce unsets any flags that were previously set by
-// NoSponskrubForce().
+// [NoSponskrubForce].
 func (c *Command) UnsetNoSponskrubForce() *Command {
 	c.removeFlagByID("sponskrub_force")
 	return c
 }
 
-// SponskrubLocation maps to cli flags: --sponskrub-location=PATH (hidden).
+// - See also [UnsetSponskrubLocation], for unsetting the flag.
+// - SponskrubLocation maps to cli flags: --sponskrub-location=PATH (hidden).
 func (c *Command) SponskrubLocation(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_path",
@@ -243,13 +255,14 @@ func (c *Command) SponskrubLocation(path string) *Command {
 }
 
 // UnsetSponskrubLocation unsets any flags that were previously set by
-// SponskrubLocation().
+// [SponskrubLocation].
 func (c *Command) UnsetSponskrubLocation() *Command {
 	c.removeFlagByID("sponskrub_path")
 	return c
 }
 
-// SponskrubArgs maps to cli flags: --sponskrub-args=ARGS (hidden).
+// - See also [UnsetSponskrubArgs], for unsetting the flag.
+// - SponskrubArgs maps to cli flags: --sponskrub-args=ARGS (hidden).
 func (c *Command) SponskrubArgs(args string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_args",
@@ -260,7 +273,7 @@ func (c *Command) SponskrubArgs(args string) *Command {
 }
 
 // UnsetSponskrubArgs unsets any flags that were previously set by
-// SponskrubArgs().
+// [SponskrubArgs].
 func (c *Command) UnsetSponskrubArgs() *Command {
 	c.removeFlagByID("sponskrub_args")
 	return c

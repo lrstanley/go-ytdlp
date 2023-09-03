@@ -10,7 +10,8 @@
 // {{ .Name | to_camel }} sets the {{ .Name | quote }} flag (no description specified).
 {{- end }}{{/* end if help */}}
 //
-// {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}{{ if .Hidden }} (hidden){{ end }}.
+//  - See [Unset{{ .Name | to_camel }}], for unsetting the flag.
+//  - {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}{{ if .Hidden }} (hidden){{ end }}.
 {{- end -}}{{/* end define optionHelp */}}
 
 {{- /* start of actual file */ -}}
@@ -82,7 +83,7 @@ func (c *Command) {{ $option.Name | to_camel }}({{ $option.MetaVarFuncArgs | joi
 {{- end }}{{/* end if type */}}
 
 // Unset{{ $option.Name | to_camel }} unsets any flags that were previously set by
-// {{ $option.Name | to_camel }}().
+// [{{ $option.Name | to_camel }}].
 func (c *Command) Unset{{ $option.Name | to_camel }}() *Command {
     c.removeFlagByID({{ $option.Dest | quote }})
     return c

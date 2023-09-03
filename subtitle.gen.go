@@ -10,7 +10,8 @@ package ytdlp
 
 // Write subtitle file
 //
-// WriteSubs maps to cli flags: --write-subs/--write-srt.
+//   - See also [UnsetWriteSubs], for unsetting the flag.
+//   - WriteSubs maps to cli flags: --write-subs/--write-srt.
 func (c *Command) WriteSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "writesubtitles",
@@ -21,7 +22,7 @@ func (c *Command) WriteSubs() *Command {
 }
 
 // UnsetWriteSubs unsets any flags that were previously set by
-// WriteSubs().
+// [WriteSubs].
 func (c *Command) UnsetWriteSubs() *Command {
 	c.removeFlagByID("writesubtitles")
 	return c
@@ -29,7 +30,8 @@ func (c *Command) UnsetWriteSubs() *Command {
 
 // Do not write subtitle file (default)
 //
-// NoWriteSubs maps to cli flags: --no-write-subs/--no-write-srt.
+//   - See also [UnsetNoWriteSubs], for unsetting the flag.
+//   - NoWriteSubs maps to cli flags: --no-write-subs/--no-write-srt.
 func (c *Command) NoWriteSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "writesubtitles",
@@ -40,7 +42,7 @@ func (c *Command) NoWriteSubs() *Command {
 }
 
 // UnsetNoWriteSubs unsets any flags that were previously set by
-// NoWriteSubs().
+// [NoWriteSubs].
 func (c *Command) UnsetNoWriteSubs() *Command {
 	c.removeFlagByID("writesubtitles")
 	return c
@@ -48,7 +50,8 @@ func (c *Command) UnsetNoWriteSubs() *Command {
 
 // Write automatically generated subtitle file (Alias: --write-automatic-subs)
 //
-// WriteAutoSubs maps to cli flags: --write-auto-subs/--write-automatic-subs.
+//   - See also [UnsetWriteAutoSubs], for unsetting the flag.
+//   - WriteAutoSubs maps to cli flags: --write-auto-subs/--write-automatic-subs.
 func (c *Command) WriteAutoSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeautomaticsub",
@@ -59,7 +62,7 @@ func (c *Command) WriteAutoSubs() *Command {
 }
 
 // UnsetWriteAutoSubs unsets any flags that were previously set by
-// WriteAutoSubs().
+// [WriteAutoSubs].
 func (c *Command) UnsetWriteAutoSubs() *Command {
 	c.removeFlagByID("writeautomaticsub")
 	return c
@@ -68,7 +71,8 @@ func (c *Command) UnsetWriteAutoSubs() *Command {
 // Do not write auto-generated subtitles (default) (Alias:
 // --no-write-automatic-subs)
 //
-// NoWriteAutoSubs maps to cli flags: --no-write-auto-subs/--no-write-automatic-subs.
+//   - See also [UnsetNoWriteAutoSubs], for unsetting the flag.
+//   - NoWriteAutoSubs maps to cli flags: --no-write-auto-subs/--no-write-automatic-subs.
 func (c *Command) NoWriteAutoSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeautomaticsub",
@@ -79,7 +83,7 @@ func (c *Command) NoWriteAutoSubs() *Command {
 }
 
 // UnsetNoWriteAutoSubs unsets any flags that were previously set by
-// NoWriteAutoSubs().
+// [NoWriteAutoSubs].
 func (c *Command) UnsetNoWriteAutoSubs() *Command {
 	c.removeFlagByID("writeautomaticsub")
 	return c
@@ -87,7 +91,8 @@ func (c *Command) UnsetNoWriteAutoSubs() *Command {
 
 // AllSubs sets the "all-subs" flag (no description specified).
 //
-// AllSubs maps to cli flags: --all-subs (hidden).
+//   - See also [UnsetAllSubs], for unsetting the flag.
+//   - AllSubs maps to cli flags: --all-subs (hidden).
 func (c *Command) AllSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "allsubtitles",
@@ -98,7 +103,7 @@ func (c *Command) AllSubs() *Command {
 }
 
 // UnsetAllSubs unsets any flags that were previously set by
-// AllSubs().
+// [AllSubs].
 func (c *Command) UnsetAllSubs() *Command {
 	c.removeFlagByID("allsubtitles")
 	return c
@@ -106,7 +111,8 @@ func (c *Command) UnsetAllSubs() *Command {
 
 // List available subtitles of each video. Simulate unless --no-simulate is used
 //
-// ListSubs maps to cli flags: --list-subs.
+//   - See also [UnsetListSubs], for unsetting the flag.
+//   - ListSubs maps to cli flags: --list-subs.
 func (c *Command) ListSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "listsubtitles",
@@ -117,7 +123,7 @@ func (c *Command) ListSubs() *Command {
 }
 
 // UnsetListSubs unsets any flags that were previously set by
-// ListSubs().
+// [ListSubs].
 func (c *Command) UnsetListSubs() *Command {
 	c.removeFlagByID("listsubtitles")
 	return c
@@ -125,7 +131,8 @@ func (c *Command) UnsetListSubs() *Command {
 
 // Subtitle format; accepts formats preference, e.g. "srt" or "ass/srt/best"
 //
-// SubFormat maps to cli flags: --sub-format=FORMAT.
+//   - See also [UnsetSubFormat], for unsetting the flag.
+//   - SubFormat maps to cli flags: --sub-format=FORMAT.
 func (c *Command) SubFormat(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "subtitlesformat",
@@ -136,7 +143,7 @@ func (c *Command) SubFormat(format string) *Command {
 }
 
 // UnsetSubFormat unsets any flags that were previously set by
-// SubFormat().
+// [SubFormat].
 func (c *Command) UnsetSubFormat() *Command {
 	c.removeFlagByID("subtitlesformat")
 	return c
@@ -147,7 +154,8 @@ func (c *Command) UnsetSubFormat() *Command {
 // to exclude it from the requested languages, e.g. --sub-langs all,-live_chat. Use
 // --list-subs for a list of available language tags
 //
-// SubLangs maps to cli flags: --sub-langs/--srt-langs=LANGS.
+//   - See also [UnsetSubLangs], for unsetting the flag.
+//   - SubLangs maps to cli flags: --sub-langs/--srt-langs=LANGS.
 func (c *Command) SubLangs(langs string) *Command {
 	c.addFlag(&Flag{
 		ID:   "subtitleslangs",
@@ -158,7 +166,7 @@ func (c *Command) SubLangs(langs string) *Command {
 }
 
 // UnsetSubLangs unsets any flags that were previously set by
-// SubLangs().
+// [SubLangs].
 func (c *Command) UnsetSubLangs() *Command {
 	c.removeFlagByID("subtitleslangs")
 	return c

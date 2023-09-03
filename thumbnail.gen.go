@@ -10,7 +10,8 @@ package ytdlp
 
 // Write thumbnail image to disk
 //
-// WriteThumbnail maps to cli flags: --write-thumbnail.
+//   - See also [UnsetWriteThumbnail], for unsetting the flag.
+//   - WriteThumbnail maps to cli flags: --write-thumbnail.
 func (c *Command) WriteThumbnail(value string) *Command {
 	c.addFlag(&Flag{
 		ID:   "writethumbnail",
@@ -21,7 +22,7 @@ func (c *Command) WriteThumbnail(value string) *Command {
 }
 
 // UnsetWriteThumbnail unsets any flags that were previously set by
-// WriteThumbnail().
+// [WriteThumbnail].
 func (c *Command) UnsetWriteThumbnail() *Command {
 	c.removeFlagByID("writethumbnail")
 	return c
@@ -29,7 +30,8 @@ func (c *Command) UnsetWriteThumbnail() *Command {
 
 // Do not write thumbnail image to disk (default)
 //
-// NoWriteThumbnail maps to cli flags: --no-write-thumbnail.
+//   - See also [UnsetNoWriteThumbnail], for unsetting the flag.
+//   - NoWriteThumbnail maps to cli flags: --no-write-thumbnail.
 func (c *Command) NoWriteThumbnail() *Command {
 	c.addFlag(&Flag{
 		ID:   "writethumbnail",
@@ -40,7 +42,7 @@ func (c *Command) NoWriteThumbnail() *Command {
 }
 
 // UnsetNoWriteThumbnail unsets any flags that were previously set by
-// NoWriteThumbnail().
+// [NoWriteThumbnail].
 func (c *Command) UnsetNoWriteThumbnail() *Command {
 	c.removeFlagByID("writethumbnail")
 	return c
@@ -48,7 +50,8 @@ func (c *Command) UnsetNoWriteThumbnail() *Command {
 
 // List available thumbnails of each video. Simulate unless --no-simulate is used
 //
-// ListThumbnails maps to cli flags: --list-thumbnails.
+//   - See also [UnsetListThumbnails], for unsetting the flag.
+//   - ListThumbnails maps to cli flags: --list-thumbnails.
 func (c *Command) ListThumbnails() *Command {
 	c.addFlag(&Flag{
 		ID:   "list_thumbnails",
@@ -59,7 +62,7 @@ func (c *Command) ListThumbnails() *Command {
 }
 
 // UnsetListThumbnails unsets any flags that were previously set by
-// ListThumbnails().
+// [ListThumbnails].
 func (c *Command) UnsetListThumbnails() *Command {
 	c.removeFlagByID("list_thumbnails")
 	return c

@@ -10,7 +10,8 @@ package ytdlp
 
 // Number of retries for known extractor errors (default is 3), or "infinite"
 //
-// ExtractorRetries maps to cli flags: --extractor-retries=RETRIES.
+//   - See also [UnsetExtractorRetries], for unsetting the flag.
+//   - ExtractorRetries maps to cli flags: --extractor-retries=RETRIES.
 func (c *Command) ExtractorRetries(retries string) *Command {
 	c.addFlag(&Flag{
 		ID:   "extractor_retries",
@@ -21,7 +22,7 @@ func (c *Command) ExtractorRetries(retries string) *Command {
 }
 
 // UnsetExtractorRetries unsets any flags that were previously set by
-// ExtractorRetries().
+// [ExtractorRetries].
 func (c *Command) UnsetExtractorRetries() *Command {
 	c.removeFlagByID("extractor_retries")
 	return c
@@ -29,7 +30,8 @@ func (c *Command) UnsetExtractorRetries() *Command {
 
 // Process dynamic DASH manifests (default) (Alias: --no-ignore-dynamic-mpd)
 //
-// AllowDynamicMpd maps to cli flags: --allow-dynamic-mpd/--no-ignore-dynamic-mpd.
+//   - See also [UnsetAllowDynamicMpd], for unsetting the flag.
+//   - AllowDynamicMpd maps to cli flags: --allow-dynamic-mpd/--no-ignore-dynamic-mpd.
 func (c *Command) AllowDynamicMpd() *Command {
 	c.addFlag(&Flag{
 		ID:   "dynamic_mpd",
@@ -40,7 +42,7 @@ func (c *Command) AllowDynamicMpd() *Command {
 }
 
 // UnsetAllowDynamicMpd unsets any flags that were previously set by
-// AllowDynamicMpd().
+// [AllowDynamicMpd].
 func (c *Command) UnsetAllowDynamicMpd() *Command {
 	c.removeFlagByID("dynamic_mpd")
 	return c
@@ -48,7 +50,8 @@ func (c *Command) UnsetAllowDynamicMpd() *Command {
 
 // Do not process dynamic DASH manifests (Alias: --no-allow-dynamic-mpd)
 //
-// IgnoreDynamicMpd maps to cli flags: --ignore-dynamic-mpd/--no-allow-dynamic-mpd.
+//   - See also [UnsetIgnoreDynamicMpd], for unsetting the flag.
+//   - IgnoreDynamicMpd maps to cli flags: --ignore-dynamic-mpd/--no-allow-dynamic-mpd.
 func (c *Command) IgnoreDynamicMpd() *Command {
 	c.addFlag(&Flag{
 		ID:   "dynamic_mpd",
@@ -59,7 +62,7 @@ func (c *Command) IgnoreDynamicMpd() *Command {
 }
 
 // UnsetIgnoreDynamicMpd unsets any flags that were previously set by
-// IgnoreDynamicMpd().
+// [IgnoreDynamicMpd].
 func (c *Command) UnsetIgnoreDynamicMpd() *Command {
 	c.removeFlagByID("dynamic_mpd")
 	return c
@@ -67,7 +70,8 @@ func (c *Command) UnsetIgnoreDynamicMpd() *Command {
 
 // Split HLS playlists to different formats at discontinuities such as ad breaks
 //
-// HlsSplitDiscontinuity maps to cli flags: --hls-split-discontinuity.
+//   - See also [UnsetHlsSplitDiscontinuity], for unsetting the flag.
+//   - HlsSplitDiscontinuity maps to cli flags: --hls-split-discontinuity.
 func (c *Command) HlsSplitDiscontinuity() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_split_discontinuity",
@@ -78,7 +82,7 @@ func (c *Command) HlsSplitDiscontinuity() *Command {
 }
 
 // UnsetHlsSplitDiscontinuity unsets any flags that were previously set by
-// HlsSplitDiscontinuity().
+// [HlsSplitDiscontinuity].
 func (c *Command) UnsetHlsSplitDiscontinuity() *Command {
 	c.removeFlagByID("hls_split_discontinuity")
 	return c
@@ -87,7 +91,8 @@ func (c *Command) UnsetHlsSplitDiscontinuity() *Command {
 // Do not split HLS playlists to different formats at discontinuities such as ad
 // breaks (default)
 //
-// NoHlsSplitDiscontinuity maps to cli flags: --no-hls-split-discontinuity.
+//   - See also [UnsetNoHlsSplitDiscontinuity], for unsetting the flag.
+//   - NoHlsSplitDiscontinuity maps to cli flags: --no-hls-split-discontinuity.
 func (c *Command) NoHlsSplitDiscontinuity() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_split_discontinuity",
@@ -98,7 +103,7 @@ func (c *Command) NoHlsSplitDiscontinuity() *Command {
 }
 
 // UnsetNoHlsSplitDiscontinuity unsets any flags that were previously set by
-// NoHlsSplitDiscontinuity().
+// [NoHlsSplitDiscontinuity].
 func (c *Command) UnsetNoHlsSplitDiscontinuity() *Command {
 	c.removeFlagByID("hls_split_discontinuity")
 	return c
@@ -108,7 +113,8 @@ func (c *Command) UnsetNoHlsSplitDiscontinuity() *Command {
 // details. You can use this option multiple times to give arguments for different
 // extractors
 //
-// ExtractorArgs maps to cli flags: --extractor-args=IE_KEY:ARGS.
+//   - See also [UnsetExtractorArgs], for unsetting the flag.
+//   - ExtractorArgs maps to cli flags: --extractor-args=IE_KEY:ARGS.
 func (c *Command) ExtractorArgs(ieKeyargs string) *Command {
 	c.addFlag(&Flag{
 		ID:   "extractor_args",
@@ -119,7 +125,7 @@ func (c *Command) ExtractorArgs(ieKeyargs string) *Command {
 }
 
 // UnsetExtractorArgs unsets any flags that were previously set by
-// ExtractorArgs().
+// [ExtractorArgs].
 func (c *Command) UnsetExtractorArgs() *Command {
 	c.removeFlagByID("extractor_args")
 	return c
@@ -127,7 +133,8 @@ func (c *Command) UnsetExtractorArgs() *Command {
 
 // YoutubeIncludeDashManifest sets the "youtube-include-dash-manifest" flag (no description specified).
 //
-// YoutubeIncludeDashManifest maps to cli flags: --youtube-include-dash-manifest/--no-youtube-skip-dash-manifest (hidden).
+//   - See also [UnsetYoutubeIncludeDashManifest], for unsetting the flag.
+//   - YoutubeIncludeDashManifest maps to cli flags: --youtube-include-dash-manifest/--no-youtube-skip-dash-manifest (hidden).
 func (c *Command) YoutubeIncludeDashManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_dash_manifest",
@@ -138,7 +145,7 @@ func (c *Command) YoutubeIncludeDashManifest() *Command {
 }
 
 // UnsetYoutubeIncludeDashManifest unsets any flags that were previously set by
-// YoutubeIncludeDashManifest().
+// [YoutubeIncludeDashManifest].
 func (c *Command) UnsetYoutubeIncludeDashManifest() *Command {
 	c.removeFlagByID("youtube_include_dash_manifest")
 	return c
@@ -146,7 +153,8 @@ func (c *Command) UnsetYoutubeIncludeDashManifest() *Command {
 
 // YoutubeSkipDashManifest sets the "youtube-skip-dash-manifest" flag (no description specified).
 //
-// YoutubeSkipDashManifest maps to cli flags: --youtube-skip-dash-manifest/--no-youtube-include-dash-manifest (hidden).
+//   - See also [UnsetYoutubeSkipDashManifest], for unsetting the flag.
+//   - YoutubeSkipDashManifest maps to cli flags: --youtube-skip-dash-manifest/--no-youtube-include-dash-manifest (hidden).
 func (c *Command) YoutubeSkipDashManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_dash_manifest",
@@ -157,7 +165,7 @@ func (c *Command) YoutubeSkipDashManifest() *Command {
 }
 
 // UnsetYoutubeSkipDashManifest unsets any flags that were previously set by
-// YoutubeSkipDashManifest().
+// [YoutubeSkipDashManifest].
 func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
 	c.removeFlagByID("youtube_include_dash_manifest")
 	return c
@@ -165,7 +173,8 @@ func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
 
 // YoutubeIncludeHlsManifest sets the "youtube-include-hls-manifest" flag (no description specified).
 //
-// YoutubeIncludeHlsManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest (hidden).
+//   - See also [UnsetYoutubeIncludeHlsManifest], for unsetting the flag.
+//   - YoutubeIncludeHlsManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest (hidden).
 func (c *Command) YoutubeIncludeHlsManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",
@@ -176,7 +185,7 @@ func (c *Command) YoutubeIncludeHlsManifest() *Command {
 }
 
 // UnsetYoutubeIncludeHlsManifest unsets any flags that were previously set by
-// YoutubeIncludeHlsManifest().
+// [YoutubeIncludeHlsManifest].
 func (c *Command) UnsetYoutubeIncludeHlsManifest() *Command {
 	c.removeFlagByID("youtube_include_hls_manifest")
 	return c
@@ -184,7 +193,8 @@ func (c *Command) UnsetYoutubeIncludeHlsManifest() *Command {
 
 // YoutubeSkipHlsManifest sets the "youtube-skip-hls-manifest" flag (no description specified).
 //
-// YoutubeSkipHlsManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest (hidden).
+//   - See also [UnsetYoutubeSkipHlsManifest], for unsetting the flag.
+//   - YoutubeSkipHlsManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest (hidden).
 func (c *Command) YoutubeSkipHlsManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",
@@ -195,7 +205,7 @@ func (c *Command) YoutubeSkipHlsManifest() *Command {
 }
 
 // UnsetYoutubeSkipHlsManifest unsets any flags that were previously set by
-// YoutubeSkipHlsManifest().
+// [YoutubeSkipHlsManifest].
 func (c *Command) UnsetYoutubeSkipHlsManifest() *Command {
 	c.removeFlagByID("youtube_include_hls_manifest")
 	return c

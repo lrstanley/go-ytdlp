@@ -11,7 +11,8 @@ package ytdlp
 // Write an internet shortcut file, depending on the current platform (.url,
 // .webloc or .desktop). The URL may be cached by the OS
 //
-// WriteLink maps to cli flags: --write-link.
+//   - See also [UnsetWriteLink], for unsetting the flag.
+//   - WriteLink maps to cli flags: --write-link.
 func (c *Command) WriteLink() *Command {
 	c.addFlag(&Flag{
 		ID:   "writelink",
@@ -22,7 +23,7 @@ func (c *Command) WriteLink() *Command {
 }
 
 // UnsetWriteLink unsets any flags that were previously set by
-// WriteLink().
+// [WriteLink].
 func (c *Command) UnsetWriteLink() *Command {
 	c.removeFlagByID("writelink")
 	return c
@@ -31,7 +32,8 @@ func (c *Command) UnsetWriteLink() *Command {
 // Write a .url Windows internet shortcut. The OS caches the URL based on the file
 // path
 //
-// WriteUrlLink maps to cli flags: --write-url-link.
+//   - See also [UnsetWriteUrlLink], for unsetting the flag.
+//   - WriteUrlLink maps to cli flags: --write-url-link.
 func (c *Command) WriteUrlLink() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeurllink",
@@ -42,7 +44,7 @@ func (c *Command) WriteUrlLink() *Command {
 }
 
 // UnsetWriteUrlLink unsets any flags that were previously set by
-// WriteUrlLink().
+// [WriteUrlLink].
 func (c *Command) UnsetWriteUrlLink() *Command {
 	c.removeFlagByID("writeurllink")
 	return c
@@ -50,7 +52,8 @@ func (c *Command) UnsetWriteUrlLink() *Command {
 
 // Write a .webloc macOS internet shortcut
 //
-// WriteWeblocLink maps to cli flags: --write-webloc-link.
+//   - See also [UnsetWriteWeblocLink], for unsetting the flag.
+//   - WriteWeblocLink maps to cli flags: --write-webloc-link.
 func (c *Command) WriteWeblocLink() *Command {
 	c.addFlag(&Flag{
 		ID:   "writewebloclink",
@@ -61,7 +64,7 @@ func (c *Command) WriteWeblocLink() *Command {
 }
 
 // UnsetWriteWeblocLink unsets any flags that were previously set by
-// WriteWeblocLink().
+// [WriteWeblocLink].
 func (c *Command) UnsetWriteWeblocLink() *Command {
 	c.removeFlagByID("writewebloclink")
 	return c
@@ -69,7 +72,8 @@ func (c *Command) UnsetWriteWeblocLink() *Command {
 
 // Write a .desktop Linux internet shortcut
 //
-// WriteDesktopLink maps to cli flags: --write-desktop-link.
+//   - See also [UnsetWriteDesktopLink], for unsetting the flag.
+//   - WriteDesktopLink maps to cli flags: --write-desktop-link.
 func (c *Command) WriteDesktopLink() *Command {
 	c.addFlag(&Flag{
 		ID:   "writedesktoplink",
@@ -80,7 +84,7 @@ func (c *Command) WriteDesktopLink() *Command {
 }
 
 // UnsetWriteDesktopLink unsets any flags that were previously set by
-// WriteDesktopLink().
+// [WriteDesktopLink].
 func (c *Command) UnsetWriteDesktopLink() *Command {
 	c.removeFlagByID("writedesktoplink")
 	return c

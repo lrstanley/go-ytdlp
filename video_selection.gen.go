@@ -12,7 +12,8 @@ import (
 	"strconv"
 )
 
-// PlaylistStart maps to cli flags: --playlist-start=NUMBER (hidden).
+// - See also [UnsetPlaylistStart], for unsetting the flag.
+// - PlaylistStart maps to cli flags: --playlist-start=NUMBER (hidden).
 func (c *Command) PlaylistStart(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "playliststart",
@@ -25,13 +26,14 @@ func (c *Command) PlaylistStart(number int) *Command {
 }
 
 // UnsetPlaylistStart unsets any flags that were previously set by
-// PlaylistStart().
+// [PlaylistStart].
 func (c *Command) UnsetPlaylistStart() *Command {
 	c.removeFlagByID("playliststart")
 	return c
 }
 
-// PlaylistEnd maps to cli flags: --playlist-end=NUMBER (hidden).
+// - See also [UnsetPlaylistEnd], for unsetting the flag.
+// - PlaylistEnd maps to cli flags: --playlist-end=NUMBER (hidden).
 func (c *Command) PlaylistEnd(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "playlistend",
@@ -44,7 +46,7 @@ func (c *Command) PlaylistEnd(number int) *Command {
 }
 
 // UnsetPlaylistEnd unsets any flags that were previously set by
-// PlaylistEnd().
+// [PlaylistEnd].
 func (c *Command) UnsetPlaylistEnd() *Command {
 	c.removeFlagByID("playlistend")
 	return c
@@ -56,7 +58,8 @@ func (c *Command) UnsetPlaylistEnd() *Command {
 // download in reverse order. E.g. "-I 1:3,7,-5::2" used on a playlist of size 15
 // will download the items at index 1,2,3,7,11,13,15
 //
-// PlaylistItems maps to cli flags: -I/--playlist-items=ITEM_SPEC.
+//   - See also [UnsetPlaylistItems], for unsetting the flag.
+//   - PlaylistItems maps to cli flags: -I/--playlist-items=ITEM_SPEC.
 func (c *Command) PlaylistItems(itemSpec string) *Command {
 	c.addFlag(&Flag{
 		ID:   "playlist_items",
@@ -67,13 +70,14 @@ func (c *Command) PlaylistItems(itemSpec string) *Command {
 }
 
 // UnsetPlaylistItems unsets any flags that were previously set by
-// PlaylistItems().
+// [PlaylistItems].
 func (c *Command) UnsetPlaylistItems() *Command {
 	c.removeFlagByID("playlist_items")
 	return c
 }
 
-// MatchTitle maps to cli flags: --match-title=REGEX (hidden).
+// - See also [UnsetMatchTitle], for unsetting the flag.
+// - MatchTitle maps to cli flags: --match-title=REGEX (hidden).
 func (c *Command) MatchTitle(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "matchtitle",
@@ -84,13 +88,14 @@ func (c *Command) MatchTitle(regex string) *Command {
 }
 
 // UnsetMatchTitle unsets any flags that were previously set by
-// MatchTitle().
+// [MatchTitle].
 func (c *Command) UnsetMatchTitle() *Command {
 	c.removeFlagByID("matchtitle")
 	return c
 }
 
-// RejectTitle maps to cli flags: --reject-title=REGEX (hidden).
+// - See also [UnsetRejectTitle], for unsetting the flag.
+// - RejectTitle maps to cli flags: --reject-title=REGEX (hidden).
 func (c *Command) RejectTitle(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "rejecttitle",
@@ -101,7 +106,7 @@ func (c *Command) RejectTitle(regex string) *Command {
 }
 
 // UnsetRejectTitle unsets any flags that were previously set by
-// RejectTitle().
+// [RejectTitle].
 func (c *Command) UnsetRejectTitle() *Command {
 	c.removeFlagByID("rejecttitle")
 	return c
@@ -109,7 +114,8 @@ func (c *Command) UnsetRejectTitle() *Command {
 
 // Abort download if filesize is smaller than SIZE, e.g. 50k or 44.6M
 //
-// MinFilesize maps to cli flags: --min-filesize=SIZE.
+//   - See also [UnsetMinFilesize], for unsetting the flag.
+//   - MinFilesize maps to cli flags: --min-filesize=SIZE.
 func (c *Command) MinFilesize(size string) *Command {
 	c.addFlag(&Flag{
 		ID:   "min_filesize",
@@ -120,7 +126,7 @@ func (c *Command) MinFilesize(size string) *Command {
 }
 
 // UnsetMinFilesize unsets any flags that were previously set by
-// MinFilesize().
+// [MinFilesize].
 func (c *Command) UnsetMinFilesize() *Command {
 	c.removeFlagByID("min_filesize")
 	return c
@@ -128,7 +134,8 @@ func (c *Command) UnsetMinFilesize() *Command {
 
 // Abort download if filesize is larger than SIZE, e.g. 50k or 44.6M
 //
-// MaxFilesize maps to cli flags: --max-filesize=SIZE.
+//   - See also [UnsetMaxFilesize], for unsetting the flag.
+//   - MaxFilesize maps to cli flags: --max-filesize=SIZE.
 func (c *Command) MaxFilesize(size string) *Command {
 	c.addFlag(&Flag{
 		ID:   "max_filesize",
@@ -139,7 +146,7 @@ func (c *Command) MaxFilesize(size string) *Command {
 }
 
 // UnsetMaxFilesize unsets any flags that were previously set by
-// MaxFilesize().
+// [MaxFilesize].
 func (c *Command) UnsetMaxFilesize() *Command {
 	c.removeFlagByID("max_filesize")
 	return c
@@ -149,7 +156,8 @@ func (c *Command) UnsetMaxFilesize() *Command {
 // format [now|today|yesterday][-N[day|week|month|year]]. E.g. "--date
 // today-2weeks" downloads only videos uploaded on the same day two weeks ago
 //
-// Date maps to cli flags: --date=DATE.
+//   - See also [UnsetDate], for unsetting the flag.
+//   - Date maps to cli flags: --date=DATE.
 func (c *Command) Date(date string) *Command {
 	c.addFlag(&Flag{
 		ID:   "date",
@@ -160,7 +168,7 @@ func (c *Command) Date(date string) *Command {
 }
 
 // UnsetDate unsets any flags that were previously set by
-// Date().
+// [Date].
 func (c *Command) UnsetDate() *Command {
 	c.removeFlagByID("date")
 	return c
@@ -169,7 +177,8 @@ func (c *Command) UnsetDate() *Command {
 // Download only videos uploaded on or before this date. The date formats accepted
 // is the same as --date
 //
-// Datebefore maps to cli flags: --datebefore=DATE.
+//   - See also [UnsetDatebefore], for unsetting the flag.
+//   - Datebefore maps to cli flags: --datebefore=DATE.
 func (c *Command) Datebefore(date string) *Command {
 	c.addFlag(&Flag{
 		ID:   "datebefore",
@@ -180,7 +189,7 @@ func (c *Command) Datebefore(date string) *Command {
 }
 
 // UnsetDatebefore unsets any flags that were previously set by
-// Datebefore().
+// [Datebefore].
 func (c *Command) UnsetDatebefore() *Command {
 	c.removeFlagByID("datebefore")
 	return c
@@ -189,7 +198,8 @@ func (c *Command) UnsetDatebefore() *Command {
 // Download only videos uploaded on or after this date. The date formats accepted
 // is the same as --date
 //
-// Dateafter maps to cli flags: --dateafter=DATE.
+//   - See also [UnsetDateafter], for unsetting the flag.
+//   - Dateafter maps to cli flags: --dateafter=DATE.
 func (c *Command) Dateafter(date string) *Command {
 	c.addFlag(&Flag{
 		ID:   "dateafter",
@@ -200,13 +210,14 @@ func (c *Command) Dateafter(date string) *Command {
 }
 
 // UnsetDateafter unsets any flags that were previously set by
-// Dateafter().
+// [Dateafter].
 func (c *Command) UnsetDateafter() *Command {
 	c.removeFlagByID("dateafter")
 	return c
 }
 
-// MinViews maps to cli flags: --min-views=COUNT (hidden).
+// - See also [UnsetMinViews], for unsetting the flag.
+// - MinViews maps to cli flags: --min-views=COUNT (hidden).
 func (c *Command) MinViews(count int) *Command {
 	c.addFlag(&Flag{
 		ID:   "min_views",
@@ -219,13 +230,14 @@ func (c *Command) MinViews(count int) *Command {
 }
 
 // UnsetMinViews unsets any flags that were previously set by
-// MinViews().
+// [MinViews].
 func (c *Command) UnsetMinViews() *Command {
 	c.removeFlagByID("min_views")
 	return c
 }
 
-// MaxViews maps to cli flags: --max-views=COUNT (hidden).
+// - See also [UnsetMaxViews], for unsetting the flag.
+// - MaxViews maps to cli flags: --max-views=COUNT (hidden).
 func (c *Command) MaxViews(count int) *Command {
 	c.addFlag(&Flag{
 		ID:   "max_views",
@@ -238,7 +250,7 @@ func (c *Command) MaxViews(count int) *Command {
 }
 
 // UnsetMaxViews unsets any flags that were previously set by
-// MaxViews().
+// [MaxViews].
 func (c *Command) UnsetMaxViews() *Command {
 	c.removeFlagByID("max_views")
 	return c
@@ -256,7 +268,8 @@ func (c *Command) UnsetMaxViews() *Command {
 // phrase "cats & dogs" (caseless). Use "--match-filter -" to interactively ask
 // whether to download each video
 //
-// MatchFilters maps to cli flags: --match-filters=FILTER.
+//   - See also [UnsetMatchFilters], for unsetting the flag.
+//   - MatchFilters maps to cli flags: --match-filters=FILTER.
 func (c *Command) MatchFilters(filter string) *Command {
 	c.addFlag(&Flag{
 		ID:   "match_filter",
@@ -267,7 +280,7 @@ func (c *Command) MatchFilters(filter string) *Command {
 }
 
 // UnsetMatchFilters unsets any flags that were previously set by
-// MatchFilters().
+// [MatchFilters].
 func (c *Command) UnsetMatchFilters() *Command {
 	c.removeFlagByID("match_filter")
 	return c
@@ -276,7 +289,8 @@ func (c *Command) UnsetMatchFilters() *Command {
 // Same as "--match-filters" but stops the download process when a video is
 // rejected
 //
-// BreakMatchFilters maps to cli flags: --break-match-filters=FILTER.
+//   - See also [UnsetBreakMatchFilters], for unsetting the flag.
+//   - BreakMatchFilters maps to cli flags: --break-match-filters=FILTER.
 func (c *Command) BreakMatchFilters(filter string) *Command {
 	c.addFlag(&Flag{
 		ID:   "breaking_match_filter",
@@ -287,7 +301,7 @@ func (c *Command) BreakMatchFilters(filter string) *Command {
 }
 
 // UnsetBreakMatchFilters unsets any flags that were previously set by
-// BreakMatchFilters().
+// [BreakMatchFilters].
 func (c *Command) UnsetBreakMatchFilters() *Command {
 	c.removeFlagByID("breaking_match_filter")
 	return c
@@ -295,7 +309,8 @@ func (c *Command) UnsetBreakMatchFilters() *Command {
 
 // Download only the video, if the URL refers to a video and a playlist
 //
-// NoPlaylist maps to cli flags: --no-playlist.
+//   - See also [UnsetNoPlaylist], for unsetting the flag.
+//   - NoPlaylist maps to cli flags: --no-playlist.
 func (c *Command) NoPlaylist() *Command {
 	c.addFlag(&Flag{
 		ID:   "noplaylist",
@@ -306,7 +321,7 @@ func (c *Command) NoPlaylist() *Command {
 }
 
 // UnsetNoPlaylist unsets any flags that were previously set by
-// NoPlaylist().
+// [NoPlaylist].
 func (c *Command) UnsetNoPlaylist() *Command {
 	c.removeFlagByID("noplaylist")
 	return c
@@ -314,7 +329,8 @@ func (c *Command) UnsetNoPlaylist() *Command {
 
 // Download the playlist, if the URL refers to a video and a playlist
 //
-// YesPlaylist maps to cli flags: --yes-playlist.
+//   - See also [UnsetYesPlaylist], for unsetting the flag.
+//   - YesPlaylist maps to cli flags: --yes-playlist.
 func (c *Command) YesPlaylist() *Command {
 	c.addFlag(&Flag{
 		ID:   "noplaylist",
@@ -325,7 +341,7 @@ func (c *Command) YesPlaylist() *Command {
 }
 
 // UnsetYesPlaylist unsets any flags that were previously set by
-// YesPlaylist().
+// [YesPlaylist].
 func (c *Command) UnsetYesPlaylist() *Command {
 	c.removeFlagByID("noplaylist")
 	return c
@@ -333,7 +349,8 @@ func (c *Command) UnsetYesPlaylist() *Command {
 
 // Download only videos suitable for the given age
 //
-// AgeLimit maps to cli flags: --age-limit=YEARS.
+//   - See also [UnsetAgeLimit], for unsetting the flag.
+//   - AgeLimit maps to cli flags: --age-limit=YEARS.
 func (c *Command) AgeLimit(years int) *Command {
 	c.addFlag(&Flag{
 		ID:   "age_limit",
@@ -346,7 +363,7 @@ func (c *Command) AgeLimit(years int) *Command {
 }
 
 // UnsetAgeLimit unsets any flags that were previously set by
-// AgeLimit().
+// [AgeLimit].
 func (c *Command) UnsetAgeLimit() *Command {
 	c.removeFlagByID("age_limit")
 	return c
@@ -355,7 +372,8 @@ func (c *Command) UnsetAgeLimit() *Command {
 // Download only videos not listed in the archive file. Record the IDs of all
 // downloaded videos in it
 //
-// DownloadArchive maps to cli flags: --download-archive=FILE.
+//   - See also [UnsetDownloadArchive], for unsetting the flag.
+//   - DownloadArchive maps to cli flags: --download-archive=FILE.
 func (c *Command) DownloadArchive(file string) *Command {
 	c.addFlag(&Flag{
 		ID:   "download_archive",
@@ -366,7 +384,7 @@ func (c *Command) DownloadArchive(file string) *Command {
 }
 
 // UnsetDownloadArchive unsets any flags that were previously set by
-// DownloadArchive().
+// [DownloadArchive].
 func (c *Command) UnsetDownloadArchive() *Command {
 	c.removeFlagByID("download_archive")
 	return c
@@ -374,7 +392,8 @@ func (c *Command) UnsetDownloadArchive() *Command {
 
 // Abort after downloading NUMBER files
 //
-// MaxDownloads maps to cli flags: --max-downloads=NUMBER.
+//   - See also [UnsetMaxDownloads], for unsetting the flag.
+//   - MaxDownloads maps to cli flags: --max-downloads=NUMBER.
 func (c *Command) MaxDownloads(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "max_downloads",
@@ -387,7 +406,7 @@ func (c *Command) MaxDownloads(number int) *Command {
 }
 
 // UnsetMaxDownloads unsets any flags that were previously set by
-// MaxDownloads().
+// [MaxDownloads].
 func (c *Command) UnsetMaxDownloads() *Command {
 	c.removeFlagByID("max_downloads")
 	return c
@@ -395,7 +414,8 @@ func (c *Command) UnsetMaxDownloads() *Command {
 
 // Stop the download process when encountering a file that is in the archive
 //
-// BreakOnExisting maps to cli flags: --break-on-existing.
+//   - See also [UnsetBreakOnExisting], for unsetting the flag.
+//   - BreakOnExisting maps to cli flags: --break-on-existing.
 func (c *Command) BreakOnExisting() *Command {
 	c.addFlag(&Flag{
 		ID:   "break_on_existing",
@@ -406,7 +426,7 @@ func (c *Command) BreakOnExisting() *Command {
 }
 
 // UnsetBreakOnExisting unsets any flags that were previously set by
-// BreakOnExisting().
+// [BreakOnExisting].
 func (c *Command) UnsetBreakOnExisting() *Command {
 	c.removeFlagByID("break_on_existing")
 	return c
@@ -414,7 +434,8 @@ func (c *Command) UnsetBreakOnExisting() *Command {
 
 // BreakOnReject sets the "break-on-reject" flag (no description specified).
 //
-// BreakOnReject maps to cli flags: --break-on-reject (hidden).
+//   - See also [UnsetBreakOnReject], for unsetting the flag.
+//   - BreakOnReject maps to cli flags: --break-on-reject (hidden).
 func (c *Command) BreakOnReject() *Command {
 	c.addFlag(&Flag{
 		ID:   "break_on_reject",
@@ -425,7 +446,7 @@ func (c *Command) BreakOnReject() *Command {
 }
 
 // UnsetBreakOnReject unsets any flags that were previously set by
-// BreakOnReject().
+// [BreakOnReject].
 func (c *Command) UnsetBreakOnReject() *Command {
 	c.removeFlagByID("break_on_reject")
 	return c
@@ -434,7 +455,8 @@ func (c *Command) UnsetBreakOnReject() *Command {
 // Alters --max-downloads, --break-on-existing, --break-match-filter, and
 // autonumber to reset per input URL
 //
-// BreakPerInput maps to cli flags: --break-per-input.
+//   - See also [UnsetBreakPerInput], for unsetting the flag.
+//   - BreakPerInput maps to cli flags: --break-per-input.
 func (c *Command) BreakPerInput() *Command {
 	c.addFlag(&Flag{
 		ID:   "break_per_url",
@@ -445,7 +467,7 @@ func (c *Command) BreakPerInput() *Command {
 }
 
 // UnsetBreakPerInput unsets any flags that were previously set by
-// BreakPerInput().
+// [BreakPerInput].
 func (c *Command) UnsetBreakPerInput() *Command {
 	c.removeFlagByID("break_per_url")
 	return c
@@ -453,7 +475,8 @@ func (c *Command) UnsetBreakPerInput() *Command {
 
 // --break-on-existing and similar options terminates the entire download queue
 //
-// NoBreakPerInput maps to cli flags: --no-break-per-input.
+//   - See also [UnsetNoBreakPerInput], for unsetting the flag.
+//   - NoBreakPerInput maps to cli flags: --no-break-per-input.
 func (c *Command) NoBreakPerInput() *Command {
 	c.addFlag(&Flag{
 		ID:   "break_per_url",
@@ -464,7 +487,7 @@ func (c *Command) NoBreakPerInput() *Command {
 }
 
 // UnsetNoBreakPerInput unsets any flags that were previously set by
-// NoBreakPerInput().
+// [NoBreakPerInput].
 func (c *Command) UnsetNoBreakPerInput() *Command {
 	c.removeFlagByID("break_per_url")
 	return c
@@ -472,7 +495,8 @@ func (c *Command) UnsetNoBreakPerInput() *Command {
 
 // Number of allowed failures until the rest of the playlist is skipped
 //
-// SkipPlaylistAfterErrors maps to cli flags: --skip-playlist-after-errors=N.
+//   - See also [UnsetSkipPlaylistAfterErrors], for unsetting the flag.
+//   - SkipPlaylistAfterErrors maps to cli flags: --skip-playlist-after-errors=N.
 func (c *Command) SkipPlaylistAfterErrors(n int) *Command {
 	c.addFlag(&Flag{
 		ID:   "skip_playlist_after_errors",
@@ -485,7 +509,7 @@ func (c *Command) SkipPlaylistAfterErrors(n int) *Command {
 }
 
 // UnsetSkipPlaylistAfterErrors unsets any flags that were previously set by
-// SkipPlaylistAfterErrors().
+// [SkipPlaylistAfterErrors].
 func (c *Command) UnsetSkipPlaylistAfterErrors() *Command {
 	c.removeFlagByID("skip_playlist_after_errors")
 	return c
@@ -493,7 +517,8 @@ func (c *Command) UnsetSkipPlaylistAfterErrors() *Command {
 
 // IncludeAds sets the "include-ads" flag (no description specified).
 //
-// IncludeAds maps to cli flags: --include-ads (hidden).
+//   - See also [UnsetIncludeAds], for unsetting the flag.
+//   - IncludeAds maps to cli flags: --include-ads (hidden).
 func (c *Command) IncludeAds() *Command {
 	c.addFlag(&Flag{
 		ID:   "include_ads",
@@ -504,7 +529,7 @@ func (c *Command) IncludeAds() *Command {
 }
 
 // UnsetIncludeAds unsets any flags that were previously set by
-// IncludeAds().
+// [IncludeAds].
 func (c *Command) UnsetIncludeAds() *Command {
 	c.removeFlagByID("include_ads")
 	return c
@@ -512,7 +537,8 @@ func (c *Command) UnsetIncludeAds() *Command {
 
 // NoIncludeAds sets the "no-include-ads" flag (no description specified).
 //
-// NoIncludeAds maps to cli flags: --no-include-ads (hidden).
+//   - See also [UnsetNoIncludeAds], for unsetting the flag.
+//   - NoIncludeAds maps to cli flags: --no-include-ads (hidden).
 func (c *Command) NoIncludeAds() *Command {
 	c.addFlag(&Flag{
 		ID:   "include_ads",
@@ -523,7 +549,7 @@ func (c *Command) NoIncludeAds() *Command {
 }
 
 // UnsetNoIncludeAds unsets any flags that were previously set by
-// NoIncludeAds().
+// [NoIncludeAds].
 func (c *Command) UnsetNoIncludeAds() *Command {
 	c.removeFlagByID("include_ads")
 	return c

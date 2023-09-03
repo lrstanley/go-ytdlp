@@ -16,7 +16,8 @@ import (
 // proper scheme, e.g. socks5://user:pass@127.0.0.1:1080/. Pass in an empty string
 // (--proxy "") for direct connection
 //
-// Proxy maps to cli flags: --proxy=URL.
+//   - See also [UnsetProxy], for unsetting the flag.
+//   - Proxy maps to cli flags: --proxy=URL.
 func (c *Command) Proxy(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "proxy",
@@ -27,7 +28,7 @@ func (c *Command) Proxy(url string) *Command {
 }
 
 // UnsetProxy unsets any flags that were previously set by
-// Proxy().
+// [Proxy].
 func (c *Command) UnsetProxy() *Command {
 	c.removeFlagByID("proxy")
 	return c
@@ -35,7 +36,8 @@ func (c *Command) UnsetProxy() *Command {
 
 // Time to wait before giving up, in seconds
 //
-// SocketTimeout maps to cli flags: --socket-timeout=SECONDS.
+//   - See also [UnsetSocketTimeout], for unsetting the flag.
+//   - SocketTimeout maps to cli flags: --socket-timeout=SECONDS.
 func (c *Command) SocketTimeout(seconds float64) *Command {
 	c.addFlag(&Flag{
 		ID:   "socket_timeout",
@@ -48,7 +50,7 @@ func (c *Command) SocketTimeout(seconds float64) *Command {
 }
 
 // UnsetSocketTimeout unsets any flags that were previously set by
-// SocketTimeout().
+// [SocketTimeout].
 func (c *Command) UnsetSocketTimeout() *Command {
 	c.removeFlagByID("socket_timeout")
 	return c
@@ -56,7 +58,8 @@ func (c *Command) UnsetSocketTimeout() *Command {
 
 // Client-side IP address to bind to
 //
-// SourceAddress maps to cli flags: --source-address=IP.
+//   - See also [UnsetSourceAddress], for unsetting the flag.
+//   - SourceAddress maps to cli flags: --source-address=IP.
 func (c *Command) SourceAddress(ip string) *Command {
 	c.addFlag(&Flag{
 		ID:   "source_address",
@@ -67,7 +70,7 @@ func (c *Command) SourceAddress(ip string) *Command {
 }
 
 // UnsetSourceAddress unsets any flags that were previously set by
-// SourceAddress().
+// [SourceAddress].
 func (c *Command) UnsetSourceAddress() *Command {
 	c.removeFlagByID("source_address")
 	return c
@@ -75,7 +78,8 @@ func (c *Command) UnsetSourceAddress() *Command {
 
 // Enable file:// URLs. This is disabled by default for security reasons.
 //
-// EnableFileUrls maps to cli flags: --enable-file-urls.
+//   - See also [UnsetEnableFileUrls], for unsetting the flag.
+//   - EnableFileUrls maps to cli flags: --enable-file-urls.
 func (c *Command) EnableFileUrls() *Command {
 	c.addFlag(&Flag{
 		ID:   "enable_file_urls",
@@ -86,7 +90,7 @@ func (c *Command) EnableFileUrls() *Command {
 }
 
 // UnsetEnableFileUrls unsets any flags that were previously set by
-// EnableFileUrls().
+// [EnableFileUrls].
 func (c *Command) UnsetEnableFileUrls() *Command {
 	c.removeFlagByID("enable_file_urls")
 	return c
