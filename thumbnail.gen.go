@@ -10,7 +10,7 @@ package ytdlp
 
 // Write thumbnail image to disk
 //
-//   - See also [UnsetWriteThumbnail], for unsetting the flag.
+//   - See [UnsetWriteThumbnail], for unsetting the flag.
 //   - WriteThumbnail maps to cli flags: --write-thumbnail.
 func (c *Command) WriteThumbnail(value string) *Command {
 	c.addFlag(&Flag{
@@ -30,7 +30,7 @@ func (c *Command) UnsetWriteThumbnail() *Command {
 
 // Do not write thumbnail image to disk (default)
 //
-//   - See also [UnsetNoWriteThumbnail], for unsetting the flag.
+//   - See [UnsetNoWriteThumbnail], for unsetting the flag.
 //   - NoWriteThumbnail maps to cli flags: --no-write-thumbnail.
 func (c *Command) NoWriteThumbnail() *Command {
 	c.addFlag(&Flag{
@@ -50,7 +50,7 @@ func (c *Command) UnsetNoWriteThumbnail() *Command {
 
 // List available thumbnails of each video. Simulate unless --no-simulate is used
 //
-//   - See also [UnsetListThumbnails], for unsetting the flag.
+//   - See [UnsetListThumbnails], for unsetting the flag.
 //   - ListThumbnails maps to cli flags: --list-thumbnails.
 func (c *Command) ListThumbnails() *Command {
 	c.addFlag(&Flag{
