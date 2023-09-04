@@ -76,6 +76,46 @@ func (c *Command) UnsetSourceAddress() *Command {
 	return c
 }
 
+// Make all connections via IPv4
+//
+//   - See [UnsetForceIpv4], for unsetting the flag.
+//   - ForceIpv4 maps to cli flags: -4/--force-ipv4.
+func (c *Command) ForceIpv4() *Command {
+	c.addFlag(&Flag{
+		ID:   "source_address",
+		Flag: "--force-ipv4",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetForceIpv4 unsets any flags that were previously set by
+// [ForceIpv4].
+func (c *Command) UnsetForceIpv4() *Command {
+	c.removeFlagByID("source_address")
+	return c
+}
+
+// Make all connections via IPv6
+//
+//   - See [UnsetForceIpv6], for unsetting the flag.
+//   - ForceIpv6 maps to cli flags: -6/--force-ipv6.
+func (c *Command) ForceIpv6() *Command {
+	c.addFlag(&Flag{
+		ID:   "source_address",
+		Flag: "--force-ipv6",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetForceIpv6 unsets any flags that were previously set by
+// [ForceIpv6].
+func (c *Command) UnsetForceIpv6() *Command {
+	c.removeFlagByID("source_address")
+	return c
+}
+
 // Enable file:// URLs. This is disabled by default for security reasons.
 //
 //   - See [UnsetEnableFileUrls], for unsetting the flag.

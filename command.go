@@ -9,7 +9,6 @@ import (
 	"context"
 	"os/exec"
 	"runtime"
-	"strings"
 	"sync"
 )
 
@@ -107,7 +106,9 @@ func (c *Command) removeFlagByID(id string) {
 	}
 }
 
-func (c *Command) Run(ctx context.Context, args ...string) (*Results, error) {
+// buildCommand builds the command to be executed. args passed here are any additional
+// arguments to be passed to yt-dlp (commonly URLs or similar).
+func (c *Command) buildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	var cmdArgs []string
 
 	for _, f := range c.flags {
@@ -131,11 +132,6 @@ func (c *Command) Run(ctx context.Context, args ...string) (*Results, error) {
 
 	cmd := exec.CommandContext(ctx, name, cmdArgs...)
 
-	var stdout, stderr bytes.Buffer
-
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
 	if c.directory != "" {
 		cmd.Dir = c.directory
 	}
@@ -148,6 +144,17 @@ func (c *Command) Run(ctx context.Context, args ...string) (*Results, error) {
 	}
 	c.mu.RUnlock()
 
+	return cmd
+}
+
+func (c *Command) Run(ctx context.Context, args ...string) (*Results, error) {
+	cmd := c.buildCommand(ctx, args...)
+
+	var stdout, stderr bytes.Buffer
+
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
 	err := cmd.Run()
 
 	result := &Results{
@@ -158,7 +165,7 @@ func (c *Command) Run(ctx context.Context, args ...string) (*Results, error) {
 		Stderr:     stderr.String(),
 	}
 
-	return result, err
+	return result, wrapError(err)
 }
 
 type Results struct {
@@ -184,10 +191,15 @@ func (f *Flag) Clone() *Flag {
 	}
 }
 
-func (f *Flag) Raw() []string {
+func (f *Flag) Raw() (args []string) {
+	args = append(args, f.Flag)
 	if f.Args == nil {
 		return []string{f.Flag}
 	}
 
-	return append([]string{f.Flag}, strings.Join(f.Args, " "))
+	if len(f.Args) > 0 {
+		args = append(args, f.Args...)
+	}
+
+	return args
 }

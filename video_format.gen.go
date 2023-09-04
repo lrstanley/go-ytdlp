@@ -169,6 +169,26 @@ func (c *Command) UnsetNoAudioMultistreams() *Command {
 	return c
 }
 
+// AllFormats sets the "all-formats" flag (no description specified).
+//
+//   - See [UnsetAllFormats], for unsetting the flag.
+//   - AllFormats maps to cli flags: --all-formats (hidden).
+func (c *Command) AllFormats() *Command {
+	c.addFlag(&Flag{
+		ID:   "format",
+		Flag: "--all-formats",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetAllFormats unsets any flags that were previously set by
+// [AllFormats].
+func (c *Command) UnsetAllFormats() *Command {
+	c.removeFlagByID("format")
+	return c
+}
+
 // Prefer video formats with free containers over non-free ones of same quality.
 // Use with "-S ext" to strictly prefer free containers irrespective of quality
 //
@@ -207,6 +227,26 @@ func (c *Command) NoPreferFreeFormats() *Command {
 // [NoPreferFreeFormats].
 func (c *Command) UnsetNoPreferFreeFormats() *Command {
 	c.removeFlagByID("prefer_free_formats")
+	return c
+}
+
+// Make sure formats are selected only from those that are actually downloadable
+//
+//   - See [UnsetCheckFormats], for unsetting the flag.
+//   - CheckFormats maps to cli flags: --check-formats.
+func (c *Command) CheckFormats() *Command {
+	c.addFlag(&Flag{
+		ID:   "check_formats",
+		Flag: "--check-formats",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetCheckFormats unsets any flags that were previously set by
+// [CheckFormats].
+func (c *Command) UnsetCheckFormats() *Command {
+	c.removeFlagByID("check_formats")
 	return c
 }
 

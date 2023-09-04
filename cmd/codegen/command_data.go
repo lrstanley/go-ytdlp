@@ -18,12 +18,14 @@ var ignoredFlags = []string{
 	"--alias",
 }
 
-var knownExecutableDest = []string{
+// knownExecutable are dest or flag names that are executable (override the default url input).
+var knownExecutable = []string{
+	"--update-to",
+	"--update",
 	"dump_user_agent",
 	"list_extractor_descriptions",
 	"list_extractors",
 	"print_help",
-	"update_self",
 }
 
 var disallowedNames = []string{
@@ -57,8 +59,7 @@ func (c *CommandData) Generate() {
 
 type OptionGroup struct {
 	// Generated fields.
-	Name         string `json:"-"`
-	NeedsStrconv bool   `json:"-"`
+	Name string `json:"-"`
 
 	// Command data fields.
 	OriginalTitle string   `json:"title"`
@@ -71,10 +72,6 @@ func (o *OptionGroup) Generate() {
 
 	for i := range o.Options {
 		o.Options[i].Generate()
-
-		if !o.Options[i].IsExecutable && (o.Options[i].Type == "int" || o.Options[i].Type == "float64") {
-			o.NeedsStrconv = true
-		}
 	}
 
 	// Remove any ignored flags.
@@ -117,15 +114,21 @@ func (o *Option) Generate() {
 		o.Flag = o.Short[0]
 	}
 
+	if slices.Contains(knownExecutable, o.Dest) || slices.Contains(knownExecutable, o.Flag) {
+		o.IsExecutable = true
+	}
+
 	switch o.Type {
 	case "choice":
 		o.Type = "string"
 	case "float":
 		o.Type = "float64"
-	}
-
-	if o.Type == "" || slices.Contains(knownExecutableDest, o.Dest) {
-		o.IsExecutable = true
+	case "": // TODO: keep this?
+		if o.NArgs == 0 {
+			o.Type = "bool"
+		} else {
+			o.Type = "string"
+		}
 	}
 
 	// Clean up [prefix:] syntax from MetaVar, since we don't care about the optional prefix type.

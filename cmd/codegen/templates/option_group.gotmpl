@@ -14,6 +14,34 @@
 //  - {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}{{ if .Hidden }} (hidden){{ end }}.
 {{- end -}}{{/* end define optionHelp */}}
 
+{{- define "optionMetaArgs" -}}
+{{- if and (ne .Type "bool") (gt .NArgs 0) }}
+{{- .MetaVarFuncArgs | join ", " }} {{ if .Choices }}{{ .Name | to_camel }}Option{{ else }}{{ .Type }}{{ end }}
+{{- end }}{{/* end if type */}}
+{{- end -}}{{/* end define optionMetaArgs */}}
+
+{{- define "optionSliceMetaArgs" -}}
+{{- $option := . -}}
+{{- if or (eq $option.Type "bool") (eq .NArgs 0) }}
+nil
+{{- else }}
+[]string{
+    {{- range $index, $arg := .MetaVarFuncArgs }}
+    {{- if $option.Choices }}{{/* if choices, type cast back to the original type when we pass in. */}}
+    {{- $arg = printf "%s(%s)" $option.Type $arg }}
+    {{- end }}{{/* end if choices */}}
+    {{- if eq $option.Type "string" }}
+    {{- $arg }},
+    {{- else if eq $option.Type "int" }}
+    strconv.Itoa({{ $arg }}),
+    {{- else if eq $option.Type "float64" }}
+    strconv.FormatFloat({{ $arg }}, 'g', -1, 64),
+    {{- end }}{{/* end if type */}}
+    {{- end }}{{/* end range for args */}}
+}
+{{- end }}{{/* end if type */}}
+{{- end -}}{{/* end define optionSliceMetaArgs */}}
+
 {{- /* start of actual file */ -}}
 // Copyright (c) Liam Stanley <me@liamstanley.io>. All rights reserved. Use
 // of this source code is governed by the MIT license that can be found in
@@ -31,16 +59,25 @@
 
 package ytdlp
 
-{{- if .NeedsStrconv }}
 import (
+{{- /* bytes/context (executable) */}}
+{{- range $index, $option := .Options }}
+{{- if $option.IsExecutable }}
+    "bytes"
+    "context"
+    {{ break }}
+{{- end }}{{/* end if executable */}}
+{{- end }}{{/* end range for options */}}
+{{- /* strconv (string conversions) */}}
+{{- range $index, $option := .Options }}
+{{- if or (eq $option.Type "int") (eq $option.Type "float64") }}
     "strconv"
+    {{ break }}
+{{- end }}{{/* end if executable */}}
+{{- end }}{{/* end range for options */}}
 )
-{{ end }}{{/* if needs strconv */}}
 
 {{ range $index, $option := .Options }}
-{{/* iterator skipping logic */}}
-{{- if $option.IsExecutable }}{{ continue }}{{ end -}}
-
 {{/* actual code generation */}}
 {{- if $option.Choices }}
 // {{ $option.Name | to_camel }}Option are parameter types for [{{ $option.Name | to_camel }}].
@@ -53,40 +90,44 @@ var (
 )
 {{- end }}{{/* end if choices */}}
 
-{{- if eq $option.Type "bool" }}
+{{- if $option.IsExecutable }}
 {{ template "optionHelp" $option }}
-func (c *Command) {{ $option.Name | to_camel }}() *Command {
+func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template "optionMetaArgs" $option }}) (*Results, error) {
     c.addFlag(&Flag{
         ID: {{ $option.Dest | quote }},
         Flag: {{ $option.Flag | quote }},
-        Args: nil,
+        Args: {{ template "optionSliceMetaArgs" $option }},
     })
-    return c
+
+    cmd := c.buildCommand(ctx)
+
+    var stdout, stderr bytes.Buffer
+
+    cmd.Stdout = &stdout
+    cmd.Stderr = &stderr
+
+    err := cmd.Run()
+
+    result := &Results{
+        Executable: cmd.Path,
+        Args:       cmd.Args[1:],
+        ExitCode:   cmd.ProcessState.ExitCode(),
+        Stdout:     stdout.String(),
+        Stderr:     stderr.String(),
+    }
+
+    return result, wrapError(err)
 }
-{{- else if gt $option.NArgs 0 }}
+{{- else if or (gt $option.NArgs 0) (eq $option.Type "bool") }}
 {{ template "optionHelp" $option }}
-func (c *Command) {{ $option.Name | to_camel }}({{ $option.MetaVarFuncArgs | join ", " }} {{ if $option.Choices }}{{ $option.Name | to_camel }}Option{{ else }}{{ $option.Type }}{{ end }}) *Command {
+func (c *Command) {{ $option.Name | to_camel }}({{ template "optionMetaArgs" $option }}) *Command {
     c.addFlag(&Flag{
         ID: {{ $option.Dest | quote }},
         Flag: {{ $option.Flag | quote }},
-        Args: []string{
-            {{- range $index, $arg := $option.MetaVarFuncArgs }}
-            {{- if $option.Choices }}{{/* if choices, type cast back to the original type when we pass in. */}}
-            {{- $arg = printf "%s(%s)" $option.Type $arg }}
-            {{- end }}{{/* end if choices */}}
-            {{- if eq $option.Type "string" }}
-            {{- $arg }},
-            {{- else if eq $option.Type "int" }}
-            strconv.Itoa({{ $arg }}),
-            {{- else if eq $option.Type "float64" }}
-            strconv.FormatFloat({{ $arg }}, 'g', -1, 64),
-            {{- end }}{{/* end if type */}}
-            {{- end }}{{/* end range for args */}}
-        },
+        Args: {{ template "optionSliceMetaArgs" $option }},
     })
     return c
 }
-{{- end }}{{/* end if type */}}
 
 // Unset{{ $option.Name | to_camel }} unsets any flags that were previously set by
 // [{{ $option.Name | to_camel }}].
@@ -94,4 +135,5 @@ func (c *Command) Unset{{ $option.Name | to_camel }}() *Command {
     c.removeFlagByID({{ $option.Dest | quote }})
     return c
 }
+{{- end }}{{/* end if type */}}
 {{ end }}{{/* end option range */}}

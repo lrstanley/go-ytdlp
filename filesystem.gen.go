@@ -33,6 +33,26 @@ func (c *Command) UnsetBatchFile() *Command {
 	return c
 }
 
+// Do not read URLs from batch file (default)
+//
+//   - See [UnsetNoBatchFile], for unsetting the flag.
+//   - NoBatchFile maps to cli flags: --no-batch-file.
+func (c *Command) NoBatchFile() *Command {
+	c.addFlag(&Flag{
+		ID:   "batchfile",
+		Flag: "--no-batch-file",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoBatchFile unsets any flags that were previously set by
+// [NoBatchFile].
+func (c *Command) UnsetNoBatchFile() *Command {
+	c.removeFlagByID("batchfile")
+	return c
+}
+
 // Id sets the "id" flag (no description specified).
 //
 //   - See [UnsetId], for unsetting the flag.
@@ -298,6 +318,26 @@ func (c *Command) ForceOverwrites() *Command {
 // UnsetForceOverwrites unsets any flags that were previously set by
 // [ForceOverwrites].
 func (c *Command) UnsetForceOverwrites() *Command {
+	c.removeFlagByID("overwrites")
+	return c
+}
+
+// Do not overwrite the video, but overwrite related files (default)
+//
+//   - See [UnsetNoForceOverwrites], for unsetting the flag.
+//   - NoForceOverwrites maps to cli flags: --no-force-overwrites.
+func (c *Command) NoForceOverwrites() *Command {
+	c.addFlag(&Flag{
+		ID:   "overwrites",
+		Flag: "--no-force-overwrites",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoForceOverwrites unsets any flags that were previously set by
+// [NoForceOverwrites].
+func (c *Command) UnsetNoForceOverwrites() *Command {
 	c.removeFlagByID("overwrites")
 	return c
 }
@@ -710,6 +750,26 @@ func (c *Command) UnsetCookies() *Command {
 	return c
 }
 
+// Do not read/dump cookies from/to file (default)
+//
+//   - See [UnsetNoCookies], for unsetting the flag.
+//   - NoCookies maps to cli flags: --no-cookies=FILE.
+func (c *Command) NoCookies() *Command {
+	c.addFlag(&Flag{
+		ID:   "cookiefile",
+		Flag: "--no-cookies",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoCookies unsets any flags that were previously set by
+// [NoCookies].
+func (c *Command) UnsetNoCookies() *Command {
+	c.removeFlagByID("cookiefile")
+	return c
+}
+
 // The name of the browser to load cookies from. Currently supported browsers are:
 // brave, chrome, chromium, edge, firefox, opera, safari, vivaldi. Optionally, the
 // KEYRING used for decrypting Chromium cookies on Linux, the name/path of the
@@ -732,6 +792,26 @@ func (c *Command) CookiesFromBrowser(browser string) *Command {
 // UnsetCookiesFromBrowser unsets any flags that were previously set by
 // [CookiesFromBrowser].
 func (c *Command) UnsetCookiesFromBrowser() *Command {
+	c.removeFlagByID("cookiesfrombrowser")
+	return c
+}
+
+// Do not load cookies from browser (default)
+//
+//   - See [UnsetNoCookiesFromBrowser], for unsetting the flag.
+//   - NoCookiesFromBrowser maps to cli flags: --no-cookies-from-browser.
+func (c *Command) NoCookiesFromBrowser() *Command {
+	c.addFlag(&Flag{
+		ID:   "cookiesfrombrowser",
+		Flag: "--no-cookies-from-browser",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoCookiesFromBrowser unsets any flags that were previously set by
+// [NoCookiesFromBrowser].
+func (c *Command) UnsetNoCookiesFromBrowser() *Command {
 	c.removeFlagByID("cookiesfrombrowser")
 	return c
 }

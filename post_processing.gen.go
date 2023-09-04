@@ -664,6 +664,26 @@ func (c *Command) UnsetExec() *Command {
 	return c
 }
 
+// Remove any previously defined --exec
+//
+//   - See [UnsetNoExec], for unsetting the flag.
+//   - NoExec maps to cli flags: --no-exec.
+func (c *Command) NoExec() *Command {
+	c.addFlag(&Flag{
+		ID:   "exec_cmd",
+		Flag: "--no-exec",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoExec unsets any flags that were previously set by
+// [NoExec].
+func (c *Command) UnsetNoExec() *Command {
+	c.removeFlagByID("exec_cmd")
+	return c
+}
+
 // - See [UnsetExecBeforeDownload], for unsetting the flag.
 // - ExecBeforeDownload maps to cli flags: --exec-before-download=CMD (hidden).
 func (c *Command) ExecBeforeDownload(cmd string) *Command {
@@ -678,6 +698,26 @@ func (c *Command) ExecBeforeDownload(cmd string) *Command {
 // UnsetExecBeforeDownload unsets any flags that were previously set by
 // [ExecBeforeDownload].
 func (c *Command) UnsetExecBeforeDownload() *Command {
+	c.removeFlagByID("exec_before_dl_cmd")
+	return c
+}
+
+// NoExecBeforeDownload sets the "no-exec-before-download" flag (no description specified).
+//
+//   - See [UnsetNoExecBeforeDownload], for unsetting the flag.
+//   - NoExecBeforeDownload maps to cli flags: --no-exec-before-download (hidden).
+func (c *Command) NoExecBeforeDownload() *Command {
+	c.addFlag(&Flag{
+		ID:   "exec_before_dl_cmd",
+		Flag: "--no-exec-before-download",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoExecBeforeDownload unsets any flags that were previously set by
+// [NoExecBeforeDownload].
+func (c *Command) UnsetNoExecBeforeDownload() *Command {
 	c.removeFlagByID("exec_before_dl_cmd")
 	return c
 }
@@ -783,6 +823,26 @@ func (c *Command) RemoveChapters(regex string) *Command {
 // UnsetRemoveChapters unsets any flags that were previously set by
 // [RemoveChapters].
 func (c *Command) UnsetRemoveChapters() *Command {
+	c.removeFlagByID("remove_chapters")
+	return c
+}
+
+// Do not remove any chapters from the file (default)
+//
+//   - See [UnsetNoRemoveChapters], for unsetting the flag.
+//   - NoRemoveChapters maps to cli flags: --no-remove-chapters.
+func (c *Command) NoRemoveChapters() *Command {
+	c.addFlag(&Flag{
+		ID:   "remove_chapters",
+		Flag: "--no-remove-chapters",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoRemoveChapters unsets any flags that were previously set by
+// [NoRemoveChapters].
+func (c *Command) UnsetNoRemoveChapters() *Command {
 	c.removeFlagByID("remove_chapters")
 	return c
 }

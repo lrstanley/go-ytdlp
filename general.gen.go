@@ -8,6 +8,116 @@
 
 package ytdlp
 
+import (
+	"bytes"
+	"context"
+)
+
+// Print program version and exit
+//
+//   - See [UnsetVersion], for unsetting the flag.
+//   - Version maps to cli flags: --version.
+func (c *Command) Version() *Command {
+	c.addFlag(&Flag{
+		ID:   "",
+		Flag: "--version",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetVersion unsets any flags that were previously set by
+// [Version].
+func (c *Command) UnsetVersion() *Command {
+	c.removeFlagByID("")
+	return c
+}
+
+// Check if updates are available. You cannot update when running from source code;
+// Use git to pull the latest changes
+//
+//   - See [UnsetUpdate], for unsetting the flag.
+//   - Update maps to cli flags: -U/--update.
+func (c *Command) Update(ctx context.Context) (*Results, error) {
+	c.addFlag(&Flag{
+		ID:   "update_self",
+		Flag: "--update",
+		Args: nil,
+	})
+
+	cmd := c.buildCommand(ctx)
+
+	var stdout, stderr bytes.Buffer
+
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+
+	result := &Results{
+		Executable: cmd.Path,
+		Args:       cmd.Args[1:],
+		ExitCode:   cmd.ProcessState.ExitCode(),
+		Stdout:     stdout.String(),
+		Stderr:     stderr.String(),
+	}
+
+	return result, wrapError(err)
+}
+
+// Do not check for updates (default)
+//
+//   - See [UnsetNoUpdate], for unsetting the flag.
+//   - NoUpdate maps to cli flags: --no-update.
+func (c *Command) NoUpdate() *Command {
+	c.addFlag(&Flag{
+		ID:   "update_self",
+		Flag: "--no-update",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoUpdate unsets any flags that were previously set by
+// [NoUpdate].
+func (c *Command) UnsetNoUpdate() *Command {
+	c.removeFlagByID("update_self")
+	return c
+}
+
+// Upgrade/downgrade to a specific version. CHANNEL can be a repository as well.
+// CHANNEL and TAG default to "stable" and "latest" respectively if omitted; See
+// "UPDATE" for details. Supported channels: stable, nightly
+//
+//   - See [UnsetUpdateTo], for unsetting the flag.
+//   - UpdateTo maps to cli flags: --update-to=[CHANNEL]@[TAG].
+func (c *Command) UpdateTo(ctx context.Context, value string) (*Results, error) {
+	c.addFlag(&Flag{
+		ID:   "update_self",
+		Flag: "--update-to",
+		Args: []string{value},
+	})
+
+	cmd := c.buildCommand(ctx)
+
+	var stdout, stderr bytes.Buffer
+
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+
+	result := &Results{
+		Executable: cmd.Path,
+		Args:       cmd.Args[1:],
+		ExitCode:   cmd.ProcessState.ExitCode(),
+		Stdout:     stdout.String(),
+		Stderr:     stderr.String(),
+	}
+
+	return result, wrapError(err)
+}
+
 // Ignore download and postprocessing errors. The download will be considered
 // successful even if the postprocessing fails
 //
@@ -25,6 +135,27 @@ func (c *Command) IgnoreErrors() *Command {
 // UnsetIgnoreErrors unsets any flags that were previously set by
 // [IgnoreErrors].
 func (c *Command) UnsetIgnoreErrors() *Command {
+	c.removeFlagByID("ignoreerrors")
+	return c
+}
+
+// Continue with next video on download errors; e.g. to skip unavailable videos in
+// a playlist (default)
+//
+//   - See [UnsetNoAbortOnError], for unsetting the flag.
+//   - NoAbortOnError maps to cli flags: --no-abort-on-error.
+func (c *Command) NoAbortOnError() *Command {
+	c.addFlag(&Flag{
+		ID:   "ignoreerrors",
+		Flag: "--no-abort-on-error",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoAbortOnError unsets any flags that were previously set by
+// [NoAbortOnError].
+func (c *Command) UnsetNoAbortOnError() *Command {
 	c.removeFlagByID("ignoreerrors")
 	return c
 }
@@ -48,6 +179,99 @@ func (c *Command) AbortOnError() *Command {
 func (c *Command) UnsetAbortOnError() *Command {
 	c.removeFlagByID("ignoreerrors")
 	return c
+}
+
+// Display the current user-agent and exit
+//
+//   - See [UnsetDumpUserAgent], for unsetting the flag.
+//   - DumpUserAgent maps to cli flags: --dump-user-agent.
+func (c *Command) DumpUserAgent(ctx context.Context) (*Results, error) {
+	c.addFlag(&Flag{
+		ID:   "dump_user_agent",
+		Flag: "--dump-user-agent",
+		Args: nil,
+	})
+
+	cmd := c.buildCommand(ctx)
+
+	var stdout, stderr bytes.Buffer
+
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+
+	result := &Results{
+		Executable: cmd.Path,
+		Args:       cmd.Args[1:],
+		ExitCode:   cmd.ProcessState.ExitCode(),
+		Stdout:     stdout.String(),
+		Stderr:     stderr.String(),
+	}
+
+	return result, wrapError(err)
+}
+
+// List all supported extractors and exit
+//
+//   - See [UnsetListExtractors], for unsetting the flag.
+//   - ListExtractors maps to cli flags: --list-extractors.
+func (c *Command) ListExtractors(ctx context.Context) (*Results, error) {
+	c.addFlag(&Flag{
+		ID:   "list_extractors",
+		Flag: "--list-extractors",
+		Args: nil,
+	})
+
+	cmd := c.buildCommand(ctx)
+
+	var stdout, stderr bytes.Buffer
+
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+
+	result := &Results{
+		Executable: cmd.Path,
+		Args:       cmd.Args[1:],
+		ExitCode:   cmd.ProcessState.ExitCode(),
+		Stdout:     stdout.String(),
+		Stderr:     stderr.String(),
+	}
+
+	return result, wrapError(err)
+}
+
+// Output descriptions of all supported extractors and exit
+//
+//   - See [UnsetExtractorDescriptions], for unsetting the flag.
+//   - ExtractorDescriptions maps to cli flags: --extractor-descriptions.
+func (c *Command) ExtractorDescriptions(ctx context.Context) (*Results, error) {
+	c.addFlag(&Flag{
+		ID:   "list_extractor_descriptions",
+		Flag: "--extractor-descriptions",
+		Args: nil,
+	})
+
+	cmd := c.buildCommand(ctx)
+
+	var stdout, stderr bytes.Buffer
+
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+
+	result := &Results{
+		Executable: cmd.Path,
+		Args:       cmd.Args[1:],
+		ExitCode:   cmd.ProcessState.ExitCode(),
+		Stdout:     stdout.String(),
+		Stderr:     stderr.String(),
+	}
+
+	return result, wrapError(err)
 }
 
 // Extractor names to use separated by commas. You can also use regexes, "all",
@@ -140,6 +364,28 @@ func (c *Command) UnsetIgnoreConfig() *Command {
 	return c
 }
 
+// Do not load any custom configuration files (default). When given inside a
+// configuration file, ignore all previous --config-locations defined in the
+// current file
+//
+//   - See [UnsetNoConfigLocations], for unsetting the flag.
+//   - NoConfigLocations maps to cli flags: --no-config-locations.
+func (c *Command) NoConfigLocations() *Command {
+	c.addFlag(&Flag{
+		ID:   "config_locations",
+		Flag: "--no-config-locations",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoConfigLocations unsets any flags that were previously set by
+// [NoConfigLocations].
+func (c *Command) UnsetNoConfigLocations() *Command {
+	c.removeFlagByID("config_locations")
+	return c
+}
+
 // Location of the main configuration file; either the path to the config or its
 // containing directory ("-" for stdin). Can be used multiple times and inside
 // other configuration files
@@ -159,6 +405,26 @@ func (c *Command) ConfigLocations(path string) *Command {
 // [ConfigLocations].
 func (c *Command) UnsetConfigLocations() *Command {
 	c.removeFlagByID("config_locations")
+	return c
+}
+
+// Do not extract the videos of a playlist, only list them
+//
+//   - See [UnsetFlatPlaylist], for unsetting the flag.
+//   - FlatPlaylist maps to cli flags: --flat-playlist.
+func (c *Command) FlatPlaylist() *Command {
+	c.addFlag(&Flag{
+		ID:   "extract_flat",
+		Flag: "--flat-playlist",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetFlatPlaylist unsets any flags that were previously set by
+// [FlatPlaylist].
+func (c *Command) UnsetFlatPlaylist() *Command {
+	c.removeFlagByID("extract_flat")
 	return c
 }
 
@@ -244,6 +510,26 @@ func (c *Command) UnsetWaitForVideo() *Command {
 	return c
 }
 
+// Do not wait for scheduled streams (default)
+//
+//   - See [UnsetNoWaitForVideo], for unsetting the flag.
+//   - NoWaitForVideo maps to cli flags: --no-wait-for-video.
+func (c *Command) NoWaitForVideo() *Command {
+	c.addFlag(&Flag{
+		ID:   "wait_for_video",
+		Flag: "--no-wait-for-video",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoWaitForVideo unsets any flags that were previously set by
+// [NoWaitForVideo].
+func (c *Command) UnsetNoWaitForVideo() *Command {
+	c.removeFlagByID("wait_for_video")
+	return c
+}
+
 // Mark videos watched (even with --simulate)
 //
 //   - See [UnsetMarkWatched], for unsetting the flag.
@@ -281,6 +567,26 @@ func (c *Command) NoMarkWatched() *Command {
 // [NoMarkWatched].
 func (c *Command) UnsetNoMarkWatched() *Command {
 	c.removeFlagByID("mark_watched")
+	return c
+}
+
+// NoColors sets the "no-colors" flag (no description specified).
+//
+//   - See [UnsetNoColors], for unsetting the flag.
+//   - NoColors maps to cli flags: --no-colors/--no-colours (hidden).
+func (c *Command) NoColors() *Command {
+	c.addFlag(&Flag{
+		ID:   "color",
+		Flag: "--no-colors",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoColors unsets any flags that were previously set by
+// [NoColors].
+func (c *Command) UnsetNoColors() *Command {
+	c.removeFlagByID("color")
 	return c
 }
 

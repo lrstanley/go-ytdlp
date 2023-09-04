@@ -4,6 +4,14 @@
 
 package ytdlp
 
+func wrapError(err error) error {
+	if err == nil {
+		return nil
+	}
+
+	return err // TODO
+}
+
 type ErrExecution struct {
 	wrapped error
 }

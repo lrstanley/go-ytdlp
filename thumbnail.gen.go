@@ -48,6 +48,26 @@ func (c *Command) UnsetNoWriteThumbnail() *Command {
 	return c
 }
 
+// Write all thumbnail image formats to disk
+//
+//   - See [UnsetWriteAllThumbnails], for unsetting the flag.
+//   - WriteAllThumbnails maps to cli flags: --write-all-thumbnails.
+func (c *Command) WriteAllThumbnails() *Command {
+	c.addFlag(&Flag{
+		ID:   "writethumbnail",
+		Flag: "--write-all-thumbnails",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetWriteAllThumbnails unsets any flags that were previously set by
+// [WriteAllThumbnails].
+func (c *Command) UnsetWriteAllThumbnails() *Command {
+	c.removeFlagByID("writethumbnail")
+	return c
+}
+
 // List available thumbnails of each video. Simulate unless --no-simulate is used
 //
 //   - See [UnsetListThumbnails], for unsetting the flag.

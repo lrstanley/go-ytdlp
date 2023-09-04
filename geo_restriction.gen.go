@@ -70,6 +70,46 @@ func (c *Command) UnsetXff() *Command {
 	return c
 }
 
+// GeoBypass sets the "geo-bypass" flag (no description specified).
+//
+//   - See [UnsetGeoBypass], for unsetting the flag.
+//   - GeoBypass maps to cli flags: --geo-bypass (hidden).
+func (c *Command) GeoBypass() *Command {
+	c.addFlag(&Flag{
+		ID:   "geo_bypass",
+		Flag: "--geo-bypass",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetGeoBypass unsets any flags that were previously set by
+// [GeoBypass].
+func (c *Command) UnsetGeoBypass() *Command {
+	c.removeFlagByID("geo_bypass")
+	return c
+}
+
+// NoGeoBypass sets the "no-geo-bypass" flag (no description specified).
+//
+//   - See [UnsetNoGeoBypass], for unsetting the flag.
+//   - NoGeoBypass maps to cli flags: --no-geo-bypass (hidden).
+func (c *Command) NoGeoBypass() *Command {
+	c.addFlag(&Flag{
+		ID:   "geo_bypass",
+		Flag: "--no-geo-bypass",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoGeoBypass unsets any flags that were previously set by
+// [NoGeoBypass].
+func (c *Command) UnsetNoGeoBypass() *Command {
+	c.removeFlagByID("geo_bypass")
+	return c
+}
+
 // - See [UnsetGeoBypassCountry], for unsetting the flag.
 // - GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE (hidden).
 func (c *Command) GeoBypassCountry(code string) *Command {

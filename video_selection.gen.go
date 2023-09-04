@@ -286,6 +286,26 @@ func (c *Command) UnsetMatchFilters() *Command {
 	return c
 }
 
+// Do not use any --match-filter (default)
+//
+//   - See [UnsetNoMatchFilters], for unsetting the flag.
+//   - NoMatchFilters maps to cli flags: --no-match-filters.
+func (c *Command) NoMatchFilters() *Command {
+	c.addFlag(&Flag{
+		ID:   "match_filter",
+		Flag: "--no-match-filters",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoMatchFilters unsets any flags that were previously set by
+// [NoMatchFilters].
+func (c *Command) UnsetNoMatchFilters() *Command {
+	c.removeFlagByID("match_filter")
+	return c
+}
+
 // Same as "--match-filters" but stops the download process when a video is
 // rejected
 //
@@ -303,6 +323,26 @@ func (c *Command) BreakMatchFilters(filter string) *Command {
 // UnsetBreakMatchFilters unsets any flags that were previously set by
 // [BreakMatchFilters].
 func (c *Command) UnsetBreakMatchFilters() *Command {
+	c.removeFlagByID("breaking_match_filter")
+	return c
+}
+
+// Do not use any --break-match-filters (default)
+//
+//   - See [UnsetNoBreakMatchFilters], for unsetting the flag.
+//   - NoBreakMatchFilters maps to cli flags: --no-break-match-filters.
+func (c *Command) NoBreakMatchFilters() *Command {
+	c.addFlag(&Flag{
+		ID:   "breaking_match_filter",
+		Flag: "--no-break-match-filters",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoBreakMatchFilters unsets any flags that were previously set by
+// [NoBreakMatchFilters].
+func (c *Command) UnsetNoBreakMatchFilters() *Command {
 	c.removeFlagByID("breaking_match_filter")
 	return c
 }
@@ -386,6 +426,26 @@ func (c *Command) DownloadArchive(file string) *Command {
 // UnsetDownloadArchive unsets any flags that were previously set by
 // [DownloadArchive].
 func (c *Command) UnsetDownloadArchive() *Command {
+	c.removeFlagByID("download_archive")
+	return c
+}
+
+// Do not use archive file (default)
+//
+//   - See [UnsetNoDownloadArchive], for unsetting the flag.
+//   - NoDownloadArchive maps to cli flags: --no-download-archive.
+func (c *Command) NoDownloadArchive() *Command {
+	c.addFlag(&Flag{
+		ID:   "download_archive",
+		Flag: "--no-download-archive",
+		Args: nil,
+	})
+	return c
+}
+
+// UnsetNoDownloadArchive unsets any flags that were previously set by
+// [NoDownloadArchive].
+func (c *Command) UnsetNoDownloadArchive() *Command {
 	c.removeFlagByID("download_archive")
 	return c
 }
