@@ -21,7 +21,7 @@ type M map[string]any
 
 var (
 	funcMap = mergeFuncMaps(
-		sprig.TxtFuncMap(),
+		sprig.TxtFuncMap(), // http://masterminds.github.io/sprig/
 		template.FuncMap{
 			"urlenc": url.QueryEscape,
 			"last": func(x int, a interface{}) bool {

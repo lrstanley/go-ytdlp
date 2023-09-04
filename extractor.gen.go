@@ -91,7 +91,7 @@ func (c *Command) UnsetHlsSplitDiscontinuity() *Command {
 // Do not split HLS playlists to different formats at discontinuities such as ad
 // breaks (default)
 //
-//   - See [UnsetNoHlsSplitDiscontinuity], for unsetting the flag.
+//   - See [UnsetHlsSplitDiscontinuity], for unsetting the flag.
 //   - NoHlsSplitDiscontinuity maps to cli flags: --no-hls-split-discontinuity.
 func (c *Command) NoHlsSplitDiscontinuity() *Command {
 	c.addFlag(&Flag{
@@ -99,13 +99,6 @@ func (c *Command) NoHlsSplitDiscontinuity() *Command {
 		Flag: "--no-hls-split-discontinuity",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoHlsSplitDiscontinuity unsets any flags that were previously set by
-// [NoHlsSplitDiscontinuity].
-func (c *Command) UnsetNoHlsSplitDiscontinuity() *Command {
-	c.removeFlagByID("hls_split_discontinuity")
 	return c
 }
 

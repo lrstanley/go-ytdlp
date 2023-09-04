@@ -288,7 +288,7 @@ func (c *Command) UnsetMatchFilters() *Command {
 
 // Do not use any --match-filter (default)
 //
-//   - See [UnsetNoMatchFilters], for unsetting the flag.
+//   - See [UnsetMatchFilters], for unsetting the flag.
 //   - NoMatchFilters maps to cli flags: --no-match-filters.
 func (c *Command) NoMatchFilters() *Command {
 	c.addFlag(&Flag{
@@ -296,13 +296,6 @@ func (c *Command) NoMatchFilters() *Command {
 		Flag: "--no-match-filters",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoMatchFilters unsets any flags that were previously set by
-// [NoMatchFilters].
-func (c *Command) UnsetNoMatchFilters() *Command {
-	c.removeFlagByID("match_filter")
 	return c
 }
 
@@ -329,7 +322,7 @@ func (c *Command) UnsetBreakMatchFilters() *Command {
 
 // Do not use any --break-match-filters (default)
 //
-//   - See [UnsetNoBreakMatchFilters], for unsetting the flag.
+//   - See [UnsetBreakMatchFilters], for unsetting the flag.
 //   - NoBreakMatchFilters maps to cli flags: --no-break-match-filters.
 func (c *Command) NoBreakMatchFilters() *Command {
 	c.addFlag(&Flag{
@@ -340,16 +333,9 @@ func (c *Command) NoBreakMatchFilters() *Command {
 	return c
 }
 
-// UnsetNoBreakMatchFilters unsets any flags that were previously set by
-// [NoBreakMatchFilters].
-func (c *Command) UnsetNoBreakMatchFilters() *Command {
-	c.removeFlagByID("breaking_match_filter")
-	return c
-}
-
 // Download only the video, if the URL refers to a video and a playlist
 //
-//   - See [UnsetNoPlaylist], for unsetting the flag.
+//   - See [UnsetPlaylist], for unsetting the flag.
 //   - NoPlaylist maps to cli flags: --no-playlist.
 func (c *Command) NoPlaylist() *Command {
 	c.addFlag(&Flag{
@@ -357,13 +343,6 @@ func (c *Command) NoPlaylist() *Command {
 		Flag: "--no-playlist",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoPlaylist unsets any flags that were previously set by
-// [NoPlaylist].
-func (c *Command) UnsetNoPlaylist() *Command {
-	c.removeFlagByID("noplaylist")
 	return c
 }
 
@@ -432,7 +411,7 @@ func (c *Command) UnsetDownloadArchive() *Command {
 
 // Do not use archive file (default)
 //
-//   - See [UnsetNoDownloadArchive], for unsetting the flag.
+//   - See [UnsetDownloadArchive], for unsetting the flag.
 //   - NoDownloadArchive maps to cli flags: --no-download-archive.
 func (c *Command) NoDownloadArchive() *Command {
 	c.addFlag(&Flag{
@@ -440,13 +419,6 @@ func (c *Command) NoDownloadArchive() *Command {
 		Flag: "--no-download-archive",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoDownloadArchive unsets any flags that were previously set by
-// [NoDownloadArchive].
-func (c *Command) UnsetNoDownloadArchive() *Command {
-	c.removeFlagByID("download_archive")
 	return c
 }
 
@@ -535,7 +507,7 @@ func (c *Command) UnsetBreakPerInput() *Command {
 
 // --break-on-existing and similar options terminates the entire download queue
 //
-//   - See [UnsetNoBreakPerInput], for unsetting the flag.
+//   - See [UnsetBreakPerInput], for unsetting the flag.
 //   - NoBreakPerInput maps to cli flags: --no-break-per-input.
 func (c *Command) NoBreakPerInput() *Command {
 	c.addFlag(&Flag{
@@ -543,13 +515,6 @@ func (c *Command) NoBreakPerInput() *Command {
 		Flag: "--no-break-per-input",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoBreakPerInput unsets any flags that were previously set by
-// [NoBreakPerInput].
-func (c *Command) UnsetNoBreakPerInput() *Command {
-	c.removeFlagByID("break_per_url")
 	return c
 }
 
@@ -597,7 +562,7 @@ func (c *Command) UnsetIncludeAds() *Command {
 
 // NoIncludeAds sets the "no-include-ads" flag (no description specified).
 //
-//   - See [UnsetNoIncludeAds], for unsetting the flag.
+//   - See [UnsetIncludeAds], for unsetting the flag.
 //   - NoIncludeAds maps to cli flags: --no-include-ads (hidden).
 func (c *Command) NoIncludeAds() *Command {
 	c.addFlag(&Flag{
@@ -605,12 +570,5 @@ func (c *Command) NoIncludeAds() *Command {
 		Flag: "--no-include-ads",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoIncludeAds unsets any flags that were previously set by
-// [NoIncludeAds].
-func (c *Command) UnsetNoIncludeAds() *Command {
-	c.removeFlagByID("include_ads")
 	return c
 }

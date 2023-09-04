@@ -55,7 +55,7 @@ func (c *Command) UnsetLegacyServerConnect() *Command {
 
 // Suppress HTTPS certificate validation
 //
-//   - See [UnsetNoCheckCertificates], for unsetting the flag.
+//   - See [UnsetCheckCertificates], for unsetting the flag.
 //   - NoCheckCertificates maps to cli flags: --no-check-certificates.
 func (c *Command) NoCheckCertificates() *Command {
 	c.addFlag(&Flag{
@@ -63,13 +63,6 @@ func (c *Command) NoCheckCertificates() *Command {
 		Flag: "--no-check-certificates",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoCheckCertificates unsets any flags that were previously set by
-// [NoCheckCertificates].
-func (c *Command) UnsetNoCheckCertificates() *Command {
-	c.removeFlagByID("no_check_certificate")
 	return c
 }
 

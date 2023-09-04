@@ -92,7 +92,7 @@ func (c *Command) UnsetGeoBypass() *Command {
 
 // NoGeoBypass sets the "no-geo-bypass" flag (no description specified).
 //
-//   - See [UnsetNoGeoBypass], for unsetting the flag.
+//   - See [UnsetGeoBypass], for unsetting the flag.
 //   - NoGeoBypass maps to cli flags: --no-geo-bypass (hidden).
 func (c *Command) NoGeoBypass() *Command {
 	c.addFlag(&Flag{
@@ -100,13 +100,6 @@ func (c *Command) NoGeoBypass() *Command {
 		Flag: "--no-geo-bypass",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoGeoBypass unsets any flags that were previously set by
-// [NoGeoBypass].
-func (c *Command) UnsetNoGeoBypass() *Command {
-	c.removeFlagByID("geo_bypass")
 	return c
 }
 

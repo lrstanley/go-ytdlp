@@ -171,7 +171,7 @@ func (c *Command) UnsetKeepVideo() *Command {
 
 // Delete the intermediate video file after post-processing (default)
 //
-//   - See [UnsetNoKeepVideo], for unsetting the flag.
+//   - See [UnsetKeepVideo], for unsetting the flag.
 //   - NoKeepVideo maps to cli flags: --no-keep-video.
 func (c *Command) NoKeepVideo() *Command {
 	c.addFlag(&Flag{
@@ -179,13 +179,6 @@ func (c *Command) NoKeepVideo() *Command {
 		Flag: "--no-keep-video",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoKeepVideo unsets any flags that were previously set by
-// [NoKeepVideo].
-func (c *Command) UnsetNoKeepVideo() *Command {
-	c.removeFlagByID("keepvideo")
 	return c
 }
 
@@ -211,7 +204,7 @@ func (c *Command) UnsetPostOverwrites() *Command {
 
 // Do not overwrite post-processed files
 //
-//   - See [UnsetNoPostOverwrites], for unsetting the flag.
+//   - See [UnsetPostOverwrites], for unsetting the flag.
 //   - NoPostOverwrites maps to cli flags: --no-post-overwrites.
 func (c *Command) NoPostOverwrites() *Command {
 	c.addFlag(&Flag{
@@ -219,13 +212,6 @@ func (c *Command) NoPostOverwrites() *Command {
 		Flag: "--no-post-overwrites",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoPostOverwrites unsets any flags that were previously set by
-// [NoPostOverwrites].
-func (c *Command) UnsetNoPostOverwrites() *Command {
-	c.removeFlagByID("nopostoverwrites")
 	return c
 }
 
@@ -251,7 +237,7 @@ func (c *Command) UnsetEmbedSubs() *Command {
 
 // Do not embed subtitles (default)
 //
-//   - See [UnsetNoEmbedSubs], for unsetting the flag.
+//   - See [UnsetEmbedSubs], for unsetting the flag.
 //   - NoEmbedSubs maps to cli flags: --no-embed-subs.
 func (c *Command) NoEmbedSubs() *Command {
 	c.addFlag(&Flag{
@@ -259,13 +245,6 @@ func (c *Command) NoEmbedSubs() *Command {
 		Flag: "--no-embed-subs",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoEmbedSubs unsets any flags that were previously set by
-// [NoEmbedSubs].
-func (c *Command) UnsetNoEmbedSubs() *Command {
-	c.removeFlagByID("embedsubtitles")
 	return c
 }
 
@@ -291,7 +270,7 @@ func (c *Command) UnsetEmbedThumbnail() *Command {
 
 // Do not embed thumbnail (default)
 //
-//   - See [UnsetNoEmbedThumbnail], for unsetting the flag.
+//   - See [UnsetEmbedThumbnail], for unsetting the flag.
 //   - NoEmbedThumbnail maps to cli flags: --no-embed-thumbnail.
 func (c *Command) NoEmbedThumbnail() *Command {
 	c.addFlag(&Flag{
@@ -299,13 +278,6 @@ func (c *Command) NoEmbedThumbnail() *Command {
 		Flag: "--no-embed-thumbnail",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoEmbedThumbnail unsets any flags that were previously set by
-// [NoEmbedThumbnail].
-func (c *Command) UnsetNoEmbedThumbnail() *Command {
-	c.removeFlagByID("embedthumbnail")
 	return c
 }
 
@@ -332,7 +304,7 @@ func (c *Command) UnsetEmbedMetadata() *Command {
 
 // Do not add metadata to file (default) (Alias: --no-add-metadata)
 //
-//   - See [UnsetNoEmbedMetadata], for unsetting the flag.
+//   - See [UnsetEmbedMetadata], for unsetting the flag.
 //   - NoEmbedMetadata maps to cli flags: --no-embed-metadata/--no-add-metadata.
 func (c *Command) NoEmbedMetadata() *Command {
 	c.addFlag(&Flag{
@@ -340,13 +312,6 @@ func (c *Command) NoEmbedMetadata() *Command {
 		Flag: "--no-embed-metadata",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoEmbedMetadata unsets any flags that were previously set by
-// [NoEmbedMetadata].
-func (c *Command) UnsetNoEmbedMetadata() *Command {
-	c.removeFlagByID("addmetadata")
 	return c
 }
 
@@ -372,7 +337,7 @@ func (c *Command) UnsetEmbedChapters() *Command {
 
 // Do not add chapter markers (default) (Alias: --no-add-chapters)
 //
-//   - See [UnsetNoEmbedChapters], for unsetting the flag.
+//   - See [UnsetEmbedChapters], for unsetting the flag.
 //   - NoEmbedChapters maps to cli flags: --no-embed-chapters/--no-add-chapters.
 func (c *Command) NoEmbedChapters() *Command {
 	c.addFlag(&Flag{
@@ -380,13 +345,6 @@ func (c *Command) NoEmbedChapters() *Command {
 		Flag: "--no-embed-chapters",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoEmbedChapters unsets any flags that were previously set by
-// [NoEmbedChapters].
-func (c *Command) UnsetNoEmbedChapters() *Command {
-	c.removeFlagByID("addchapters")
 	return c
 }
 
@@ -412,7 +370,7 @@ func (c *Command) UnsetEmbedInfoJson() *Command {
 
 // Do not embed the infojson as an attachment to the video file
 //
-//   - See [UnsetNoEmbedInfoJson], for unsetting the flag.
+//   - See [UnsetEmbedInfoJson], for unsetting the flag.
 //   - NoEmbedInfoJson maps to cli flags: --no-embed-info-json.
 func (c *Command) NoEmbedInfoJson() *Command {
 	c.addFlag(&Flag{
@@ -420,13 +378,6 @@ func (c *Command) NoEmbedInfoJson() *Command {
 		Flag: "--no-embed-info-json",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoEmbedInfoJson unsets any flags that were previously set by
-// [NoEmbedInfoJson].
-func (c *Command) UnsetNoEmbedInfoJson() *Command {
-	c.removeFlagByID("embed_infojson")
 	return c
 }
 
@@ -666,7 +617,7 @@ func (c *Command) UnsetExec() *Command {
 
 // Remove any previously defined --exec
 //
-//   - See [UnsetNoExec], for unsetting the flag.
+//   - See [UnsetExec], for unsetting the flag.
 //   - NoExec maps to cli flags: --no-exec.
 func (c *Command) NoExec() *Command {
 	c.addFlag(&Flag{
@@ -674,13 +625,6 @@ func (c *Command) NoExec() *Command {
 		Flag: "--no-exec",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoExec unsets any flags that were previously set by
-// [NoExec].
-func (c *Command) UnsetNoExec() *Command {
-	c.removeFlagByID("exec_cmd")
 	return c
 }
 
@@ -704,7 +648,7 @@ func (c *Command) UnsetExecBeforeDownload() *Command {
 
 // NoExecBeforeDownload sets the "no-exec-before-download" flag (no description specified).
 //
-//   - See [UnsetNoExecBeforeDownload], for unsetting the flag.
+//   - See [UnsetExecBeforeDownload], for unsetting the flag.
 //   - NoExecBeforeDownload maps to cli flags: --no-exec-before-download (hidden).
 func (c *Command) NoExecBeforeDownload() *Command {
 	c.addFlag(&Flag{
@@ -712,13 +656,6 @@ func (c *Command) NoExecBeforeDownload() *Command {
 		Flag: "--no-exec-before-download",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoExecBeforeDownload unsets any flags that were previously set by
-// [NoExecBeforeDownload].
-func (c *Command) UnsetNoExecBeforeDownload() *Command {
-	c.removeFlagByID("exec_before_dl_cmd")
 	return c
 }
 
@@ -788,7 +725,7 @@ func (c *Command) UnsetSplitChapters() *Command {
 
 // Do not split video based on chapters (default)
 //
-//   - See [UnsetNoSplitChapters], for unsetting the flag.
+//   - See [UnsetSplitChapters], for unsetting the flag.
 //   - NoSplitChapters maps to cli flags: --no-split-chapters/--no-split-tracks.
 func (c *Command) NoSplitChapters() *Command {
 	c.addFlag(&Flag{
@@ -796,13 +733,6 @@ func (c *Command) NoSplitChapters() *Command {
 		Flag: "--no-split-chapters",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoSplitChapters unsets any flags that were previously set by
-// [NoSplitChapters].
-func (c *Command) UnsetNoSplitChapters() *Command {
-	c.removeFlagByID("split_chapters")
 	return c
 }
 
@@ -829,7 +759,7 @@ func (c *Command) UnsetRemoveChapters() *Command {
 
 // Do not remove any chapters from the file (default)
 //
-//   - See [UnsetNoRemoveChapters], for unsetting the flag.
+//   - See [UnsetRemoveChapters], for unsetting the flag.
 //   - NoRemoveChapters maps to cli flags: --no-remove-chapters.
 func (c *Command) NoRemoveChapters() *Command {
 	c.addFlag(&Flag{
@@ -837,13 +767,6 @@ func (c *Command) NoRemoveChapters() *Command {
 		Flag: "--no-remove-chapters",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoRemoveChapters unsets any flags that were previously set by
-// [NoRemoveChapters].
-func (c *Command) UnsetNoRemoveChapters() *Command {
-	c.removeFlagByID("remove_chapters")
 	return c
 }
 
@@ -871,7 +794,7 @@ func (c *Command) UnsetForceKeyframesAtCuts() *Command {
 
 // Do not force keyframes around the chapters when cutting/splitting (default)
 //
-//   - See [UnsetNoForceKeyframesAtCuts], for unsetting the flag.
+//   - See [UnsetForceKeyframesAtCuts], for unsetting the flag.
 //   - NoForceKeyframesAtCuts maps to cli flags: --no-force-keyframes-at-cuts.
 func (c *Command) NoForceKeyframesAtCuts() *Command {
 	c.addFlag(&Flag{
@@ -879,13 +802,6 @@ func (c *Command) NoForceKeyframesAtCuts() *Command {
 		Flag: "--no-force-keyframes-at-cuts",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoForceKeyframesAtCuts unsets any flags that were previously set by
-// [NoForceKeyframesAtCuts].
-func (c *Command) UnsetNoForceKeyframesAtCuts() *Command {
-	c.removeFlagByID("force_keyframes_at_cuts")
 	return c
 }
 

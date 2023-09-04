@@ -30,7 +30,7 @@ func (c *Command) UnsetWriteSubs() *Command {
 
 // Do not write subtitle file (default)
 //
-//   - See [UnsetNoWriteSubs], for unsetting the flag.
+//   - See [UnsetWriteSubs], for unsetting the flag.
 //   - NoWriteSubs maps to cli flags: --no-write-subs/--no-write-srt.
 func (c *Command) NoWriteSubs() *Command {
 	c.addFlag(&Flag{
@@ -38,13 +38,6 @@ func (c *Command) NoWriteSubs() *Command {
 		Flag: "--no-write-subs",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoWriteSubs unsets any flags that were previously set by
-// [NoWriteSubs].
-func (c *Command) UnsetNoWriteSubs() *Command {
-	c.removeFlagByID("writesubtitles")
 	return c
 }
 
@@ -71,7 +64,7 @@ func (c *Command) UnsetWriteAutoSubs() *Command {
 // Do not write auto-generated subtitles (default) (Alias:
 // --no-write-automatic-subs)
 //
-//   - See [UnsetNoWriteAutoSubs], for unsetting the flag.
+//   - See [UnsetWriteAutoSubs], for unsetting the flag.
 //   - NoWriteAutoSubs maps to cli flags: --no-write-auto-subs/--no-write-automatic-subs.
 func (c *Command) NoWriteAutoSubs() *Command {
 	c.addFlag(&Flag{
@@ -79,13 +72,6 @@ func (c *Command) NoWriteAutoSubs() *Command {
 		Flag: "--no-write-auto-subs",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoWriteAutoSubs unsets any flags that were previously set by
-// [NoWriteAutoSubs].
-func (c *Command) UnsetNoWriteAutoSubs() *Command {
-	c.removeFlagByID("writeautomaticsub")
 	return c
 }
 

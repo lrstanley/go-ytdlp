@@ -30,7 +30,7 @@ func (c *Command) UnsetWriteThumbnail() *Command {
 
 // Do not write thumbnail image to disk (default)
 //
-//   - See [UnsetNoWriteThumbnail], for unsetting the flag.
+//   - See [UnsetWriteThumbnail], for unsetting the flag.
 //   - NoWriteThumbnail maps to cli flags: --no-write-thumbnail.
 func (c *Command) NoWriteThumbnail() *Command {
 	c.addFlag(&Flag{
@@ -38,13 +38,6 @@ func (c *Command) NoWriteThumbnail() *Command {
 		Flag: "--no-write-thumbnail",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoWriteThumbnail unsets any flags that were previously set by
-// [NoWriteThumbnail].
-func (c *Command) UnsetNoWriteThumbnail() *Command {
-	c.removeFlagByID("writethumbnail")
 	return c
 }
 

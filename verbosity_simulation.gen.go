@@ -30,7 +30,7 @@ func (c *Command) UnsetQuiet() *Command {
 
 // Deactivate quiet mode. (Default)
 //
-//   - See [UnsetNoQuiet], for unsetting the flag.
+//   - See [UnsetQuiet], for unsetting the flag.
 //   - NoQuiet maps to cli flags: --no-quiet.
 func (c *Command) NoQuiet() *Command {
 	c.addFlag(&Flag{
@@ -41,16 +41,9 @@ func (c *Command) NoQuiet() *Command {
 	return c
 }
 
-// UnsetNoQuiet unsets any flags that were previously set by
-// [NoQuiet].
-func (c *Command) UnsetNoQuiet() *Command {
-	c.removeFlagByID("quiet")
-	return c
-}
-
 // Ignore warnings
 //
-//   - See [UnsetNoWarnings], for unsetting the flag.
+//   - See [UnsetWarnings], for unsetting the flag.
 //   - NoWarnings maps to cli flags: --no-warnings.
 func (c *Command) NoWarnings() *Command {
 	c.addFlag(&Flag{
@@ -58,13 +51,6 @@ func (c *Command) NoWarnings() *Command {
 		Flag: "--no-warnings",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoWarnings unsets any flags that were previously set by
-// [NoWarnings].
-func (c *Command) UnsetNoWarnings() *Command {
-	c.removeFlagByID("no_warnings")
 	return c
 }
 
@@ -90,7 +76,7 @@ func (c *Command) UnsetSimulate() *Command {
 
 // Download the video even if printing/listing options are used
 //
-//   - See [UnsetNoSimulate], for unsetting the flag.
+//   - See [UnsetSimulate], for unsetting the flag.
 //   - NoSimulate maps to cli flags: --no-simulate.
 func (c *Command) NoSimulate() *Command {
 	c.addFlag(&Flag{
@@ -98,13 +84,6 @@ func (c *Command) NoSimulate() *Command {
 		Flag: "--no-simulate",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoSimulate unsets any flags that were previously set by
-// [NoSimulate].
-func (c *Command) UnsetNoSimulate() *Command {
-	c.removeFlagByID("simulate")
 	return c
 }
 
@@ -131,7 +110,7 @@ func (c *Command) UnsetIgnoreNoFormatsError() *Command {
 
 // Throw error when no downloadable video formats are found (default)
 //
-//   - See [UnsetNoIgnoreNoFormatsError], for unsetting the flag.
+//   - See [UnsetIgnoreNoFormatsError], for unsetting the flag.
 //   - NoIgnoreNoFormatsError maps to cli flags: --no-ignore-no-formats-error.
 func (c *Command) NoIgnoreNoFormatsError() *Command {
 	c.addFlag(&Flag{
@@ -139,13 +118,6 @@ func (c *Command) NoIgnoreNoFormatsError() *Command {
 		Flag: "--no-ignore-no-formats-error",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoIgnoreNoFormatsError unsets any flags that were previously set by
-// [NoIgnoreNoFormatsError].
-func (c *Command) UnsetNoIgnoreNoFormatsError() *Command {
-	c.removeFlagByID("ignore_no_formats_error")
 	return c
 }
 
@@ -481,7 +453,7 @@ func (c *Command) UnsetNewline() *Command {
 
 // Do not print progress bar
 //
-//   - See [UnsetNoProgress], for unsetting the flag.
+//   - See [UnsetProgress], for unsetting the flag.
 //   - NoProgress maps to cli flags: --no-progress.
 func (c *Command) NoProgress() *Command {
 	c.addFlag(&Flag{
@@ -489,13 +461,6 @@ func (c *Command) NoProgress() *Command {
 		Flag: "--no-progress",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoProgress unsets any flags that were previously set by
-// [NoProgress].
-func (c *Command) UnsetNoProgress() *Command {
-	c.removeFlagByID("noprogress")
 	return c
 }
 
@@ -707,7 +672,7 @@ func (c *Command) UnsetCallHome() *Command {
 
 // NoCallHome sets the "no-call-home" flag (no description specified).
 //
-//   - See [UnsetNoCallHome], for unsetting the flag.
+//   - See [UnsetCallHome], for unsetting the flag.
 //   - NoCallHome maps to cli flags: --no-call-home (hidden).
 func (c *Command) NoCallHome() *Command {
 	c.addFlag(&Flag{
@@ -715,12 +680,5 @@ func (c *Command) NoCallHome() *Command {
 		Flag: "--no-call-home",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoCallHome unsets any flags that were previously set by
-// [NoCallHome].
-func (c *Command) UnsetNoCallHome() *Command {
-	c.removeFlagByID("call_home")
 	return c
 }

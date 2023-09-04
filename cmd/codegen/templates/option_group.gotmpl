@@ -10,7 +10,7 @@
 // {{ .Name | to_camel }} sets the {{ .Name | quote }} flag (no description specified).
 {{- end }}{{/* end if help */}}
 //
-//  - See [Unset{{ .Name | to_camel }}], for unsetting the flag.
+//  - See [Unset{{ if hasPrefix "No" (.Name | to_camel) }}{{ .Name | to_camel | trimPrefix "No" }}{{ else }}{{ .Name | to_camel }}{{ end }}], for unsetting the flag.
 //  - {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}{{ if .Hidden }} (hidden){{ end }}.
 {{- end -}}{{/* end define optionHelp */}}
 
@@ -129,11 +129,13 @@ func (c *Command) {{ $option.Name | to_camel }}({{ template "optionMetaArgs" $op
     return c
 }
 
+{{- if not (hasPrefix "No" ($option.Name | to_camel)) }}
 // Unset{{ $option.Name | to_camel }} unsets any flags that were previously set by
 // [{{ $option.Name | to_camel }}].
 func (c *Command) Unset{{ $option.Name | to_camel }}() *Command {
     c.removeFlagByID({{ $option.Dest | quote }})
     return c
 }
+{{- end }}{{/* end if "No" prefixed */}}
 {{- end }}{{/* end if type */}}
 {{ end }}{{/* end option range */}}

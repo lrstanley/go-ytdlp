@@ -225,7 +225,7 @@ func (c *Command) UnsetKeepFragments() *Command {
 
 // Delete downloaded fragments after downloading is finished (default)
 //
-//   - See [UnsetNoKeepFragments], for unsetting the flag.
+//   - See [UnsetKeepFragments], for unsetting the flag.
 //   - NoKeepFragments maps to cli flags: --no-keep-fragments.
 func (c *Command) NoKeepFragments() *Command {
 	c.addFlag(&Flag{
@@ -233,13 +233,6 @@ func (c *Command) NoKeepFragments() *Command {
 		Flag: "--no-keep-fragments",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoKeepFragments unsets any flags that were previously set by
-// [NoKeepFragments].
-func (c *Command) UnsetNoKeepFragments() *Command {
-	c.removeFlagByID("keep_fragments")
 	return c
 }
 
@@ -286,7 +279,7 @@ func (c *Command) UnsetResizeBuffer() *Command {
 
 // Do not automatically adjust the buffer size
 //
-//   - See [UnsetNoResizeBuffer], for unsetting the flag.
+//   - See [UnsetResizeBuffer], for unsetting the flag.
 //   - NoResizeBuffer maps to cli flags: --no-resize-buffer.
 func (c *Command) NoResizeBuffer() *Command {
 	c.addFlag(&Flag{
@@ -294,13 +287,6 @@ func (c *Command) NoResizeBuffer() *Command {
 		Flag: "--no-resize-buffer",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoResizeBuffer unsets any flags that were previously set by
-// [NoResizeBuffer].
-func (c *Command) UnsetNoResizeBuffer() *Command {
-	c.removeFlagByID("noresizebuffer")
 	return c
 }
 
@@ -368,7 +354,7 @@ func (c *Command) UnsetPlaylistReverse() *Command {
 
 // NoPlaylistReverse sets the "no-playlist-reverse" flag (no description specified).
 //
-//   - See [UnsetNoPlaylistReverse], for unsetting the flag.
+//   - See [UnsetPlaylistReverse], for unsetting the flag.
 //   - NoPlaylistReverse maps to cli flags: --no-playlist-reverse (hidden).
 func (c *Command) NoPlaylistReverse() *Command {
 	c.addFlag(&Flag{
@@ -376,13 +362,6 @@ func (c *Command) NoPlaylistReverse() *Command {
 		Flag: "--no-playlist-reverse",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoPlaylistReverse unsets any flags that were previously set by
-// [NoPlaylistReverse].
-func (c *Command) UnsetNoPlaylistReverse() *Command {
-	c.removeFlagByID("playlist_reverse")
 	return c
 }
 
@@ -430,7 +409,7 @@ func (c *Command) UnsetLazyPlaylist() *Command {
 // Process videos in the playlist only after the entire playlist is parsed
 // (default)
 //
-//   - See [UnsetNoLazyPlaylist], for unsetting the flag.
+//   - See [UnsetLazyPlaylist], for unsetting the flag.
 //   - NoLazyPlaylist maps to cli flags: --no-lazy-playlist.
 func (c *Command) NoLazyPlaylist() *Command {
 	c.addFlag(&Flag{
@@ -438,13 +417,6 @@ func (c *Command) NoLazyPlaylist() *Command {
 		Flag: "--no-lazy-playlist",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoLazyPlaylist unsets any flags that were previously set by
-// [NoLazyPlaylist].
-func (c *Command) UnsetNoLazyPlaylist() *Command {
-	c.removeFlagByID("lazy_playlist")
 	return c
 }
 
@@ -533,7 +505,7 @@ func (c *Command) UnsetHlsUseMpegts() *Command {
 // Do not use the mpegts container for HLS videos. This is default when not
 // downloading live streams
 //
-//   - See [UnsetNoHlsUseMpegts], for unsetting the flag.
+//   - See [UnsetHlsUseMpegts], for unsetting the flag.
 //   - NoHlsUseMpegts maps to cli flags: --no-hls-use-mpegts.
 func (c *Command) NoHlsUseMpegts() *Command {
 	c.addFlag(&Flag{
@@ -541,13 +513,6 @@ func (c *Command) NoHlsUseMpegts() *Command {
 		Flag: "--no-hls-use-mpegts",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoHlsUseMpegts unsets any flags that were previously set by
-// [NoHlsUseMpegts].
-func (c *Command) UnsetNoHlsUseMpegts() *Command {
-	c.removeFlagByID("hls_use_mpegts")
 	return c
 }
 

@@ -71,7 +71,7 @@ func (c *Command) UnsetFormatSortForce() *Command {
 
 // Some fields have precedence over the user specified sort order (default)
 //
-//   - See [UnsetNoFormatSortForce], for unsetting the flag.
+//   - See [UnsetFormatSortForce], for unsetting the flag.
 //   - NoFormatSortForce maps to cli flags: --no-format-sort-force=FORMAT.
 func (c *Command) NoFormatSortForce() *Command {
 	c.addFlag(&Flag{
@@ -79,13 +79,6 @@ func (c *Command) NoFormatSortForce() *Command {
 		Flag: "--no-format-sort-force",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoFormatSortForce unsets any flags that were previously set by
-// [NoFormatSortForce].
-func (c *Command) UnsetNoFormatSortForce() *Command {
-	c.removeFlagByID("format_sort_force")
 	return c
 }
 
@@ -111,7 +104,7 @@ func (c *Command) UnsetVideoMultistreams() *Command {
 
 // Only one video stream is downloaded for each output file (default)
 //
-//   - See [UnsetNoVideoMultistreams], for unsetting the flag.
+//   - See [UnsetVideoMultistreams], for unsetting the flag.
 //   - NoVideoMultistreams maps to cli flags: --no-video-multistreams.
 func (c *Command) NoVideoMultistreams() *Command {
 	c.addFlag(&Flag{
@@ -119,13 +112,6 @@ func (c *Command) NoVideoMultistreams() *Command {
 		Flag: "--no-video-multistreams",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoVideoMultistreams unsets any flags that were previously set by
-// [NoVideoMultistreams].
-func (c *Command) UnsetNoVideoMultistreams() *Command {
-	c.removeFlagByID("allow_multiple_video_streams")
 	return c
 }
 
@@ -151,7 +137,7 @@ func (c *Command) UnsetAudioMultistreams() *Command {
 
 // Only one audio stream is downloaded for each output file (default)
 //
-//   - See [UnsetNoAudioMultistreams], for unsetting the flag.
+//   - See [UnsetAudioMultistreams], for unsetting the flag.
 //   - NoAudioMultistreams maps to cli flags: --no-audio-multistreams.
 func (c *Command) NoAudioMultistreams() *Command {
 	c.addFlag(&Flag{
@@ -159,13 +145,6 @@ func (c *Command) NoAudioMultistreams() *Command {
 		Flag: "--no-audio-multistreams",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoAudioMultistreams unsets any flags that were previously set by
-// [NoAudioMultistreams].
-func (c *Command) UnsetNoAudioMultistreams() *Command {
-	c.removeFlagByID("allow_multiple_audio_streams")
 	return c
 }
 
@@ -212,7 +191,7 @@ func (c *Command) UnsetPreferFreeFormats() *Command {
 
 // Don't give any special preference to free containers (default)
 //
-//   - See [UnsetNoPreferFreeFormats], for unsetting the flag.
+//   - See [UnsetPreferFreeFormats], for unsetting the flag.
 //   - NoPreferFreeFormats maps to cli flags: --no-prefer-free-formats.
 func (c *Command) NoPreferFreeFormats() *Command {
 	c.addFlag(&Flag{
@@ -220,13 +199,6 @@ func (c *Command) NoPreferFreeFormats() *Command {
 		Flag: "--no-prefer-free-formats",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoPreferFreeFormats unsets any flags that were previously set by
-// [NoPreferFreeFormats].
-func (c *Command) UnsetNoPreferFreeFormats() *Command {
-	c.removeFlagByID("prefer_free_formats")
 	return c
 }
 
@@ -272,7 +244,7 @@ func (c *Command) UnsetCheckAllFormats() *Command {
 
 // Do not check that the formats are actually downloadable
 //
-//   - See [UnsetNoCheckFormats], for unsetting the flag.
+//   - See [UnsetCheckFormats], for unsetting the flag.
 //   - NoCheckFormats maps to cli flags: --no-check-formats.
 func (c *Command) NoCheckFormats() *Command {
 	c.addFlag(&Flag{
@@ -280,13 +252,6 @@ func (c *Command) NoCheckFormats() *Command {
 		Flag: "--no-check-formats",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoCheckFormats unsets any flags that were previously set by
-// [NoCheckFormats].
-func (c *Command) UnsetNoCheckFormats() *Command {
-	c.removeFlagByID("check_formats")
 	return c
 }
 
@@ -394,7 +359,7 @@ func (c *Command) UnsetAllowUnplayableFormats() *Command {
 
 // NoAllowUnplayableFormats sets the "no-allow-unplayable-formats" flag (no description specified).
 //
-//   - See [UnsetNoAllowUnplayableFormats], for unsetting the flag.
+//   - See [UnsetAllowUnplayableFormats], for unsetting the flag.
 //   - NoAllowUnplayableFormats maps to cli flags: --no-allow-unplayable-formats (hidden).
 func (c *Command) NoAllowUnplayableFormats() *Command {
 	c.addFlag(&Flag{
@@ -402,12 +367,5 @@ func (c *Command) NoAllowUnplayableFormats() *Command {
 		Flag: "--no-allow-unplayable-formats",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoAllowUnplayableFormats unsets any flags that were previously set by
-// [NoAllowUnplayableFormats].
-func (c *Command) UnsetNoAllowUnplayableFormats() *Command {
-	c.removeFlagByID("allow_unplayable_formats")
 	return c
 }

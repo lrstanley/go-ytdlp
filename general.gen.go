@@ -67,7 +67,7 @@ func (c *Command) Update(ctx context.Context) (*Results, error) {
 
 // Do not check for updates (default)
 //
-//   - See [UnsetNoUpdate], for unsetting the flag.
+//   - See [UnsetUpdate], for unsetting the flag.
 //   - NoUpdate maps to cli flags: --no-update.
 func (c *Command) NoUpdate() *Command {
 	c.addFlag(&Flag{
@@ -75,13 +75,6 @@ func (c *Command) NoUpdate() *Command {
 		Flag: "--no-update",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoUpdate unsets any flags that were previously set by
-// [NoUpdate].
-func (c *Command) UnsetNoUpdate() *Command {
-	c.removeFlagByID("update_self")
 	return c
 }
 
@@ -142,7 +135,7 @@ func (c *Command) UnsetIgnoreErrors() *Command {
 // Continue with next video on download errors; e.g. to skip unavailable videos in
 // a playlist (default)
 //
-//   - See [UnsetNoAbortOnError], for unsetting the flag.
+//   - See [UnsetAbortOnError], for unsetting the flag.
 //   - NoAbortOnError maps to cli flags: --no-abort-on-error.
 func (c *Command) NoAbortOnError() *Command {
 	c.addFlag(&Flag{
@@ -150,13 +143,6 @@ func (c *Command) NoAbortOnError() *Command {
 		Flag: "--no-abort-on-error",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoAbortOnError unsets any flags that were previously set by
-// [NoAbortOnError].
-func (c *Command) UnsetNoAbortOnError() *Command {
-	c.removeFlagByID("ignoreerrors")
 	return c
 }
 
@@ -368,7 +354,7 @@ func (c *Command) UnsetIgnoreConfig() *Command {
 // configuration file, ignore all previous --config-locations defined in the
 // current file
 //
-//   - See [UnsetNoConfigLocations], for unsetting the flag.
+//   - See [UnsetConfigLocations], for unsetting the flag.
 //   - NoConfigLocations maps to cli flags: --no-config-locations.
 func (c *Command) NoConfigLocations() *Command {
 	c.addFlag(&Flag{
@@ -376,13 +362,6 @@ func (c *Command) NoConfigLocations() *Command {
 		Flag: "--no-config-locations",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoConfigLocations unsets any flags that were previously set by
-// [NoConfigLocations].
-func (c *Command) UnsetNoConfigLocations() *Command {
-	c.removeFlagByID("config_locations")
 	return c
 }
 
@@ -430,7 +409,7 @@ func (c *Command) UnsetFlatPlaylist() *Command {
 
 // Fully extract the videos of a playlist (default)
 //
-//   - See [UnsetNoFlatPlaylist], for unsetting the flag.
+//   - See [UnsetFlatPlaylist], for unsetting the flag.
 //   - NoFlatPlaylist maps to cli flags: --no-flat-playlist.
 func (c *Command) NoFlatPlaylist() *Command {
 	c.addFlag(&Flag{
@@ -438,13 +417,6 @@ func (c *Command) NoFlatPlaylist() *Command {
 		Flag: "--no-flat-playlist",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoFlatPlaylist unsets any flags that were previously set by
-// [NoFlatPlaylist].
-func (c *Command) UnsetNoFlatPlaylist() *Command {
-	c.removeFlagByID("extract_flat")
 	return c
 }
 
@@ -471,7 +443,7 @@ func (c *Command) UnsetLiveFromStart() *Command {
 
 // Download livestreams from the current time (default)
 //
-//   - See [UnsetNoLiveFromStart], for unsetting the flag.
+//   - See [UnsetLiveFromStart], for unsetting the flag.
 //   - NoLiveFromStart maps to cli flags: --no-live-from-start.
 func (c *Command) NoLiveFromStart() *Command {
 	c.addFlag(&Flag{
@@ -479,13 +451,6 @@ func (c *Command) NoLiveFromStart() *Command {
 		Flag: "--no-live-from-start",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoLiveFromStart unsets any flags that were previously set by
-// [NoLiveFromStart].
-func (c *Command) UnsetNoLiveFromStart() *Command {
-	c.removeFlagByID("live_from_start")
 	return c
 }
 
@@ -512,7 +477,7 @@ func (c *Command) UnsetWaitForVideo() *Command {
 
 // Do not wait for scheduled streams (default)
 //
-//   - See [UnsetNoWaitForVideo], for unsetting the flag.
+//   - See [UnsetWaitForVideo], for unsetting the flag.
 //   - NoWaitForVideo maps to cli flags: --no-wait-for-video.
 func (c *Command) NoWaitForVideo() *Command {
 	c.addFlag(&Flag{
@@ -520,13 +485,6 @@ func (c *Command) NoWaitForVideo() *Command {
 		Flag: "--no-wait-for-video",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoWaitForVideo unsets any flags that were previously set by
-// [NoWaitForVideo].
-func (c *Command) UnsetNoWaitForVideo() *Command {
-	c.removeFlagByID("wait_for_video")
 	return c
 }
 
@@ -552,7 +510,7 @@ func (c *Command) UnsetMarkWatched() *Command {
 
 // Do not mark videos watched (default)
 //
-//   - See [UnsetNoMarkWatched], for unsetting the flag.
+//   - See [UnsetMarkWatched], for unsetting the flag.
 //   - NoMarkWatched maps to cli flags: --no-mark-watched.
 func (c *Command) NoMarkWatched() *Command {
 	c.addFlag(&Flag{
@@ -563,16 +521,9 @@ func (c *Command) NoMarkWatched() *Command {
 	return c
 }
 
-// UnsetNoMarkWatched unsets any flags that were previously set by
-// [NoMarkWatched].
-func (c *Command) UnsetNoMarkWatched() *Command {
-	c.removeFlagByID("mark_watched")
-	return c
-}
-
 // NoColors sets the "no-colors" flag (no description specified).
 //
-//   - See [UnsetNoColors], for unsetting the flag.
+//   - See [UnsetColors], for unsetting the flag.
 //   - NoColors maps to cli flags: --no-colors/--no-colours (hidden).
 func (c *Command) NoColors() *Command {
 	c.addFlag(&Flag{
@@ -580,13 +531,6 @@ func (c *Command) NoColors() *Command {
 		Flag: "--no-colors",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetNoColors unsets any flags that were previously set by
-// [NoColors].
-func (c *Command) UnsetNoColors() *Command {
-	c.removeFlagByID("color")
 	return c
 }
 

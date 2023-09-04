@@ -123,7 +123,7 @@ func (o *Option) Generate() {
 		o.Type = "string"
 	case "float":
 		o.Type = "float64"
-	case "": // TODO: keep this?
+	case "":
 		if o.NArgs == 0 {
 			o.Type = "bool"
 		} else {
