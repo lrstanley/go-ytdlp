@@ -22,6 +22,7 @@ var ignoredFlags = []string{
 var knownExecutable = []string{
 	"--update-to",
 	"--update",
+	"--version",
 	"dump_user_agent",
 	"list_extractor_descriptions",
 	"list_extractors",

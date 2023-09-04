@@ -15,28 +15,37 @@ import (
 
 // Print program version and exit
 //
-//   - See [Command.UnsetVersion], for unsetting the flag.
 //   - Version maps to cli flags: --version.
-func (c *Command) Version() *Command {
+func (c *Command) Version(ctx context.Context) (*Results, error) {
 	c.addFlag(&Flag{
 		ID:   "",
 		Flag: "--version",
 		Args: nil,
 	})
-	return c
-}
 
-// UnsetVersion unsets any flags that were previously set by
-// [Version].
-func (c *Command) UnsetVersion() *Command {
-	c.removeFlagByID("")
-	return c
+	cmd := c.buildCommand(ctx)
+
+	var stdout, stderr bytes.Buffer
+
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+
+	result := &Results{
+		Executable: cmd.Path,
+		Args:       cmd.Args[1:],
+		ExitCode:   cmd.ProcessState.ExitCode(),
+		Stdout:     stdout.String(),
+		Stderr:     stderr.String(),
+	}
+
+	return result, wrapError(err)
 }
 
 // Check if updates are available. You cannot update when running from source code;
 // Use git to pull the latest changes
 //
-//   - See [Command.UnsetUpdate], for unsetting the flag.
 //   - Update maps to cli flags: -U/--update.
 func (c *Command) Update(ctx context.Context) (*Results, error) {
 	c.addFlag(&Flag{
@@ -82,7 +91,6 @@ func (c *Command) NoUpdate() *Command {
 // CHANNEL and TAG default to "stable" and "latest" respectively if omitted; See
 // "UPDATE" for details. Supported channels: stable, nightly
 //
-//   - See [Command.UnsetUpdateTo], for unsetting the flag.
 //   - UpdateTo maps to cli flags: --update-to=[CHANNEL]@[TAG].
 func (c *Command) UpdateTo(ctx context.Context, value string) (*Results, error) {
 	c.addFlag(&Flag{
@@ -168,7 +176,6 @@ func (c *Command) UnsetAbortOnError() *Command {
 
 // Display the current user-agent and exit
 //
-//   - See [Command.UnsetDumpUserAgent], for unsetting the flag.
 //   - DumpUserAgent maps to cli flags: --dump-user-agent.
 func (c *Command) DumpUserAgent(ctx context.Context) (*Results, error) {
 	c.addFlag(&Flag{
@@ -199,7 +206,6 @@ func (c *Command) DumpUserAgent(ctx context.Context) (*Results, error) {
 
 // List all supported extractors and exit
 //
-//   - See [Command.UnsetListExtractors], for unsetting the flag.
 //   - ListExtractors maps to cli flags: --list-extractors.
 func (c *Command) ListExtractors(ctx context.Context) (*Results, error) {
 	c.addFlag(&Flag{
@@ -230,7 +236,6 @@ func (c *Command) ListExtractors(ctx context.Context) (*Results, error) {
 
 // Output descriptions of all supported extractors and exit
 //
-//   - See [Command.UnsetExtractorDescriptions], for unsetting the flag.
 //   - ExtractorDescriptions maps to cli flags: --extractor-descriptions.
 func (c *Command) ExtractorDescriptions(ctx context.Context) (*Results, error) {
 	c.addFlag(&Flag{
