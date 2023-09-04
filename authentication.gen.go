@@ -10,7 +10,7 @@ package ytdlp
 
 // Login with this account ID
 //
-//   - See [UnsetUsername], for unsetting the flag.
+//   - See [Command.UnsetUsername], for unsetting the flag.
 //   - Username maps to cli flags: -u/--username=USERNAME.
 func (c *Command) Username(username string) *Command {
 	c.addFlag(&Flag{
@@ -30,7 +30,7 @@ func (c *Command) UnsetUsername() *Command {
 
 // Account password. If this option is left out, yt-dlp will ask interactively
 //
-//   - See [UnsetPassword], for unsetting the flag.
+//   - See [Command.UnsetPassword], for unsetting the flag.
 //   - Password maps to cli flags: -p/--password=PASSWORD.
 func (c *Command) Password(password string) *Command {
 	c.addFlag(&Flag{
@@ -50,7 +50,7 @@ func (c *Command) UnsetPassword() *Command {
 
 // Two-factor authentication code
 //
-//   - See [UnsetTwofactor], for unsetting the flag.
+//   - See [Command.UnsetTwofactor], for unsetting the flag.
 //   - Twofactor maps to cli flags: -2/--twofactor=TWOFACTOR.
 func (c *Command) Twofactor(twofactor string) *Command {
 	c.addFlag(&Flag{
@@ -70,7 +70,7 @@ func (c *Command) UnsetTwofactor() *Command {
 
 // Use .netrc authentication data
 //
-//   - See [UnsetNetrc], for unsetting the flag.
+//   - See [Command.UnsetNetrc], for unsetting the flag.
 //   - Netrc maps to cli flags: -n/--netrc.
 func (c *Command) Netrc() *Command {
 	c.addFlag(&Flag{
@@ -91,7 +91,7 @@ func (c *Command) UnsetNetrc() *Command {
 // Location of .netrc authentication data; either the path or its containing
 // directory. Defaults to ~/.netrc
 //
-//   - See [UnsetNetrcLocation], for unsetting the flag.
+//   - See [Command.UnsetNetrcLocation], for unsetting the flag.
 //   - NetrcLocation maps to cli flags: --netrc-location=PATH.
 func (c *Command) NetrcLocation(path string) *Command {
 	c.addFlag(&Flag{
@@ -111,7 +111,7 @@ func (c *Command) UnsetNetrcLocation() *Command {
 
 // Command to execute to get the credentials for an extractor.
 //
-//   - See [UnsetNetrcCmd], for unsetting the flag.
+//   - See [Command.UnsetNetrcCmd], for unsetting the flag.
 //   - NetrcCmd maps to cli flags: --netrc-cmd=NETRC_CMD.
 func (c *Command) NetrcCmd(netrcCmd string) *Command {
 	c.addFlag(&Flag{
@@ -131,7 +131,7 @@ func (c *Command) UnsetNetrcCmd() *Command {
 
 // Video password (vimeo, youku)
 //
-//   - See [UnsetVideoPassword], for unsetting the flag.
+//   - See [Command.UnsetVideoPassword], for unsetting the flag.
 //   - VideoPassword maps to cli flags: --video-password=PASSWORD.
 func (c *Command) VideoPassword(password string) *Command {
 	c.addFlag(&Flag{
@@ -152,7 +152,7 @@ func (c *Command) UnsetVideoPassword() *Command {
 // Adobe Pass multiple-system operator (TV provider) identifier, use --ap-list-mso
 // for a list of available MSOs
 //
-//   - See [UnsetApMso], for unsetting the flag.
+//   - See [Command.UnsetApMso], for unsetting the flag.
 //   - ApMso maps to cli flags: --ap-mso=MSO.
 func (c *Command) ApMso(mso string) *Command {
 	c.addFlag(&Flag{
@@ -172,7 +172,7 @@ func (c *Command) UnsetApMso() *Command {
 
 // Multiple-system operator account login
 //
-//   - See [UnsetApUsername], for unsetting the flag.
+//   - See [Command.UnsetApUsername], for unsetting the flag.
 //   - ApUsername maps to cli flags: --ap-username=USERNAME.
 func (c *Command) ApUsername(username string) *Command {
 	c.addFlag(&Flag{
@@ -193,7 +193,7 @@ func (c *Command) UnsetApUsername() *Command {
 // Multiple-system operator account password. If this option is left out, yt-dlp
 // will ask interactively
 //
-//   - See [UnsetApPassword], for unsetting the flag.
+//   - See [Command.UnsetApPassword], for unsetting the flag.
 //   - ApPassword maps to cli flags: --ap-password=PASSWORD.
 func (c *Command) ApPassword(password string) *Command {
 	c.addFlag(&Flag{
@@ -213,7 +213,7 @@ func (c *Command) UnsetApPassword() *Command {
 
 // List all supported multiple-system operators
 //
-//   - See [UnsetApListMso], for unsetting the flag.
+//   - See [Command.UnsetApListMso], for unsetting the flag.
 //   - ApListMso maps to cli flags: --ap-list-mso.
 func (c *Command) ApListMso() *Command {
 	c.addFlag(&Flag{
@@ -233,7 +233,7 @@ func (c *Command) UnsetApListMso() *Command {
 
 // Path to client certificate file in PEM format. May include the private key
 //
-//   - See [UnsetClientCertificate], for unsetting the flag.
+//   - See [Command.UnsetClientCertificate], for unsetting the flag.
 //   - ClientCertificate maps to cli flags: --client-certificate=CERTFILE.
 func (c *Command) ClientCertificate(certfile string) *Command {
 	c.addFlag(&Flag{
@@ -253,7 +253,7 @@ func (c *Command) UnsetClientCertificate() *Command {
 
 // Path to private key file for client certificate
 //
-//   - See [UnsetClientCertificateKey], for unsetting the flag.
+//   - See [Command.UnsetClientCertificateKey], for unsetting the flag.
 //   - ClientCertificateKey maps to cli flags: --client-certificate-key=KEYFILE.
 func (c *Command) ClientCertificateKey(keyfile string) *Command {
 	c.addFlag(&Flag{
@@ -274,7 +274,7 @@ func (c *Command) UnsetClientCertificateKey() *Command {
 // Password for client certificate private key, if encrypted. If not provided, and
 // the key is encrypted, yt-dlp will ask interactively
 //
-//   - See [UnsetClientCertificatePassword], for unsetting the flag.
+//   - See [Command.UnsetClientCertificatePassword], for unsetting the flag.
 //   - ClientCertificatePassword maps to cli flags: --client-certificate-password=PASSWORD.
 func (c *Command) ClientCertificatePassword(password string) *Command {
 	c.addFlag(&Flag{

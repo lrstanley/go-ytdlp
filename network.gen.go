@@ -16,7 +16,7 @@ import (
 // proper scheme, e.g. socks5://user:pass@127.0.0.1:1080/. Pass in an empty string
 // (--proxy "") for direct connection
 //
-//   - See [UnsetProxy], for unsetting the flag.
+//   - See [Command.UnsetProxy], for unsetting the flag.
 //   - Proxy maps to cli flags: --proxy=URL.
 func (c *Command) Proxy(url string) *Command {
 	c.addFlag(&Flag{
@@ -36,7 +36,7 @@ func (c *Command) UnsetProxy() *Command {
 
 // Time to wait before giving up, in seconds
 //
-//   - See [UnsetSocketTimeout], for unsetting the flag.
+//   - See [Command.UnsetSocketTimeout], for unsetting the flag.
 //   - SocketTimeout maps to cli flags: --socket-timeout=SECONDS.
 func (c *Command) SocketTimeout(seconds float64) *Command {
 	c.addFlag(&Flag{
@@ -58,7 +58,7 @@ func (c *Command) UnsetSocketTimeout() *Command {
 
 // Client-side IP address to bind to
 //
-//   - See [UnsetSourceAddress], for unsetting the flag.
+//   - See [Command.UnsetSourceAddress], for unsetting the flag.
 //   - SourceAddress maps to cli flags: --source-address=IP.
 func (c *Command) SourceAddress(ip string) *Command {
 	c.addFlag(&Flag{
@@ -78,7 +78,7 @@ func (c *Command) UnsetSourceAddress() *Command {
 
 // Make all connections via IPv4
 //
-//   - See [UnsetForceIpv4], for unsetting the flag.
+//   - See [Command.UnsetForceIpv4], for unsetting the flag.
 //   - ForceIpv4 maps to cli flags: -4/--force-ipv4.
 func (c *Command) ForceIpv4() *Command {
 	c.addFlag(&Flag{
@@ -98,7 +98,7 @@ func (c *Command) UnsetForceIpv4() *Command {
 
 // Make all connections via IPv6
 //
-//   - See [UnsetForceIpv6], for unsetting the flag.
+//   - See [Command.UnsetForceIpv6], for unsetting the flag.
 //   - ForceIpv6 maps to cli flags: -6/--force-ipv6.
 func (c *Command) ForceIpv6() *Command {
 	c.addFlag(&Flag{
@@ -118,7 +118,7 @@ func (c *Command) UnsetForceIpv6() *Command {
 
 // Enable file:// URLs. This is disabled by default for security reasons.
 //
-//   - See [UnsetEnableFileUrls], for unsetting the flag.
+//   - See [Command.UnsetEnableFileUrls], for unsetting the flag.
 //   - EnableFileUrls maps to cli flags: --enable-file-urls.
 func (c *Command) EnableFileUrls() *Command {
 	c.addFlag(&Flag{

@@ -12,7 +12,7 @@ package ytdlp
 // default proxy specified by --proxy (or none, if the option is not present) is
 // used for the actual downloading
 //
-//   - See [UnsetGeoVerificationProxy], for unsetting the flag.
+//   - See [Command.UnsetGeoVerificationProxy], for unsetting the flag.
 //   - GeoVerificationProxy maps to cli flags: --geo-verification-proxy=URL.
 func (c *Command) GeoVerificationProxy(url string) *Command {
 	c.addFlag(&Flag{
@@ -30,7 +30,7 @@ func (c *Command) UnsetGeoVerificationProxy() *Command {
 	return c
 }
 
-// - See [UnsetCnVerificationProxy], for unsetting the flag.
+// - See [Command.UnsetCnVerificationProxy], for unsetting the flag.
 // - CnVerificationProxy maps to cli flags: --cn-verification-proxy=URL (hidden).
 func (c *Command) CnVerificationProxy(url string) *Command {
 	c.addFlag(&Flag{
@@ -52,7 +52,7 @@ func (c *Command) UnsetCnVerificationProxy() *Command {
 // One of "default" (only when known to be useful), "never", an IP block in CIDR
 // notation, or a two-letter ISO 3166-2 country code
 //
-//   - See [UnsetXff], for unsetting the flag.
+//   - See [Command.UnsetXff], for unsetting the flag.
 //   - Xff maps to cli flags: --xff=VALUE.
 func (c *Command) Xff(value string) *Command {
 	c.addFlag(&Flag{
@@ -72,7 +72,7 @@ func (c *Command) UnsetXff() *Command {
 
 // GeoBypass sets the "geo-bypass" flag (no description specified).
 //
-//   - See [UnsetGeoBypass], for unsetting the flag.
+//   - See [Command.UnsetGeoBypass], for unsetting the flag.
 //   - GeoBypass maps to cli flags: --geo-bypass (hidden).
 func (c *Command) GeoBypass() *Command {
 	c.addFlag(&Flag{
@@ -92,7 +92,7 @@ func (c *Command) UnsetGeoBypass() *Command {
 
 // NoGeoBypass sets the "no-geo-bypass" flag (no description specified).
 //
-//   - See [UnsetGeoBypass], for unsetting the flag.
+//   - See [Command.UnsetGeoBypass], for unsetting the flag.
 //   - NoGeoBypass maps to cli flags: --no-geo-bypass (hidden).
 func (c *Command) NoGeoBypass() *Command {
 	c.addFlag(&Flag{
@@ -103,7 +103,7 @@ func (c *Command) NoGeoBypass() *Command {
 	return c
 }
 
-// - See [UnsetGeoBypassCountry], for unsetting the flag.
+// - See [Command.UnsetGeoBypassCountry], for unsetting the flag.
 // - GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE (hidden).
 func (c *Command) GeoBypassCountry(code string) *Command {
 	c.addFlag(&Flag{
@@ -121,7 +121,7 @@ func (c *Command) UnsetGeoBypassCountry() *Command {
 	return c
 }
 
-// - See [UnsetGeoBypassIpBlock], for unsetting the flag.
+// - See [Command.UnsetGeoBypassIpBlock], for unsetting the flag.
 // - GeoBypassIpBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK (hidden).
 func (c *Command) GeoBypassIpBlock(ipBlock string) *Command {
 	c.addFlag(&Flag{

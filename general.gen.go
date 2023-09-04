@@ -15,7 +15,7 @@ import (
 
 // Print program version and exit
 //
-//   - See [UnsetVersion], for unsetting the flag.
+//   - See [Command.UnsetVersion], for unsetting the flag.
 //   - Version maps to cli flags: --version.
 func (c *Command) Version() *Command {
 	c.addFlag(&Flag{
@@ -36,7 +36,7 @@ func (c *Command) UnsetVersion() *Command {
 // Check if updates are available. You cannot update when running from source code;
 // Use git to pull the latest changes
 //
-//   - See [UnsetUpdate], for unsetting the flag.
+//   - See [Command.UnsetUpdate], for unsetting the flag.
 //   - Update maps to cli flags: -U/--update.
 func (c *Command) Update(ctx context.Context) (*Results, error) {
 	c.addFlag(&Flag{
@@ -67,7 +67,7 @@ func (c *Command) Update(ctx context.Context) (*Results, error) {
 
 // Do not check for updates (default)
 //
-//   - See [UnsetUpdate], for unsetting the flag.
+//   - See [Command.UnsetUpdate], for unsetting the flag.
 //   - NoUpdate maps to cli flags: --no-update.
 func (c *Command) NoUpdate() *Command {
 	c.addFlag(&Flag{
@@ -82,7 +82,7 @@ func (c *Command) NoUpdate() *Command {
 // CHANNEL and TAG default to "stable" and "latest" respectively if omitted; See
 // "UPDATE" for details. Supported channels: stable, nightly
 //
-//   - See [UnsetUpdateTo], for unsetting the flag.
+//   - See [Command.UnsetUpdateTo], for unsetting the flag.
 //   - UpdateTo maps to cli flags: --update-to=[CHANNEL]@[TAG].
 func (c *Command) UpdateTo(ctx context.Context, value string) (*Results, error) {
 	c.addFlag(&Flag{
@@ -114,7 +114,7 @@ func (c *Command) UpdateTo(ctx context.Context, value string) (*Results, error) 
 // Ignore download and postprocessing errors. The download will be considered
 // successful even if the postprocessing fails
 //
-//   - See [UnsetIgnoreErrors], for unsetting the flag.
+//   - See [Command.UnsetIgnoreErrors], for unsetting the flag.
 //   - IgnoreErrors maps to cli flags: -i/--ignore-errors.
 func (c *Command) IgnoreErrors() *Command {
 	c.addFlag(&Flag{
@@ -135,7 +135,7 @@ func (c *Command) UnsetIgnoreErrors() *Command {
 // Continue with next video on download errors; e.g. to skip unavailable videos in
 // a playlist (default)
 //
-//   - See [UnsetAbortOnError], for unsetting the flag.
+//   - See [Command.UnsetAbortOnError], for unsetting the flag.
 //   - NoAbortOnError maps to cli flags: --no-abort-on-error.
 func (c *Command) NoAbortOnError() *Command {
 	c.addFlag(&Flag{
@@ -148,7 +148,7 @@ func (c *Command) NoAbortOnError() *Command {
 
 // Abort downloading of further videos if an error occurs
 //
-//   - See [UnsetAbortOnError], for unsetting the flag.
+//   - See [Command.UnsetAbortOnError], for unsetting the flag.
 //   - AbortOnError maps to cli flags: --abort-on-error/--no-ignore-errors.
 func (c *Command) AbortOnError() *Command {
 	c.addFlag(&Flag{
@@ -168,7 +168,7 @@ func (c *Command) UnsetAbortOnError() *Command {
 
 // Display the current user-agent and exit
 //
-//   - See [UnsetDumpUserAgent], for unsetting the flag.
+//   - See [Command.UnsetDumpUserAgent], for unsetting the flag.
 //   - DumpUserAgent maps to cli flags: --dump-user-agent.
 func (c *Command) DumpUserAgent(ctx context.Context) (*Results, error) {
 	c.addFlag(&Flag{
@@ -199,7 +199,7 @@ func (c *Command) DumpUserAgent(ctx context.Context) (*Results, error) {
 
 // List all supported extractors and exit
 //
-//   - See [UnsetListExtractors], for unsetting the flag.
+//   - See [Command.UnsetListExtractors], for unsetting the flag.
 //   - ListExtractors maps to cli flags: --list-extractors.
 func (c *Command) ListExtractors(ctx context.Context) (*Results, error) {
 	c.addFlag(&Flag{
@@ -230,7 +230,7 @@ func (c *Command) ListExtractors(ctx context.Context) (*Results, error) {
 
 // Output descriptions of all supported extractors and exit
 //
-//   - See [UnsetExtractorDescriptions], for unsetting the flag.
+//   - See [Command.UnsetExtractorDescriptions], for unsetting the flag.
 //   - ExtractorDescriptions maps to cli flags: --extractor-descriptions.
 func (c *Command) ExtractorDescriptions(ctx context.Context) (*Results, error) {
 	c.addFlag(&Flag{
@@ -264,7 +264,7 @@ func (c *Command) ExtractorDescriptions(ctx context.Context) (*Results, error) {
 // Prefix the name with a "-" to exclude it, e.g. --ies default,-generic. Use
 // --list-extractors for a list of extractor names.
 //
-//   - See [UnsetUseExtractors], for unsetting the flag.
+//   - See [Command.UnsetUseExtractors], for unsetting the flag.
 //   - UseExtractors maps to cli flags: --use-extractors/--ies=NAMES.
 func (c *Command) UseExtractors(names string) *Command {
 	c.addFlag(&Flag{
@@ -284,7 +284,7 @@ func (c *Command) UnsetUseExtractors() *Command {
 
 // ForceGenericExtractor sets the "force-generic-extractor" flag (no description specified).
 //
-//   - See [UnsetForceGenericExtractor], for unsetting the flag.
+//   - See [Command.UnsetForceGenericExtractor], for unsetting the flag.
 //   - ForceGenericExtractor maps to cli flags: --force-generic-extractor (hidden).
 func (c *Command) ForceGenericExtractor() *Command {
 	c.addFlag(&Flag{
@@ -308,7 +308,7 @@ func (c *Command) UnsetForceGenericExtractor() *Command {
 // throws an error. The default value "fixup_error" repairs broken URLs, but emits
 // an error if this is not possible instead of searching
 //
-//   - See [UnsetDefaultSearch], for unsetting the flag.
+//   - See [Command.UnsetDefaultSearch], for unsetting the flag.
 //   - DefaultSearch maps to cli flags: --default-search=PREFIX.
 func (c *Command) DefaultSearch(prefix string) *Command {
 	c.addFlag(&Flag{
@@ -330,7 +330,7 @@ func (c *Command) UnsetDefaultSearch() *Command {
 // --config-locations. For backward compatibility, if this option is found inside
 // the system configuration file, the user configuration is not loaded.
 //
-//   - See [UnsetIgnoreConfig], for unsetting the flag.
+//   - See [Command.UnsetIgnoreConfig], for unsetting the flag.
 //   - IgnoreConfig maps to cli flags: --ignore-config/--no-config.
 func (c *Command) IgnoreConfig() *Command {
 	c.addFlag(&Flag{
@@ -352,7 +352,7 @@ func (c *Command) UnsetIgnoreConfig() *Command {
 // configuration file, ignore all previous --config-locations defined in the
 // current file
 //
-//   - See [UnsetConfigLocations], for unsetting the flag.
+//   - See [Command.UnsetConfigLocations], for unsetting the flag.
 //   - NoConfigLocations maps to cli flags: --no-config-locations.
 func (c *Command) NoConfigLocations() *Command {
 	c.addFlag(&Flag{
@@ -367,7 +367,7 @@ func (c *Command) NoConfigLocations() *Command {
 // containing directory ("-" for stdin). Can be used multiple times and inside
 // other configuration files
 //
-//   - See [UnsetConfigLocations], for unsetting the flag.
+//   - See [Command.UnsetConfigLocations], for unsetting the flag.
 //   - ConfigLocations maps to cli flags: --config-locations=PATH.
 func (c *Command) ConfigLocations(path string) *Command {
 	c.addFlag(&Flag{
@@ -387,7 +387,7 @@ func (c *Command) UnsetConfigLocations() *Command {
 
 // Do not extract the videos of a playlist, only list them
 //
-//   - See [UnsetFlatPlaylist], for unsetting the flag.
+//   - See [Command.UnsetFlatPlaylist], for unsetting the flag.
 //   - FlatPlaylist maps to cli flags: --flat-playlist.
 func (c *Command) FlatPlaylist() *Command {
 	c.addFlag(&Flag{
@@ -407,7 +407,7 @@ func (c *Command) UnsetFlatPlaylist() *Command {
 
 // Fully extract the videos of a playlist (default)
 //
-//   - See [UnsetFlatPlaylist], for unsetting the flag.
+//   - See [Command.UnsetFlatPlaylist], for unsetting the flag.
 //   - NoFlatPlaylist maps to cli flags: --no-flat-playlist.
 func (c *Command) NoFlatPlaylist() *Command {
 	c.addFlag(&Flag{
@@ -421,7 +421,7 @@ func (c *Command) NoFlatPlaylist() *Command {
 // Download livestreams from the start. Currently only supported for YouTube
 // (Experimental)
 //
-//   - See [UnsetLiveFromStart], for unsetting the flag.
+//   - See [Command.UnsetLiveFromStart], for unsetting the flag.
 //   - LiveFromStart maps to cli flags: --live-from-start.
 func (c *Command) LiveFromStart() *Command {
 	c.addFlag(&Flag{
@@ -441,7 +441,7 @@ func (c *Command) UnsetLiveFromStart() *Command {
 
 // Download livestreams from the current time (default)
 //
-//   - See [UnsetLiveFromStart], for unsetting the flag.
+//   - See [Command.UnsetLiveFromStart], for unsetting the flag.
 //   - NoLiveFromStart maps to cli flags: --no-live-from-start.
 func (c *Command) NoLiveFromStart() *Command {
 	c.addFlag(&Flag{
@@ -455,7 +455,7 @@ func (c *Command) NoLiveFromStart() *Command {
 // Wait for scheduled streams to become available. Pass the minimum number of
 // seconds (or range) to wait between retries
 //
-//   - See [UnsetWaitForVideo], for unsetting the flag.
+//   - See [Command.UnsetWaitForVideo], for unsetting the flag.
 //   - WaitForVideo maps to cli flags: --wait-for-video=MIN[-MAX].
 func (c *Command) WaitForVideo(min string) *Command {
 	c.addFlag(&Flag{
@@ -475,7 +475,7 @@ func (c *Command) UnsetWaitForVideo() *Command {
 
 // Do not wait for scheduled streams (default)
 //
-//   - See [UnsetWaitForVideo], for unsetting the flag.
+//   - See [Command.UnsetWaitForVideo], for unsetting the flag.
 //   - NoWaitForVideo maps to cli flags: --no-wait-for-video.
 func (c *Command) NoWaitForVideo() *Command {
 	c.addFlag(&Flag{
@@ -488,7 +488,7 @@ func (c *Command) NoWaitForVideo() *Command {
 
 // Mark videos watched (even with --simulate)
 //
-//   - See [UnsetMarkWatched], for unsetting the flag.
+//   - See [Command.UnsetMarkWatched], for unsetting the flag.
 //   - MarkWatched maps to cli flags: --mark-watched.
 func (c *Command) MarkWatched() *Command {
 	c.addFlag(&Flag{
@@ -508,7 +508,7 @@ func (c *Command) UnsetMarkWatched() *Command {
 
 // Do not mark videos watched (default)
 //
-//   - See [UnsetMarkWatched], for unsetting the flag.
+//   - See [Command.UnsetMarkWatched], for unsetting the flag.
 //   - NoMarkWatched maps to cli flags: --no-mark-watched.
 func (c *Command) NoMarkWatched() *Command {
 	c.addFlag(&Flag{
@@ -521,7 +521,7 @@ func (c *Command) NoMarkWatched() *Command {
 
 // NoColors sets the "no-colors" flag (no description specified).
 //
-//   - See [UnsetColors], for unsetting the flag.
+//   - See [Command.UnsetColors], for unsetting the flag.
 //   - NoColors maps to cli flags: --no-colors/--no-colours (hidden).
 func (c *Command) NoColors() *Command {
 	c.addFlag(&Flag{
@@ -537,7 +537,7 @@ func (c *Command) NoColors() *Command {
 // "never", or "no_color" (use non color terminal sequences). Can be used multiple
 // times
 //
-//   - See [UnsetColor], for unsetting the flag.
+//   - See [Command.UnsetColor], for unsetting the flag.
 //   - Color maps to cli flags: --color=[STREAM:]POLICY.
 func (c *Command) Color(policy string) *Command {
 	c.addFlag(&Flag{
@@ -559,7 +559,7 @@ func (c *Command) UnsetColor() *Command {
 // configurations by reverting some of the changes made in yt-dlp. See "Differences
 // in default behavior" for details
 //
-//   - See [UnsetCompatOptions], for unsetting the flag.
+//   - See [Command.UnsetCompatOptions], for unsetting the flag.
 //   - CompatOptions maps to cli flags: --compat-options=OPTS.
 func (c *Command) CompatOptions(opts string) *Command {
 	c.addFlag(&Flag{

@@ -15,7 +15,7 @@ import (
 // Number of fragments of a dash/hlsnative video that should be downloaded
 // concurrently (default is 1)
 //
-//   - See [UnsetConcurrentFragments], for unsetting the flag.
+//   - See [Command.UnsetConcurrentFragments], for unsetting the flag.
 //   - ConcurrentFragments maps to cli flags: -N/--concurrent-fragments=N.
 func (c *Command) ConcurrentFragments(n int) *Command {
 	c.addFlag(&Flag{
@@ -37,7 +37,7 @@ func (c *Command) UnsetConcurrentFragments() *Command {
 
 // Maximum download rate in bytes per second, e.g. 50K or 4.2M
 //
-//   - See [UnsetLimitRate], for unsetting the flag.
+//   - See [Command.UnsetLimitRate], for unsetting the flag.
 //   - LimitRate maps to cli flags: -r/--limit-rate/--rate-limit=RATE.
 func (c *Command) LimitRate(rate string) *Command {
 	c.addFlag(&Flag{
@@ -58,7 +58,7 @@ func (c *Command) UnsetLimitRate() *Command {
 // Minimum download rate in bytes per second below which throttling is assumed and
 // the video data is re-extracted, e.g. 100K
 //
-//   - See [UnsetThrottledRate], for unsetting the flag.
+//   - See [Command.UnsetThrottledRate], for unsetting the flag.
 //   - ThrottledRate maps to cli flags: --throttled-rate=RATE.
 func (c *Command) ThrottledRate(rate string) *Command {
 	c.addFlag(&Flag{
@@ -78,7 +78,7 @@ func (c *Command) UnsetThrottledRate() *Command {
 
 // Number of retries (default is 10), or "infinite"
 //
-//   - See [UnsetRetries], for unsetting the flag.
+//   - See [Command.UnsetRetries], for unsetting the flag.
 //   - Retries maps to cli flags: -R/--retries=RETRIES.
 func (c *Command) Retries(retries string) *Command {
 	c.addFlag(&Flag{
@@ -98,7 +98,7 @@ func (c *Command) UnsetRetries() *Command {
 
 // Number of times to retry on file access error (default is 3), or "infinite"
 //
-//   - See [UnsetFileAccessRetries], for unsetting the flag.
+//   - See [Command.UnsetFileAccessRetries], for unsetting the flag.
 //   - FileAccessRetries maps to cli flags: --file-access-retries=RETRIES.
 func (c *Command) FileAccessRetries(retries string) *Command {
 	c.addFlag(&Flag{
@@ -119,7 +119,7 @@ func (c *Command) UnsetFileAccessRetries() *Command {
 // Number of retries for a fragment (default is 10), or "infinite" (DASH, hlsnative
 // and ISM)
 //
-//   - See [UnsetFragmentRetries], for unsetting the flag.
+//   - See [Command.UnsetFragmentRetries], for unsetting the flag.
 //   - FragmentRetries maps to cli flags: --fragment-retries=RETRIES.
 func (c *Command) FragmentRetries(retries string) *Command {
 	c.addFlag(&Flag{
@@ -143,7 +143,7 @@ func (c *Command) UnsetFragmentRetries() *Command {
 // This option can be used multiple times to set the sleep for the different retry
 // types, e.g. --retry-sleep linear=1::2 --retry-sleep fragment:exp=1:20
 //
-//   - See [UnsetRetrySleep], for unsetting the flag.
+//   - See [Command.UnsetRetrySleep], for unsetting the flag.
 //   - RetrySleep maps to cli flags: --retry-sleep=[TYPE:]EXPR.
 func (c *Command) RetrySleep(expr string) *Command {
 	c.addFlag(&Flag{
@@ -163,7 +163,7 @@ func (c *Command) UnsetRetrySleep() *Command {
 
 // Skip unavailable fragments for DASH, hlsnative and ISM downloads (default)
 //
-//   - See [UnsetSkipUnavailableFragments], for unsetting the flag.
+//   - See [Command.UnsetSkipUnavailableFragments], for unsetting the flag.
 //   - SkipUnavailableFragments maps to cli flags: --skip-unavailable-fragments/--no-abort-on-unavailable-fragments.
 func (c *Command) SkipUnavailableFragments() *Command {
 	c.addFlag(&Flag{
@@ -183,7 +183,7 @@ func (c *Command) UnsetSkipUnavailableFragments() *Command {
 
 // Abort download if a fragment is unavailable
 //
-//   - See [UnsetAbortOnUnavailableFragments], for unsetting the flag.
+//   - See [Command.UnsetAbortOnUnavailableFragments], for unsetting the flag.
 //   - AbortOnUnavailableFragments maps to cli flags: --abort-on-unavailable-fragments/--no-skip-unavailable-fragments.
 func (c *Command) AbortOnUnavailableFragments() *Command {
 	c.addFlag(&Flag{
@@ -203,7 +203,7 @@ func (c *Command) UnsetAbortOnUnavailableFragments() *Command {
 
 // Keep downloaded fragments on disk after downloading is finished
 //
-//   - See [UnsetKeepFragments], for unsetting the flag.
+//   - See [Command.UnsetKeepFragments], for unsetting the flag.
 //   - KeepFragments maps to cli flags: --keep-fragments.
 func (c *Command) KeepFragments() *Command {
 	c.addFlag(&Flag{
@@ -223,7 +223,7 @@ func (c *Command) UnsetKeepFragments() *Command {
 
 // Delete downloaded fragments after downloading is finished (default)
 //
-//   - See [UnsetKeepFragments], for unsetting the flag.
+//   - See [Command.UnsetKeepFragments], for unsetting the flag.
 //   - NoKeepFragments maps to cli flags: --no-keep-fragments.
 func (c *Command) NoKeepFragments() *Command {
 	c.addFlag(&Flag{
@@ -236,7 +236,7 @@ func (c *Command) NoKeepFragments() *Command {
 
 // Size of download buffer, e.g. 1024 or 16K (default is 1024)
 //
-//   - See [UnsetBufferSize], for unsetting the flag.
+//   - See [Command.UnsetBufferSize], for unsetting the flag.
 //   - BufferSize maps to cli flags: --buffer-size=SIZE.
 func (c *Command) BufferSize(size string) *Command {
 	c.addFlag(&Flag{
@@ -257,7 +257,7 @@ func (c *Command) UnsetBufferSize() *Command {
 // The buffer size is automatically resized from an initial value of --buffer-size
 // (default)
 //
-//   - See [UnsetResizeBuffer], for unsetting the flag.
+//   - See [Command.UnsetResizeBuffer], for unsetting the flag.
 //   - ResizeBuffer maps to cli flags: --resize-buffer.
 func (c *Command) ResizeBuffer() *Command {
 	c.addFlag(&Flag{
@@ -277,7 +277,7 @@ func (c *Command) UnsetResizeBuffer() *Command {
 
 // Do not automatically adjust the buffer size
 //
-//   - See [UnsetResizeBuffer], for unsetting the flag.
+//   - See [Command.UnsetResizeBuffer], for unsetting the flag.
 //   - NoResizeBuffer maps to cli flags: --no-resize-buffer.
 func (c *Command) NoResizeBuffer() *Command {
 	c.addFlag(&Flag{
@@ -292,7 +292,7 @@ func (c *Command) NoResizeBuffer() *Command {
 // is disabled). May be useful for bypassing bandwidth throttling imposed by a
 // webserver (experimental)
 //
-//   - See [UnsetHttpChunkSize], for unsetting the flag.
+//   - See [Command.UnsetHttpChunkSize], for unsetting the flag.
 //   - HttpChunkSize maps to cli flags: --http-chunk-size=SIZE.
 func (c *Command) HttpChunkSize(size string) *Command {
 	c.addFlag(&Flag{
@@ -312,7 +312,7 @@ func (c *Command) UnsetHttpChunkSize() *Command {
 
 // Test sets the "test" flag (no description specified).
 //
-//   - See [UnsetTest], for unsetting the flag.
+//   - See [Command.UnsetTest], for unsetting the flag.
 //   - Test maps to cli flags: --test (hidden).
 func (c *Command) Test() *Command {
 	c.addFlag(&Flag{
@@ -332,7 +332,7 @@ func (c *Command) UnsetTest() *Command {
 
 // PlaylistReverse sets the "playlist-reverse" flag (no description specified).
 //
-//   - See [UnsetPlaylistReverse], for unsetting the flag.
+//   - See [Command.UnsetPlaylistReverse], for unsetting the flag.
 //   - PlaylistReverse maps to cli flags: --playlist-reverse (hidden).
 func (c *Command) PlaylistReverse() *Command {
 	c.addFlag(&Flag{
@@ -352,7 +352,7 @@ func (c *Command) UnsetPlaylistReverse() *Command {
 
 // NoPlaylistReverse sets the "no-playlist-reverse" flag (no description specified).
 //
-//   - See [UnsetPlaylistReverse], for unsetting the flag.
+//   - See [Command.UnsetPlaylistReverse], for unsetting the flag.
 //   - NoPlaylistReverse maps to cli flags: --no-playlist-reverse (hidden).
 func (c *Command) NoPlaylistReverse() *Command {
 	c.addFlag(&Flag{
@@ -365,7 +365,7 @@ func (c *Command) NoPlaylistReverse() *Command {
 
 // Download playlist videos in random order
 //
-//   - See [UnsetPlaylistRandom], for unsetting the flag.
+//   - See [Command.UnsetPlaylistRandom], for unsetting the flag.
 //   - PlaylistRandom maps to cli flags: --playlist-random.
 func (c *Command) PlaylistRandom() *Command {
 	c.addFlag(&Flag{
@@ -386,7 +386,7 @@ func (c *Command) UnsetPlaylistRandom() *Command {
 // Process entries in the playlist as they are received. This disables n_entries,
 // --playlist-random and --playlist-reverse
 //
-//   - See [UnsetLazyPlaylist], for unsetting the flag.
+//   - See [Command.UnsetLazyPlaylist], for unsetting the flag.
 //   - LazyPlaylist maps to cli flags: --lazy-playlist.
 func (c *Command) LazyPlaylist() *Command {
 	c.addFlag(&Flag{
@@ -407,7 +407,7 @@ func (c *Command) UnsetLazyPlaylist() *Command {
 // Process videos in the playlist only after the entire playlist is parsed
 // (default)
 //
-//   - See [UnsetLazyPlaylist], for unsetting the flag.
+//   - See [Command.UnsetLazyPlaylist], for unsetting the flag.
 //   - NoLazyPlaylist maps to cli flags: --no-lazy-playlist.
 func (c *Command) NoLazyPlaylist() *Command {
 	c.addFlag(&Flag{
@@ -420,7 +420,7 @@ func (c *Command) NoLazyPlaylist() *Command {
 
 // Set file xattribute ytdl.filesize with expected file size
 //
-//   - See [UnsetXattrSetFilesize], for unsetting the flag.
+//   - See [Command.UnsetXattrSetFilesize], for unsetting the flag.
 //   - XattrSetFilesize maps to cli flags: --xattr-set-filesize.
 func (c *Command) XattrSetFilesize() *Command {
 	c.addFlag(&Flag{
@@ -440,7 +440,7 @@ func (c *Command) UnsetXattrSetFilesize() *Command {
 
 // HlsPreferNative sets the "hls-prefer-native" flag (no description specified).
 //
-//   - See [UnsetHlsPreferNative], for unsetting the flag.
+//   - See [Command.UnsetHlsPreferNative], for unsetting the flag.
 //   - HlsPreferNative maps to cli flags: --hls-prefer-native (hidden).
 func (c *Command) HlsPreferNative() *Command {
 	c.addFlag(&Flag{
@@ -460,7 +460,7 @@ func (c *Command) UnsetHlsPreferNative() *Command {
 
 // HlsPreferFfmpeg sets the "hls-prefer-ffmpeg" flag (no description specified).
 //
-//   - See [UnsetHlsPreferFfmpeg], for unsetting the flag.
+//   - See [Command.UnsetHlsPreferFfmpeg], for unsetting the flag.
 //   - HlsPreferFfmpeg maps to cli flags: --hls-prefer-ffmpeg (hidden).
 func (c *Command) HlsPreferFfmpeg() *Command {
 	c.addFlag(&Flag{
@@ -482,7 +482,7 @@ func (c *Command) UnsetHlsPreferFfmpeg() *Command {
 // while downloading, and reducing the chance of file corruption if download is
 // interrupted. This is enabled by default for live streams
 //
-//   - See [UnsetHlsUseMpegts], for unsetting the flag.
+//   - See [Command.UnsetHlsUseMpegts], for unsetting the flag.
 //   - HlsUseMpegts maps to cli flags: --hls-use-mpegts.
 func (c *Command) HlsUseMpegts() *Command {
 	c.addFlag(&Flag{
@@ -503,7 +503,7 @@ func (c *Command) UnsetHlsUseMpegts() *Command {
 // Do not use the mpegts container for HLS videos. This is default when not
 // downloading live streams
 //
-//   - See [UnsetHlsUseMpegts], for unsetting the flag.
+//   - See [Command.UnsetHlsUseMpegts], for unsetting the flag.
 //   - NoHlsUseMpegts maps to cli flags: --no-hls-use-mpegts.
 func (c *Command) NoHlsUseMpegts() *Command {
 	c.addFlag(&Flag{
@@ -521,7 +521,7 @@ func (c *Command) NoHlsUseMpegts() *Command {
 // download multiple sections, e.g. --download-sections "*10:15-inf"
 // --download-sections "intro"
 //
-//   - See [UnsetDownloadSections], for unsetting the flag.
+//   - See [Command.UnsetDownloadSections], for unsetting the flag.
 //   - DownloadSections maps to cli flags: --download-sections=REGEX.
 func (c *Command) DownloadSections(regex string) *Command {
 	c.addFlag(&Flag{
@@ -546,7 +546,7 @@ func (c *Command) UnsetDownloadSections() *Command {
 // E.g. --downloader aria2c --downloader "dash,m3u8:native" will use aria2c for
 // http/ftp downloads, and the native downloader for dash/m3u8 downloads
 //
-//   - See [UnsetDownloader], for unsetting the flag.
+//   - See [Command.UnsetDownloader], for unsetting the flag.
 //   - Downloader maps to cli flags: --downloader/--external-downloader=[PROTO:]NAME.
 func (c *Command) Downloader(name string) *Command {
 	c.addFlag(&Flag{
@@ -569,7 +569,7 @@ func (c *Command) UnsetDownloader() *Command {
 // different positions using the same syntax as --postprocessor-args. You can use
 // this option multiple times to give different arguments to different downloaders
 //
-//   - See [UnsetDownloaderArgs], for unsetting the flag.
+//   - See [Command.UnsetDownloaderArgs], for unsetting the flag.
 //   - DownloaderArgs maps to cli flags: --downloader-args/--external-downloader-args=NAME:ARGS.
 func (c *Command) DownloaderArgs(nameargs string) *Command {
 	c.addFlag(&Flag{

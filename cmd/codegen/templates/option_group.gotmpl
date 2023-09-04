@@ -10,7 +10,7 @@
 // {{ .Name | to_camel }} sets the {{ .Name | quote }} flag (no description specified).
 {{- end }}{{/* end if help */}}
 //
-//  - See [Unset{{ if hasPrefix "No" (.Name | to_camel) }}{{ .Name | to_camel | trimPrefix "No" }}{{ else }}{{ .Name | to_camel }}{{ end }}], for unsetting the flag.
+//  - See [Command.Unset{{ if hasPrefix "No" (.Name | to_camel) }}{{ .Name | to_camel | trimPrefix "No" }}{{ else }}{{ .Name | to_camel }}{{ end }}], for unsetting the flag.
 //  - {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}{{ if .Hidden }} (hidden){{ end }}.
 {{- end -}}{{/* end define optionHelp */}}
 

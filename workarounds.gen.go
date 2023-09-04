@@ -14,7 +14,7 @@ import (
 
 // Force the specified encoding (experimental)
 //
-//   - See [UnsetEncoding], for unsetting the flag.
+//   - See [Command.UnsetEncoding], for unsetting the flag.
 //   - Encoding maps to cli flags: --encoding=ENCODING.
 func (c *Command) Encoding(encoding string) *Command {
 	c.addFlag(&Flag{
@@ -35,7 +35,7 @@ func (c *Command) UnsetEncoding() *Command {
 // Explicitly allow HTTPS connection to servers that do not support RFC 5746 secure
 // renegotiation
 //
-//   - See [UnsetLegacyServerConnect], for unsetting the flag.
+//   - See [Command.UnsetLegacyServerConnect], for unsetting the flag.
 //   - LegacyServerConnect maps to cli flags: --legacy-server-connect.
 func (c *Command) LegacyServerConnect() *Command {
 	c.addFlag(&Flag{
@@ -55,7 +55,7 @@ func (c *Command) UnsetLegacyServerConnect() *Command {
 
 // Suppress HTTPS certificate validation
 //
-//   - See [UnsetCheckCertificates], for unsetting the flag.
+//   - See [Command.UnsetCheckCertificates], for unsetting the flag.
 //   - NoCheckCertificates maps to cli flags: --no-check-certificates.
 func (c *Command) NoCheckCertificates() *Command {
 	c.addFlag(&Flag{
@@ -69,7 +69,7 @@ func (c *Command) NoCheckCertificates() *Command {
 // Use an unencrypted connection to retrieve information about the video (Currently
 // supported only for YouTube)
 //
-//   - See [UnsetPreferInsecure], for unsetting the flag.
+//   - See [Command.UnsetPreferInsecure], for unsetting the flag.
 //   - PreferInsecure maps to cli flags: --prefer-insecure/--prefer-unsecure.
 func (c *Command) PreferInsecure() *Command {
 	c.addFlag(&Flag{
@@ -87,7 +87,7 @@ func (c *Command) UnsetPreferInsecure() *Command {
 	return c
 }
 
-// - See [UnsetUserAgent], for unsetting the flag.
+// - See [Command.UnsetUserAgent], for unsetting the flag.
 // - UserAgent maps to cli flags: --user-agent=UA (hidden).
 func (c *Command) UserAgent(ua string) *Command {
 	c.addFlag(&Flag{
@@ -105,7 +105,7 @@ func (c *Command) UnsetUserAgent() *Command {
 	return c
 }
 
-// - See [UnsetReferer], for unsetting the flag.
+// - See [Command.UnsetReferer], for unsetting the flag.
 // - Referer maps to cli flags: --referer=URL (hidden).
 func (c *Command) Referer(url string) *Command {
 	c.addFlag(&Flag{
@@ -126,7 +126,7 @@ func (c *Command) UnsetReferer() *Command {
 // Specify a custom HTTP header and its value, separated by a colon ":". You can
 // use this option multiple times
 //
-//   - See [UnsetAddHeaders], for unsetting the flag.
+//   - See [Command.UnsetAddHeaders], for unsetting the flag.
 //   - AddHeaders maps to cli flags: --add-headers=FIELD:VALUE.
 func (c *Command) AddHeaders(fieldvalue string) *Command {
 	c.addFlag(&Flag{
@@ -147,7 +147,7 @@ func (c *Command) UnsetAddHeaders() *Command {
 // Work around terminals that lack bidirectional text support. Requires bidiv or
 // fribidi executable in PATH
 //
-//   - See [UnsetBidiWorkaround], for unsetting the flag.
+//   - See [Command.UnsetBidiWorkaround], for unsetting the flag.
 //   - BidiWorkaround maps to cli flags: --bidi-workaround.
 func (c *Command) BidiWorkaround() *Command {
 	c.addFlag(&Flag{
@@ -167,7 +167,7 @@ func (c *Command) UnsetBidiWorkaround() *Command {
 
 // Number of seconds to sleep between requests during data extraction
 //
-//   - See [UnsetSleepRequests], for unsetting the flag.
+//   - See [Command.UnsetSleepRequests], for unsetting the flag.
 //   - SleepRequests maps to cli flags: --sleep-requests=SECONDS.
 func (c *Command) SleepRequests(seconds float64) *Command {
 	c.addFlag(&Flag{
@@ -190,7 +190,7 @@ func (c *Command) UnsetSleepRequests() *Command {
 // Number of seconds to sleep before each download. This is the minimum time to
 // sleep when used along with --max-sleep-interval
 //
-//   - See [UnsetSleepInterval], for unsetting the flag.
+//   - See [Command.UnsetSleepInterval], for unsetting the flag.
 //   - SleepInterval maps to cli flags: --sleep-interval/--min-sleep-interval=SECONDS.
 func (c *Command) SleepInterval(seconds float64) *Command {
 	c.addFlag(&Flag{
@@ -213,7 +213,7 @@ func (c *Command) UnsetSleepInterval() *Command {
 // Maximum number of seconds to sleep. Can only be used along with
 // --min-sleep-interval
 //
-//   - See [UnsetMaxSleepInterval], for unsetting the flag.
+//   - See [Command.UnsetMaxSleepInterval], for unsetting the flag.
 //   - MaxSleepInterval maps to cli flags: --max-sleep-interval=SECONDS.
 func (c *Command) MaxSleepInterval(seconds float64) *Command {
 	c.addFlag(&Flag{
@@ -235,7 +235,7 @@ func (c *Command) UnsetMaxSleepInterval() *Command {
 
 // Number of seconds to sleep before each subtitle download
 //
-//   - See [UnsetSleepSubtitles], for unsetting the flag.
+//   - See [Command.UnsetSleepSubtitles], for unsetting the flag.
 //   - SleepSubtitles maps to cli flags: --sleep-subtitles=SECONDS.
 func (c *Command) SleepSubtitles(seconds int) *Command {
 	c.addFlag(&Flag{

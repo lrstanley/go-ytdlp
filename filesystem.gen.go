@@ -15,7 +15,7 @@ import (
 // File containing URLs to download ("-" for stdin), one URL per line. Lines
 // starting with "#", ";" or "]" are considered as comments and ignored
 //
-//   - See [UnsetBatchFile], for unsetting the flag.
+//   - See [Command.UnsetBatchFile], for unsetting the flag.
 //   - BatchFile maps to cli flags: -a/--batch-file=FILE.
 func (c *Command) BatchFile(file string) *Command {
 	c.addFlag(&Flag{
@@ -35,7 +35,7 @@ func (c *Command) UnsetBatchFile() *Command {
 
 // Do not read URLs from batch file (default)
 //
-//   - See [UnsetBatchFile], for unsetting the flag.
+//   - See [Command.UnsetBatchFile], for unsetting the flag.
 //   - NoBatchFile maps to cli flags: --no-batch-file.
 func (c *Command) NoBatchFile() *Command {
 	c.addFlag(&Flag{
@@ -48,7 +48,7 @@ func (c *Command) NoBatchFile() *Command {
 
 // Id sets the "id" flag (no description specified).
 //
-//   - See [UnsetId], for unsetting the flag.
+//   - See [Command.UnsetId], for unsetting the flag.
 //   - Id maps to cli flags: --id (hidden).
 func (c *Command) Id() *Command {
 	c.addFlag(&Flag{
@@ -73,7 +73,7 @@ func (c *Command) UnsetId() *Command {
 // files are moved over to the home path after download is finished. This option is
 // ignored if --output is an absolute path
 //
-//   - See [UnsetPaths], for unsetting the flag.
+//   - See [Command.UnsetPaths], for unsetting the flag.
 //   - Paths maps to cli flags: -P/--paths=[TYPES:]PATH.
 func (c *Command) Paths(path string) *Command {
 	c.addFlag(&Flag{
@@ -93,7 +93,7 @@ func (c *Command) UnsetPaths() *Command {
 
 // Output filename template; see "OUTPUT TEMPLATE" for details
 //
-//   - See [UnsetOutput], for unsetting the flag.
+//   - See [Command.UnsetOutput], for unsetting the flag.
 //   - Output maps to cli flags: -o/--output=[TYPES:]TEMPLATE.
 func (c *Command) Output(template string) *Command {
 	c.addFlag(&Flag{
@@ -113,7 +113,7 @@ func (c *Command) UnsetOutput() *Command {
 
 // Placeholder for unavailable fields in "OUTPUT TEMPLATE" (default: "NA")
 //
-//   - See [UnsetOutputNaPlaceholder], for unsetting the flag.
+//   - See [Command.UnsetOutputNaPlaceholder], for unsetting the flag.
 //   - OutputNaPlaceholder maps to cli flags: --output-na-placeholder=TEXT.
 func (c *Command) OutputNaPlaceholder(text string) *Command {
 	c.addFlag(&Flag{
@@ -131,7 +131,7 @@ func (c *Command) UnsetOutputNaPlaceholder() *Command {
 	return c
 }
 
-// - See [UnsetAutonumberSize], for unsetting the flag.
+// - See [Command.UnsetAutonumberSize], for unsetting the flag.
 // - AutonumberSize maps to cli flags: --autonumber-size=NUMBER (hidden).
 func (c *Command) AutonumberSize(number int) *Command {
 	c.addFlag(&Flag{
@@ -151,7 +151,7 @@ func (c *Command) UnsetAutonumberSize() *Command {
 	return c
 }
 
-// - See [UnsetAutonumberStart], for unsetting the flag.
+// - See [Command.UnsetAutonumberStart], for unsetting the flag.
 // - AutonumberStart maps to cli flags: --autonumber-start=NUMBER (hidden).
 func (c *Command) AutonumberStart(number int) *Command {
 	c.addFlag(&Flag{
@@ -174,7 +174,7 @@ func (c *Command) UnsetAutonumberStart() *Command {
 // Restrict filenames to only ASCII characters, and avoid "&" and spaces in
 // filenames
 //
-//   - See [UnsetRestrictFilenames], for unsetting the flag.
+//   - See [Command.UnsetRestrictFilenames], for unsetting the flag.
 //   - RestrictFilenames maps to cli flags: --restrict-filenames.
 func (c *Command) RestrictFilenames() *Command {
 	c.addFlag(&Flag{
@@ -194,7 +194,7 @@ func (c *Command) UnsetRestrictFilenames() *Command {
 
 // Allow Unicode characters, "&" and spaces in filenames (default)
 //
-//   - See [UnsetRestrictFilenames], for unsetting the flag.
+//   - See [Command.UnsetRestrictFilenames], for unsetting the flag.
 //   - NoRestrictFilenames maps to cli flags: --no-restrict-filenames.
 func (c *Command) NoRestrictFilenames() *Command {
 	c.addFlag(&Flag{
@@ -207,7 +207,7 @@ func (c *Command) NoRestrictFilenames() *Command {
 
 // Force filenames to be Windows-compatible
 //
-//   - See [UnsetWindowsFilenames], for unsetting the flag.
+//   - See [Command.UnsetWindowsFilenames], for unsetting the flag.
 //   - WindowsFilenames maps to cli flags: --windows-filenames.
 func (c *Command) WindowsFilenames() *Command {
 	c.addFlag(&Flag{
@@ -227,7 +227,7 @@ func (c *Command) UnsetWindowsFilenames() *Command {
 
 // Make filenames Windows-compatible only if using Windows (default)
 //
-//   - See [UnsetWindowsFilenames], for unsetting the flag.
+//   - See [Command.UnsetWindowsFilenames], for unsetting the flag.
 //   - NoWindowsFilenames maps to cli flags: --no-windows-filenames.
 func (c *Command) NoWindowsFilenames() *Command {
 	c.addFlag(&Flag{
@@ -241,7 +241,7 @@ func (c *Command) NoWindowsFilenames() *Command {
 // Limit the filename length (excluding extension) to the specified number of
 // characters
 //
-//   - See [UnsetTrimFilenames], for unsetting the flag.
+//   - See [Command.UnsetTrimFilenames], for unsetting the flag.
 //   - TrimFilenames maps to cli flags: --trim-filenames/--trim-file-names=LENGTH.
 func (c *Command) TrimFilenames(length int) *Command {
 	c.addFlag(&Flag{
@@ -263,7 +263,7 @@ func (c *Command) UnsetTrimFilenames() *Command {
 
 // Do not overwrite any files
 //
-//   - See [UnsetOverwrites], for unsetting the flag.
+//   - See [Command.UnsetOverwrites], for unsetting the flag.
 //   - NoOverwrites maps to cli flags: -w/--no-overwrites.
 func (c *Command) NoOverwrites() *Command {
 	c.addFlag(&Flag{
@@ -276,7 +276,7 @@ func (c *Command) NoOverwrites() *Command {
 
 // Overwrite all video and metadata files. This option includes --no-continue
 //
-//   - See [UnsetForceOverwrites], for unsetting the flag.
+//   - See [Command.UnsetForceOverwrites], for unsetting the flag.
 //   - ForceOverwrites maps to cli flags: --force-overwrites/--yes-overwrites.
 func (c *Command) ForceOverwrites() *Command {
 	c.addFlag(&Flag{
@@ -296,7 +296,7 @@ func (c *Command) UnsetForceOverwrites() *Command {
 
 // Do not overwrite the video, but overwrite related files (default)
 //
-//   - See [UnsetForceOverwrites], for unsetting the flag.
+//   - See [Command.UnsetForceOverwrites], for unsetting the flag.
 //   - NoForceOverwrites maps to cli flags: --no-force-overwrites.
 func (c *Command) NoForceOverwrites() *Command {
 	c.addFlag(&Flag{
@@ -309,7 +309,7 @@ func (c *Command) NoForceOverwrites() *Command {
 
 // Resume partially downloaded files/fragments (default)
 //
-//   - See [UnsetContinue], for unsetting the flag.
+//   - See [Command.UnsetContinue], for unsetting the flag.
 //   - Continue maps to cli flags: -c/--continue.
 func (c *Command) Continue() *Command {
 	c.addFlag(&Flag{
@@ -330,7 +330,7 @@ func (c *Command) UnsetContinue() *Command {
 // Do not resume partially downloaded fragments. If the file is not fragmented,
 // restart download of the entire file
 //
-//   - See [UnsetContinue], for unsetting the flag.
+//   - See [Command.UnsetContinue], for unsetting the flag.
 //   - NoContinue maps to cli flags: --no-continue.
 func (c *Command) NoContinue() *Command {
 	c.addFlag(&Flag{
@@ -343,7 +343,7 @@ func (c *Command) NoContinue() *Command {
 
 // Use .part files instead of writing directly into output file (default)
 //
-//   - See [UnsetPart], for unsetting the flag.
+//   - See [Command.UnsetPart], for unsetting the flag.
 //   - Part maps to cli flags: --part.
 func (c *Command) Part() *Command {
 	c.addFlag(&Flag{
@@ -363,7 +363,7 @@ func (c *Command) UnsetPart() *Command {
 
 // Do not use .part files - write directly into output file
 //
-//   - See [UnsetPart], for unsetting the flag.
+//   - See [Command.UnsetPart], for unsetting the flag.
 //   - NoPart maps to cli flags: --no-part.
 func (c *Command) NoPart() *Command {
 	c.addFlag(&Flag{
@@ -376,7 +376,7 @@ func (c *Command) NoPart() *Command {
 
 // Use the Last-modified header to set the file modification time (default)
 //
-//   - See [UnsetMtime], for unsetting the flag.
+//   - See [Command.UnsetMtime], for unsetting the flag.
 //   - Mtime maps to cli flags: --mtime.
 func (c *Command) Mtime() *Command {
 	c.addFlag(&Flag{
@@ -396,7 +396,7 @@ func (c *Command) UnsetMtime() *Command {
 
 // Do not use the Last-modified header to set the file modification time
 //
-//   - See [UnsetMtime], for unsetting the flag.
+//   - See [Command.UnsetMtime], for unsetting the flag.
 //   - NoMtime maps to cli flags: --no-mtime.
 func (c *Command) NoMtime() *Command {
 	c.addFlag(&Flag{
@@ -409,7 +409,7 @@ func (c *Command) NoMtime() *Command {
 
 // Write video description to a .description file
 //
-//   - See [UnsetWriteDescription], for unsetting the flag.
+//   - See [Command.UnsetWriteDescription], for unsetting the flag.
 //   - WriteDescription maps to cli flags: --write-description.
 func (c *Command) WriteDescription() *Command {
 	c.addFlag(&Flag{
@@ -429,7 +429,7 @@ func (c *Command) UnsetWriteDescription() *Command {
 
 // Do not write video description (default)
 //
-//   - See [UnsetWriteDescription], for unsetting the flag.
+//   - See [Command.UnsetWriteDescription], for unsetting the flag.
 //   - NoWriteDescription maps to cli flags: --no-write-description.
 func (c *Command) NoWriteDescription() *Command {
 	c.addFlag(&Flag{
@@ -443,7 +443,7 @@ func (c *Command) NoWriteDescription() *Command {
 // Write video metadata to a .info.json file (this may contain personal
 // information)
 //
-//   - See [UnsetWriteInfoJson], for unsetting the flag.
+//   - See [Command.UnsetWriteInfoJson], for unsetting the flag.
 //   - WriteInfoJson maps to cli flags: --write-info-json.
 func (c *Command) WriteInfoJson() *Command {
 	c.addFlag(&Flag{
@@ -463,7 +463,7 @@ func (c *Command) UnsetWriteInfoJson() *Command {
 
 // Do not write video metadata (default)
 //
-//   - See [UnsetWriteInfoJson], for unsetting the flag.
+//   - See [Command.UnsetWriteInfoJson], for unsetting the flag.
 //   - NoWriteInfoJson maps to cli flags: --no-write-info-json.
 func (c *Command) NoWriteInfoJson() *Command {
 	c.addFlag(&Flag{
@@ -476,7 +476,7 @@ func (c *Command) NoWriteInfoJson() *Command {
 
 // WriteAnnotations sets the "write-annotations" flag (no description specified).
 //
-//   - See [UnsetWriteAnnotations], for unsetting the flag.
+//   - See [Command.UnsetWriteAnnotations], for unsetting the flag.
 //   - WriteAnnotations maps to cli flags: --write-annotations (hidden).
 func (c *Command) WriteAnnotations() *Command {
 	c.addFlag(&Flag{
@@ -496,7 +496,7 @@ func (c *Command) UnsetWriteAnnotations() *Command {
 
 // NoWriteAnnotations sets the "no-write-annotations" flag (no description specified).
 //
-//   - See [UnsetWriteAnnotations], for unsetting the flag.
+//   - See [Command.UnsetWriteAnnotations], for unsetting the flag.
 //   - NoWriteAnnotations maps to cli flags: --no-write-annotations (hidden).
 func (c *Command) NoWriteAnnotations() *Command {
 	c.addFlag(&Flag{
@@ -510,7 +510,7 @@ func (c *Command) NoWriteAnnotations() *Command {
 // Write playlist metadata in addition to the video metadata when using
 // --write-info-json, --write-description etc. (default)
 //
-//   - See [UnsetWritePlaylistMetafiles], for unsetting the flag.
+//   - See [Command.UnsetWritePlaylistMetafiles], for unsetting the flag.
 //   - WritePlaylistMetafiles maps to cli flags: --write-playlist-metafiles.
 func (c *Command) WritePlaylistMetafiles() *Command {
 	c.addFlag(&Flag{
@@ -531,7 +531,7 @@ func (c *Command) UnsetWritePlaylistMetafiles() *Command {
 // Do not write playlist metadata when using --write-info-json, --write-description
 // etc.
 //
-//   - See [UnsetWritePlaylistMetafiles], for unsetting the flag.
+//   - See [Command.UnsetWritePlaylistMetafiles], for unsetting the flag.
 //   - NoWritePlaylistMetafiles maps to cli flags: --no-write-playlist-metafiles.
 func (c *Command) NoWritePlaylistMetafiles() *Command {
 	c.addFlag(&Flag{
@@ -544,7 +544,7 @@ func (c *Command) NoWritePlaylistMetafiles() *Command {
 
 // Remove some internal metadata such as filenames from the infojson (default)
 //
-//   - See [UnsetCleanInfoJson], for unsetting the flag.
+//   - See [Command.UnsetCleanInfoJson], for unsetting the flag.
 //   - CleanInfoJson maps to cli flags: --clean-info-json/--clean-infojson.
 func (c *Command) CleanInfoJson() *Command {
 	c.addFlag(&Flag{
@@ -564,7 +564,7 @@ func (c *Command) UnsetCleanInfoJson() *Command {
 
 // Write all fields to the infojson
 //
-//   - See [UnsetCleanInfoJson], for unsetting the flag.
+//   - See [Command.UnsetCleanInfoJson], for unsetting the flag.
 //   - NoCleanInfoJson maps to cli flags: --no-clean-info-json/--no-clean-infojson.
 func (c *Command) NoCleanInfoJson() *Command {
 	c.addFlag(&Flag{
@@ -578,7 +578,7 @@ func (c *Command) NoCleanInfoJson() *Command {
 // Retrieve video comments to be placed in the infojson. The comments are fetched
 // even without this option if the extraction is known to be quick
 //
-//   - See [UnsetWriteComments], for unsetting the flag.
+//   - See [Command.UnsetWriteComments], for unsetting the flag.
 //   - WriteComments maps to cli flags: --write-comments/--get-comments.
 func (c *Command) WriteComments() *Command {
 	c.addFlag(&Flag{
@@ -598,7 +598,7 @@ func (c *Command) UnsetWriteComments() *Command {
 
 // Do not retrieve video comments unless the extraction is known to be quick
 //
-//   - See [UnsetWriteComments], for unsetting the flag.
+//   - See [Command.UnsetWriteComments], for unsetting the flag.
 //   - NoWriteComments maps to cli flags: --no-write-comments/--no-get-comments.
 func (c *Command) NoWriteComments() *Command {
 	c.addFlag(&Flag{
@@ -612,7 +612,7 @@ func (c *Command) NoWriteComments() *Command {
 // JSON file containing the video information (created with the "--write-info-json"
 // option)
 //
-//   - See [UnsetLoadInfoJson], for unsetting the flag.
+//   - See [Command.UnsetLoadInfoJson], for unsetting the flag.
 //   - LoadInfoJson maps to cli flags: --load-info-json/--load-info=FILE.
 func (c *Command) LoadInfoJson(file string) *Command {
 	c.addFlag(&Flag{
@@ -632,7 +632,7 @@ func (c *Command) UnsetLoadInfoJson() *Command {
 
 // Netscape formatted file to read cookies from and dump cookie jar in
 //
-//   - See [UnsetCookies], for unsetting the flag.
+//   - See [Command.UnsetCookies], for unsetting the flag.
 //   - Cookies maps to cli flags: --cookies=FILE.
 func (c *Command) Cookies(file string) *Command {
 	c.addFlag(&Flag{
@@ -652,7 +652,7 @@ func (c *Command) UnsetCookies() *Command {
 
 // Do not read/dump cookies from/to file (default)
 //
-//   - See [UnsetCookies], for unsetting the flag.
+//   - See [Command.UnsetCookies], for unsetting the flag.
 //   - NoCookies maps to cli flags: --no-cookies=FILE.
 func (c *Command) NoCookies() *Command {
 	c.addFlag(&Flag{
@@ -671,7 +671,7 @@ func (c *Command) NoCookies() *Command {
 // containers of the most recently accessed profile are used. Currently supported
 // keyrings are: basictext, gnomekeyring, kwallet, kwallet5, kwallet6
 //
-//   - See [UnsetCookiesFromBrowser], for unsetting the flag.
+//   - See [Command.UnsetCookiesFromBrowser], for unsetting the flag.
 //   - CookiesFromBrowser maps to cli flags: --cookies-from-browser=BROWSER[+KEYRING][:PROFILE][::CONTAINER].
 func (c *Command) CookiesFromBrowser(browser string) *Command {
 	c.addFlag(&Flag{
@@ -691,7 +691,7 @@ func (c *Command) UnsetCookiesFromBrowser() *Command {
 
 // Do not load cookies from browser (default)
 //
-//   - See [UnsetCookiesFromBrowser], for unsetting the flag.
+//   - See [Command.UnsetCookiesFromBrowser], for unsetting the flag.
 //   - NoCookiesFromBrowser maps to cli flags: --no-cookies-from-browser.
 func (c *Command) NoCookiesFromBrowser() *Command {
 	c.addFlag(&Flag{
@@ -706,7 +706,7 @@ func (c *Command) NoCookiesFromBrowser() *Command {
 // (such as client ids and signatures) permanently. By default
 // ${XDG_CACHE_HOME}/yt-dlp
 //
-//   - See [UnsetCacheDir], for unsetting the flag.
+//   - See [Command.UnsetCacheDir], for unsetting the flag.
 //   - CacheDir maps to cli flags: --cache-dir=DIR.
 func (c *Command) CacheDir(dir string) *Command {
 	c.addFlag(&Flag{
@@ -726,7 +726,7 @@ func (c *Command) UnsetCacheDir() *Command {
 
 // Disable filesystem caching
 //
-//   - See [UnsetCacheDir], for unsetting the flag.
+//   - See [Command.UnsetCacheDir], for unsetting the flag.
 //   - NoCacheDir maps to cli flags: --no-cache-dir.
 func (c *Command) NoCacheDir() *Command {
 	c.addFlag(&Flag{
@@ -739,7 +739,7 @@ func (c *Command) NoCacheDir() *Command {
 
 // Delete all filesystem cache files
 //
-//   - See [UnsetRmCacheDir], for unsetting the flag.
+//   - See [Command.UnsetRmCacheDir], for unsetting the flag.
 //   - RmCacheDir maps to cli flags: --rm-cache-dir.
 func (c *Command) RmCacheDir() *Command {
 	c.addFlag(&Flag{

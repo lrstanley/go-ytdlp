@@ -10,7 +10,7 @@ package ytdlp
 
 // Convert video files to audio-only files (requires ffmpeg and ffprobe)
 //
-//   - See [UnsetExtractAudio], for unsetting the flag.
+//   - See [Command.UnsetExtractAudio], for unsetting the flag.
 //   - ExtractAudio maps to cli flags: -x/--extract-audio.
 func (c *Command) ExtractAudio() *Command {
 	c.addFlag(&Flag{
@@ -32,7 +32,7 @@ func (c *Command) UnsetExtractAudio() *Command {
 // (default), aac, alac, flac, m4a, mp3, opus, vorbis, wav). You can specify
 // multiple rules using similar syntax as --remux-video
 //
-//   - See [UnsetAudioFormat], for unsetting the flag.
+//   - See [Command.UnsetAudioFormat], for unsetting the flag.
 //   - AudioFormat maps to cli flags: --audio-format=FORMAT.
 func (c *Command) AudioFormat(format string) *Command {
 	c.addFlag(&Flag{
@@ -54,7 +54,7 @@ func (c *Command) UnsetAudioFormat() *Command {
 // value between 0 (best) and 10 (worst) for VBR or a specific bitrate like 128K
 // (default 5)
 //
-//   - See [UnsetAudioQuality], for unsetting the flag.
+//   - See [Command.UnsetAudioQuality], for unsetting the flag.
 //   - AudioQuality maps to cli flags: --audio-quality=QUALITY.
 func (c *Command) AudioQuality(quality string) *Command {
 	c.addFlag(&Flag{
@@ -78,7 +78,7 @@ func (c *Command) UnsetAudioQuality() *Command {
 // remuxing will fail. You can specify multiple rules; e.g. "aac>m4a/mov>mp4/mkv"
 // will remux aac to m4a, mov to mp4 and anything else to mkv
 //
-//   - See [UnsetRemuxVideo], for unsetting the flag.
+//   - See [Command.UnsetRemuxVideo], for unsetting the flag.
 //   - RemuxVideo maps to cli flags: --remux-video=FORMAT.
 func (c *Command) RemuxVideo(format string) *Command {
 	c.addFlag(&Flag{
@@ -99,7 +99,7 @@ func (c *Command) UnsetRemuxVideo() *Command {
 // Re-encode the video into another format if necessary. The syntax and supported
 // formats are the same as --remux-video
 //
-//   - See [UnsetRecodeVideo], for unsetting the flag.
+//   - See [Command.UnsetRecodeVideo], for unsetting the flag.
 //   - RecodeVideo maps to cli flags: --recode-video=FORMAT.
 func (c *Command) RecodeVideo(format string) *Command {
 	c.addFlag(&Flag{
@@ -131,7 +131,7 @@ func (c *Command) UnsetRecodeVideo() *Command {
 // "Merger+ffmpeg_i1:-v quiet". You can use this option multiple times to give
 // different arguments to different postprocessors.
 //
-//   - See [UnsetPostprocessorArgs], for unsetting the flag.
+//   - See [Command.UnsetPostprocessorArgs], for unsetting the flag.
 //   - PostprocessorArgs maps to cli flags: --postprocessor-args/--ppa=NAME:ARGS.
 func (c *Command) PostprocessorArgs(nameargs string) *Command {
 	c.addFlag(&Flag{
@@ -151,7 +151,7 @@ func (c *Command) UnsetPostprocessorArgs() *Command {
 
 // Keep the intermediate video file on disk after post-processing
 //
-//   - See [UnsetKeepVideo], for unsetting the flag.
+//   - See [Command.UnsetKeepVideo], for unsetting the flag.
 //   - KeepVideo maps to cli flags: -k/--keep-video.
 func (c *Command) KeepVideo() *Command {
 	c.addFlag(&Flag{
@@ -171,7 +171,7 @@ func (c *Command) UnsetKeepVideo() *Command {
 
 // Delete the intermediate video file after post-processing (default)
 //
-//   - See [UnsetKeepVideo], for unsetting the flag.
+//   - See [Command.UnsetKeepVideo], for unsetting the flag.
 //   - NoKeepVideo maps to cli flags: --no-keep-video.
 func (c *Command) NoKeepVideo() *Command {
 	c.addFlag(&Flag{
@@ -184,7 +184,7 @@ func (c *Command) NoKeepVideo() *Command {
 
 // Overwrite post-processed files (default)
 //
-//   - See [UnsetPostOverwrites], for unsetting the flag.
+//   - See [Command.UnsetPostOverwrites], for unsetting the flag.
 //   - PostOverwrites maps to cli flags: --post-overwrites.
 func (c *Command) PostOverwrites() *Command {
 	c.addFlag(&Flag{
@@ -204,7 +204,7 @@ func (c *Command) UnsetPostOverwrites() *Command {
 
 // Do not overwrite post-processed files
 //
-//   - See [UnsetPostOverwrites], for unsetting the flag.
+//   - See [Command.UnsetPostOverwrites], for unsetting the flag.
 //   - NoPostOverwrites maps to cli flags: --no-post-overwrites.
 func (c *Command) NoPostOverwrites() *Command {
 	c.addFlag(&Flag{
@@ -217,7 +217,7 @@ func (c *Command) NoPostOverwrites() *Command {
 
 // Embed subtitles in the video (only for mp4, webm and mkv videos)
 //
-//   - See [UnsetEmbedSubs], for unsetting the flag.
+//   - See [Command.UnsetEmbedSubs], for unsetting the flag.
 //   - EmbedSubs maps to cli flags: --embed-subs.
 func (c *Command) EmbedSubs() *Command {
 	c.addFlag(&Flag{
@@ -237,7 +237,7 @@ func (c *Command) UnsetEmbedSubs() *Command {
 
 // Do not embed subtitles (default)
 //
-//   - See [UnsetEmbedSubs], for unsetting the flag.
+//   - See [Command.UnsetEmbedSubs], for unsetting the flag.
 //   - NoEmbedSubs maps to cli flags: --no-embed-subs.
 func (c *Command) NoEmbedSubs() *Command {
 	c.addFlag(&Flag{
@@ -250,7 +250,7 @@ func (c *Command) NoEmbedSubs() *Command {
 
 // Embed thumbnail in the video as cover art
 //
-//   - See [UnsetEmbedThumbnail], for unsetting the flag.
+//   - See [Command.UnsetEmbedThumbnail], for unsetting the flag.
 //   - EmbedThumbnail maps to cli flags: --embed-thumbnail.
 func (c *Command) EmbedThumbnail() *Command {
 	c.addFlag(&Flag{
@@ -270,7 +270,7 @@ func (c *Command) UnsetEmbedThumbnail() *Command {
 
 // Do not embed thumbnail (default)
 //
-//   - See [UnsetEmbedThumbnail], for unsetting the flag.
+//   - See [Command.UnsetEmbedThumbnail], for unsetting the flag.
 //   - NoEmbedThumbnail maps to cli flags: --no-embed-thumbnail.
 func (c *Command) NoEmbedThumbnail() *Command {
 	c.addFlag(&Flag{
@@ -284,7 +284,7 @@ func (c *Command) NoEmbedThumbnail() *Command {
 // Embed metadata to the video file. Also embeds chapters/infojson if present
 // unless --no-embed-chapters/--no-embed-info-json are used
 //
-//   - See [UnsetEmbedMetadata], for unsetting the flag.
+//   - See [Command.UnsetEmbedMetadata], for unsetting the flag.
 //   - EmbedMetadata maps to cli flags: --embed-metadata/--add-metadata.
 func (c *Command) EmbedMetadata() *Command {
 	c.addFlag(&Flag{
@@ -304,7 +304,7 @@ func (c *Command) UnsetEmbedMetadata() *Command {
 
 // Do not add metadata to file (default)
 //
-//   - See [UnsetEmbedMetadata], for unsetting the flag.
+//   - See [Command.UnsetEmbedMetadata], for unsetting the flag.
 //   - NoEmbedMetadata maps to cli flags: --no-embed-metadata/--no-add-metadata.
 func (c *Command) NoEmbedMetadata() *Command {
 	c.addFlag(&Flag{
@@ -317,7 +317,7 @@ func (c *Command) NoEmbedMetadata() *Command {
 
 // Add chapter markers to the video file
 //
-//   - See [UnsetEmbedChapters], for unsetting the flag.
+//   - See [Command.UnsetEmbedChapters], for unsetting the flag.
 //   - EmbedChapters maps to cli flags: --embed-chapters/--add-chapters.
 func (c *Command) EmbedChapters() *Command {
 	c.addFlag(&Flag{
@@ -337,7 +337,7 @@ func (c *Command) UnsetEmbedChapters() *Command {
 
 // Do not add chapter markers (default)
 //
-//   - See [UnsetEmbedChapters], for unsetting the flag.
+//   - See [Command.UnsetEmbedChapters], for unsetting the flag.
 //   - NoEmbedChapters maps to cli flags: --no-embed-chapters/--no-add-chapters.
 func (c *Command) NoEmbedChapters() *Command {
 	c.addFlag(&Flag{
@@ -350,7 +350,7 @@ func (c *Command) NoEmbedChapters() *Command {
 
 // Embed the infojson as an attachment to mkv/mka video files
 //
-//   - See [UnsetEmbedInfoJson], for unsetting the flag.
+//   - See [Command.UnsetEmbedInfoJson], for unsetting the flag.
 //   - EmbedInfoJson maps to cli flags: --embed-info-json.
 func (c *Command) EmbedInfoJson() *Command {
 	c.addFlag(&Flag{
@@ -370,7 +370,7 @@ func (c *Command) UnsetEmbedInfoJson() *Command {
 
 // Do not embed the infojson as an attachment to the video file
 //
-//   - See [UnsetEmbedInfoJson], for unsetting the flag.
+//   - See [Command.UnsetEmbedInfoJson], for unsetting the flag.
 //   - NoEmbedInfoJson maps to cli flags: --no-embed-info-json.
 func (c *Command) NoEmbedInfoJson() *Command {
 	c.addFlag(&Flag{
@@ -381,7 +381,7 @@ func (c *Command) NoEmbedInfoJson() *Command {
 	return c
 }
 
-// - See [UnsetMetadataFromTitle], for unsetting the flag.
+// - See [Command.UnsetMetadataFromTitle], for unsetting the flag.
 // - MetadataFromTitle maps to cli flags: --metadata-from-title=FORMAT (hidden).
 func (c *Command) MetadataFromTitle(format string) *Command {
 	c.addFlag(&Flag{
@@ -403,7 +403,7 @@ func (c *Command) UnsetMetadataFromTitle() *Command {
 // METADATA" for details. Supported values of "WHEN" are the same as that of
 // --use-postprocessor (default: pre_process)
 //
-//   - See [UnsetParseMetadata], for unsetting the flag.
+//   - See [Command.UnsetParseMetadata], for unsetting the flag.
 //   - ParseMetadata maps to cli flags: --parse-metadata=[WHEN:]FROM:TO.
 func (c *Command) ParseMetadata(fromto string) *Command {
 	c.addFlag(&Flag{
@@ -425,7 +425,7 @@ func (c *Command) UnsetParseMetadata() *Command {
 // multiple times. Supported values of "WHEN" are the same as that of
 // --use-postprocessor (default: pre_process)
 //
-//   - See [UnsetReplaceInMetadata], for unsetting the flag.
+//   - See [Command.UnsetReplaceInMetadata], for unsetting the flag.
 //   - ReplaceInMetadata maps to cli flags: --replace-in-metadata=[WHEN:]FIELDS REGEX REPLACE.
 func (c *Command) ReplaceInMetadata(fields, regex, replace string) *Command {
 	c.addFlag(&Flag{
@@ -445,7 +445,7 @@ func (c *Command) UnsetReplaceInMetadata() *Command {
 
 // Write metadata to the video file's xattrs (using dublin core and xdg standards)
 //
-//   - See [UnsetXattrs], for unsetting the flag.
+//   - See [Command.UnsetXattrs], for unsetting the flag.
 //   - Xattrs maps to cli flags: --xattrs/--xattr.
 func (c *Command) Xattrs() *Command {
 	c.addFlag(&Flag{
@@ -478,7 +478,7 @@ var (
 // can be used with "--paths" and "--output" to set the output filename for the
 // concatenated files. See "OUTPUT TEMPLATE" for details
 //
-//   - See [UnsetConcatPlaylist], for unsetting the flag.
+//   - See [Command.UnsetConcatPlaylist], for unsetting the flag.
 //   - ConcatPlaylist maps to cli flags: --concat-playlist=POLICY.
 func (c *Command) ConcatPlaylist(policy ConcatPlaylistOption) *Command {
 	c.addFlag(&Flag{
@@ -511,7 +511,7 @@ var (
 // (only emit a warning), detect_or_warn (the default; fix file if we can, warn
 // otherwise), force (try fixing even if file already exists)
 //
-//   - See [UnsetFixup], for unsetting the flag.
+//   - See [Command.UnsetFixup], for unsetting the flag.
 //   - Fixup maps to cli flags: --fixup=POLICY.
 func (c *Command) Fixup(policy FixupOption) *Command {
 	c.addFlag(&Flag{
@@ -531,7 +531,7 @@ func (c *Command) UnsetFixup() *Command {
 
 // PreferAvconv sets the "prefer-avconv" flag (no description specified).
 //
-//   - See [UnsetPreferAvconv], for unsetting the flag.
+//   - See [Command.UnsetPreferAvconv], for unsetting the flag.
 //   - PreferAvconv maps to cli flags: --prefer-avconv/--no-prefer-ffmpeg (hidden).
 func (c *Command) PreferAvconv() *Command {
 	c.addFlag(&Flag{
@@ -551,7 +551,7 @@ func (c *Command) UnsetPreferAvconv() *Command {
 
 // PreferFfmpeg sets the "prefer-ffmpeg" flag (no description specified).
 //
-//   - See [UnsetPreferFfmpeg], for unsetting the flag.
+//   - See [Command.UnsetPreferFfmpeg], for unsetting the flag.
 //   - PreferFfmpeg maps to cli flags: --prefer-ffmpeg/--no-prefer-avconv (hidden).
 func (c *Command) PreferFfmpeg() *Command {
 	c.addFlag(&Flag{
@@ -572,7 +572,7 @@ func (c *Command) UnsetPreferFfmpeg() *Command {
 // Location of the ffmpeg binary; either the path to the binary or its containing
 // directory
 //
-//   - See [UnsetFfmpegLocation], for unsetting the flag.
+//   - See [Command.UnsetFfmpegLocation], for unsetting the flag.
 //   - FfmpegLocation maps to cli flags: --ffmpeg-location/--avconv-location=PATH.
 func (c *Command) FfmpegLocation(path string) *Command {
 	c.addFlag(&Flag{
@@ -597,7 +597,7 @@ func (c *Command) UnsetFfmpegLocation() *Command {
 // %(filepath,_filename|)q is appended to the end of the command. This option can
 // be used multiple times
 //
-//   - See [UnsetExec], for unsetting the flag.
+//   - See [Command.UnsetExec], for unsetting the flag.
 //   - Exec maps to cli flags: --exec=[WHEN:]CMD.
 func (c *Command) Exec(cmd string) *Command {
 	c.addFlag(&Flag{
@@ -617,7 +617,7 @@ func (c *Command) UnsetExec() *Command {
 
 // Remove any previously defined --exec
 //
-//   - See [UnsetExec], for unsetting the flag.
+//   - See [Command.UnsetExec], for unsetting the flag.
 //   - NoExec maps to cli flags: --no-exec.
 func (c *Command) NoExec() *Command {
 	c.addFlag(&Flag{
@@ -628,7 +628,7 @@ func (c *Command) NoExec() *Command {
 	return c
 }
 
-// - See [UnsetExecBeforeDownload], for unsetting the flag.
+// - See [Command.UnsetExecBeforeDownload], for unsetting the flag.
 // - ExecBeforeDownload maps to cli flags: --exec-before-download=CMD (hidden).
 func (c *Command) ExecBeforeDownload(cmd string) *Command {
 	c.addFlag(&Flag{
@@ -648,7 +648,7 @@ func (c *Command) UnsetExecBeforeDownload() *Command {
 
 // NoExecBeforeDownload sets the "no-exec-before-download" flag (no description specified).
 //
-//   - See [UnsetExecBeforeDownload], for unsetting the flag.
+//   - See [Command.UnsetExecBeforeDownload], for unsetting the flag.
 //   - NoExecBeforeDownload maps to cli flags: --no-exec-before-download (hidden).
 func (c *Command) NoExecBeforeDownload() *Command {
 	c.addFlag(&Flag{
@@ -662,7 +662,7 @@ func (c *Command) NoExecBeforeDownload() *Command {
 // Convert the subtitles to another format (currently supported: ass, lrc, srt,
 // vtt)
 //
-//   - See [UnsetConvertSubs], for unsetting the flag.
+//   - See [Command.UnsetConvertSubs], for unsetting the flag.
 //   - ConvertSubs maps to cli flags: --convert-subs/--convert-sub/--convert-subtitles=FORMAT.
 func (c *Command) ConvertSubs(format string) *Command {
 	c.addFlag(&Flag{
@@ -683,7 +683,7 @@ func (c *Command) UnsetConvertSubs() *Command {
 // Convert the thumbnails to another format (currently supported: jpg, png, webp).
 // You can specify multiple rules using similar syntax as --remux-video
 //
-//   - See [UnsetConvertThumbnails], for unsetting the flag.
+//   - See [Command.UnsetConvertThumbnails], for unsetting the flag.
 //   - ConvertThumbnails maps to cli flags: --convert-thumbnails=FORMAT.
 func (c *Command) ConvertThumbnails(format string) *Command {
 	c.addFlag(&Flag{
@@ -705,7 +705,7 @@ func (c *Command) UnsetConvertThumbnails() *Command {
 // prefix can be used with "--paths" and "--output" to set the output filename for
 // the split files. See "OUTPUT TEMPLATE" for details
 //
-//   - See [UnsetSplitChapters], for unsetting the flag.
+//   - See [Command.UnsetSplitChapters], for unsetting the flag.
 //   - SplitChapters maps to cli flags: --split-chapters/--split-tracks.
 func (c *Command) SplitChapters() *Command {
 	c.addFlag(&Flag{
@@ -725,7 +725,7 @@ func (c *Command) UnsetSplitChapters() *Command {
 
 // Do not split video based on chapters (default)
 //
-//   - See [UnsetSplitChapters], for unsetting the flag.
+//   - See [Command.UnsetSplitChapters], for unsetting the flag.
 //   - NoSplitChapters maps to cli flags: --no-split-chapters/--no-split-tracks.
 func (c *Command) NoSplitChapters() *Command {
 	c.addFlag(&Flag{
@@ -739,7 +739,7 @@ func (c *Command) NoSplitChapters() *Command {
 // Remove chapters whose title matches the given regular expression. The syntax is
 // the same as --download-sections. This option can be used multiple times
 //
-//   - See [UnsetRemoveChapters], for unsetting the flag.
+//   - See [Command.UnsetRemoveChapters], for unsetting the flag.
 //   - RemoveChapters maps to cli flags: --remove-chapters=REGEX.
 func (c *Command) RemoveChapters(regex string) *Command {
 	c.addFlag(&Flag{
@@ -759,7 +759,7 @@ func (c *Command) UnsetRemoveChapters() *Command {
 
 // Do not remove any chapters from the file (default)
 //
-//   - See [UnsetRemoveChapters], for unsetting the flag.
+//   - See [Command.UnsetRemoveChapters], for unsetting the flag.
 //   - NoRemoveChapters maps to cli flags: --no-remove-chapters.
 func (c *Command) NoRemoveChapters() *Command {
 	c.addFlag(&Flag{
@@ -774,7 +774,7 @@ func (c *Command) NoRemoveChapters() *Command {
 // slow due to needing a re-encode, but the resulting video may have fewer
 // artifacts around the cuts
 //
-//   - See [UnsetForceKeyframesAtCuts], for unsetting the flag.
+//   - See [Command.UnsetForceKeyframesAtCuts], for unsetting the flag.
 //   - ForceKeyframesAtCuts maps to cli flags: --force-keyframes-at-cuts.
 func (c *Command) ForceKeyframesAtCuts() *Command {
 	c.addFlag(&Flag{
@@ -794,7 +794,7 @@ func (c *Command) UnsetForceKeyframesAtCuts() *Command {
 
 // Do not force keyframes around the chapters when cutting/splitting (default)
 //
-//   - See [UnsetForceKeyframesAtCuts], for unsetting the flag.
+//   - See [Command.UnsetForceKeyframesAtCuts], for unsetting the flag.
 //   - NoForceKeyframesAtCuts maps to cli flags: --no-force-keyframes-at-cuts.
 func (c *Command) NoForceKeyframesAtCuts() *Command {
 	c.addFlag(&Flag{
@@ -816,7 +816,7 @@ func (c *Command) NoForceKeyframesAtCuts() *Command {
 // processing all formats of a video), or "playlist" (at end of playlist). This
 // option can be used multiple times to add different postprocessors
 //
-//   - See [UnsetUsePostprocessor], for unsetting the flag.
+//   - See [Command.UnsetUsePostprocessor], for unsetting the flag.
 //   - UsePostprocessor maps to cli flags: --use-postprocessor=NAME[:ARGS].
 func (c *Command) UsePostprocessor(name string) *Command {
 	c.addFlag(&Flag{

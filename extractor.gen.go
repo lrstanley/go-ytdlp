@@ -10,7 +10,7 @@ package ytdlp
 
 // Number of retries for known extractor errors (default is 3), or "infinite"
 //
-//   - See [UnsetExtractorRetries], for unsetting the flag.
+//   - See [Command.UnsetExtractorRetries], for unsetting the flag.
 //   - ExtractorRetries maps to cli flags: --extractor-retries=RETRIES.
 func (c *Command) ExtractorRetries(retries string) *Command {
 	c.addFlag(&Flag{
@@ -30,7 +30,7 @@ func (c *Command) UnsetExtractorRetries() *Command {
 
 // Process dynamic DASH manifests (default)
 //
-//   - See [UnsetAllowDynamicMpd], for unsetting the flag.
+//   - See [Command.UnsetAllowDynamicMpd], for unsetting the flag.
 //   - AllowDynamicMpd maps to cli flags: --allow-dynamic-mpd/--no-ignore-dynamic-mpd.
 func (c *Command) AllowDynamicMpd() *Command {
 	c.addFlag(&Flag{
@@ -50,7 +50,7 @@ func (c *Command) UnsetAllowDynamicMpd() *Command {
 
 // Do not process dynamic DASH manifests
 //
-//   - See [UnsetIgnoreDynamicMpd], for unsetting the flag.
+//   - See [Command.UnsetIgnoreDynamicMpd], for unsetting the flag.
 //   - IgnoreDynamicMpd maps to cli flags: --ignore-dynamic-mpd/--no-allow-dynamic-mpd.
 func (c *Command) IgnoreDynamicMpd() *Command {
 	c.addFlag(&Flag{
@@ -70,7 +70,7 @@ func (c *Command) UnsetIgnoreDynamicMpd() *Command {
 
 // Split HLS playlists to different formats at discontinuities such as ad breaks
 //
-//   - See [UnsetHlsSplitDiscontinuity], for unsetting the flag.
+//   - See [Command.UnsetHlsSplitDiscontinuity], for unsetting the flag.
 //   - HlsSplitDiscontinuity maps to cli flags: --hls-split-discontinuity.
 func (c *Command) HlsSplitDiscontinuity() *Command {
 	c.addFlag(&Flag{
@@ -91,7 +91,7 @@ func (c *Command) UnsetHlsSplitDiscontinuity() *Command {
 // Do not split HLS playlists to different formats at discontinuities such as ad
 // breaks (default)
 //
-//   - See [UnsetHlsSplitDiscontinuity], for unsetting the flag.
+//   - See [Command.UnsetHlsSplitDiscontinuity], for unsetting the flag.
 //   - NoHlsSplitDiscontinuity maps to cli flags: --no-hls-split-discontinuity.
 func (c *Command) NoHlsSplitDiscontinuity() *Command {
 	c.addFlag(&Flag{
@@ -106,7 +106,7 @@ func (c *Command) NoHlsSplitDiscontinuity() *Command {
 // details. You can use this option multiple times to give arguments for different
 // extractors
 //
-//   - See [UnsetExtractorArgs], for unsetting the flag.
+//   - See [Command.UnsetExtractorArgs], for unsetting the flag.
 //   - ExtractorArgs maps to cli flags: --extractor-args=IE_KEY:ARGS.
 func (c *Command) ExtractorArgs(ieKeyargs string) *Command {
 	c.addFlag(&Flag{
@@ -126,7 +126,7 @@ func (c *Command) UnsetExtractorArgs() *Command {
 
 // YoutubeIncludeDashManifest sets the "youtube-include-dash-manifest" flag (no description specified).
 //
-//   - See [UnsetYoutubeIncludeDashManifest], for unsetting the flag.
+//   - See [Command.UnsetYoutubeIncludeDashManifest], for unsetting the flag.
 //   - YoutubeIncludeDashManifest maps to cli flags: --youtube-include-dash-manifest/--no-youtube-skip-dash-manifest (hidden).
 func (c *Command) YoutubeIncludeDashManifest() *Command {
 	c.addFlag(&Flag{
@@ -146,7 +146,7 @@ func (c *Command) UnsetYoutubeIncludeDashManifest() *Command {
 
 // YoutubeSkipDashManifest sets the "youtube-skip-dash-manifest" flag (no description specified).
 //
-//   - See [UnsetYoutubeSkipDashManifest], for unsetting the flag.
+//   - See [Command.UnsetYoutubeSkipDashManifest], for unsetting the flag.
 //   - YoutubeSkipDashManifest maps to cli flags: --youtube-skip-dash-manifest/--no-youtube-include-dash-manifest (hidden).
 func (c *Command) YoutubeSkipDashManifest() *Command {
 	c.addFlag(&Flag{
@@ -166,7 +166,7 @@ func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
 
 // YoutubeIncludeHlsManifest sets the "youtube-include-hls-manifest" flag (no description specified).
 //
-//   - See [UnsetYoutubeIncludeHlsManifest], for unsetting the flag.
+//   - See [Command.UnsetYoutubeIncludeHlsManifest], for unsetting the flag.
 //   - YoutubeIncludeHlsManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest (hidden).
 func (c *Command) YoutubeIncludeHlsManifest() *Command {
 	c.addFlag(&Flag{
@@ -186,7 +186,7 @@ func (c *Command) UnsetYoutubeIncludeHlsManifest() *Command {
 
 // YoutubeSkipHlsManifest sets the "youtube-skip-hls-manifest" flag (no description specified).
 //
-//   - See [UnsetYoutubeSkipHlsManifest], for unsetting the flag.
+//   - See [Command.UnsetYoutubeSkipHlsManifest], for unsetting the flag.
 //   - YoutubeSkipHlsManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest (hidden).
 func (c *Command) YoutubeSkipHlsManifest() *Command {
 	c.addFlag(&Flag{
