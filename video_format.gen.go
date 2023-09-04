@@ -22,7 +22,7 @@ func (c *Command) Format(format string) *Command {
 }
 
 // UnsetFormat unsets any flags that were previously set by
-// [Format].
+// [Command.Format].
 func (c *Command) UnsetFormat() *Command {
 	c.removeFlagByID("format")
 	return c
@@ -42,7 +42,7 @@ func (c *Command) FormatSort(sortorder string) *Command {
 }
 
 // UnsetFormatSort unsets any flags that were previously set by
-// [FormatSort].
+// [Command.FormatSort].
 func (c *Command) UnsetFormatSort() *Command {
 	c.removeFlagByID("format_sort")
 	return c
@@ -63,7 +63,7 @@ func (c *Command) FormatSortForce() *Command {
 }
 
 // UnsetFormatSortForce unsets any flags that were previously set by
-// [FormatSortForce].
+// [Command.FormatSortForce].
 func (c *Command) UnsetFormatSortForce() *Command {
 	c.removeFlagByID("format_sort_force")
 	return c
@@ -96,7 +96,7 @@ func (c *Command) VideoMultistreams() *Command {
 }
 
 // UnsetVideoMultistreams unsets any flags that were previously set by
-// [VideoMultistreams].
+// [Command.VideoMultistreams].
 func (c *Command) UnsetVideoMultistreams() *Command {
 	c.removeFlagByID("allow_multiple_video_streams")
 	return c
@@ -129,7 +129,7 @@ func (c *Command) AudioMultistreams() *Command {
 }
 
 // UnsetAudioMultistreams unsets any flags that were previously set by
-// [AudioMultistreams].
+// [Command.AudioMultistreams].
 func (c *Command) UnsetAudioMultistreams() *Command {
 	c.removeFlagByID("allow_multiple_audio_streams")
 	return c
@@ -162,7 +162,7 @@ func (c *Command) AllFormats() *Command {
 }
 
 // UnsetAllFormats unsets any flags that were previously set by
-// [AllFormats].
+// [Command.AllFormats].
 func (c *Command) UnsetAllFormats() *Command {
 	c.removeFlagByID("format")
 	return c
@@ -183,7 +183,7 @@ func (c *Command) PreferFreeFormats() *Command {
 }
 
 // UnsetPreferFreeFormats unsets any flags that were previously set by
-// [PreferFreeFormats].
+// [Command.PreferFreeFormats].
 func (c *Command) UnsetPreferFreeFormats() *Command {
 	c.removeFlagByID("prefer_free_formats")
 	return c
@@ -216,7 +216,7 @@ func (c *Command) CheckFormats() *Command {
 }
 
 // UnsetCheckFormats unsets any flags that were previously set by
-// [CheckFormats].
+// [Command.CheckFormats].
 func (c *Command) UnsetCheckFormats() *Command {
 	c.removeFlagByID("check_formats")
 	return c
@@ -236,7 +236,7 @@ func (c *Command) CheckAllFormats() *Command {
 }
 
 // UnsetCheckAllFormats unsets any flags that were previously set by
-// [CheckAllFormats].
+// [Command.CheckAllFormats].
 func (c *Command) UnsetCheckAllFormats() *Command {
 	c.removeFlagByID("check_formats")
 	return c
@@ -269,7 +269,7 @@ func (c *Command) ListFormats() *Command {
 }
 
 // UnsetListFormats unsets any flags that were previously set by
-// [ListFormats].
+// [Command.ListFormats].
 func (c *Command) UnsetListFormats() *Command {
 	c.removeFlagByID("listformats")
 	return c
@@ -289,7 +289,7 @@ func (c *Command) ListFormatsAsTable() *Command {
 }
 
 // UnsetListFormatsAsTable unsets any flags that were previously set by
-// [ListFormatsAsTable].
+// [Command.ListFormatsAsTable].
 func (c *Command) UnsetListFormatsAsTable() *Command {
 	c.removeFlagByID("listformats_table")
 	return c
@@ -309,7 +309,7 @@ func (c *Command) ListFormatsOld() *Command {
 }
 
 // UnsetListFormatsOld unsets any flags that were previously set by
-// [ListFormatsOld].
+// [Command.ListFormatsOld].
 func (c *Command) UnsetListFormatsOld() *Command {
 	c.removeFlagByID("listformats_table")
 	return c
@@ -331,7 +331,7 @@ func (c *Command) MergeOutputFormat(format string) *Command {
 }
 
 // UnsetMergeOutputFormat unsets any flags that were previously set by
-// [MergeOutputFormat].
+// [Command.MergeOutputFormat].
 func (c *Command) UnsetMergeOutputFormat() *Command {
 	c.removeFlagByID("merge_output_format")
 	return c
@@ -351,7 +351,7 @@ func (c *Command) AllowUnplayableFormats() *Command {
 }
 
 // UnsetAllowUnplayableFormats unsets any flags that were previously set by
-// [AllowUnplayableFormats].
+// [Command.AllowUnplayableFormats].
 func (c *Command) UnsetAllowUnplayableFormats() *Command {
 	c.removeFlagByID("allow_unplayable_formats")
 	return c

@@ -22,7 +22,7 @@ func (c *Command) Username(username string) *Command {
 }
 
 // UnsetUsername unsets any flags that were previously set by
-// [Username].
+// [Command.Username].
 func (c *Command) UnsetUsername() *Command {
 	c.removeFlagByID("username")
 	return c
@@ -42,7 +42,7 @@ func (c *Command) Password(password string) *Command {
 }
 
 // UnsetPassword unsets any flags that were previously set by
-// [Password].
+// [Command.Password].
 func (c *Command) UnsetPassword() *Command {
 	c.removeFlagByID("password")
 	return c
@@ -62,7 +62,7 @@ func (c *Command) Twofactor(twofactor string) *Command {
 }
 
 // UnsetTwofactor unsets any flags that were previously set by
-// [Twofactor].
+// [Command.Twofactor].
 func (c *Command) UnsetTwofactor() *Command {
 	c.removeFlagByID("twofactor")
 	return c
@@ -82,7 +82,7 @@ func (c *Command) Netrc() *Command {
 }
 
 // UnsetNetrc unsets any flags that were previously set by
-// [Netrc].
+// [Command.Netrc].
 func (c *Command) UnsetNetrc() *Command {
 	c.removeFlagByID("usenetrc")
 	return c
@@ -103,7 +103,7 @@ func (c *Command) NetrcLocation(path string) *Command {
 }
 
 // UnsetNetrcLocation unsets any flags that were previously set by
-// [NetrcLocation].
+// [Command.NetrcLocation].
 func (c *Command) UnsetNetrcLocation() *Command {
 	c.removeFlagByID("netrc_location")
 	return c
@@ -123,7 +123,7 @@ func (c *Command) NetrcCmd(netrcCmd string) *Command {
 }
 
 // UnsetNetrcCmd unsets any flags that were previously set by
-// [NetrcCmd].
+// [Command.NetrcCmd].
 func (c *Command) UnsetNetrcCmd() *Command {
 	c.removeFlagByID("netrc_cmd")
 	return c
@@ -143,7 +143,7 @@ func (c *Command) VideoPassword(password string) *Command {
 }
 
 // UnsetVideoPassword unsets any flags that were previously set by
-// [VideoPassword].
+// [Command.VideoPassword].
 func (c *Command) UnsetVideoPassword() *Command {
 	c.removeFlagByID("videopassword")
 	return c
@@ -164,7 +164,7 @@ func (c *Command) ApMso(mso string) *Command {
 }
 
 // UnsetApMso unsets any flags that were previously set by
-// [ApMso].
+// [Command.ApMso].
 func (c *Command) UnsetApMso() *Command {
 	c.removeFlagByID("ap_mso")
 	return c
@@ -184,7 +184,7 @@ func (c *Command) ApUsername(username string) *Command {
 }
 
 // UnsetApUsername unsets any flags that were previously set by
-// [ApUsername].
+// [Command.ApUsername].
 func (c *Command) UnsetApUsername() *Command {
 	c.removeFlagByID("ap_username")
 	return c
@@ -205,7 +205,7 @@ func (c *Command) ApPassword(password string) *Command {
 }
 
 // UnsetApPassword unsets any flags that were previously set by
-// [ApPassword].
+// [Command.ApPassword].
 func (c *Command) UnsetApPassword() *Command {
 	c.removeFlagByID("ap_password")
 	return c
@@ -225,7 +225,7 @@ func (c *Command) ApListMso() *Command {
 }
 
 // UnsetApListMso unsets any flags that were previously set by
-// [ApListMso].
+// [Command.ApListMso].
 func (c *Command) UnsetApListMso() *Command {
 	c.removeFlagByID("ap_list_mso")
 	return c
@@ -245,7 +245,7 @@ func (c *Command) ClientCertificate(certfile string) *Command {
 }
 
 // UnsetClientCertificate unsets any flags that were previously set by
-// [ClientCertificate].
+// [Command.ClientCertificate].
 func (c *Command) UnsetClientCertificate() *Command {
 	c.removeFlagByID("client_certificate")
 	return c
@@ -265,7 +265,7 @@ func (c *Command) ClientCertificateKey(keyfile string) *Command {
 }
 
 // UnsetClientCertificateKey unsets any flags that were previously set by
-// [ClientCertificateKey].
+// [Command.ClientCertificateKey].
 func (c *Command) UnsetClientCertificateKey() *Command {
 	c.removeFlagByID("client_certificate_key")
 	return c
@@ -286,7 +286,7 @@ func (c *Command) ClientCertificatePassword(password string) *Command {
 }
 
 // UnsetClientCertificatePassword unsets any flags that were previously set by
-// [ClientCertificatePassword].
+// [Command.ClientCertificatePassword].
 func (c *Command) UnsetClientCertificatePassword() *Command {
 	c.removeFlagByID("client_certificate_password")
 	return c

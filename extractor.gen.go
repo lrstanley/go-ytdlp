@@ -22,7 +22,7 @@ func (c *Command) ExtractorRetries(retries string) *Command {
 }
 
 // UnsetExtractorRetries unsets any flags that were previously set by
-// [ExtractorRetries].
+// [Command.ExtractorRetries].
 func (c *Command) UnsetExtractorRetries() *Command {
 	c.removeFlagByID("extractor_retries")
 	return c
@@ -42,7 +42,7 @@ func (c *Command) AllowDynamicMpd() *Command {
 }
 
 // UnsetAllowDynamicMpd unsets any flags that were previously set by
-// [AllowDynamicMpd].
+// [Command.AllowDynamicMpd].
 func (c *Command) UnsetAllowDynamicMpd() *Command {
 	c.removeFlagByID("dynamic_mpd")
 	return c
@@ -62,7 +62,7 @@ func (c *Command) IgnoreDynamicMpd() *Command {
 }
 
 // UnsetIgnoreDynamicMpd unsets any flags that were previously set by
-// [IgnoreDynamicMpd].
+// [Command.IgnoreDynamicMpd].
 func (c *Command) UnsetIgnoreDynamicMpd() *Command {
 	c.removeFlagByID("dynamic_mpd")
 	return c
@@ -82,7 +82,7 @@ func (c *Command) HlsSplitDiscontinuity() *Command {
 }
 
 // UnsetHlsSplitDiscontinuity unsets any flags that were previously set by
-// [HlsSplitDiscontinuity].
+// [Command.HlsSplitDiscontinuity].
 func (c *Command) UnsetHlsSplitDiscontinuity() *Command {
 	c.removeFlagByID("hls_split_discontinuity")
 	return c
@@ -118,7 +118,7 @@ func (c *Command) ExtractorArgs(ieKeyargs string) *Command {
 }
 
 // UnsetExtractorArgs unsets any flags that were previously set by
-// [ExtractorArgs].
+// [Command.ExtractorArgs].
 func (c *Command) UnsetExtractorArgs() *Command {
 	c.removeFlagByID("extractor_args")
 	return c
@@ -138,7 +138,7 @@ func (c *Command) YoutubeIncludeDashManifest() *Command {
 }
 
 // UnsetYoutubeIncludeDashManifest unsets any flags that were previously set by
-// [YoutubeIncludeDashManifest].
+// [Command.YoutubeIncludeDashManifest].
 func (c *Command) UnsetYoutubeIncludeDashManifest() *Command {
 	c.removeFlagByID("youtube_include_dash_manifest")
 	return c
@@ -158,7 +158,7 @@ func (c *Command) YoutubeSkipDashManifest() *Command {
 }
 
 // UnsetYoutubeSkipDashManifest unsets any flags that were previously set by
-// [YoutubeSkipDashManifest].
+// [Command.YoutubeSkipDashManifest].
 func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
 	c.removeFlagByID("youtube_include_dash_manifest")
 	return c
@@ -178,7 +178,7 @@ func (c *Command) YoutubeIncludeHlsManifest() *Command {
 }
 
 // UnsetYoutubeIncludeHlsManifest unsets any flags that were previously set by
-// [YoutubeIncludeHlsManifest].
+// [Command.YoutubeIncludeHlsManifest].
 func (c *Command) UnsetYoutubeIncludeHlsManifest() *Command {
 	c.removeFlagByID("youtube_include_hls_manifest")
 	return c
@@ -198,7 +198,7 @@ func (c *Command) YoutubeSkipHlsManifest() *Command {
 }
 
 // UnsetYoutubeSkipHlsManifest unsets any flags that were previously set by
-// [YoutubeSkipHlsManifest].
+// [Command.YoutubeSkipHlsManifest].
 func (c *Command) UnsetYoutubeSkipHlsManifest() *Command {
 	c.removeFlagByID("youtube_include_hls_manifest")
 	return c

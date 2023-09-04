@@ -22,7 +22,7 @@ func (c *Command) WriteSubs() *Command {
 }
 
 // UnsetWriteSubs unsets any flags that were previously set by
-// [WriteSubs].
+// [Command.WriteSubs].
 func (c *Command) UnsetWriteSubs() *Command {
 	c.removeFlagByID("writesubtitles")
 	return c
@@ -55,7 +55,7 @@ func (c *Command) WriteAutoSubs() *Command {
 }
 
 // UnsetWriteAutoSubs unsets any flags that were previously set by
-// [WriteAutoSubs].
+// [Command.WriteAutoSubs].
 func (c *Command) UnsetWriteAutoSubs() *Command {
 	c.removeFlagByID("writeautomaticsub")
 	return c
@@ -88,7 +88,7 @@ func (c *Command) AllSubs() *Command {
 }
 
 // UnsetAllSubs unsets any flags that were previously set by
-// [AllSubs].
+// [Command.AllSubs].
 func (c *Command) UnsetAllSubs() *Command {
 	c.removeFlagByID("allsubtitles")
 	return c
@@ -108,7 +108,7 @@ func (c *Command) ListSubs() *Command {
 }
 
 // UnsetListSubs unsets any flags that were previously set by
-// [ListSubs].
+// [Command.ListSubs].
 func (c *Command) UnsetListSubs() *Command {
 	c.removeFlagByID("listsubtitles")
 	return c
@@ -128,7 +128,7 @@ func (c *Command) SubFormat(format string) *Command {
 }
 
 // UnsetSubFormat unsets any flags that were previously set by
-// [SubFormat].
+// [Command.SubFormat].
 func (c *Command) UnsetSubFormat() *Command {
 	c.removeFlagByID("subtitlesformat")
 	return c
@@ -151,7 +151,7 @@ func (c *Command) SubLangs(langs string) *Command {
 }
 
 // UnsetSubLangs unsets any flags that were previously set by
-// [SubLangs].
+// [Command.SubLangs].
 func (c *Command) UnsetSubLangs() *Command {
 	c.removeFlagByID("subtitleslangs")
 	return c

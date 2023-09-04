@@ -26,7 +26,7 @@ func (c *Command) Encoding(encoding string) *Command {
 }
 
 // UnsetEncoding unsets any flags that were previously set by
-// [Encoding].
+// [Command.Encoding].
 func (c *Command) UnsetEncoding() *Command {
 	c.removeFlagByID("encoding")
 	return c
@@ -47,7 +47,7 @@ func (c *Command) LegacyServerConnect() *Command {
 }
 
 // UnsetLegacyServerConnect unsets any flags that were previously set by
-// [LegacyServerConnect].
+// [Command.LegacyServerConnect].
 func (c *Command) UnsetLegacyServerConnect() *Command {
 	c.removeFlagByID("legacy_server_connect")
 	return c
@@ -81,7 +81,7 @@ func (c *Command) PreferInsecure() *Command {
 }
 
 // UnsetPreferInsecure unsets any flags that were previously set by
-// [PreferInsecure].
+// [Command.PreferInsecure].
 func (c *Command) UnsetPreferInsecure() *Command {
 	c.removeFlagByID("prefer_insecure")
 	return c
@@ -99,7 +99,7 @@ func (c *Command) UserAgent(ua string) *Command {
 }
 
 // UnsetUserAgent unsets any flags that were previously set by
-// [UserAgent].
+// [Command.UserAgent].
 func (c *Command) UnsetUserAgent() *Command {
 	c.removeFlagByID("user_agent")
 	return c
@@ -117,7 +117,7 @@ func (c *Command) Referer(url string) *Command {
 }
 
 // UnsetReferer unsets any flags that were previously set by
-// [Referer].
+// [Command.Referer].
 func (c *Command) UnsetReferer() *Command {
 	c.removeFlagByID("referer")
 	return c
@@ -138,7 +138,7 @@ func (c *Command) AddHeaders(fieldvalue string) *Command {
 }
 
 // UnsetAddHeaders unsets any flags that were previously set by
-// [AddHeaders].
+// [Command.AddHeaders].
 func (c *Command) UnsetAddHeaders() *Command {
 	c.removeFlagByID("headers")
 	return c
@@ -159,7 +159,7 @@ func (c *Command) BidiWorkaround() *Command {
 }
 
 // UnsetBidiWorkaround unsets any flags that were previously set by
-// [BidiWorkaround].
+// [Command.BidiWorkaround].
 func (c *Command) UnsetBidiWorkaround() *Command {
 	c.removeFlagByID("bidi_workaround")
 	return c
@@ -181,7 +181,7 @@ func (c *Command) SleepRequests(seconds float64) *Command {
 }
 
 // UnsetSleepRequests unsets any flags that were previously set by
-// [SleepRequests].
+// [Command.SleepRequests].
 func (c *Command) UnsetSleepRequests() *Command {
 	c.removeFlagByID("sleep_interval_requests")
 	return c
@@ -204,7 +204,7 @@ func (c *Command) SleepInterval(seconds float64) *Command {
 }
 
 // UnsetSleepInterval unsets any flags that were previously set by
-// [SleepInterval].
+// [Command.SleepInterval].
 func (c *Command) UnsetSleepInterval() *Command {
 	c.removeFlagByID("sleep_interval")
 	return c
@@ -227,7 +227,7 @@ func (c *Command) MaxSleepInterval(seconds float64) *Command {
 }
 
 // UnsetMaxSleepInterval unsets any flags that were previously set by
-// [MaxSleepInterval].
+// [Command.MaxSleepInterval].
 func (c *Command) UnsetMaxSleepInterval() *Command {
 	c.removeFlagByID("max_sleep_interval")
 	return c
@@ -249,7 +249,7 @@ func (c *Command) SleepSubtitles(seconds int) *Command {
 }
 
 // UnsetSleepSubtitles unsets any flags that were previously set by
-// [SleepSubtitles].
+// [Command.SleepSubtitles].
 func (c *Command) UnsetSleepSubtitles() *Command {
 	c.removeFlagByID("sleep_interval_subtitles")
 	return c

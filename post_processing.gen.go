@@ -22,7 +22,7 @@ func (c *Command) ExtractAudio() *Command {
 }
 
 // UnsetExtractAudio unsets any flags that were previously set by
-// [ExtractAudio].
+// [Command.ExtractAudio].
 func (c *Command) UnsetExtractAudio() *Command {
 	c.removeFlagByID("extractaudio")
 	return c
@@ -44,7 +44,7 @@ func (c *Command) AudioFormat(format string) *Command {
 }
 
 // UnsetAudioFormat unsets any flags that were previously set by
-// [AudioFormat].
+// [Command.AudioFormat].
 func (c *Command) UnsetAudioFormat() *Command {
 	c.removeFlagByID("audioformat")
 	return c
@@ -66,7 +66,7 @@ func (c *Command) AudioQuality(quality string) *Command {
 }
 
 // UnsetAudioQuality unsets any flags that were previously set by
-// [AudioQuality].
+// [Command.AudioQuality].
 func (c *Command) UnsetAudioQuality() *Command {
 	c.removeFlagByID("audioquality")
 	return c
@@ -90,7 +90,7 @@ func (c *Command) RemuxVideo(format string) *Command {
 }
 
 // UnsetRemuxVideo unsets any flags that were previously set by
-// [RemuxVideo].
+// [Command.RemuxVideo].
 func (c *Command) UnsetRemuxVideo() *Command {
 	c.removeFlagByID("remuxvideo")
 	return c
@@ -111,7 +111,7 @@ func (c *Command) RecodeVideo(format string) *Command {
 }
 
 // UnsetRecodeVideo unsets any flags that were previously set by
-// [RecodeVideo].
+// [Command.RecodeVideo].
 func (c *Command) UnsetRecodeVideo() *Command {
 	c.removeFlagByID("recodevideo")
 	return c
@@ -143,7 +143,7 @@ func (c *Command) PostprocessorArgs(nameargs string) *Command {
 }
 
 // UnsetPostprocessorArgs unsets any flags that were previously set by
-// [PostprocessorArgs].
+// [Command.PostprocessorArgs].
 func (c *Command) UnsetPostprocessorArgs() *Command {
 	c.removeFlagByID("postprocessor_args")
 	return c
@@ -163,7 +163,7 @@ func (c *Command) KeepVideo() *Command {
 }
 
 // UnsetKeepVideo unsets any flags that were previously set by
-// [KeepVideo].
+// [Command.KeepVideo].
 func (c *Command) UnsetKeepVideo() *Command {
 	c.removeFlagByID("keepvideo")
 	return c
@@ -196,7 +196,7 @@ func (c *Command) PostOverwrites() *Command {
 }
 
 // UnsetPostOverwrites unsets any flags that were previously set by
-// [PostOverwrites].
+// [Command.PostOverwrites].
 func (c *Command) UnsetPostOverwrites() *Command {
 	c.removeFlagByID("nopostoverwrites")
 	return c
@@ -229,7 +229,7 @@ func (c *Command) EmbedSubs() *Command {
 }
 
 // UnsetEmbedSubs unsets any flags that were previously set by
-// [EmbedSubs].
+// [Command.EmbedSubs].
 func (c *Command) UnsetEmbedSubs() *Command {
 	c.removeFlagByID("embedsubtitles")
 	return c
@@ -262,7 +262,7 @@ func (c *Command) EmbedThumbnail() *Command {
 }
 
 // UnsetEmbedThumbnail unsets any flags that were previously set by
-// [EmbedThumbnail].
+// [Command.EmbedThumbnail].
 func (c *Command) UnsetEmbedThumbnail() *Command {
 	c.removeFlagByID("embedthumbnail")
 	return c
@@ -296,7 +296,7 @@ func (c *Command) EmbedMetadata() *Command {
 }
 
 // UnsetEmbedMetadata unsets any flags that were previously set by
-// [EmbedMetadata].
+// [Command.EmbedMetadata].
 func (c *Command) UnsetEmbedMetadata() *Command {
 	c.removeFlagByID("addmetadata")
 	return c
@@ -329,7 +329,7 @@ func (c *Command) EmbedChapters() *Command {
 }
 
 // UnsetEmbedChapters unsets any flags that were previously set by
-// [EmbedChapters].
+// [Command.EmbedChapters].
 func (c *Command) UnsetEmbedChapters() *Command {
 	c.removeFlagByID("addchapters")
 	return c
@@ -362,7 +362,7 @@ func (c *Command) EmbedInfoJson() *Command {
 }
 
 // UnsetEmbedInfoJson unsets any flags that were previously set by
-// [EmbedInfoJson].
+// [Command.EmbedInfoJson].
 func (c *Command) UnsetEmbedInfoJson() *Command {
 	c.removeFlagByID("embed_infojson")
 	return c
@@ -393,7 +393,7 @@ func (c *Command) MetadataFromTitle(format string) *Command {
 }
 
 // UnsetMetadataFromTitle unsets any flags that were previously set by
-// [MetadataFromTitle].
+// [Command.MetadataFromTitle].
 func (c *Command) UnsetMetadataFromTitle() *Command {
 	c.removeFlagByID("metafromtitle")
 	return c
@@ -415,7 +415,7 @@ func (c *Command) ParseMetadata(fromto string) *Command {
 }
 
 // UnsetParseMetadata unsets any flags that were previously set by
-// [ParseMetadata].
+// [Command.ParseMetadata].
 func (c *Command) UnsetParseMetadata() *Command {
 	c.removeFlagByID("parse_metadata")
 	return c
@@ -437,7 +437,7 @@ func (c *Command) ReplaceInMetadata(fields, regex, replace string) *Command {
 }
 
 // UnsetReplaceInMetadata unsets any flags that were previously set by
-// [ReplaceInMetadata].
+// [Command.ReplaceInMetadata].
 func (c *Command) UnsetReplaceInMetadata() *Command {
 	c.removeFlagByID("parse_metadata")
 	return c
@@ -457,7 +457,7 @@ func (c *Command) Xattrs() *Command {
 }
 
 // UnsetXattrs unsets any flags that were previously set by
-// [Xattrs].
+// [Command.Xattrs].
 func (c *Command) UnsetXattrs() *Command {
 	c.removeFlagByID("xattrs")
 	return c
@@ -490,7 +490,7 @@ func (c *Command) ConcatPlaylist(policy ConcatPlaylistOption) *Command {
 }
 
 // UnsetConcatPlaylist unsets any flags that were previously set by
-// [ConcatPlaylist].
+// [Command.ConcatPlaylist].
 func (c *Command) UnsetConcatPlaylist() *Command {
 	c.removeFlagByID("concat_playlist")
 	return c
@@ -523,7 +523,7 @@ func (c *Command) Fixup(policy FixupOption) *Command {
 }
 
 // UnsetFixup unsets any flags that were previously set by
-// [Fixup].
+// [Command.Fixup].
 func (c *Command) UnsetFixup() *Command {
 	c.removeFlagByID("fixup")
 	return c
@@ -543,7 +543,7 @@ func (c *Command) PreferAvconv() *Command {
 }
 
 // UnsetPreferAvconv unsets any flags that were previously set by
-// [PreferAvconv].
+// [Command.PreferAvconv].
 func (c *Command) UnsetPreferAvconv() *Command {
 	c.removeFlagByID("prefer_ffmpeg")
 	return c
@@ -563,7 +563,7 @@ func (c *Command) PreferFfmpeg() *Command {
 }
 
 // UnsetPreferFfmpeg unsets any flags that were previously set by
-// [PreferFfmpeg].
+// [Command.PreferFfmpeg].
 func (c *Command) UnsetPreferFfmpeg() *Command {
 	c.removeFlagByID("prefer_ffmpeg")
 	return c
@@ -584,7 +584,7 @@ func (c *Command) FfmpegLocation(path string) *Command {
 }
 
 // UnsetFfmpegLocation unsets any flags that were previously set by
-// [FfmpegLocation].
+// [Command.FfmpegLocation].
 func (c *Command) UnsetFfmpegLocation() *Command {
 	c.removeFlagByID("ffmpeg_location")
 	return c
@@ -609,7 +609,7 @@ func (c *Command) Exec(cmd string) *Command {
 }
 
 // UnsetExec unsets any flags that were previously set by
-// [Exec].
+// [Command.Exec].
 func (c *Command) UnsetExec() *Command {
 	c.removeFlagByID("exec_cmd")
 	return c
@@ -640,7 +640,7 @@ func (c *Command) ExecBeforeDownload(cmd string) *Command {
 }
 
 // UnsetExecBeforeDownload unsets any flags that were previously set by
-// [ExecBeforeDownload].
+// [Command.ExecBeforeDownload].
 func (c *Command) UnsetExecBeforeDownload() *Command {
 	c.removeFlagByID("exec_before_dl_cmd")
 	return c
@@ -674,7 +674,7 @@ func (c *Command) ConvertSubs(format string) *Command {
 }
 
 // UnsetConvertSubs unsets any flags that were previously set by
-// [ConvertSubs].
+// [Command.ConvertSubs].
 func (c *Command) UnsetConvertSubs() *Command {
 	c.removeFlagByID("convertsubtitles")
 	return c
@@ -695,7 +695,7 @@ func (c *Command) ConvertThumbnails(format string) *Command {
 }
 
 // UnsetConvertThumbnails unsets any flags that were previously set by
-// [ConvertThumbnails].
+// [Command.ConvertThumbnails].
 func (c *Command) UnsetConvertThumbnails() *Command {
 	c.removeFlagByID("convertthumbnails")
 	return c
@@ -717,7 +717,7 @@ func (c *Command) SplitChapters() *Command {
 }
 
 // UnsetSplitChapters unsets any flags that were previously set by
-// [SplitChapters].
+// [Command.SplitChapters].
 func (c *Command) UnsetSplitChapters() *Command {
 	c.removeFlagByID("split_chapters")
 	return c
@@ -751,7 +751,7 @@ func (c *Command) RemoveChapters(regex string) *Command {
 }
 
 // UnsetRemoveChapters unsets any flags that were previously set by
-// [RemoveChapters].
+// [Command.RemoveChapters].
 func (c *Command) UnsetRemoveChapters() *Command {
 	c.removeFlagByID("remove_chapters")
 	return c
@@ -786,7 +786,7 @@ func (c *Command) ForceKeyframesAtCuts() *Command {
 }
 
 // UnsetForceKeyframesAtCuts unsets any flags that were previously set by
-// [ForceKeyframesAtCuts].
+// [Command.ForceKeyframesAtCuts].
 func (c *Command) UnsetForceKeyframesAtCuts() *Command {
 	c.removeFlagByID("force_keyframes_at_cuts")
 	return c
@@ -828,7 +828,7 @@ func (c *Command) UsePostprocessor(name string) *Command {
 }
 
 // UnsetUsePostprocessor unsets any flags that were previously set by
-// [UsePostprocessor].
+// [Command.UsePostprocessor].
 func (c *Command) UnsetUsePostprocessor() *Command {
 	c.removeFlagByID("add_postprocessors")
 	return c

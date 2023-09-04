@@ -28,7 +28,7 @@ func (c *Command) Proxy(url string) *Command {
 }
 
 // UnsetProxy unsets any flags that were previously set by
-// [Proxy].
+// [Command.Proxy].
 func (c *Command) UnsetProxy() *Command {
 	c.removeFlagByID("proxy")
 	return c
@@ -50,7 +50,7 @@ func (c *Command) SocketTimeout(seconds float64) *Command {
 }
 
 // UnsetSocketTimeout unsets any flags that were previously set by
-// [SocketTimeout].
+// [Command.SocketTimeout].
 func (c *Command) UnsetSocketTimeout() *Command {
 	c.removeFlagByID("socket_timeout")
 	return c
@@ -70,7 +70,7 @@ func (c *Command) SourceAddress(ip string) *Command {
 }
 
 // UnsetSourceAddress unsets any flags that were previously set by
-// [SourceAddress].
+// [Command.SourceAddress].
 func (c *Command) UnsetSourceAddress() *Command {
 	c.removeFlagByID("source_address")
 	return c
@@ -90,7 +90,7 @@ func (c *Command) ForceIpv4() *Command {
 }
 
 // UnsetForceIpv4 unsets any flags that were previously set by
-// [ForceIpv4].
+// [Command.ForceIpv4].
 func (c *Command) UnsetForceIpv4() *Command {
 	c.removeFlagByID("source_address")
 	return c
@@ -110,7 +110,7 @@ func (c *Command) ForceIpv6() *Command {
 }
 
 // UnsetForceIpv6 unsets any flags that were previously set by
-// [ForceIpv6].
+// [Command.ForceIpv6].
 func (c *Command) UnsetForceIpv6() *Command {
 	c.removeFlagByID("source_address")
 	return c
@@ -130,7 +130,7 @@ func (c *Command) EnableFileUrls() *Command {
 }
 
 // UnsetEnableFileUrls unsets any flags that were previously set by
-// [EnableFileUrls].
+// [Command.EnableFileUrls].
 func (c *Command) UnsetEnableFileUrls() *Command {
 	c.removeFlagByID("enable_file_urls")
 	return c

@@ -30,7 +30,7 @@ func (c *Command) SponsorblockMark(cats string) *Command {
 }
 
 // UnsetSponsorblockMark unsets any flags that were previously set by
-// [SponsorblockMark].
+// [Command.SponsorblockMark].
 func (c *Command) UnsetSponsorblockMark() *Command {
 	c.removeFlagByID("sponsorblock_mark")
 	return c
@@ -54,7 +54,7 @@ func (c *Command) SponsorblockRemove(cats string) *Command {
 }
 
 // UnsetSponsorblockRemove unsets any flags that were previously set by
-// [SponsorblockRemove].
+// [Command.SponsorblockRemove].
 func (c *Command) UnsetSponsorblockRemove() *Command {
 	c.removeFlagByID("sponsorblock_remove")
 	return c
@@ -77,7 +77,7 @@ func (c *Command) SponsorblockChapterTitle(template string) *Command {
 }
 
 // UnsetSponsorblockChapterTitle unsets any flags that were previously set by
-// [SponsorblockChapterTitle].
+// [Command.SponsorblockChapterTitle].
 func (c *Command) UnsetSponsorblockChapterTitle() *Command {
 	c.removeFlagByID("sponsorblock_chapter_title")
 	return c
@@ -110,7 +110,7 @@ func (c *Command) SponsorblockApi(url string) *Command {
 }
 
 // UnsetSponsorblockApi unsets any flags that were previously set by
-// [SponsorblockApi].
+// [Command.SponsorblockApi].
 func (c *Command) UnsetSponsorblockApi() *Command {
 	c.removeFlagByID("sponsorblock_api")
 	return c
@@ -130,7 +130,7 @@ func (c *Command) Sponskrub() *Command {
 }
 
 // UnsetSponskrub unsets any flags that were previously set by
-// [Sponskrub].
+// [Command.Sponskrub].
 func (c *Command) UnsetSponskrub() *Command {
 	c.removeFlagByID("sponskrub")
 	return c
@@ -163,7 +163,7 @@ func (c *Command) SponskrubCut() *Command {
 }
 
 // UnsetSponskrubCut unsets any flags that were previously set by
-// [SponskrubCut].
+// [Command.SponskrubCut].
 func (c *Command) UnsetSponskrubCut() *Command {
 	c.removeFlagByID("sponskrub_cut")
 	return c
@@ -196,7 +196,7 @@ func (c *Command) SponskrubForce() *Command {
 }
 
 // UnsetSponskrubForce unsets any flags that were previously set by
-// [SponskrubForce].
+// [Command.SponskrubForce].
 func (c *Command) UnsetSponskrubForce() *Command {
 	c.removeFlagByID("sponskrub_force")
 	return c
@@ -227,7 +227,7 @@ func (c *Command) SponskrubLocation(path string) *Command {
 }
 
 // UnsetSponskrubLocation unsets any flags that were previously set by
-// [SponskrubLocation].
+// [Command.SponskrubLocation].
 func (c *Command) UnsetSponskrubLocation() *Command {
 	c.removeFlagByID("sponskrub_path")
 	return c
@@ -245,7 +245,7 @@ func (c *Command) SponskrubArgs(args string) *Command {
 }
 
 // UnsetSponskrubArgs unsets any flags that were previously set by
-// [SponskrubArgs].
+// [Command.SponskrubArgs].
 func (c *Command) UnsetSponskrubArgs() *Command {
 	c.removeFlagByID("sponskrub_args")
 	return c

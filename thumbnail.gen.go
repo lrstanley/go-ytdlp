@@ -22,7 +22,7 @@ func (c *Command) WriteThumbnail(value string) *Command {
 }
 
 // UnsetWriteThumbnail unsets any flags that were previously set by
-// [WriteThumbnail].
+// [Command.WriteThumbnail].
 func (c *Command) UnsetWriteThumbnail() *Command {
 	c.removeFlagByID("writethumbnail")
 	return c
@@ -55,7 +55,7 @@ func (c *Command) WriteAllThumbnails() *Command {
 }
 
 // UnsetWriteAllThumbnails unsets any flags that were previously set by
-// [WriteAllThumbnails].
+// [Command.WriteAllThumbnails].
 func (c *Command) UnsetWriteAllThumbnails() *Command {
 	c.removeFlagByID("writethumbnail")
 	return c
@@ -75,7 +75,7 @@ func (c *Command) ListThumbnails() *Command {
 }
 
 // UnsetListThumbnails unsets any flags that were previously set by
-// [ListThumbnails].
+// [Command.ListThumbnails].
 func (c *Command) UnsetListThumbnails() *Command {
 	c.removeFlagByID("list_thumbnails")
 	return c

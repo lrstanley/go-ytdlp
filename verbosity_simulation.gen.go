@@ -22,7 +22,7 @@ func (c *Command) Quiet() *Command {
 }
 
 // UnsetQuiet unsets any flags that were previously set by
-// [Quiet].
+// [Command.Quiet].
 func (c *Command) UnsetQuiet() *Command {
 	c.removeFlagByID("quiet")
 	return c
@@ -68,7 +68,7 @@ func (c *Command) Simulate() *Command {
 }
 
 // UnsetSimulate unsets any flags that were previously set by
-// [Simulate].
+// [Command.Simulate].
 func (c *Command) UnsetSimulate() *Command {
 	c.removeFlagByID("simulate")
 	return c
@@ -102,7 +102,7 @@ func (c *Command) IgnoreNoFormatsError() *Command {
 }
 
 // UnsetIgnoreNoFormatsError unsets any flags that were previously set by
-// [IgnoreNoFormatsError].
+// [Command.IgnoreNoFormatsError].
 func (c *Command) UnsetIgnoreNoFormatsError() *Command {
 	c.removeFlagByID("ignore_no_formats_error")
 	return c
@@ -135,7 +135,7 @@ func (c *Command) SkipDownload() *Command {
 }
 
 // UnsetSkipDownload unsets any flags that were previously set by
-// [SkipDownload].
+// [Command.SkipDownload].
 func (c *Command) UnsetSkipDownload() *Command {
 	c.removeFlagByID("skip_download")
 	return c
@@ -159,7 +159,7 @@ func (c *Command) Print(template string) *Command {
 }
 
 // UnsetPrint unsets any flags that were previously set by
-// [Print].
+// [Command.Print].
 func (c *Command) UnsetPrint() *Command {
 	c.removeFlagByID("forceprint")
 	return c
@@ -181,7 +181,7 @@ func (c *Command) PrintToFile(template, file string) *Command {
 }
 
 // UnsetPrintToFile unsets any flags that were previously set by
-// [PrintToFile].
+// [Command.PrintToFile].
 func (c *Command) UnsetPrintToFile() *Command {
 	c.removeFlagByID("print_to_file")
 	return c
@@ -201,7 +201,7 @@ func (c *Command) GetUrl() *Command {
 }
 
 // UnsetGetUrl unsets any flags that were previously set by
-// [GetUrl].
+// [Command.GetUrl].
 func (c *Command) UnsetGetUrl() *Command {
 	c.removeFlagByID("geturl")
 	return c
@@ -221,7 +221,7 @@ func (c *Command) GetTitle() *Command {
 }
 
 // UnsetGetTitle unsets any flags that were previously set by
-// [GetTitle].
+// [Command.GetTitle].
 func (c *Command) UnsetGetTitle() *Command {
 	c.removeFlagByID("gettitle")
 	return c
@@ -241,7 +241,7 @@ func (c *Command) GetId() *Command {
 }
 
 // UnsetGetId unsets any flags that were previously set by
-// [GetId].
+// [Command.GetId].
 func (c *Command) UnsetGetId() *Command {
 	c.removeFlagByID("getid")
 	return c
@@ -261,7 +261,7 @@ func (c *Command) GetThumbnail() *Command {
 }
 
 // UnsetGetThumbnail unsets any flags that were previously set by
-// [GetThumbnail].
+// [Command.GetThumbnail].
 func (c *Command) UnsetGetThumbnail() *Command {
 	c.removeFlagByID("getthumbnail")
 	return c
@@ -281,7 +281,7 @@ func (c *Command) GetDescription() *Command {
 }
 
 // UnsetGetDescription unsets any flags that were previously set by
-// [GetDescription].
+// [Command.GetDescription].
 func (c *Command) UnsetGetDescription() *Command {
 	c.removeFlagByID("getdescription")
 	return c
@@ -301,7 +301,7 @@ func (c *Command) GetDuration() *Command {
 }
 
 // UnsetGetDuration unsets any flags that were previously set by
-// [GetDuration].
+// [Command.GetDuration].
 func (c *Command) UnsetGetDuration() *Command {
 	c.removeFlagByID("getduration")
 	return c
@@ -321,7 +321,7 @@ func (c *Command) GetFilename() *Command {
 }
 
 // UnsetGetFilename unsets any flags that were previously set by
-// [GetFilename].
+// [Command.GetFilename].
 func (c *Command) UnsetGetFilename() *Command {
 	c.removeFlagByID("getfilename")
 	return c
@@ -341,7 +341,7 @@ func (c *Command) GetFormat() *Command {
 }
 
 // UnsetGetFormat unsets any flags that were previously set by
-// [GetFormat].
+// [Command.GetFormat].
 func (c *Command) UnsetGetFormat() *Command {
 	c.removeFlagByID("getformat")
 	return c
@@ -362,7 +362,7 @@ func (c *Command) DumpJson() *Command {
 }
 
 // UnsetDumpJson unsets any flags that were previously set by
-// [DumpJson].
+// [Command.DumpJson].
 func (c *Command) UnsetDumpJson() *Command {
 	c.removeFlagByID("dumpjson")
 	return c
@@ -384,7 +384,7 @@ func (c *Command) DumpSingleJson() *Command {
 }
 
 // UnsetDumpSingleJson unsets any flags that were previously set by
-// [DumpSingleJson].
+// [Command.DumpSingleJson].
 func (c *Command) UnsetDumpSingleJson() *Command {
 	c.removeFlagByID("dump_single_json")
 	return c
@@ -404,7 +404,7 @@ func (c *Command) PrintJson() *Command {
 }
 
 // UnsetPrintJson unsets any flags that were previously set by
-// [PrintJson].
+// [Command.PrintJson].
 func (c *Command) UnsetPrintJson() *Command {
 	c.removeFlagByID("print_json")
 	return c
@@ -425,7 +425,7 @@ func (c *Command) ForceWriteArchive() *Command {
 }
 
 // UnsetForceWriteArchive unsets any flags that were previously set by
-// [ForceWriteArchive].
+// [Command.ForceWriteArchive].
 func (c *Command) UnsetForceWriteArchive() *Command {
 	c.removeFlagByID("force_write_download_archive")
 	return c
@@ -445,7 +445,7 @@ func (c *Command) Newline() *Command {
 }
 
 // UnsetNewline unsets any flags that were previously set by
-// [Newline].
+// [Command.Newline].
 func (c *Command) UnsetNewline() *Command {
 	c.removeFlagByID("progress_with_newline")
 	return c
@@ -478,7 +478,7 @@ func (c *Command) Progress() *Command {
 }
 
 // UnsetProgress unsets any flags that were previously set by
-// [Progress].
+// [Command.Progress].
 func (c *Command) UnsetProgress() *Command {
 	c.removeFlagByID("noprogress")
 	return c
@@ -498,7 +498,7 @@ func (c *Command) ConsoleTitle() *Command {
 }
 
 // UnsetConsoleTitle unsets any flags that were previously set by
-// [ConsoleTitle].
+// [Command.ConsoleTitle].
 func (c *Command) UnsetConsoleTitle() *Command {
 	c.removeFlagByID("consoletitle")
 	return c
@@ -523,7 +523,7 @@ func (c *Command) ProgressTemplate(template string) *Command {
 }
 
 // UnsetProgressTemplate unsets any flags that were previously set by
-// [ProgressTemplate].
+// [Command.ProgressTemplate].
 func (c *Command) UnsetProgressTemplate() *Command {
 	c.removeFlagByID("progress_template")
 	return c
@@ -543,7 +543,7 @@ func (c *Command) Verbose() *Command {
 }
 
 // UnsetVerbose unsets any flags that were previously set by
-// [Verbose].
+// [Command.Verbose].
 func (c *Command) UnsetVerbose() *Command {
 	c.removeFlagByID("verbose")
 	return c
@@ -563,7 +563,7 @@ func (c *Command) DumpPages() *Command {
 }
 
 // UnsetDumpPages unsets any flags that were previously set by
-// [DumpPages].
+// [Command.DumpPages].
 func (c *Command) UnsetDumpPages() *Command {
 	c.removeFlagByID("dump_intermediate_pages")
 	return c
@@ -584,7 +584,7 @@ func (c *Command) WritePages() *Command {
 }
 
 // UnsetWritePages unsets any flags that were previously set by
-// [WritePages].
+// [Command.WritePages].
 func (c *Command) UnsetWritePages() *Command {
 	c.removeFlagByID("write_pages")
 	return c
@@ -604,7 +604,7 @@ func (c *Command) LoadPages() *Command {
 }
 
 // UnsetLoadPages unsets any flags that were previously set by
-// [LoadPages].
+// [Command.LoadPages].
 func (c *Command) UnsetLoadPages() *Command {
 	c.removeFlagByID("load_pages")
 	return c
@@ -624,7 +624,7 @@ func (c *Command) YoutubePrintSigCode() *Command {
 }
 
 // UnsetYoutubePrintSigCode unsets any flags that were previously set by
-// [YoutubePrintSigCode].
+// [Command.YoutubePrintSigCode].
 func (c *Command) UnsetYoutubePrintSigCode() *Command {
 	c.removeFlagByID("youtube_print_sig_code")
 	return c
@@ -644,7 +644,7 @@ func (c *Command) PrintTraffic() *Command {
 }
 
 // UnsetPrintTraffic unsets any flags that were previously set by
-// [PrintTraffic].
+// [Command.PrintTraffic].
 func (c *Command) UnsetPrintTraffic() *Command {
 	c.removeFlagByID("debug_printtraffic")
 	return c
@@ -664,7 +664,7 @@ func (c *Command) CallHome() *Command {
 }
 
 // UnsetCallHome unsets any flags that were previously set by
-// [CallHome].
+// [Command.CallHome].
 func (c *Command) UnsetCallHome() *Command {
 	c.removeFlagByID("call_home")
 	return c

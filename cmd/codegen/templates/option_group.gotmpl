@@ -133,7 +133,7 @@ func (c *Command) {{ $option.Name | to_camel }}({{ template "optionMetaArgs" $op
 
 {{- if not (hasPrefix "No" ($option.Name | to_camel)) }}
 // Unset{{ $option.Name | to_camel }} unsets any flags that were previously set by
-// [{{ $option.Name | to_camel }}].
+// [Command.{{ $option.Name | to_camel }}].
 func (c *Command) Unset{{ $option.Name | to_camel }}() *Command {
     c.removeFlagByID({{ $option.Dest | quote }})
     return c

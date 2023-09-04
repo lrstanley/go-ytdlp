@@ -134,7 +134,7 @@ func (c *Command) IgnoreErrors() *Command {
 }
 
 // UnsetIgnoreErrors unsets any flags that were previously set by
-// [IgnoreErrors].
+// [Command.IgnoreErrors].
 func (c *Command) UnsetIgnoreErrors() *Command {
 	c.removeFlagByID("ignoreerrors")
 	return c
@@ -168,7 +168,7 @@ func (c *Command) AbortOnError() *Command {
 }
 
 // UnsetAbortOnError unsets any flags that were previously set by
-// [AbortOnError].
+// [Command.AbortOnError].
 func (c *Command) UnsetAbortOnError() *Command {
 	c.removeFlagByID("ignoreerrors")
 	return c
@@ -281,7 +281,7 @@ func (c *Command) UseExtractors(names string) *Command {
 }
 
 // UnsetUseExtractors unsets any flags that were previously set by
-// [UseExtractors].
+// [Command.UseExtractors].
 func (c *Command) UnsetUseExtractors() *Command {
 	c.removeFlagByID("allowed_extractors")
 	return c
@@ -301,7 +301,7 @@ func (c *Command) ForceGenericExtractor() *Command {
 }
 
 // UnsetForceGenericExtractor unsets any flags that were previously set by
-// [ForceGenericExtractor].
+// [Command.ForceGenericExtractor].
 func (c *Command) UnsetForceGenericExtractor() *Command {
 	c.removeFlagByID("force_generic_extractor")
 	return c
@@ -325,7 +325,7 @@ func (c *Command) DefaultSearch(prefix string) *Command {
 }
 
 // UnsetDefaultSearch unsets any flags that were previously set by
-// [DefaultSearch].
+// [Command.DefaultSearch].
 func (c *Command) UnsetDefaultSearch() *Command {
 	c.removeFlagByID("default_search")
 	return c
@@ -347,7 +347,7 @@ func (c *Command) IgnoreConfig() *Command {
 }
 
 // UnsetIgnoreConfig unsets any flags that were previously set by
-// [IgnoreConfig].
+// [Command.IgnoreConfig].
 func (c *Command) UnsetIgnoreConfig() *Command {
 	c.removeFlagByID("ignoreconfig")
 	return c
@@ -384,7 +384,7 @@ func (c *Command) ConfigLocations(path string) *Command {
 }
 
 // UnsetConfigLocations unsets any flags that were previously set by
-// [ConfigLocations].
+// [Command.ConfigLocations].
 func (c *Command) UnsetConfigLocations() *Command {
 	c.removeFlagByID("config_locations")
 	return c
@@ -404,7 +404,7 @@ func (c *Command) FlatPlaylist() *Command {
 }
 
 // UnsetFlatPlaylist unsets any flags that were previously set by
-// [FlatPlaylist].
+// [Command.FlatPlaylist].
 func (c *Command) UnsetFlatPlaylist() *Command {
 	c.removeFlagByID("extract_flat")
 	return c
@@ -438,7 +438,7 @@ func (c *Command) LiveFromStart() *Command {
 }
 
 // UnsetLiveFromStart unsets any flags that were previously set by
-// [LiveFromStart].
+// [Command.LiveFromStart].
 func (c *Command) UnsetLiveFromStart() *Command {
 	c.removeFlagByID("live_from_start")
 	return c
@@ -472,7 +472,7 @@ func (c *Command) WaitForVideo(min string) *Command {
 }
 
 // UnsetWaitForVideo unsets any flags that were previously set by
-// [WaitForVideo].
+// [Command.WaitForVideo].
 func (c *Command) UnsetWaitForVideo() *Command {
 	c.removeFlagByID("wait_for_video")
 	return c
@@ -505,7 +505,7 @@ func (c *Command) MarkWatched() *Command {
 }
 
 // UnsetMarkWatched unsets any flags that were previously set by
-// [MarkWatched].
+// [Command.MarkWatched].
 func (c *Command) UnsetMarkWatched() *Command {
 	c.removeFlagByID("mark_watched")
 	return c
@@ -554,7 +554,7 @@ func (c *Command) Color(policy string) *Command {
 }
 
 // UnsetColor unsets any flags that were previously set by
-// [Color].
+// [Command.Color].
 func (c *Command) UnsetColor() *Command {
 	c.removeFlagByID("color")
 	return c
@@ -576,7 +576,7 @@ func (c *Command) CompatOptions(opts string) *Command {
 }
 
 // UnsetCompatOptions unsets any flags that were previously set by
-// [CompatOptions].
+// [Command.CompatOptions].
 func (c *Command) UnsetCompatOptions() *Command {
 	c.removeFlagByID("compat_opts")
 	return c

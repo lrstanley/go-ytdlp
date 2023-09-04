@@ -29,7 +29,7 @@ func (c *Command) ConcurrentFragments(n int) *Command {
 }
 
 // UnsetConcurrentFragments unsets any flags that were previously set by
-// [ConcurrentFragments].
+// [Command.ConcurrentFragments].
 func (c *Command) UnsetConcurrentFragments() *Command {
 	c.removeFlagByID("concurrent_fragment_downloads")
 	return c
@@ -49,7 +49,7 @@ func (c *Command) LimitRate(rate string) *Command {
 }
 
 // UnsetLimitRate unsets any flags that were previously set by
-// [LimitRate].
+// [Command.LimitRate].
 func (c *Command) UnsetLimitRate() *Command {
 	c.removeFlagByID("ratelimit")
 	return c
@@ -70,7 +70,7 @@ func (c *Command) ThrottledRate(rate string) *Command {
 }
 
 // UnsetThrottledRate unsets any flags that were previously set by
-// [ThrottledRate].
+// [Command.ThrottledRate].
 func (c *Command) UnsetThrottledRate() *Command {
 	c.removeFlagByID("throttledratelimit")
 	return c
@@ -90,7 +90,7 @@ func (c *Command) Retries(retries string) *Command {
 }
 
 // UnsetRetries unsets any flags that were previously set by
-// [Retries].
+// [Command.Retries].
 func (c *Command) UnsetRetries() *Command {
 	c.removeFlagByID("retries")
 	return c
@@ -110,7 +110,7 @@ func (c *Command) FileAccessRetries(retries string) *Command {
 }
 
 // UnsetFileAccessRetries unsets any flags that were previously set by
-// [FileAccessRetries].
+// [Command.FileAccessRetries].
 func (c *Command) UnsetFileAccessRetries() *Command {
 	c.removeFlagByID("file_access_retries")
 	return c
@@ -131,7 +131,7 @@ func (c *Command) FragmentRetries(retries string) *Command {
 }
 
 // UnsetFragmentRetries unsets any flags that were previously set by
-// [FragmentRetries].
+// [Command.FragmentRetries].
 func (c *Command) UnsetFragmentRetries() *Command {
 	c.removeFlagByID("fragment_retries")
 	return c
@@ -155,7 +155,7 @@ func (c *Command) RetrySleep(expr string) *Command {
 }
 
 // UnsetRetrySleep unsets any flags that were previously set by
-// [RetrySleep].
+// [Command.RetrySleep].
 func (c *Command) UnsetRetrySleep() *Command {
 	c.removeFlagByID("retry_sleep")
 	return c
@@ -175,7 +175,7 @@ func (c *Command) SkipUnavailableFragments() *Command {
 }
 
 // UnsetSkipUnavailableFragments unsets any flags that were previously set by
-// [SkipUnavailableFragments].
+// [Command.SkipUnavailableFragments].
 func (c *Command) UnsetSkipUnavailableFragments() *Command {
 	c.removeFlagByID("skip_unavailable_fragments")
 	return c
@@ -195,7 +195,7 @@ func (c *Command) AbortOnUnavailableFragments() *Command {
 }
 
 // UnsetAbortOnUnavailableFragments unsets any flags that were previously set by
-// [AbortOnUnavailableFragments].
+// [Command.AbortOnUnavailableFragments].
 func (c *Command) UnsetAbortOnUnavailableFragments() *Command {
 	c.removeFlagByID("skip_unavailable_fragments")
 	return c
@@ -215,7 +215,7 @@ func (c *Command) KeepFragments() *Command {
 }
 
 // UnsetKeepFragments unsets any flags that were previously set by
-// [KeepFragments].
+// [Command.KeepFragments].
 func (c *Command) UnsetKeepFragments() *Command {
 	c.removeFlagByID("keep_fragments")
 	return c
@@ -248,7 +248,7 @@ func (c *Command) BufferSize(size string) *Command {
 }
 
 // UnsetBufferSize unsets any flags that were previously set by
-// [BufferSize].
+// [Command.BufferSize].
 func (c *Command) UnsetBufferSize() *Command {
 	c.removeFlagByID("buffersize")
 	return c
@@ -269,7 +269,7 @@ func (c *Command) ResizeBuffer() *Command {
 }
 
 // UnsetResizeBuffer unsets any flags that were previously set by
-// [ResizeBuffer].
+// [Command.ResizeBuffer].
 func (c *Command) UnsetResizeBuffer() *Command {
 	c.removeFlagByID("noresizebuffer")
 	return c
@@ -304,7 +304,7 @@ func (c *Command) HttpChunkSize(size string) *Command {
 }
 
 // UnsetHttpChunkSize unsets any flags that were previously set by
-// [HttpChunkSize].
+// [Command.HttpChunkSize].
 func (c *Command) UnsetHttpChunkSize() *Command {
 	c.removeFlagByID("http_chunk_size")
 	return c
@@ -324,7 +324,7 @@ func (c *Command) Test() *Command {
 }
 
 // UnsetTest unsets any flags that were previously set by
-// [Test].
+// [Command.Test].
 func (c *Command) UnsetTest() *Command {
 	c.removeFlagByID("test")
 	return c
@@ -344,7 +344,7 @@ func (c *Command) PlaylistReverse() *Command {
 }
 
 // UnsetPlaylistReverse unsets any flags that were previously set by
-// [PlaylistReverse].
+// [Command.PlaylistReverse].
 func (c *Command) UnsetPlaylistReverse() *Command {
 	c.removeFlagByID("playlist_reverse")
 	return c
@@ -377,7 +377,7 @@ func (c *Command) PlaylistRandom() *Command {
 }
 
 // UnsetPlaylistRandom unsets any flags that were previously set by
-// [PlaylistRandom].
+// [Command.PlaylistRandom].
 func (c *Command) UnsetPlaylistRandom() *Command {
 	c.removeFlagByID("playlist_random")
 	return c
@@ -398,7 +398,7 @@ func (c *Command) LazyPlaylist() *Command {
 }
 
 // UnsetLazyPlaylist unsets any flags that were previously set by
-// [LazyPlaylist].
+// [Command.LazyPlaylist].
 func (c *Command) UnsetLazyPlaylist() *Command {
 	c.removeFlagByID("lazy_playlist")
 	return c
@@ -432,7 +432,7 @@ func (c *Command) XattrSetFilesize() *Command {
 }
 
 // UnsetXattrSetFilesize unsets any flags that were previously set by
-// [XattrSetFilesize].
+// [Command.XattrSetFilesize].
 func (c *Command) UnsetXattrSetFilesize() *Command {
 	c.removeFlagByID("xattr_set_filesize")
 	return c
@@ -452,7 +452,7 @@ func (c *Command) HlsPreferNative() *Command {
 }
 
 // UnsetHlsPreferNative unsets any flags that were previously set by
-// [HlsPreferNative].
+// [Command.HlsPreferNative].
 func (c *Command) UnsetHlsPreferNative() *Command {
 	c.removeFlagByID("hls_prefer_native")
 	return c
@@ -472,7 +472,7 @@ func (c *Command) HlsPreferFfmpeg() *Command {
 }
 
 // UnsetHlsPreferFfmpeg unsets any flags that were previously set by
-// [HlsPreferFfmpeg].
+// [Command.HlsPreferFfmpeg].
 func (c *Command) UnsetHlsPreferFfmpeg() *Command {
 	c.removeFlagByID("hls_prefer_native")
 	return c
@@ -494,7 +494,7 @@ func (c *Command) HlsUseMpegts() *Command {
 }
 
 // UnsetHlsUseMpegts unsets any flags that were previously set by
-// [HlsUseMpegts].
+// [Command.HlsUseMpegts].
 func (c *Command) UnsetHlsUseMpegts() *Command {
 	c.removeFlagByID("hls_use_mpegts")
 	return c
@@ -533,7 +533,7 @@ func (c *Command) DownloadSections(regex string) *Command {
 }
 
 // UnsetDownloadSections unsets any flags that were previously set by
-// [DownloadSections].
+// [Command.DownloadSections].
 func (c *Command) UnsetDownloadSections() *Command {
 	c.removeFlagByID("download_ranges")
 	return c
@@ -558,7 +558,7 @@ func (c *Command) Downloader(name string) *Command {
 }
 
 // UnsetDownloader unsets any flags that were previously set by
-// [Downloader].
+// [Command.Downloader].
 func (c *Command) UnsetDownloader() *Command {
 	c.removeFlagByID("external_downloader")
 	return c
@@ -581,7 +581,7 @@ func (c *Command) DownloaderArgs(nameargs string) *Command {
 }
 
 // UnsetDownloaderArgs unsets any flags that were previously set by
-// [DownloaderArgs].
+// [Command.DownloaderArgs].
 func (c *Command) UnsetDownloaderArgs() *Command {
 	c.removeFlagByID("external_downloader_args")
 	return c

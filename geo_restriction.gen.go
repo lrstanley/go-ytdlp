@@ -24,7 +24,7 @@ func (c *Command) GeoVerificationProxy(url string) *Command {
 }
 
 // UnsetGeoVerificationProxy unsets any flags that were previously set by
-// [GeoVerificationProxy].
+// [Command.GeoVerificationProxy].
 func (c *Command) UnsetGeoVerificationProxy() *Command {
 	c.removeFlagByID("geo_verification_proxy")
 	return c
@@ -42,7 +42,7 @@ func (c *Command) CnVerificationProxy(url string) *Command {
 }
 
 // UnsetCnVerificationProxy unsets any flags that were previously set by
-// [CnVerificationProxy].
+// [Command.CnVerificationProxy].
 func (c *Command) UnsetCnVerificationProxy() *Command {
 	c.removeFlagByID("cn_verification_proxy")
 	return c
@@ -64,7 +64,7 @@ func (c *Command) Xff(value string) *Command {
 }
 
 // UnsetXff unsets any flags that were previously set by
-// [Xff].
+// [Command.Xff].
 func (c *Command) UnsetXff() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
@@ -84,7 +84,7 @@ func (c *Command) GeoBypass() *Command {
 }
 
 // UnsetGeoBypass unsets any flags that were previously set by
-// [GeoBypass].
+// [Command.GeoBypass].
 func (c *Command) UnsetGeoBypass() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
@@ -115,7 +115,7 @@ func (c *Command) GeoBypassCountry(code string) *Command {
 }
 
 // UnsetGeoBypassCountry unsets any flags that were previously set by
-// [GeoBypassCountry].
+// [Command.GeoBypassCountry].
 func (c *Command) UnsetGeoBypassCountry() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
@@ -133,7 +133,7 @@ func (c *Command) GeoBypassIpBlock(ipBlock string) *Command {
 }
 
 // UnsetGeoBypassIpBlock unsets any flags that were previously set by
-// [GeoBypassIpBlock].
+// [Command.GeoBypassIpBlock].
 func (c *Command) UnsetGeoBypassIpBlock() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c

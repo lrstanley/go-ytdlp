@@ -27,7 +27,7 @@ func (c *Command) BatchFile(file string) *Command {
 }
 
 // UnsetBatchFile unsets any flags that were previously set by
-// [BatchFile].
+// [Command.BatchFile].
 func (c *Command) UnsetBatchFile() *Command {
 	c.removeFlagByID("batchfile")
 	return c
@@ -60,7 +60,7 @@ func (c *Command) Id() *Command {
 }
 
 // UnsetId unsets any flags that were previously set by
-// [Id].
+// [Command.Id].
 func (c *Command) UnsetId() *Command {
 	c.removeFlagByID("useid")
 	return c
@@ -85,7 +85,7 @@ func (c *Command) Paths(path string) *Command {
 }
 
 // UnsetPaths unsets any flags that were previously set by
-// [Paths].
+// [Command.Paths].
 func (c *Command) UnsetPaths() *Command {
 	c.removeFlagByID("paths")
 	return c
@@ -105,7 +105,7 @@ func (c *Command) Output(template string) *Command {
 }
 
 // UnsetOutput unsets any flags that were previously set by
-// [Output].
+// [Command.Output].
 func (c *Command) UnsetOutput() *Command {
 	c.removeFlagByID("outtmpl")
 	return c
@@ -125,7 +125,7 @@ func (c *Command) OutputNaPlaceholder(text string) *Command {
 }
 
 // UnsetOutputNaPlaceholder unsets any flags that were previously set by
-// [OutputNaPlaceholder].
+// [Command.OutputNaPlaceholder].
 func (c *Command) UnsetOutputNaPlaceholder() *Command {
 	c.removeFlagByID("outtmpl_na_placeholder")
 	return c
@@ -145,7 +145,7 @@ func (c *Command) AutonumberSize(number int) *Command {
 }
 
 // UnsetAutonumberSize unsets any flags that were previously set by
-// [AutonumberSize].
+// [Command.AutonumberSize].
 func (c *Command) UnsetAutonumberSize() *Command {
 	c.removeFlagByID("autonumber_size")
 	return c
@@ -165,7 +165,7 @@ func (c *Command) AutonumberStart(number int) *Command {
 }
 
 // UnsetAutonumberStart unsets any flags that were previously set by
-// [AutonumberStart].
+// [Command.AutonumberStart].
 func (c *Command) UnsetAutonumberStart() *Command {
 	c.removeFlagByID("autonumber_start")
 	return c
@@ -186,7 +186,7 @@ func (c *Command) RestrictFilenames() *Command {
 }
 
 // UnsetRestrictFilenames unsets any flags that were previously set by
-// [RestrictFilenames].
+// [Command.RestrictFilenames].
 func (c *Command) UnsetRestrictFilenames() *Command {
 	c.removeFlagByID("restrictfilenames")
 	return c
@@ -219,7 +219,7 @@ func (c *Command) WindowsFilenames() *Command {
 }
 
 // UnsetWindowsFilenames unsets any flags that were previously set by
-// [WindowsFilenames].
+// [Command.WindowsFilenames].
 func (c *Command) UnsetWindowsFilenames() *Command {
 	c.removeFlagByID("windowsfilenames")
 	return c
@@ -255,7 +255,7 @@ func (c *Command) TrimFilenames(length int) *Command {
 }
 
 // UnsetTrimFilenames unsets any flags that were previously set by
-// [TrimFilenames].
+// [Command.TrimFilenames].
 func (c *Command) UnsetTrimFilenames() *Command {
 	c.removeFlagByID("trim_file_name")
 	return c
@@ -288,7 +288,7 @@ func (c *Command) ForceOverwrites() *Command {
 }
 
 // UnsetForceOverwrites unsets any flags that were previously set by
-// [ForceOverwrites].
+// [Command.ForceOverwrites].
 func (c *Command) UnsetForceOverwrites() *Command {
 	c.removeFlagByID("overwrites")
 	return c
@@ -321,7 +321,7 @@ func (c *Command) Continue() *Command {
 }
 
 // UnsetContinue unsets any flags that were previously set by
-// [Continue].
+// [Command.Continue].
 func (c *Command) UnsetContinue() *Command {
 	c.removeFlagByID("continue_dl")
 	return c
@@ -355,7 +355,7 @@ func (c *Command) Part() *Command {
 }
 
 // UnsetPart unsets any flags that were previously set by
-// [Part].
+// [Command.Part].
 func (c *Command) UnsetPart() *Command {
 	c.removeFlagByID("nopart")
 	return c
@@ -388,7 +388,7 @@ func (c *Command) Mtime() *Command {
 }
 
 // UnsetMtime unsets any flags that were previously set by
-// [Mtime].
+// [Command.Mtime].
 func (c *Command) UnsetMtime() *Command {
 	c.removeFlagByID("updatetime")
 	return c
@@ -421,7 +421,7 @@ func (c *Command) WriteDescription() *Command {
 }
 
 // UnsetWriteDescription unsets any flags that were previously set by
-// [WriteDescription].
+// [Command.WriteDescription].
 func (c *Command) UnsetWriteDescription() *Command {
 	c.removeFlagByID("writedescription")
 	return c
@@ -455,7 +455,7 @@ func (c *Command) WriteInfoJson() *Command {
 }
 
 // UnsetWriteInfoJson unsets any flags that were previously set by
-// [WriteInfoJson].
+// [Command.WriteInfoJson].
 func (c *Command) UnsetWriteInfoJson() *Command {
 	c.removeFlagByID("writeinfojson")
 	return c
@@ -488,7 +488,7 @@ func (c *Command) WriteAnnotations() *Command {
 }
 
 // UnsetWriteAnnotations unsets any flags that were previously set by
-// [WriteAnnotations].
+// [Command.WriteAnnotations].
 func (c *Command) UnsetWriteAnnotations() *Command {
 	c.removeFlagByID("writeannotations")
 	return c
@@ -522,7 +522,7 @@ func (c *Command) WritePlaylistMetafiles() *Command {
 }
 
 // UnsetWritePlaylistMetafiles unsets any flags that were previously set by
-// [WritePlaylistMetafiles].
+// [Command.WritePlaylistMetafiles].
 func (c *Command) UnsetWritePlaylistMetafiles() *Command {
 	c.removeFlagByID("allow_playlist_files")
 	return c
@@ -556,7 +556,7 @@ func (c *Command) CleanInfoJson() *Command {
 }
 
 // UnsetCleanInfoJson unsets any flags that were previously set by
-// [CleanInfoJson].
+// [Command.CleanInfoJson].
 func (c *Command) UnsetCleanInfoJson() *Command {
 	c.removeFlagByID("clean_infojson")
 	return c
@@ -590,7 +590,7 @@ func (c *Command) WriteComments() *Command {
 }
 
 // UnsetWriteComments unsets any flags that were previously set by
-// [WriteComments].
+// [Command.WriteComments].
 func (c *Command) UnsetWriteComments() *Command {
 	c.removeFlagByID("getcomments")
 	return c
@@ -624,7 +624,7 @@ func (c *Command) LoadInfoJson(file string) *Command {
 }
 
 // UnsetLoadInfoJson unsets any flags that were previously set by
-// [LoadInfoJson].
+// [Command.LoadInfoJson].
 func (c *Command) UnsetLoadInfoJson() *Command {
 	c.removeFlagByID("load_info_filename")
 	return c
@@ -644,7 +644,7 @@ func (c *Command) Cookies(file string) *Command {
 }
 
 // UnsetCookies unsets any flags that were previously set by
-// [Cookies].
+// [Command.Cookies].
 func (c *Command) UnsetCookies() *Command {
 	c.removeFlagByID("cookiefile")
 	return c
@@ -683,7 +683,7 @@ func (c *Command) CookiesFromBrowser(browser string) *Command {
 }
 
 // UnsetCookiesFromBrowser unsets any flags that were previously set by
-// [CookiesFromBrowser].
+// [Command.CookiesFromBrowser].
 func (c *Command) UnsetCookiesFromBrowser() *Command {
 	c.removeFlagByID("cookiesfrombrowser")
 	return c
@@ -718,7 +718,7 @@ func (c *Command) CacheDir(dir string) *Command {
 }
 
 // UnsetCacheDir unsets any flags that were previously set by
-// [CacheDir].
+// [Command.CacheDir].
 func (c *Command) UnsetCacheDir() *Command {
 	c.removeFlagByID("cachedir")
 	return c
@@ -751,7 +751,7 @@ func (c *Command) RmCacheDir() *Command {
 }
 
 // UnsetRmCacheDir unsets any flags that were previously set by
-// [RmCacheDir].
+// [Command.RmCacheDir].
 func (c *Command) UnsetRmCacheDir() *Command {
 	c.removeFlagByID("rm_cachedir")
 	return c

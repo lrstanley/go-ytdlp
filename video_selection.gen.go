@@ -26,7 +26,7 @@ func (c *Command) PlaylistStart(number int) *Command {
 }
 
 // UnsetPlaylistStart unsets any flags that were previously set by
-// [PlaylistStart].
+// [Command.PlaylistStart].
 func (c *Command) UnsetPlaylistStart() *Command {
 	c.removeFlagByID("playliststart")
 	return c
@@ -46,7 +46,7 @@ func (c *Command) PlaylistEnd(number int) *Command {
 }
 
 // UnsetPlaylistEnd unsets any flags that were previously set by
-// [PlaylistEnd].
+// [Command.PlaylistEnd].
 func (c *Command) UnsetPlaylistEnd() *Command {
 	c.removeFlagByID("playlistend")
 	return c
@@ -70,7 +70,7 @@ func (c *Command) PlaylistItems(itemSpec string) *Command {
 }
 
 // UnsetPlaylistItems unsets any flags that were previously set by
-// [PlaylistItems].
+// [Command.PlaylistItems].
 func (c *Command) UnsetPlaylistItems() *Command {
 	c.removeFlagByID("playlist_items")
 	return c
@@ -88,7 +88,7 @@ func (c *Command) MatchTitle(regex string) *Command {
 }
 
 // UnsetMatchTitle unsets any flags that were previously set by
-// [MatchTitle].
+// [Command.MatchTitle].
 func (c *Command) UnsetMatchTitle() *Command {
 	c.removeFlagByID("matchtitle")
 	return c
@@ -106,7 +106,7 @@ func (c *Command) RejectTitle(regex string) *Command {
 }
 
 // UnsetRejectTitle unsets any flags that were previously set by
-// [RejectTitle].
+// [Command.RejectTitle].
 func (c *Command) UnsetRejectTitle() *Command {
 	c.removeFlagByID("rejecttitle")
 	return c
@@ -126,7 +126,7 @@ func (c *Command) MinFilesize(size string) *Command {
 }
 
 // UnsetMinFilesize unsets any flags that were previously set by
-// [MinFilesize].
+// [Command.MinFilesize].
 func (c *Command) UnsetMinFilesize() *Command {
 	c.removeFlagByID("min_filesize")
 	return c
@@ -146,7 +146,7 @@ func (c *Command) MaxFilesize(size string) *Command {
 }
 
 // UnsetMaxFilesize unsets any flags that were previously set by
-// [MaxFilesize].
+// [Command.MaxFilesize].
 func (c *Command) UnsetMaxFilesize() *Command {
 	c.removeFlagByID("max_filesize")
 	return c
@@ -168,7 +168,7 @@ func (c *Command) Date(date string) *Command {
 }
 
 // UnsetDate unsets any flags that were previously set by
-// [Date].
+// [Command.Date].
 func (c *Command) UnsetDate() *Command {
 	c.removeFlagByID("date")
 	return c
@@ -189,7 +189,7 @@ func (c *Command) Datebefore(date string) *Command {
 }
 
 // UnsetDatebefore unsets any flags that were previously set by
-// [Datebefore].
+// [Command.Datebefore].
 func (c *Command) UnsetDatebefore() *Command {
 	c.removeFlagByID("datebefore")
 	return c
@@ -210,7 +210,7 @@ func (c *Command) Dateafter(date string) *Command {
 }
 
 // UnsetDateafter unsets any flags that were previously set by
-// [Dateafter].
+// [Command.Dateafter].
 func (c *Command) UnsetDateafter() *Command {
 	c.removeFlagByID("dateafter")
 	return c
@@ -230,7 +230,7 @@ func (c *Command) MinViews(count int) *Command {
 }
 
 // UnsetMinViews unsets any flags that were previously set by
-// [MinViews].
+// [Command.MinViews].
 func (c *Command) UnsetMinViews() *Command {
 	c.removeFlagByID("min_views")
 	return c
@@ -250,7 +250,7 @@ func (c *Command) MaxViews(count int) *Command {
 }
 
 // UnsetMaxViews unsets any flags that were previously set by
-// [MaxViews].
+// [Command.MaxViews].
 func (c *Command) UnsetMaxViews() *Command {
 	c.removeFlagByID("max_views")
 	return c
@@ -280,7 +280,7 @@ func (c *Command) MatchFilters(filter string) *Command {
 }
 
 // UnsetMatchFilters unsets any flags that were previously set by
-// [MatchFilters].
+// [Command.MatchFilters].
 func (c *Command) UnsetMatchFilters() *Command {
 	c.removeFlagByID("match_filter")
 	return c
@@ -314,7 +314,7 @@ func (c *Command) BreakMatchFilters(filter string) *Command {
 }
 
 // UnsetBreakMatchFilters unsets any flags that were previously set by
-// [BreakMatchFilters].
+// [Command.BreakMatchFilters].
 func (c *Command) UnsetBreakMatchFilters() *Command {
 	c.removeFlagByID("breaking_match_filter")
 	return c
@@ -360,7 +360,7 @@ func (c *Command) YesPlaylist() *Command {
 }
 
 // UnsetYesPlaylist unsets any flags that were previously set by
-// [YesPlaylist].
+// [Command.YesPlaylist].
 func (c *Command) UnsetYesPlaylist() *Command {
 	c.removeFlagByID("noplaylist")
 	return c
@@ -382,7 +382,7 @@ func (c *Command) AgeLimit(years int) *Command {
 }
 
 // UnsetAgeLimit unsets any flags that were previously set by
-// [AgeLimit].
+// [Command.AgeLimit].
 func (c *Command) UnsetAgeLimit() *Command {
 	c.removeFlagByID("age_limit")
 	return c
@@ -403,7 +403,7 @@ func (c *Command) DownloadArchive(file string) *Command {
 }
 
 // UnsetDownloadArchive unsets any flags that were previously set by
-// [DownloadArchive].
+// [Command.DownloadArchive].
 func (c *Command) UnsetDownloadArchive() *Command {
 	c.removeFlagByID("download_archive")
 	return c
@@ -438,7 +438,7 @@ func (c *Command) MaxDownloads(number int) *Command {
 }
 
 // UnsetMaxDownloads unsets any flags that were previously set by
-// [MaxDownloads].
+// [Command.MaxDownloads].
 func (c *Command) UnsetMaxDownloads() *Command {
 	c.removeFlagByID("max_downloads")
 	return c
@@ -458,7 +458,7 @@ func (c *Command) BreakOnExisting() *Command {
 }
 
 // UnsetBreakOnExisting unsets any flags that were previously set by
-// [BreakOnExisting].
+// [Command.BreakOnExisting].
 func (c *Command) UnsetBreakOnExisting() *Command {
 	c.removeFlagByID("break_on_existing")
 	return c
@@ -478,7 +478,7 @@ func (c *Command) BreakOnReject() *Command {
 }
 
 // UnsetBreakOnReject unsets any flags that were previously set by
-// [BreakOnReject].
+// [Command.BreakOnReject].
 func (c *Command) UnsetBreakOnReject() *Command {
 	c.removeFlagByID("break_on_reject")
 	return c
@@ -499,7 +499,7 @@ func (c *Command) BreakPerInput() *Command {
 }
 
 // UnsetBreakPerInput unsets any flags that were previously set by
-// [BreakPerInput].
+// [Command.BreakPerInput].
 func (c *Command) UnsetBreakPerInput() *Command {
 	c.removeFlagByID("break_per_url")
 	return c
@@ -534,7 +534,7 @@ func (c *Command) SkipPlaylistAfterErrors(n int) *Command {
 }
 
 // UnsetSkipPlaylistAfterErrors unsets any flags that were previously set by
-// [SkipPlaylistAfterErrors].
+// [Command.SkipPlaylistAfterErrors].
 func (c *Command) UnsetSkipPlaylistAfterErrors() *Command {
 	c.removeFlagByID("skip_playlist_after_errors")
 	return c
@@ -554,7 +554,7 @@ func (c *Command) IncludeAds() *Command {
 }
 
 // UnsetIncludeAds unsets any flags that were previously set by
-// [IncludeAds].
+// [Command.IncludeAds].
 func (c *Command) UnsetIncludeAds() *Command {
 	c.removeFlagByID("include_ads")
 	return c

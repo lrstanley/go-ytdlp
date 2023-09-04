@@ -23,7 +23,7 @@ func (c *Command) WriteLink() *Command {
 }
 
 // UnsetWriteLink unsets any flags that were previously set by
-// [WriteLink].
+// [Command.WriteLink].
 func (c *Command) UnsetWriteLink() *Command {
 	c.removeFlagByID("writelink")
 	return c
@@ -44,7 +44,7 @@ func (c *Command) WriteUrlLink() *Command {
 }
 
 // UnsetWriteUrlLink unsets any flags that were previously set by
-// [WriteUrlLink].
+// [Command.WriteUrlLink].
 func (c *Command) UnsetWriteUrlLink() *Command {
 	c.removeFlagByID("writeurllink")
 	return c
@@ -64,7 +64,7 @@ func (c *Command) WriteWeblocLink() *Command {
 }
 
 // UnsetWriteWeblocLink unsets any flags that were previously set by
-// [WriteWeblocLink].
+// [Command.WriteWeblocLink].
 func (c *Command) UnsetWriteWeblocLink() *Command {
 	c.removeFlagByID("writewebloclink")
 	return c
@@ -84,7 +84,7 @@ func (c *Command) WriteDesktopLink() *Command {
 }
 
 // UnsetWriteDesktopLink unsets any flags that were previously set by
-// [WriteDesktopLink].
+// [Command.WriteDesktopLink].
 func (c *Command) UnsetWriteDesktopLink() *Command {
 	c.removeFlagByID("writedesktoplink")
 	return c
