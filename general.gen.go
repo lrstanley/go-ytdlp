@@ -146,8 +146,7 @@ func (c *Command) NoAbortOnError() *Command {
 	return c
 }
 
-// Abort downloading of further videos if an error occurs (Alias:
-// --no-ignore-errors)
+// Abort downloading of further videos if an error occurs
 //
 //   - See [UnsetAbortOnError], for unsetting the flag.
 //   - AbortOnError maps to cli flags: --abort-on-error/--no-ignore-errors.
@@ -263,7 +262,7 @@ func (c *Command) ExtractorDescriptions(ctx context.Context) (*Results, error) {
 // Extractor names to use separated by commas. You can also use regexes, "all",
 // "default" and "end" (end URL matching); e.g. --ies "holodex.*,end,youtube".
 // Prefix the name with a "-" to exclude it, e.g. --ies default,-generic. Use
-// --list-extractors for a list of extractor names. (Alias: --ies)
+// --list-extractors for a list of extractor names.
 //
 //   - See [UnsetUseExtractors], for unsetting the flag.
 //   - UseExtractors maps to cli flags: --use-extractors/--ies=NAMES.
@@ -329,8 +328,7 @@ func (c *Command) UnsetDefaultSearch() *Command {
 
 // Don't load any more configuration files except those given by
 // --config-locations. For backward compatibility, if this option is found inside
-// the system configuration file, the user configuration is not loaded. (Alias:
-// --no-config)
+// the system configuration file, the user configuration is not loaded.
 //
 //   - See [UnsetIgnoreConfig], for unsetting the flag.
 //   - IgnoreConfig maps to cli flags: --ignore-config/--no-config.

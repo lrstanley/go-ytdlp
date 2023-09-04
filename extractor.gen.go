@@ -28,7 +28,7 @@ func (c *Command) UnsetExtractorRetries() *Command {
 	return c
 }
 
-// Process dynamic DASH manifests (default) (Alias: --no-ignore-dynamic-mpd)
+// Process dynamic DASH manifests (default)
 //
 //   - See [UnsetAllowDynamicMpd], for unsetting the flag.
 //   - AllowDynamicMpd maps to cli flags: --allow-dynamic-mpd/--no-ignore-dynamic-mpd.
@@ -48,7 +48,7 @@ func (c *Command) UnsetAllowDynamicMpd() *Command {
 	return c
 }
 
-// Do not process dynamic DASH manifests (Alias: --no-allow-dynamic-mpd)
+// Do not process dynamic DASH manifests
 //
 //   - See [UnsetIgnoreDynamicMpd], for unsetting the flag.
 //   - IgnoreDynamicMpd maps to cli flags: --ignore-dynamic-mpd/--no-allow-dynamic-mpd.

@@ -576,8 +576,7 @@ func (c *Command) NoCleanInfoJson() *Command {
 }
 
 // Retrieve video comments to be placed in the infojson. The comments are fetched
-// even without this option if the extraction is known to be quick (Alias:
-// --get-comments)
+// even without this option if the extraction is known to be quick
 //
 //   - See [UnsetWriteComments], for unsetting the flag.
 //   - WriteComments maps to cli flags: --write-comments/--get-comments.
@@ -598,7 +597,6 @@ func (c *Command) UnsetWriteComments() *Command {
 }
 
 // Do not retrieve video comments unless the extraction is known to be quick
-// (Alias: --no-get-comments)
 //
 //   - See [UnsetWriteComments], for unsetting the flag.
 //   - NoWriteComments maps to cli flags: --no-write-comments/--no-get-comments.

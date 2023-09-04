@@ -121,7 +121,7 @@ func (c *Command) NoIgnoreNoFormatsError() *Command {
 	return c
 }
 
-// Do not download the video but write all related files (Alias: --no-download)
+// Do not download the video but write all related files
 //
 //   - See [UnsetSkipDownload], for unsetting the flag.
 //   - SkipDownload maps to cli flags: --skip-download/--no-download.
@@ -411,7 +411,7 @@ func (c *Command) UnsetPrintJson() *Command {
 }
 
 // Force download archive entries to be written as far as no errors occur, even if
-// -s or another simulation option is used (Alias: --force-download-archive)
+// -s or another simulation option is used
 //
 //   - See [UnsetForceWriteArchive], for unsetting the flag.
 //   - ForceWriteArchive maps to cli flags: --force-write-archive/--force-write-download-archive/--force-download-archive.

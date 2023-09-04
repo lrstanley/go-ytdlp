@@ -162,7 +162,6 @@ func (c *Command) UnsetRetrySleep() *Command {
 }
 
 // Skip unavailable fragments for DASH, hlsnative and ISM downloads (default)
-// (Alias: --no-abort-on-unavailable-fragments)
 //
 //   - See [UnsetSkipUnavailableFragments], for unsetting the flag.
 //   - SkipUnavailableFragments maps to cli flags: --skip-unavailable-fragments/--no-abort-on-unavailable-fragments.
@@ -182,8 +181,7 @@ func (c *Command) UnsetSkipUnavailableFragments() *Command {
 	return c
 }
 
-// Abort download if a fragment is unavailable (Alias:
-// --no-skip-unavailable-fragments)
+// Abort download if a fragment is unavailable
 //
 //   - See [UnsetAbortOnUnavailableFragments], for unsetting the flag.
 //   - AbortOnUnavailableFragments maps to cli flags: --abort-on-unavailable-fragments/--no-skip-unavailable-fragments.
@@ -546,8 +544,7 @@ func (c *Command) UnsetDownloadSections() *Command {
 // supports native, aria2c, avconv, axel, curl, ffmpeg, httpie, wget. You can use
 // this option multiple times to set different downloaders for different protocols.
 // E.g. --downloader aria2c --downloader "dash,m3u8:native" will use aria2c for
-// http/ftp downloads, and the native downloader for dash/m3u8 downloads (Alias:
-// --external-downloader)
+// http/ftp downloads, and the native downloader for dash/m3u8 downloads
 //
 //   - See [UnsetDownloader], for unsetting the flag.
 //   - Downloader maps to cli flags: --downloader/--external-downloader=[PROTO:]NAME.
@@ -571,7 +568,6 @@ func (c *Command) UnsetDownloader() *Command {
 // the arguments separated by a colon ":". For ffmpeg, arguments can be passed to
 // different positions using the same syntax as --postprocessor-args. You can use
 // this option multiple times to give different arguments to different downloaders
-// (Alias: --external-downloader-args)
 //
 //   - See [UnsetDownloaderArgs], for unsetting the flag.
 //   - DownloaderArgs maps to cli flags: --downloader-args/--external-downloader-args=NAME:ARGS.

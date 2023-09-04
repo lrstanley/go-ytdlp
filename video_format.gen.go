@@ -49,7 +49,7 @@ func (c *Command) UnsetFormatSort() *Command {
 }
 
 // Force user specified sort order to have precedence over all fields, see "Sorting
-// Formats" for more details (Alias: --S-force)
+// Formats" for more details
 //
 //   - See [UnsetFormatSortForce], for unsetting the flag.
 //   - FormatSortForce maps to cli flags: --format-sort-force/--S-force=FORMAT.

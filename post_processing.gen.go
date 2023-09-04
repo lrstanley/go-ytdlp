@@ -129,7 +129,7 @@ func (c *Command) UnsetRecodeVideo() *Command {
 // ffmpeg/ffprobe, "_i"/"_o" can be appended to the prefix optionally followed by a
 // number to pass the argument before the specified input/output file, e.g. --ppa
 // "Merger+ffmpeg_i1:-v quiet". You can use this option multiple times to give
-// different arguments to different postprocessors. (Alias: --ppa)
+// different arguments to different postprocessors.
 //
 //   - See [UnsetPostprocessorArgs], for unsetting the flag.
 //   - PostprocessorArgs maps to cli flags: --postprocessor-args/--ppa=NAME:ARGS.
@@ -282,7 +282,7 @@ func (c *Command) NoEmbedThumbnail() *Command {
 }
 
 // Embed metadata to the video file. Also embeds chapters/infojson if present
-// unless --no-embed-chapters/--no-embed-info-json are used (Alias: --add-metadata)
+// unless --no-embed-chapters/--no-embed-info-json are used
 //
 //   - See [UnsetEmbedMetadata], for unsetting the flag.
 //   - EmbedMetadata maps to cli flags: --embed-metadata/--add-metadata.
@@ -302,7 +302,7 @@ func (c *Command) UnsetEmbedMetadata() *Command {
 	return c
 }
 
-// Do not add metadata to file (default) (Alias: --no-add-metadata)
+// Do not add metadata to file (default)
 //
 //   - See [UnsetEmbedMetadata], for unsetting the flag.
 //   - NoEmbedMetadata maps to cli flags: --no-embed-metadata/--no-add-metadata.
@@ -315,7 +315,7 @@ func (c *Command) NoEmbedMetadata() *Command {
 	return c
 }
 
-// Add chapter markers to the video file (Alias: --add-chapters)
+// Add chapter markers to the video file
 //
 //   - See [UnsetEmbedChapters], for unsetting the flag.
 //   - EmbedChapters maps to cli flags: --embed-chapters/--add-chapters.
@@ -335,7 +335,7 @@ func (c *Command) UnsetEmbedChapters() *Command {
 	return c
 }
 
-// Do not add chapter markers (default) (Alias: --no-add-chapters)
+// Do not add chapter markers (default)
 //
 //   - See [UnsetEmbedChapters], for unsetting the flag.
 //   - NoEmbedChapters maps to cli flags: --no-embed-chapters/--no-add-chapters.
@@ -660,7 +660,7 @@ func (c *Command) NoExecBeforeDownload() *Command {
 }
 
 // Convert the subtitles to another format (currently supported: ass, lrc, srt,
-// vtt) (Alias: --convert-subtitles)
+// vtt)
 //
 //   - See [UnsetConvertSubs], for unsetting the flag.
 //   - ConvertSubs maps to cli flags: --convert-subs/--convert-sub/--convert-subtitles=FORMAT.

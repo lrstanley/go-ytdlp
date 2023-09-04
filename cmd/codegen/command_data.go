@@ -103,6 +103,11 @@ type Option struct {
 	NArgs   int      `json:"nargs"`
 }
 
+var (
+	reMetaVarStrip = regexp.MustCompile(`\[.*\]`)
+	reRemoveAlias  = regexp.MustCompile(`\s+\(Alias:.*\)`)
+)
+
 func (o *Option) Generate() {
 	o.AllFlags = append(o.Short, o.Long...) //nolint:gocritic
 
@@ -131,9 +136,11 @@ func (o *Option) Generate() {
 		}
 	}
 
+	// Clean up help text.
+	o.Help = reRemoveAlias.ReplaceAllString(o.Help, "")
+
 	// Clean up [prefix:] syntax from MetaVar, since we don't care about the optional prefix type.
-	re := regexp.MustCompile(`\[.*\]`)
-	meta := re.ReplaceAllString(o.MetaVar, "")
+	meta := reMetaVarStrip.ReplaceAllString(o.MetaVar, "")
 
 	if slices.Contains(disallowedNames, meta) {
 		meta = "value"

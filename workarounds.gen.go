@@ -188,7 +188,7 @@ func (c *Command) UnsetSleepRequests() *Command {
 }
 
 // Number of seconds to sleep before each download. This is the minimum time to
-// sleep when used along with --max-sleep-interval (Alias: --min-sleep-interval)
+// sleep when used along with --max-sleep-interval
 //
 //   - See [UnsetSleepInterval], for unsetting the flag.
 //   - SleepInterval maps to cli flags: --sleep-interval/--min-sleep-interval=SECONDS.

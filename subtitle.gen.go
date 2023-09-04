@@ -41,7 +41,7 @@ func (c *Command) NoWriteSubs() *Command {
 	return c
 }
 
-// Write automatically generated subtitle file (Alias: --write-automatic-subs)
+// Write automatically generated subtitle file
 //
 //   - See [UnsetWriteAutoSubs], for unsetting the flag.
 //   - WriteAutoSubs maps to cli flags: --write-auto-subs/--write-automatic-subs.
@@ -61,8 +61,7 @@ func (c *Command) UnsetWriteAutoSubs() *Command {
 	return c
 }
 
-// Do not write auto-generated subtitles (default) (Alias:
-// --no-write-automatic-subs)
+// Do not write auto-generated subtitles (default)
 //
 //   - See [UnsetWriteAutoSubs], for unsetting the flag.
 //   - NoWriteAutoSubs maps to cli flags: --no-write-auto-subs/--no-write-automatic-subs.
