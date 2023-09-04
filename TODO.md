@@ -1,4 +1,4 @@
 # TODO
 
-- executable logic (Version(), Update(), etc)
 - error wrapping
+- look at --print-json
