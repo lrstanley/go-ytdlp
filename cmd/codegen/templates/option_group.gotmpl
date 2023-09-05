@@ -65,7 +65,6 @@ import (
 {{- /* bytes/context (executable) */}}
 {{- range $index, $option := .Options }}
 {{- if $option.IsExecutable }}
-    "bytes"
     "context"
     {{ break }}
 {{- end }}{{/* end if executable */}}
@@ -101,24 +100,7 @@ func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template
         Args: {{ template "optionSliceMetaArgs" $option }},
     })
 
-    cmd := c.buildCommand(ctx)
-
-    var stdout, stderr bytes.Buffer
-
-    cmd.Stdout = &stdout
-    cmd.Stderr = &stderr
-
-    err := cmd.Run()
-
-    result := &Results{
-        Executable: cmd.Path,
-        Args:       cmd.Args[1:],
-        ExitCode:   cmd.ProcessState.ExitCode(),
-        Stdout:     stdout.String(),
-        Stderr:     stderr.String(),
-    }
-
-    return result, wrapError(err)
+    return c.runWithResults(c.buildCommand(ctx))
 }
 {{- else if or (gt $option.NArgs 0) (eq $option.Type "bool") }}
 {{ template "optionHelp" $option }}

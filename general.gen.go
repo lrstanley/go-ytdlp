@@ -9,7 +9,6 @@
 package ytdlp
 
 import (
-	"bytes"
 	"context"
 )
 
@@ -23,24 +22,7 @@ func (c *Command) Version(ctx context.Context) (*Results, error) {
 		Args: nil,
 	})
 
-	cmd := c.buildCommand(ctx)
-
-	var stdout, stderr bytes.Buffer
-
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	err := cmd.Run()
-
-	result := &Results{
-		Executable: cmd.Path,
-		Args:       cmd.Args[1:],
-		ExitCode:   cmd.ProcessState.ExitCode(),
-		Stdout:     stdout.String(),
-		Stderr:     stderr.String(),
-	}
-
-	return result, wrapError(err)
+	return c.runWithResults(c.buildCommand(ctx))
 }
 
 // Check if updates are available. You cannot update when running from source code;
@@ -54,24 +36,7 @@ func (c *Command) Update(ctx context.Context) (*Results, error) {
 		Args: nil,
 	})
 
-	cmd := c.buildCommand(ctx)
-
-	var stdout, stderr bytes.Buffer
-
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	err := cmd.Run()
-
-	result := &Results{
-		Executable: cmd.Path,
-		Args:       cmd.Args[1:],
-		ExitCode:   cmd.ProcessState.ExitCode(),
-		Stdout:     stdout.String(),
-		Stderr:     stderr.String(),
-	}
-
-	return result, wrapError(err)
+	return c.runWithResults(c.buildCommand(ctx))
 }
 
 // Do not check for updates (default)
@@ -99,24 +64,7 @@ func (c *Command) UpdateTo(ctx context.Context, value string) (*Results, error) 
 		Args: []string{value},
 	})
 
-	cmd := c.buildCommand(ctx)
-
-	var stdout, stderr bytes.Buffer
-
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	err := cmd.Run()
-
-	result := &Results{
-		Executable: cmd.Path,
-		Args:       cmd.Args[1:],
-		ExitCode:   cmd.ProcessState.ExitCode(),
-		Stdout:     stdout.String(),
-		Stderr:     stderr.String(),
-	}
-
-	return result, wrapError(err)
+	return c.runWithResults(c.buildCommand(ctx))
 }
 
 // Ignore download and postprocessing errors. The download will be considered
@@ -184,24 +132,7 @@ func (c *Command) DumpUserAgent(ctx context.Context) (*Results, error) {
 		Args: nil,
 	})
 
-	cmd := c.buildCommand(ctx)
-
-	var stdout, stderr bytes.Buffer
-
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	err := cmd.Run()
-
-	result := &Results{
-		Executable: cmd.Path,
-		Args:       cmd.Args[1:],
-		ExitCode:   cmd.ProcessState.ExitCode(),
-		Stdout:     stdout.String(),
-		Stderr:     stderr.String(),
-	}
-
-	return result, wrapError(err)
+	return c.runWithResults(c.buildCommand(ctx))
 }
 
 // List all supported extractors and exit
@@ -214,24 +145,7 @@ func (c *Command) ListExtractors(ctx context.Context) (*Results, error) {
 		Args: nil,
 	})
 
-	cmd := c.buildCommand(ctx)
-
-	var stdout, stderr bytes.Buffer
-
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	err := cmd.Run()
-
-	result := &Results{
-		Executable: cmd.Path,
-		Args:       cmd.Args[1:],
-		ExitCode:   cmd.ProcessState.ExitCode(),
-		Stdout:     stdout.String(),
-		Stderr:     stderr.String(),
-	}
-
-	return result, wrapError(err)
+	return c.runWithResults(c.buildCommand(ctx))
 }
 
 // Output descriptions of all supported extractors and exit
@@ -244,24 +158,7 @@ func (c *Command) ExtractorDescriptions(ctx context.Context) (*Results, error) {
 		Args: nil,
 	})
 
-	cmd := c.buildCommand(ctx)
-
-	var stdout, stderr bytes.Buffer
-
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	err := cmd.Run()
-
-	result := &Results{
-		Executable: cmd.Path,
-		Args:       cmd.Args[1:],
-		ExitCode:   cmd.ProcessState.ExitCode(),
-		Stdout:     stdout.String(),
-		Stderr:     stderr.String(),
-	}
-
-	return result, wrapError(err)
+	return c.runWithResults(c.buildCommand(ctx))
 }
 
 // Extractor names to use separated by commas. You can also use regexes, "all",
