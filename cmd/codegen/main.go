@@ -75,7 +75,7 @@ func mergeFuncMaps(maps ...template.FuncMap) template.FuncMap {
 }
 
 func createTemplateFile(dir, name string, tmpl *template.Template, data any) {
-	err := os.MkdirAll(dir, 0755)
+	err := os.MkdirAll(dir, 0o755)
 	if err != nil {
 		panic(err)
 	}
@@ -83,7 +83,7 @@ func createTemplateFile(dir, name string, tmpl *template.Template, data any) {
 	name = filepath.Join(dir, name)
 
 	// Check if the file exists first, and if it does, panic.
-	if _, err := os.Stat(name); err == nil {
+	if _, err = os.Stat(name); err == nil {
 		panic(fmt.Sprintf("file %s already exists, not doing anything", name))
 	}
 
