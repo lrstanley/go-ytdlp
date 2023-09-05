@@ -9,16 +9,16 @@ up: go-upgrade-deps
 	@echo
 
 go-fetch:
-	go mod download
-	go mod tidy
+	cd ./cmd/codegen && go mod download && go mod tidy
+	go mod download && go mod tidy
 
 go-upgrade-deps:
-	go get -u ./...
-	go mod tidy
+	cd ./cmd/codegen && go get -u ./... && go mod tidy
+	go get -u ./... && go mod tidy
 
 go-upgrade-deps-patch:
-	go get -u=patch ./...
-	go mod tidy
+	cd ./cmd/patch-ytdlp && go get -u=patch ./... && go mod tidy
+	go get -u=patch ./... && go mod tidy
 
 commit: generate
 	git add --all *.gen.go
@@ -29,7 +29,6 @@ patch:
 
 generate: license go-fetch patch
 	rm -rf *.gen.go
-	cd ./cmd/codegen
 	cd ./cmd/codegen && go run . ../patch-ytdlp/export-${YTDLP_VERSION}.json ../../
 	gofmt -e -s -w *.go
 	go vet *.go
