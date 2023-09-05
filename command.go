@@ -5,11 +5,10 @@
 package ytdlp
 
 import (
-	"bytes"
 	"context"
 	"os/exec"
 	"runtime"
-	"strings"
+	"slices"
 	"sync"
 )
 
@@ -151,10 +150,16 @@ func (c *Command) buildCommand(ctx context.Context, args ...string) *exec.Cmd {
 // runWithResults runs the provided command, collects stdout/stderr, massages the
 // results into a Results struct, and returns it (with error wrapping).
 func (c *Command) runWithResults(cmd *exec.Cmd) (*Results, error) {
-	var stdout, stderr bytes.Buffer
+	stdout := &timestampWriter{pipe: "stdout"}
+	stderr := &timestampWriter{pipe: "stderr"}
 
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
+	if slices.Contains(cmd.Args, "--print-json") {
+		stdout.checkJSON = true
+		stderr.checkJSON = true
+	}
+
+	cmd.Stdout = stdout
+	cmd.Stderr = stderr
 
 	err := cmd.Run()
 
@@ -162,8 +167,9 @@ func (c *Command) runWithResults(cmd *exec.Cmd) (*Results, error) {
 		Executable: cmd.Path,
 		Args:       cmd.Args[1:],
 		ExitCode:   cmd.ProcessState.ExitCode(),
-		Stdout:     strings.TrimSpace(stdout.String()),
-		Stderr:     strings.TrimSpace(stderr.String()),
+		Stdout:     stdout.String(),
+		Stderr:     stderr.String(),
+		OutputLogs: stdout.mergeResults(stderr),
 	}
 
 	return result, wrapError(err)
@@ -175,14 +181,6 @@ func (c *Command) runWithResults(cmd *exec.Cmd) (*Results, error) {
 func (c *Command) Run(ctx context.Context, args ...string) (*Results, error) {
 	cmd := c.buildCommand(ctx, args...)
 	return c.runWithResults(cmd)
-}
-
-type Results struct {
-	Executable string   `json:"executable"`
-	Args       []string `json:"args"`
-	ExitCode   int      `json:"exit_code"`
-	Stdout     string   `json:"stdout"`
-	Stderr     string   `json:"stderr"`
 }
 
 type Flag struct {
@@ -210,4 +208,13 @@ func (f *Flag) Raw() (args []string) {
 	}
 
 	return args
+}
+
+type Results struct {
+	Executable string       `json:"executable"`
+	Args       []string     `json:"args"`
+	ExitCode   int          `json:"exit_code"`
+	Stdout     string       `json:"stdout"`
+	Stderr     string       `json:"stderr"`
+	OutputLogs []*ResultLog `json:"output_logs"`
 }
