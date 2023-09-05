@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"text/template"
@@ -43,7 +44,7 @@ var (
 		template.New("constants.gotmpl").
 			Funcs(funcMap).
 			ParseFiles(
-				"cmd/codegen/templates/constants.gotmpl",
+				"./templates/constants.gotmpl",
 			),
 	)
 
@@ -51,7 +52,7 @@ var (
 		template.New("option_group.gotmpl").
 			Funcs(funcMap).
 			ParseFiles(
-				"cmd/codegen/templates/option_group.gotmpl",
+				"./templates/option_group.gotmpl",
 			),
 	)
 
@@ -73,7 +74,14 @@ func mergeFuncMaps(maps ...template.FuncMap) template.FuncMap {
 	return out
 }
 
-func createTemplateFile(name string, tmpl *template.Template, data any) {
+func createTemplateFile(dir, name string, tmpl *template.Template, data any) {
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		panic(err)
+	}
+
+	name = filepath.Join(dir, name)
+
 	// Check if the file exists first, and if it does, panic.
 	if _, err := os.Stat(name); err == nil {
 		panic(fmt.Sprintf("file %s already exists, not doing anything", name))
@@ -93,8 +101,8 @@ func createTemplateFile(name string, tmpl *template.Template, data any) {
 }
 
 func main() {
-	if len(os.Args) < 2 { //nolint:gomnd
-		panic("missing command data file")
+	if len(os.Args) < 3 { //nolint:gomnd
+		panic("usage: codegen <command_data.json> <output_dir>")
 	}
 
 	var data CommandData
@@ -112,9 +120,9 @@ func main() {
 
 	data.Generate()
 
-	createTemplateFile("constants.gen.go", constantsTmpl, data)
+	createTemplateFile(os.Args[2], "constants.gen.go", constantsTmpl, data)
 
 	for _, group := range data.OptionGroups {
-		createTemplateFile(fmt.Sprintf("%s.gen.go", strcase.ToSnake(group.Name)), optionGroupTmpl, group)
+		createTemplateFile(os.Args[2], fmt.Sprintf("%s.gen.go", strcase.ToSnake(group.Name)), optionGroupTmpl, group)
 	}
 }

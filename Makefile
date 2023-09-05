@@ -29,7 +29,8 @@ patch:
 
 generate: license go-fetch patch
 	rm -rf *.gen.go
-	go run github.com/lrstanley/go-ytdlp/cmd/codegen ./cmd/patch-ytdlp/export-${YTDLP_VERSION}.json
+	cd ./cmd/codegen
+	cd ./cmd/codegen && go run . ../patch-ytdlp/export-${YTDLP_VERSION}.json ../../
 	gofmt -e -s -w *.go
 	go vet *.go
 	go test -v ./...
