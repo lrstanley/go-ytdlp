@@ -169,18 +169,17 @@ func (c *Command) Run(ctx context.Context, args ...string) (*Results, error) {
 }
 
 type Results struct {
-	Executable string
-	Args       []string
-	ExitCode   int
-	Stdout     string
-	Stderr     string
+	Executable string   `json:"executable"`
+	Args       []string `json:"args"`
+	ExitCode   int      `json:"exit_code"`
+	Stdout     string   `json:"stdout"`
+	Stderr     string   `json:"stderr"`
 }
 
 type Flag struct {
-	ID   string // Unique ID to ensure boolean flags are not duplicated.
-	Flag string // Actual flag, e.g. "--version".
-
-	Args []string // Optional args. If nil, it's a boolean flag.
+	ID   string   `json:"id"`   // Unique ID to ensure boolean flags are not duplicated.
+	Flag string   `json:"flag"` // Actual flag, e.g. "--version".
+	Args []string `json:"args"` // Optional args. If nil, it's a boolean flag.
 }
 
 func (f *Flag) Clone() *Flag {
