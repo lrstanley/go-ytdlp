@@ -9,6 +9,7 @@ import (
 	"context"
 	"os/exec"
 	"runtime"
+	"strings"
 	"sync"
 )
 
@@ -161,8 +162,8 @@ func (c *Command) runWithResults(cmd *exec.Cmd) (*Results, error) {
 		Executable: cmd.Path,
 		Args:       cmd.Args[1:],
 		ExitCode:   cmd.ProcessState.ExitCode(),
-		Stdout:     stdout.String(),
-		Stderr:     stderr.String(),
+		Stdout:     strings.TrimSpace(stdout.String()),
+		Stderr:     strings.TrimSpace(stderr.String()),
 	}
 
 	return result, wrapError(err)

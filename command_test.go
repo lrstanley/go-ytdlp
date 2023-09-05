@@ -12,7 +12,6 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
-	"strings"
 	"testing"
 	"time"
 )
@@ -89,7 +88,7 @@ func TestCommandVersion(t *testing.T) {
 		t.Fatalf("expected exit code 0, got %d", res.ExitCode)
 	}
 
-	_, err = time.Parse("2006.01.02", strings.TrimSuffix(res.Stdout, "\n"))
+	_, err = time.Parse("2006.01.02", res.Stdout)
 	if err != nil {
 		t.Fatalf("failed to parse version: %v", err)
 	}
