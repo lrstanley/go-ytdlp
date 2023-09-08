@@ -6,18 +6,17 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
+	"log"
+	"os"
 
 	"github.com/lrstanley/go-ytdlp"
 )
 
 func main() {
 	dl := ytdlp.New().
-		Verbose().
+		PrintJson().
 		NoProgress().
-		NoCallHome().
-		NoCheckCertificates().
-		RejectTitle(".*preview/.*").
 		FormatSort("res,ext:mp4:m4a").
 		RecodeVideo("mp4").
 		NoPlaylist().
@@ -25,10 +24,23 @@ func main() {
 		Continue().
 		Output("%(extractor)s - %(title)s.%(ext)s")
 
-	res, err := dl.Run(context.TODO(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+	r, err := dl.Run(context.TODO(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("%#v\n", res)
+	f, err := os.Create("results.json")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	enc := json.NewEncoder(f)
+	enc.SetIndent("", "    ")
+
+	if err = enc.Encode(r); err != nil {
+		panic(err)
+	}
+
+	log.Println("wrote results to results.json")
 }
