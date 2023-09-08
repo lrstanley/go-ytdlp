@@ -30,7 +30,7 @@ var sampleFiles = []testSampleFile{
 	{url: "https://cdn.liam.sh/github/go-ytdlp/sample-4.mpg", name: "sample-4", ext: "mpg", extractor: "generic"},
 }
 
-func TestCommandSimple(t *testing.T) {
+func TestCommand_Simple(t *testing.T) {
 	dir := t.TempDir()
 
 	var urls []string
@@ -74,7 +74,7 @@ func TestCommandSimple(t *testing.T) {
 	}
 }
 
-func TestCommandVersion(t *testing.T) {
+func TestCommand_Version(t *testing.T) {
 	res, err := New().Version(context.Background())
 	if err != nil {
 		t.Fatal(err)
@@ -91,5 +91,62 @@ func TestCommandVersion(t *testing.T) {
 	_, err = time.Parse("2006.01.02", res.Stdout)
 	if err != nil {
 		t.Fatalf("failed to parse version: %v", err)
+	}
+}
+
+func TestCommand_Unset(t *testing.T) {
+	builder := New().NoProgress().Output("test.mp4")
+
+	cmd := builder.buildCommand(context.TODO(), sampleFiles[0].url)
+
+	// Make sure --no-progress is set.
+	if !slices.Contains(cmd.Args, "--no-progress") {
+		t.Fatal("expected --no-progress flag to be set")
+	}
+
+	_ = builder.UnsetProgress()
+
+	cmd = builder.buildCommand(context.TODO(), sampleFiles[0].url)
+
+	// Make sure --no-progress is not set.
+	if slices.Contains(cmd.Args, "--no-progress") {
+		t.Fatal("expected --no-progress flag to not be set")
+	}
+}
+
+func TestCommand_Clone(t *testing.T) {
+	builder1 := New().NoProgress().Output("test.mp4")
+
+	builder2 := builder1.Clone()
+
+	cmd := builder2.buildCommand(context.TODO(), sampleFiles[0].url)
+
+	// Make sure --no-progress is set.
+	if !slices.Contains(cmd.Args, "--no-progress") {
+		t.Fatal("expected --no-progress flag to be set")
+	}
+}
+
+func TestCommand_SetExecutable(t *testing.T) {
+	cmd := New().SetExecutable("/usr/bin/test").buildCommand(context.Background(), sampleFiles[0].url)
+
+	if cmd.Path != "/usr/bin/test" {
+		t.Fatalf("expected executable to be /usr/bin/test, got %s", cmd.Path)
+	}
+}
+
+func TestCommand_SetWorkDir(t *testing.T) {
+	cmd := New().SetWorkDir("/tmp").buildCommand(context.Background(), sampleFiles[0].url)
+
+	if cmd.Dir != "/tmp" {
+		t.Fatalf("expected workdir to be /tmp, got %s", cmd.Dir)
+	}
+}
+
+func TestCommand_SetEnvVar(t *testing.T) {
+	cmd := New().SetEnvVar("TEST", "1").buildCommand(context.Background(), sampleFiles[0].url)
+
+	if cmd.Env[0] != "TEST=1" {
+		t.Fatalf("expected env var to be TEST=1, got %s", cmd.Env[0])
 	}
 }
