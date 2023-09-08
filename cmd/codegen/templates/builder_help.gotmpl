@@ -2,15 +2,16 @@
     template: builder-help
 */}}
 {{- define "builder-help" -}}
-{{- if .Help }}
-// {{ wrap 80 .Help | replace "\n" "\n// " }}
-{{- else if eq .Type "bool" }}
-// {{ .Name | to_camel }} sets the {{ .Name | quote }} flag (no description specified).
+{{- $option := . -}}
+{{- if $option.Help }}
+// {{ wrap 80 $option.Help | replace "\n" "\n// " }}
+{{- else if eq $option.Type "bool" }}
+// {{ $option.Name | to_camel }} sets the {{ $option.Name | quote }} flag (no description specified).
 {{- end }}{{/* end if help */}}
 //
-{{- if not .IsExecutable }}
-//  - See [Command.Unset{{ if hasPrefix "No" (.Name | to_camel) }}{{ .Name | to_camel | trimPrefix "No" }}{{ else }}{{ .Name | to_camel }}{{ end }}], for unsetting the flag.
+{{- if not $option.IsExecutable }}
+//  - See [Command.Unset{{ $option.Name | to_camel | trimPrefix "No" | trimPrefix "Yes" }}], for unsetting the flag.
 {{- end }}{{/* end if executable */}}
-//  - {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}{{ if .Hidden }} (hidden){{ end }}.
-//  - From option group: {{ .Parent.Name | quote }}
+//  - {{ $option.Name | to_camel }} maps to cli flags: {{ $option.AllFlags | join "/" }}{{ if $option.MetaVar }}={{ $option.MetaVar }}{{ end }}{{ if $option.Hidden }} (hidden){{ end }}.
+//  - From option group: {{ $option.Parent.Name | quote }}
 {{- end -}}{{/* end define builder-help */}}

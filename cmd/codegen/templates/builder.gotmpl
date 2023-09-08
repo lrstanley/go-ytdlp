@@ -22,6 +22,9 @@ import (
 )
 {{- end }}{{/* end if imports */}}
 
+{{/* variables modified during loops for state checks */}}
+{{ $unsets := list }}
+
 {{ range $group := .OptionGroups }}
 {{ range $option := .Options }}
 {{- if $option.Choices }}
@@ -57,14 +60,22 @@ func (c *Command) {{ $option.Name | to_camel }}({{ template "builder-meta-args" 
     return c
 }
 
-{{- if not (hasPrefix "No" ($option.Name | to_camel)) }}
-// Unset{{ $option.Name | to_camel }} unsets any flags that were previously set by
-// [Command.{{ $option.Name | to_camel }}].
-func (c *Command) Unset{{ $option.Name | to_camel }}() *Command {
+{{- $unsetID := ($option.Name | to_camel | trimPrefix "No" | trimPrefix "Yes") }}
+{{- if not (has $unsetID $unsets) }}
+{{- $unsets = mustAppend $unsets $unsetID }}
+
+// Unset{{ $unsetID }} unsets any flags that were previously set by one of:
+{{- range $coption := $group.Options }}
+{{- if $coption.IsExecutable }}{{ continue }}{{- end }}
+{{- if eq $unsetID ($coption.Name | to_camel | trimPrefix "No" | trimPrefix "Yes") }}
+//   - [Command.{{ $coption.Name | to_camel }}]
+{{- end }}{{/* end if has suffix */}}
+{{- end }}{{/* end range for options */}}
+func (c *Command) Unset{{ $unsetID }}() *Command {
     c.removeFlagByID({{ $option.Dest | quote }})
     return c
 }
-{{- end }}{{/* end if "No" prefixed */}}
+{{- end }}{{/* end if in $unsets */}}
 {{- end }}{{/* end if type */}}
 {{ end }}{{/* end range for options */}}
 {{ end }}{{/* end range for option groups */}}

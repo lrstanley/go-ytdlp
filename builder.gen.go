@@ -54,6 +54,13 @@ func (c *Command) NoUpdate() *Command {
 	return c
 }
 
+// UnsetUpdate unsets any flags that were previously set by one of:
+//   - [Command.NoUpdate]
+func (c *Command) UnsetUpdate() *Command {
+	c.removeFlagByID("update_self")
+	return c
+}
+
 // Upgrade/downgrade to a specific version. CHANNEL can be a repository as well.
 // CHANNEL and TAG default to "stable" and "latest" respectively if omitted; See
 // "UPDATE" for details. Supported channels: stable, nightly
@@ -85,8 +92,8 @@ func (c *Command) IgnoreErrors() *Command {
 	return c
 }
 
-// UnsetIgnoreErrors unsets any flags that were previously set by
-// [Command.IgnoreErrors].
+// UnsetIgnoreErrors unsets any flags that were previously set by one of:
+//   - [Command.IgnoreErrors]
 func (c *Command) UnsetIgnoreErrors() *Command {
 	c.removeFlagByID("ignoreerrors")
 	return c
@@ -107,6 +114,14 @@ func (c *Command) NoAbortOnError() *Command {
 	return c
 }
 
+// UnsetAbortOnError unsets any flags that were previously set by one of:
+//   - [Command.NoAbortOnError]
+//   - [Command.AbortOnError]
+func (c *Command) UnsetAbortOnError() *Command {
+	c.removeFlagByID("ignoreerrors")
+	return c
+}
+
 // Abort downloading of further videos if an error occurs
 //
 //   - See [Command.UnsetAbortOnError], for unsetting the flag.
@@ -118,13 +133,6 @@ func (c *Command) AbortOnError() *Command {
 		Flag: "--abort-on-error",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetAbortOnError unsets any flags that were previously set by
-// [Command.AbortOnError].
-func (c *Command) UnsetAbortOnError() *Command {
-	c.removeFlagByID("ignoreerrors")
 	return c
 }
 
@@ -187,8 +195,8 @@ func (c *Command) UseExtractors(names string) *Command {
 	return c
 }
 
-// UnsetUseExtractors unsets any flags that were previously set by
-// [Command.UseExtractors].
+// UnsetUseExtractors unsets any flags that were previously set by one of:
+//   - [Command.UseExtractors]
 func (c *Command) UnsetUseExtractors() *Command {
 	c.removeFlagByID("allowed_extractors")
 	return c
@@ -208,8 +216,8 @@ func (c *Command) ForceGenericExtractor() *Command {
 	return c
 }
 
-// UnsetForceGenericExtractor unsets any flags that were previously set by
-// [Command.ForceGenericExtractor].
+// UnsetForceGenericExtractor unsets any flags that were previously set by one of:
+//   - [Command.ForceGenericExtractor]
 func (c *Command) UnsetForceGenericExtractor() *Command {
 	c.removeFlagByID("force_generic_extractor")
 	return c
@@ -233,8 +241,8 @@ func (c *Command) DefaultSearch(prefix string) *Command {
 	return c
 }
 
-// UnsetDefaultSearch unsets any flags that were previously set by
-// [Command.DefaultSearch].
+// UnsetDefaultSearch unsets any flags that were previously set by one of:
+//   - [Command.DefaultSearch]
 func (c *Command) UnsetDefaultSearch() *Command {
 	c.removeFlagByID("default_search")
 	return c
@@ -256,8 +264,8 @@ func (c *Command) IgnoreConfig() *Command {
 	return c
 }
 
-// UnsetIgnoreConfig unsets any flags that were previously set by
-// [Command.IgnoreConfig].
+// UnsetIgnoreConfig unsets any flags that were previously set by one of:
+//   - [Command.IgnoreConfig]
 func (c *Command) UnsetIgnoreConfig() *Command {
 	c.removeFlagByID("ignoreconfig")
 	return c
@@ -279,6 +287,14 @@ func (c *Command) NoConfigLocations() *Command {
 	return c
 }
 
+// UnsetConfigLocations unsets any flags that were previously set by one of:
+//   - [Command.NoConfigLocations]
+//   - [Command.ConfigLocations]
+func (c *Command) UnsetConfigLocations() *Command {
+	c.removeFlagByID("config_locations")
+	return c
+}
+
 // Location of the main configuration file; either the path to the config or its
 // containing directory ("-" for stdin). Can be used multiple times and inside
 // other configuration files
@@ -292,13 +308,6 @@ func (c *Command) ConfigLocations(path string) *Command {
 		Flag: "--config-locations",
 		Args: []string{path},
 	})
-	return c
-}
-
-// UnsetConfigLocations unsets any flags that were previously set by
-// [Command.ConfigLocations].
-func (c *Command) UnsetConfigLocations() *Command {
-	c.removeFlagByID("config_locations")
 	return c
 }
 
@@ -316,8 +325,9 @@ func (c *Command) FlatPlaylist() *Command {
 	return c
 }
 
-// UnsetFlatPlaylist unsets any flags that were previously set by
-// [Command.FlatPlaylist].
+// UnsetFlatPlaylist unsets any flags that were previously set by one of:
+//   - [Command.FlatPlaylist]
+//   - [Command.NoFlatPlaylist]
 func (c *Command) UnsetFlatPlaylist() *Command {
 	c.removeFlagByID("extract_flat")
 	return c
@@ -352,8 +362,9 @@ func (c *Command) LiveFromStart() *Command {
 	return c
 }
 
-// UnsetLiveFromStart unsets any flags that were previously set by
-// [Command.LiveFromStart].
+// UnsetLiveFromStart unsets any flags that were previously set by one of:
+//   - [Command.LiveFromStart]
+//   - [Command.NoLiveFromStart]
 func (c *Command) UnsetLiveFromStart() *Command {
 	c.removeFlagByID("live_from_start")
 	return c
@@ -388,8 +399,9 @@ func (c *Command) WaitForVideo(min string) *Command {
 	return c
 }
 
-// UnsetWaitForVideo unsets any flags that were previously set by
-// [Command.WaitForVideo].
+// UnsetWaitForVideo unsets any flags that were previously set by one of:
+//   - [Command.WaitForVideo]
+//   - [Command.NoWaitForVideo]
 func (c *Command) UnsetWaitForVideo() *Command {
 	c.removeFlagByID("wait_for_video")
 	return c
@@ -423,8 +435,9 @@ func (c *Command) MarkWatched() *Command {
 	return c
 }
 
-// UnsetMarkWatched unsets any flags that were previously set by
-// [Command.MarkWatched].
+// UnsetMarkWatched unsets any flags that were previously set by one of:
+//   - [Command.MarkWatched]
+//   - [Command.NoMarkWatched]
 func (c *Command) UnsetMarkWatched() *Command {
 	c.removeFlagByID("mark_watched")
 	return c
@@ -458,6 +471,13 @@ func (c *Command) NoColors() *Command {
 	return c
 }
 
+// UnsetColors unsets any flags that were previously set by one of:
+//   - [Command.NoColors]
+func (c *Command) UnsetColors() *Command {
+	c.removeFlagByID("color")
+	return c
+}
+
 // Whether to emit color codes in output, optionally prefixed by the STREAM (stdout
 // or stderr) to apply the setting to. Can be one of "always", "auto" (default),
 // "never", or "no_color" (use non color terminal sequences). Can be used multiple
@@ -475,8 +495,8 @@ func (c *Command) Color(policy string) *Command {
 	return c
 }
 
-// UnsetColor unsets any flags that were previously set by
-// [Command.Color].
+// UnsetColor unsets any flags that were previously set by one of:
+//   - [Command.Color]
 func (c *Command) UnsetColor() *Command {
 	c.removeFlagByID("color")
 	return c
@@ -498,8 +518,8 @@ func (c *Command) CompatOptions(opts string) *Command {
 	return c
 }
 
-// UnsetCompatOptions unsets any flags that were previously set by
-// [Command.CompatOptions].
+// UnsetCompatOptions unsets any flags that were previously set by one of:
+//   - [Command.CompatOptions]
 func (c *Command) UnsetCompatOptions() *Command {
 	c.removeFlagByID("compat_opts")
 	return c
@@ -521,8 +541,8 @@ func (c *Command) Proxy(url string) *Command {
 	return c
 }
 
-// UnsetProxy unsets any flags that were previously set by
-// [Command.Proxy].
+// UnsetProxy unsets any flags that were previously set by one of:
+//   - [Command.Proxy]
 func (c *Command) UnsetProxy() *Command {
 	c.removeFlagByID("proxy")
 	return c
@@ -544,8 +564,8 @@ func (c *Command) SocketTimeout(seconds float64) *Command {
 	return c
 }
 
-// UnsetSocketTimeout unsets any flags that were previously set by
-// [Command.SocketTimeout].
+// UnsetSocketTimeout unsets any flags that were previously set by one of:
+//   - [Command.SocketTimeout]
 func (c *Command) UnsetSocketTimeout() *Command {
 	c.removeFlagByID("socket_timeout")
 	return c
@@ -565,8 +585,8 @@ func (c *Command) SourceAddress(ip string) *Command {
 	return c
 }
 
-// UnsetSourceAddress unsets any flags that were previously set by
-// [Command.SourceAddress].
+// UnsetSourceAddress unsets any flags that were previously set by one of:
+//   - [Command.SourceAddress]
 func (c *Command) UnsetSourceAddress() *Command {
 	c.removeFlagByID("source_address")
 	return c
@@ -586,8 +606,8 @@ func (c *Command) ForceIpv4() *Command {
 	return c
 }
 
-// UnsetForceIpv4 unsets any flags that were previously set by
-// [Command.ForceIpv4].
+// UnsetForceIpv4 unsets any flags that were previously set by one of:
+//   - [Command.ForceIpv4]
 func (c *Command) UnsetForceIpv4() *Command {
 	c.removeFlagByID("source_address")
 	return c
@@ -607,8 +627,8 @@ func (c *Command) ForceIpv6() *Command {
 	return c
 }
 
-// UnsetForceIpv6 unsets any flags that were previously set by
-// [Command.ForceIpv6].
+// UnsetForceIpv6 unsets any flags that were previously set by one of:
+//   - [Command.ForceIpv6]
 func (c *Command) UnsetForceIpv6() *Command {
 	c.removeFlagByID("source_address")
 	return c
@@ -628,8 +648,8 @@ func (c *Command) EnableFileUrls() *Command {
 	return c
 }
 
-// UnsetEnableFileUrls unsets any flags that were previously set by
-// [Command.EnableFileUrls].
+// UnsetEnableFileUrls unsets any flags that were previously set by one of:
+//   - [Command.EnableFileUrls]
 func (c *Command) UnsetEnableFileUrls() *Command {
 	c.removeFlagByID("enable_file_urls")
 	return c
@@ -651,8 +671,8 @@ func (c *Command) GeoVerificationProxy(url string) *Command {
 	return c
 }
 
-// UnsetGeoVerificationProxy unsets any flags that were previously set by
-// [Command.GeoVerificationProxy].
+// UnsetGeoVerificationProxy unsets any flags that were previously set by one of:
+//   - [Command.GeoVerificationProxy]
 func (c *Command) UnsetGeoVerificationProxy() *Command {
 	c.removeFlagByID("geo_verification_proxy")
 	return c
@@ -670,8 +690,8 @@ func (c *Command) CnVerificationProxy(url string) *Command {
 	return c
 }
 
-// UnsetCnVerificationProxy unsets any flags that were previously set by
-// [Command.CnVerificationProxy].
+// UnsetCnVerificationProxy unsets any flags that were previously set by one of:
+//   - [Command.CnVerificationProxy]
 func (c *Command) UnsetCnVerificationProxy() *Command {
 	c.removeFlagByID("cn_verification_proxy")
 	return c
@@ -693,8 +713,8 @@ func (c *Command) Xff(value string) *Command {
 	return c
 }
 
-// UnsetXff unsets any flags that were previously set by
-// [Command.Xff].
+// UnsetXff unsets any flags that were previously set by one of:
+//   - [Command.Xff]
 func (c *Command) UnsetXff() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
@@ -714,8 +734,9 @@ func (c *Command) GeoBypass() *Command {
 	return c
 }
 
-// UnsetGeoBypass unsets any flags that were previously set by
-// [Command.GeoBypass].
+// UnsetGeoBypass unsets any flags that were previously set by one of:
+//   - [Command.GeoBypass]
+//   - [Command.NoGeoBypass]
 func (c *Command) UnsetGeoBypass() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
@@ -747,8 +768,8 @@ func (c *Command) GeoBypassCountry(code string) *Command {
 	return c
 }
 
-// UnsetGeoBypassCountry unsets any flags that were previously set by
-// [Command.GeoBypassCountry].
+// UnsetGeoBypassCountry unsets any flags that were previously set by one of:
+//   - [Command.GeoBypassCountry]
 func (c *Command) UnsetGeoBypassCountry() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
@@ -766,8 +787,8 @@ func (c *Command) GeoBypassIpBlock(ipBlock string) *Command {
 	return c
 }
 
-// UnsetGeoBypassIpBlock unsets any flags that were previously set by
-// [Command.GeoBypassIpBlock].
+// UnsetGeoBypassIpBlock unsets any flags that were previously set by one of:
+//   - [Command.GeoBypassIpBlock]
 func (c *Command) UnsetGeoBypassIpBlock() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
@@ -787,8 +808,8 @@ func (c *Command) PlaylistStart(number int) *Command {
 	return c
 }
 
-// UnsetPlaylistStart unsets any flags that were previously set by
-// [Command.PlaylistStart].
+// UnsetPlaylistStart unsets any flags that were previously set by one of:
+//   - [Command.PlaylistStart]
 func (c *Command) UnsetPlaylistStart() *Command {
 	c.removeFlagByID("playliststart")
 	return c
@@ -808,8 +829,8 @@ func (c *Command) PlaylistEnd(number int) *Command {
 	return c
 }
 
-// UnsetPlaylistEnd unsets any flags that were previously set by
-// [Command.PlaylistEnd].
+// UnsetPlaylistEnd unsets any flags that were previously set by one of:
+//   - [Command.PlaylistEnd]
 func (c *Command) UnsetPlaylistEnd() *Command {
 	c.removeFlagByID("playlistend")
 	return c
@@ -833,8 +854,8 @@ func (c *Command) PlaylistItems(itemSpec string) *Command {
 	return c
 }
 
-// UnsetPlaylistItems unsets any flags that were previously set by
-// [Command.PlaylistItems].
+// UnsetPlaylistItems unsets any flags that were previously set by one of:
+//   - [Command.PlaylistItems]
 func (c *Command) UnsetPlaylistItems() *Command {
 	c.removeFlagByID("playlist_items")
 	return c
@@ -852,8 +873,8 @@ func (c *Command) MatchTitle(regex string) *Command {
 	return c
 }
 
-// UnsetMatchTitle unsets any flags that were previously set by
-// [Command.MatchTitle].
+// UnsetMatchTitle unsets any flags that were previously set by one of:
+//   - [Command.MatchTitle]
 func (c *Command) UnsetMatchTitle() *Command {
 	c.removeFlagByID("matchtitle")
 	return c
@@ -871,8 +892,8 @@ func (c *Command) RejectTitle(regex string) *Command {
 	return c
 }
 
-// UnsetRejectTitle unsets any flags that were previously set by
-// [Command.RejectTitle].
+// UnsetRejectTitle unsets any flags that were previously set by one of:
+//   - [Command.RejectTitle]
 func (c *Command) UnsetRejectTitle() *Command {
 	c.removeFlagByID("rejecttitle")
 	return c
@@ -892,8 +913,8 @@ func (c *Command) MinFilesize(size string) *Command {
 	return c
 }
 
-// UnsetMinFilesize unsets any flags that were previously set by
-// [Command.MinFilesize].
+// UnsetMinFilesize unsets any flags that were previously set by one of:
+//   - [Command.MinFilesize]
 func (c *Command) UnsetMinFilesize() *Command {
 	c.removeFlagByID("min_filesize")
 	return c
@@ -913,8 +934,8 @@ func (c *Command) MaxFilesize(size string) *Command {
 	return c
 }
 
-// UnsetMaxFilesize unsets any flags that were previously set by
-// [Command.MaxFilesize].
+// UnsetMaxFilesize unsets any flags that were previously set by one of:
+//   - [Command.MaxFilesize]
 func (c *Command) UnsetMaxFilesize() *Command {
 	c.removeFlagByID("max_filesize")
 	return c
@@ -936,8 +957,8 @@ func (c *Command) Date(date string) *Command {
 	return c
 }
 
-// UnsetDate unsets any flags that were previously set by
-// [Command.Date].
+// UnsetDate unsets any flags that were previously set by one of:
+//   - [Command.Date]
 func (c *Command) UnsetDate() *Command {
 	c.removeFlagByID("date")
 	return c
@@ -958,8 +979,8 @@ func (c *Command) Datebefore(date string) *Command {
 	return c
 }
 
-// UnsetDatebefore unsets any flags that were previously set by
-// [Command.Datebefore].
+// UnsetDatebefore unsets any flags that were previously set by one of:
+//   - [Command.Datebefore]
 func (c *Command) UnsetDatebefore() *Command {
 	c.removeFlagByID("datebefore")
 	return c
@@ -980,8 +1001,8 @@ func (c *Command) Dateafter(date string) *Command {
 	return c
 }
 
-// UnsetDateafter unsets any flags that were previously set by
-// [Command.Dateafter].
+// UnsetDateafter unsets any flags that were previously set by one of:
+//   - [Command.Dateafter]
 func (c *Command) UnsetDateafter() *Command {
 	c.removeFlagByID("dateafter")
 	return c
@@ -1001,8 +1022,8 @@ func (c *Command) MinViews(count int) *Command {
 	return c
 }
 
-// UnsetMinViews unsets any flags that were previously set by
-// [Command.MinViews].
+// UnsetMinViews unsets any flags that were previously set by one of:
+//   - [Command.MinViews]
 func (c *Command) UnsetMinViews() *Command {
 	c.removeFlagByID("min_views")
 	return c
@@ -1022,8 +1043,8 @@ func (c *Command) MaxViews(count int) *Command {
 	return c
 }
 
-// UnsetMaxViews unsets any flags that were previously set by
-// [Command.MaxViews].
+// UnsetMaxViews unsets any flags that were previously set by one of:
+//   - [Command.MaxViews]
 func (c *Command) UnsetMaxViews() *Command {
 	c.removeFlagByID("max_views")
 	return c
@@ -1053,8 +1074,9 @@ func (c *Command) MatchFilters(filter string) *Command {
 	return c
 }
 
-// UnsetMatchFilters unsets any flags that were previously set by
-// [Command.MatchFilters].
+// UnsetMatchFilters unsets any flags that were previously set by one of:
+//   - [Command.MatchFilters]
+//   - [Command.NoMatchFilters]
 func (c *Command) UnsetMatchFilters() *Command {
 	c.removeFlagByID("match_filter")
 	return c
@@ -1089,8 +1111,9 @@ func (c *Command) BreakMatchFilters(filter string) *Command {
 	return c
 }
 
-// UnsetBreakMatchFilters unsets any flags that were previously set by
-// [Command.BreakMatchFilters].
+// UnsetBreakMatchFilters unsets any flags that were previously set by one of:
+//   - [Command.BreakMatchFilters]
+//   - [Command.NoBreakMatchFilters]
 func (c *Command) UnsetBreakMatchFilters() *Command {
 	c.removeFlagByID("breaking_match_filter")
 	return c
@@ -1124,9 +1147,17 @@ func (c *Command) NoPlaylist() *Command {
 	return c
 }
 
+// UnsetPlaylist unsets any flags that were previously set by one of:
+//   - [Command.NoPlaylist]
+//   - [Command.YesPlaylist]
+func (c *Command) UnsetPlaylist() *Command {
+	c.removeFlagByID("noplaylist")
+	return c
+}
+
 // Download the playlist, if the URL refers to a video and a playlist
 //
-//   - See [Command.UnsetYesPlaylist], for unsetting the flag.
+//   - See [Command.UnsetPlaylist], for unsetting the flag.
 //   - YesPlaylist maps to cli flags: --yes-playlist.
 //   - From option group: "Video Selection"
 func (c *Command) YesPlaylist() *Command {
@@ -1135,13 +1166,6 @@ func (c *Command) YesPlaylist() *Command {
 		Flag: "--yes-playlist",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetYesPlaylist unsets any flags that were previously set by
-// [Command.YesPlaylist].
-func (c *Command) UnsetYesPlaylist() *Command {
-	c.removeFlagByID("noplaylist")
 	return c
 }
 
@@ -1161,8 +1185,8 @@ func (c *Command) AgeLimit(years int) *Command {
 	return c
 }
 
-// UnsetAgeLimit unsets any flags that were previously set by
-// [Command.AgeLimit].
+// UnsetAgeLimit unsets any flags that were previously set by one of:
+//   - [Command.AgeLimit]
 func (c *Command) UnsetAgeLimit() *Command {
 	c.removeFlagByID("age_limit")
 	return c
@@ -1183,8 +1207,9 @@ func (c *Command) DownloadArchive(file string) *Command {
 	return c
 }
 
-// UnsetDownloadArchive unsets any flags that were previously set by
-// [Command.DownloadArchive].
+// UnsetDownloadArchive unsets any flags that were previously set by one of:
+//   - [Command.DownloadArchive]
+//   - [Command.NoDownloadArchive]
 func (c *Command) UnsetDownloadArchive() *Command {
 	c.removeFlagByID("download_archive")
 	return c
@@ -1220,8 +1245,8 @@ func (c *Command) MaxDownloads(number int) *Command {
 	return c
 }
 
-// UnsetMaxDownloads unsets any flags that were previously set by
-// [Command.MaxDownloads].
+// UnsetMaxDownloads unsets any flags that were previously set by one of:
+//   - [Command.MaxDownloads]
 func (c *Command) UnsetMaxDownloads() *Command {
 	c.removeFlagByID("max_downloads")
 	return c
@@ -1241,8 +1266,8 @@ func (c *Command) BreakOnExisting() *Command {
 	return c
 }
 
-// UnsetBreakOnExisting unsets any flags that were previously set by
-// [Command.BreakOnExisting].
+// UnsetBreakOnExisting unsets any flags that were previously set by one of:
+//   - [Command.BreakOnExisting]
 func (c *Command) UnsetBreakOnExisting() *Command {
 	c.removeFlagByID("break_on_existing")
 	return c
@@ -1262,8 +1287,8 @@ func (c *Command) BreakOnReject() *Command {
 	return c
 }
 
-// UnsetBreakOnReject unsets any flags that were previously set by
-// [Command.BreakOnReject].
+// UnsetBreakOnReject unsets any flags that were previously set by one of:
+//   - [Command.BreakOnReject]
 func (c *Command) UnsetBreakOnReject() *Command {
 	c.removeFlagByID("break_on_reject")
 	return c
@@ -1284,8 +1309,9 @@ func (c *Command) BreakPerInput() *Command {
 	return c
 }
 
-// UnsetBreakPerInput unsets any flags that were previously set by
-// [Command.BreakPerInput].
+// UnsetBreakPerInput unsets any flags that were previously set by one of:
+//   - [Command.BreakPerInput]
+//   - [Command.NoBreakPerInput]
 func (c *Command) UnsetBreakPerInput() *Command {
 	c.removeFlagByID("break_per_url")
 	return c
@@ -1321,8 +1347,8 @@ func (c *Command) SkipPlaylistAfterErrors(n int) *Command {
 	return c
 }
 
-// UnsetSkipPlaylistAfterErrors unsets any flags that were previously set by
-// [Command.SkipPlaylistAfterErrors].
+// UnsetSkipPlaylistAfterErrors unsets any flags that were previously set by one of:
+//   - [Command.SkipPlaylistAfterErrors]
 func (c *Command) UnsetSkipPlaylistAfterErrors() *Command {
 	c.removeFlagByID("skip_playlist_after_errors")
 	return c
@@ -1342,8 +1368,9 @@ func (c *Command) IncludeAds() *Command {
 	return c
 }
 
-// UnsetIncludeAds unsets any flags that were previously set by
-// [Command.IncludeAds].
+// UnsetIncludeAds unsets any flags that were previously set by one of:
+//   - [Command.IncludeAds]
+//   - [Command.NoIncludeAds]
 func (c *Command) UnsetIncludeAds() *Command {
 	c.removeFlagByID("include_ads")
 	return c
@@ -1380,8 +1407,8 @@ func (c *Command) ConcurrentFragments(n int) *Command {
 	return c
 }
 
-// UnsetConcurrentFragments unsets any flags that were previously set by
-// [Command.ConcurrentFragments].
+// UnsetConcurrentFragments unsets any flags that were previously set by one of:
+//   - [Command.ConcurrentFragments]
 func (c *Command) UnsetConcurrentFragments() *Command {
 	c.removeFlagByID("concurrent_fragment_downloads")
 	return c
@@ -1401,8 +1428,8 @@ func (c *Command) LimitRate(rate string) *Command {
 	return c
 }
 
-// UnsetLimitRate unsets any flags that were previously set by
-// [Command.LimitRate].
+// UnsetLimitRate unsets any flags that were previously set by one of:
+//   - [Command.LimitRate]
 func (c *Command) UnsetLimitRate() *Command {
 	c.removeFlagByID("ratelimit")
 	return c
@@ -1423,8 +1450,8 @@ func (c *Command) ThrottledRate(rate string) *Command {
 	return c
 }
 
-// UnsetThrottledRate unsets any flags that were previously set by
-// [Command.ThrottledRate].
+// UnsetThrottledRate unsets any flags that were previously set by one of:
+//   - [Command.ThrottledRate]
 func (c *Command) UnsetThrottledRate() *Command {
 	c.removeFlagByID("throttledratelimit")
 	return c
@@ -1444,8 +1471,8 @@ func (c *Command) Retries(retries string) *Command {
 	return c
 }
 
-// UnsetRetries unsets any flags that were previously set by
-// [Command.Retries].
+// UnsetRetries unsets any flags that were previously set by one of:
+//   - [Command.Retries]
 func (c *Command) UnsetRetries() *Command {
 	c.removeFlagByID("retries")
 	return c
@@ -1465,8 +1492,8 @@ func (c *Command) FileAccessRetries(retries string) *Command {
 	return c
 }
 
-// UnsetFileAccessRetries unsets any flags that were previously set by
-// [Command.FileAccessRetries].
+// UnsetFileAccessRetries unsets any flags that were previously set by one of:
+//   - [Command.FileAccessRetries]
 func (c *Command) UnsetFileAccessRetries() *Command {
 	c.removeFlagByID("file_access_retries")
 	return c
@@ -1487,8 +1514,8 @@ func (c *Command) FragmentRetries(retries string) *Command {
 	return c
 }
 
-// UnsetFragmentRetries unsets any flags that were previously set by
-// [Command.FragmentRetries].
+// UnsetFragmentRetries unsets any flags that were previously set by one of:
+//   - [Command.FragmentRetries]
 func (c *Command) UnsetFragmentRetries() *Command {
 	c.removeFlagByID("fragment_retries")
 	return c
@@ -1512,8 +1539,8 @@ func (c *Command) RetrySleep(expr string) *Command {
 	return c
 }
 
-// UnsetRetrySleep unsets any flags that were previously set by
-// [Command.RetrySleep].
+// UnsetRetrySleep unsets any flags that were previously set by one of:
+//   - [Command.RetrySleep]
 func (c *Command) UnsetRetrySleep() *Command {
 	c.removeFlagByID("retry_sleep")
 	return c
@@ -1533,8 +1560,8 @@ func (c *Command) SkipUnavailableFragments() *Command {
 	return c
 }
 
-// UnsetSkipUnavailableFragments unsets any flags that were previously set by
-// [Command.SkipUnavailableFragments].
+// UnsetSkipUnavailableFragments unsets any flags that were previously set by one of:
+//   - [Command.SkipUnavailableFragments]
 func (c *Command) UnsetSkipUnavailableFragments() *Command {
 	c.removeFlagByID("skip_unavailable_fragments")
 	return c
@@ -1554,8 +1581,8 @@ func (c *Command) AbortOnUnavailableFragments() *Command {
 	return c
 }
 
-// UnsetAbortOnUnavailableFragments unsets any flags that were previously set by
-// [Command.AbortOnUnavailableFragments].
+// UnsetAbortOnUnavailableFragments unsets any flags that were previously set by one of:
+//   - [Command.AbortOnUnavailableFragments]
 func (c *Command) UnsetAbortOnUnavailableFragments() *Command {
 	c.removeFlagByID("skip_unavailable_fragments")
 	return c
@@ -1575,8 +1602,9 @@ func (c *Command) KeepFragments() *Command {
 	return c
 }
 
-// UnsetKeepFragments unsets any flags that were previously set by
-// [Command.KeepFragments].
+// UnsetKeepFragments unsets any flags that were previously set by one of:
+//   - [Command.KeepFragments]
+//   - [Command.NoKeepFragments]
 func (c *Command) UnsetKeepFragments() *Command {
 	c.removeFlagByID("keep_fragments")
 	return c
@@ -1610,8 +1638,8 @@ func (c *Command) BufferSize(size string) *Command {
 	return c
 }
 
-// UnsetBufferSize unsets any flags that were previously set by
-// [Command.BufferSize].
+// UnsetBufferSize unsets any flags that were previously set by one of:
+//   - [Command.BufferSize]
 func (c *Command) UnsetBufferSize() *Command {
 	c.removeFlagByID("buffersize")
 	return c
@@ -1632,8 +1660,9 @@ func (c *Command) ResizeBuffer() *Command {
 	return c
 }
 
-// UnsetResizeBuffer unsets any flags that were previously set by
-// [Command.ResizeBuffer].
+// UnsetResizeBuffer unsets any flags that were previously set by one of:
+//   - [Command.ResizeBuffer]
+//   - [Command.NoResizeBuffer]
 func (c *Command) UnsetResizeBuffer() *Command {
 	c.removeFlagByID("noresizebuffer")
 	return c
@@ -1669,8 +1698,8 @@ func (c *Command) HttpChunkSize(size string) *Command {
 	return c
 }
 
-// UnsetHttpChunkSize unsets any flags that were previously set by
-// [Command.HttpChunkSize].
+// UnsetHttpChunkSize unsets any flags that were previously set by one of:
+//   - [Command.HttpChunkSize]
 func (c *Command) UnsetHttpChunkSize() *Command {
 	c.removeFlagByID("http_chunk_size")
 	return c
@@ -1690,8 +1719,8 @@ func (c *Command) Test() *Command {
 	return c
 }
 
-// UnsetTest unsets any flags that were previously set by
-// [Command.Test].
+// UnsetTest unsets any flags that were previously set by one of:
+//   - [Command.Test]
 func (c *Command) UnsetTest() *Command {
 	c.removeFlagByID("test")
 	return c
@@ -1711,8 +1740,9 @@ func (c *Command) PlaylistReverse() *Command {
 	return c
 }
 
-// UnsetPlaylistReverse unsets any flags that were previously set by
-// [Command.PlaylistReverse].
+// UnsetPlaylistReverse unsets any flags that were previously set by one of:
+//   - [Command.PlaylistReverse]
+//   - [Command.NoPlaylistReverse]
 func (c *Command) UnsetPlaylistReverse() *Command {
 	c.removeFlagByID("playlist_reverse")
 	return c
@@ -1746,8 +1776,8 @@ func (c *Command) PlaylistRandom() *Command {
 	return c
 }
 
-// UnsetPlaylistRandom unsets any flags that were previously set by
-// [Command.PlaylistRandom].
+// UnsetPlaylistRandom unsets any flags that were previously set by one of:
+//   - [Command.PlaylistRandom]
 func (c *Command) UnsetPlaylistRandom() *Command {
 	c.removeFlagByID("playlist_random")
 	return c
@@ -1768,8 +1798,9 @@ func (c *Command) LazyPlaylist() *Command {
 	return c
 }
 
-// UnsetLazyPlaylist unsets any flags that were previously set by
-// [Command.LazyPlaylist].
+// UnsetLazyPlaylist unsets any flags that were previously set by one of:
+//   - [Command.LazyPlaylist]
+//   - [Command.NoLazyPlaylist]
 func (c *Command) UnsetLazyPlaylist() *Command {
 	c.removeFlagByID("lazy_playlist")
 	return c
@@ -1804,8 +1835,8 @@ func (c *Command) XattrSetFilesize() *Command {
 	return c
 }
 
-// UnsetXattrSetFilesize unsets any flags that were previously set by
-// [Command.XattrSetFilesize].
+// UnsetXattrSetFilesize unsets any flags that were previously set by one of:
+//   - [Command.XattrSetFilesize]
 func (c *Command) UnsetXattrSetFilesize() *Command {
 	c.removeFlagByID("xattr_set_filesize")
 	return c
@@ -1825,8 +1856,8 @@ func (c *Command) HlsPreferNative() *Command {
 	return c
 }
 
-// UnsetHlsPreferNative unsets any flags that were previously set by
-// [Command.HlsPreferNative].
+// UnsetHlsPreferNative unsets any flags that were previously set by one of:
+//   - [Command.HlsPreferNative]
 func (c *Command) UnsetHlsPreferNative() *Command {
 	c.removeFlagByID("hls_prefer_native")
 	return c
@@ -1846,8 +1877,8 @@ func (c *Command) HlsPreferFfmpeg() *Command {
 	return c
 }
 
-// UnsetHlsPreferFfmpeg unsets any flags that were previously set by
-// [Command.HlsPreferFfmpeg].
+// UnsetHlsPreferFfmpeg unsets any flags that were previously set by one of:
+//   - [Command.HlsPreferFfmpeg]
 func (c *Command) UnsetHlsPreferFfmpeg() *Command {
 	c.removeFlagByID("hls_prefer_native")
 	return c
@@ -1869,8 +1900,9 @@ func (c *Command) HlsUseMpegts() *Command {
 	return c
 }
 
-// UnsetHlsUseMpegts unsets any flags that were previously set by
-// [Command.HlsUseMpegts].
+// UnsetHlsUseMpegts unsets any flags that were previously set by one of:
+//   - [Command.HlsUseMpegts]
+//   - [Command.NoHlsUseMpegts]
 func (c *Command) UnsetHlsUseMpegts() *Command {
 	c.removeFlagByID("hls_use_mpegts")
 	return c
@@ -1910,8 +1942,8 @@ func (c *Command) DownloadSections(regex string) *Command {
 	return c
 }
 
-// UnsetDownloadSections unsets any flags that were previously set by
-// [Command.DownloadSections].
+// UnsetDownloadSections unsets any flags that were previously set by one of:
+//   - [Command.DownloadSections]
 func (c *Command) UnsetDownloadSections() *Command {
 	c.removeFlagByID("download_ranges")
 	return c
@@ -1936,8 +1968,8 @@ func (c *Command) Downloader(name string) *Command {
 	return c
 }
 
-// UnsetDownloader unsets any flags that were previously set by
-// [Command.Downloader].
+// UnsetDownloader unsets any flags that were previously set by one of:
+//   - [Command.Downloader]
 func (c *Command) UnsetDownloader() *Command {
 	c.removeFlagByID("external_downloader")
 	return c
@@ -1960,8 +1992,8 @@ func (c *Command) DownloaderArgs(nameargs string) *Command {
 	return c
 }
 
-// UnsetDownloaderArgs unsets any flags that were previously set by
-// [Command.DownloaderArgs].
+// UnsetDownloaderArgs unsets any flags that were previously set by one of:
+//   - [Command.DownloaderArgs]
 func (c *Command) UnsetDownloaderArgs() *Command {
 	c.removeFlagByID("external_downloader_args")
 	return c
@@ -1982,8 +2014,9 @@ func (c *Command) BatchFile(file string) *Command {
 	return c
 }
 
-// UnsetBatchFile unsets any flags that were previously set by
-// [Command.BatchFile].
+// UnsetBatchFile unsets any flags that were previously set by one of:
+//   - [Command.BatchFile]
+//   - [Command.NoBatchFile]
 func (c *Command) UnsetBatchFile() *Command {
 	c.removeFlagByID("batchfile")
 	return c
@@ -2017,8 +2050,8 @@ func (c *Command) Id() *Command {
 	return c
 }
 
-// UnsetId unsets any flags that were previously set by
-// [Command.Id].
+// UnsetId unsets any flags that were previously set by one of:
+//   - [Command.Id]
 func (c *Command) UnsetId() *Command {
 	c.removeFlagByID("useid")
 	return c
@@ -2043,8 +2076,8 @@ func (c *Command) Paths(path string) *Command {
 	return c
 }
 
-// UnsetPaths unsets any flags that were previously set by
-// [Command.Paths].
+// UnsetPaths unsets any flags that were previously set by one of:
+//   - [Command.Paths]
 func (c *Command) UnsetPaths() *Command {
 	c.removeFlagByID("paths")
 	return c
@@ -2064,8 +2097,8 @@ func (c *Command) Output(template string) *Command {
 	return c
 }
 
-// UnsetOutput unsets any flags that were previously set by
-// [Command.Output].
+// UnsetOutput unsets any flags that were previously set by one of:
+//   - [Command.Output]
 func (c *Command) UnsetOutput() *Command {
 	c.removeFlagByID("outtmpl")
 	return c
@@ -2085,8 +2118,8 @@ func (c *Command) OutputNaPlaceholder(text string) *Command {
 	return c
 }
 
-// UnsetOutputNaPlaceholder unsets any flags that were previously set by
-// [Command.OutputNaPlaceholder].
+// UnsetOutputNaPlaceholder unsets any flags that were previously set by one of:
+//   - [Command.OutputNaPlaceholder]
 func (c *Command) UnsetOutputNaPlaceholder() *Command {
 	c.removeFlagByID("outtmpl_na_placeholder")
 	return c
@@ -2106,8 +2139,8 @@ func (c *Command) AutonumberSize(number int) *Command {
 	return c
 }
 
-// UnsetAutonumberSize unsets any flags that were previously set by
-// [Command.AutonumberSize].
+// UnsetAutonumberSize unsets any flags that were previously set by one of:
+//   - [Command.AutonumberSize]
 func (c *Command) UnsetAutonumberSize() *Command {
 	c.removeFlagByID("autonumber_size")
 	return c
@@ -2127,8 +2160,8 @@ func (c *Command) AutonumberStart(number int) *Command {
 	return c
 }
 
-// UnsetAutonumberStart unsets any flags that were previously set by
-// [Command.AutonumberStart].
+// UnsetAutonumberStart unsets any flags that were previously set by one of:
+//   - [Command.AutonumberStart]
 func (c *Command) UnsetAutonumberStart() *Command {
 	c.removeFlagByID("autonumber_start")
 	return c
@@ -2149,8 +2182,9 @@ func (c *Command) RestrictFilenames() *Command {
 	return c
 }
 
-// UnsetRestrictFilenames unsets any flags that were previously set by
-// [Command.RestrictFilenames].
+// UnsetRestrictFilenames unsets any flags that were previously set by one of:
+//   - [Command.RestrictFilenames]
+//   - [Command.NoRestrictFilenames]
 func (c *Command) UnsetRestrictFilenames() *Command {
 	c.removeFlagByID("restrictfilenames")
 	return c
@@ -2184,8 +2218,9 @@ func (c *Command) WindowsFilenames() *Command {
 	return c
 }
 
-// UnsetWindowsFilenames unsets any flags that were previously set by
-// [Command.WindowsFilenames].
+// UnsetWindowsFilenames unsets any flags that were previously set by one of:
+//   - [Command.WindowsFilenames]
+//   - [Command.NoWindowsFilenames]
 func (c *Command) UnsetWindowsFilenames() *Command {
 	c.removeFlagByID("windowsfilenames")
 	return c
@@ -2222,8 +2257,8 @@ func (c *Command) TrimFilenames(length int) *Command {
 	return c
 }
 
-// UnsetTrimFilenames unsets any flags that were previously set by
-// [Command.TrimFilenames].
+// UnsetTrimFilenames unsets any flags that were previously set by one of:
+//   - [Command.TrimFilenames]
 func (c *Command) UnsetTrimFilenames() *Command {
 	c.removeFlagByID("trim_file_name")
 	return c
@@ -2243,6 +2278,13 @@ func (c *Command) NoOverwrites() *Command {
 	return c
 }
 
+// UnsetOverwrites unsets any flags that were previously set by one of:
+//   - [Command.NoOverwrites]
+func (c *Command) UnsetOverwrites() *Command {
+	c.removeFlagByID("overwrites")
+	return c
+}
+
 // Overwrite all video and metadata files. This option includes --no-continue
 //
 //   - See [Command.UnsetForceOverwrites], for unsetting the flag.
@@ -2257,8 +2299,9 @@ func (c *Command) ForceOverwrites() *Command {
 	return c
 }
 
-// UnsetForceOverwrites unsets any flags that were previously set by
-// [Command.ForceOverwrites].
+// UnsetForceOverwrites unsets any flags that were previously set by one of:
+//   - [Command.ForceOverwrites]
+//   - [Command.NoForceOverwrites]
 func (c *Command) UnsetForceOverwrites() *Command {
 	c.removeFlagByID("overwrites")
 	return c
@@ -2292,8 +2335,9 @@ func (c *Command) Continue() *Command {
 	return c
 }
 
-// UnsetContinue unsets any flags that were previously set by
-// [Command.Continue].
+// UnsetContinue unsets any flags that were previously set by one of:
+//   - [Command.Continue]
+//   - [Command.NoContinue]
 func (c *Command) UnsetContinue() *Command {
 	c.removeFlagByID("continue_dl")
 	return c
@@ -2328,8 +2372,9 @@ func (c *Command) Part() *Command {
 	return c
 }
 
-// UnsetPart unsets any flags that were previously set by
-// [Command.Part].
+// UnsetPart unsets any flags that were previously set by one of:
+//   - [Command.Part]
+//   - [Command.NoPart]
 func (c *Command) UnsetPart() *Command {
 	c.removeFlagByID("nopart")
 	return c
@@ -2363,8 +2408,9 @@ func (c *Command) Mtime() *Command {
 	return c
 }
 
-// UnsetMtime unsets any flags that were previously set by
-// [Command.Mtime].
+// UnsetMtime unsets any flags that were previously set by one of:
+//   - [Command.Mtime]
+//   - [Command.NoMtime]
 func (c *Command) UnsetMtime() *Command {
 	c.removeFlagByID("updatetime")
 	return c
@@ -2398,8 +2444,9 @@ func (c *Command) WriteDescription() *Command {
 	return c
 }
 
-// UnsetWriteDescription unsets any flags that were previously set by
-// [Command.WriteDescription].
+// UnsetWriteDescription unsets any flags that were previously set by one of:
+//   - [Command.WriteDescription]
+//   - [Command.NoWriteDescription]
 func (c *Command) UnsetWriteDescription() *Command {
 	c.removeFlagByID("writedescription")
 	return c
@@ -2434,8 +2481,9 @@ func (c *Command) WriteInfoJson() *Command {
 	return c
 }
 
-// UnsetWriteInfoJson unsets any flags that were previously set by
-// [Command.WriteInfoJson].
+// UnsetWriteInfoJson unsets any flags that were previously set by one of:
+//   - [Command.WriteInfoJson]
+//   - [Command.NoWriteInfoJson]
 func (c *Command) UnsetWriteInfoJson() *Command {
 	c.removeFlagByID("writeinfojson")
 	return c
@@ -2469,8 +2517,9 @@ func (c *Command) WriteAnnotations() *Command {
 	return c
 }
 
-// UnsetWriteAnnotations unsets any flags that were previously set by
-// [Command.WriteAnnotations].
+// UnsetWriteAnnotations unsets any flags that were previously set by one of:
+//   - [Command.WriteAnnotations]
+//   - [Command.NoWriteAnnotations]
 func (c *Command) UnsetWriteAnnotations() *Command {
 	c.removeFlagByID("writeannotations")
 	return c
@@ -2505,8 +2554,9 @@ func (c *Command) WritePlaylistMetafiles() *Command {
 	return c
 }
 
-// UnsetWritePlaylistMetafiles unsets any flags that were previously set by
-// [Command.WritePlaylistMetafiles].
+// UnsetWritePlaylistMetafiles unsets any flags that were previously set by one of:
+//   - [Command.WritePlaylistMetafiles]
+//   - [Command.NoWritePlaylistMetafiles]
 func (c *Command) UnsetWritePlaylistMetafiles() *Command {
 	c.removeFlagByID("allow_playlist_files")
 	return c
@@ -2541,8 +2591,9 @@ func (c *Command) CleanInfoJson() *Command {
 	return c
 }
 
-// UnsetCleanInfoJson unsets any flags that were previously set by
-// [Command.CleanInfoJson].
+// UnsetCleanInfoJson unsets any flags that were previously set by one of:
+//   - [Command.CleanInfoJson]
+//   - [Command.NoCleanInfoJson]
 func (c *Command) UnsetCleanInfoJson() *Command {
 	c.removeFlagByID("clean_infojson")
 	return c
@@ -2577,8 +2628,9 @@ func (c *Command) WriteComments() *Command {
 	return c
 }
 
-// UnsetWriteComments unsets any flags that were previously set by
-// [Command.WriteComments].
+// UnsetWriteComments unsets any flags that were previously set by one of:
+//   - [Command.WriteComments]
+//   - [Command.NoWriteComments]
 func (c *Command) UnsetWriteComments() *Command {
 	c.removeFlagByID("getcomments")
 	return c
@@ -2613,8 +2665,8 @@ func (c *Command) LoadInfoJson(file string) *Command {
 	return c
 }
 
-// UnsetLoadInfoJson unsets any flags that were previously set by
-// [Command.LoadInfoJson].
+// UnsetLoadInfoJson unsets any flags that were previously set by one of:
+//   - [Command.LoadInfoJson]
 func (c *Command) UnsetLoadInfoJson() *Command {
 	c.removeFlagByID("load_info_filename")
 	return c
@@ -2634,8 +2686,9 @@ func (c *Command) Cookies(file string) *Command {
 	return c
 }
 
-// UnsetCookies unsets any flags that were previously set by
-// [Command.Cookies].
+// UnsetCookies unsets any flags that were previously set by one of:
+//   - [Command.Cookies]
+//   - [Command.NoCookies]
 func (c *Command) UnsetCookies() *Command {
 	c.removeFlagByID("cookiefile")
 	return c
@@ -2675,8 +2728,9 @@ func (c *Command) CookiesFromBrowser(browser string) *Command {
 	return c
 }
 
-// UnsetCookiesFromBrowser unsets any flags that were previously set by
-// [Command.CookiesFromBrowser].
+// UnsetCookiesFromBrowser unsets any flags that were previously set by one of:
+//   - [Command.CookiesFromBrowser]
+//   - [Command.NoCookiesFromBrowser]
 func (c *Command) UnsetCookiesFromBrowser() *Command {
 	c.removeFlagByID("cookiesfrombrowser")
 	return c
@@ -2712,8 +2766,9 @@ func (c *Command) CacheDir(dir string) *Command {
 	return c
 }
 
-// UnsetCacheDir unsets any flags that were previously set by
-// [Command.CacheDir].
+// UnsetCacheDir unsets any flags that were previously set by one of:
+//   - [Command.CacheDir]
+//   - [Command.NoCacheDir]
 func (c *Command) UnsetCacheDir() *Command {
 	c.removeFlagByID("cachedir")
 	return c
@@ -2747,8 +2802,8 @@ func (c *Command) RmCacheDir() *Command {
 	return c
 }
 
-// UnsetRmCacheDir unsets any flags that were previously set by
-// [Command.RmCacheDir].
+// UnsetRmCacheDir unsets any flags that were previously set by one of:
+//   - [Command.RmCacheDir]
 func (c *Command) UnsetRmCacheDir() *Command {
 	c.removeFlagByID("rm_cachedir")
 	return c
@@ -2768,8 +2823,9 @@ func (c *Command) WriteThumbnail(value string) *Command {
 	return c
 }
 
-// UnsetWriteThumbnail unsets any flags that were previously set by
-// [Command.WriteThumbnail].
+// UnsetWriteThumbnail unsets any flags that were previously set by one of:
+//   - [Command.WriteThumbnail]
+//   - [Command.NoWriteThumbnail]
 func (c *Command) UnsetWriteThumbnail() *Command {
 	c.removeFlagByID("writethumbnail")
 	return c
@@ -2803,8 +2859,8 @@ func (c *Command) WriteAllThumbnails() *Command {
 	return c
 }
 
-// UnsetWriteAllThumbnails unsets any flags that were previously set by
-// [Command.WriteAllThumbnails].
+// UnsetWriteAllThumbnails unsets any flags that were previously set by one of:
+//   - [Command.WriteAllThumbnails]
 func (c *Command) UnsetWriteAllThumbnails() *Command {
 	c.removeFlagByID("writethumbnail")
 	return c
@@ -2824,8 +2880,8 @@ func (c *Command) ListThumbnails() *Command {
 	return c
 }
 
-// UnsetListThumbnails unsets any flags that were previously set by
-// [Command.ListThumbnails].
+// UnsetListThumbnails unsets any flags that were previously set by one of:
+//   - [Command.ListThumbnails]
 func (c *Command) UnsetListThumbnails() *Command {
 	c.removeFlagByID("list_thumbnails")
 	return c
@@ -2846,8 +2902,8 @@ func (c *Command) WriteLink() *Command {
 	return c
 }
 
-// UnsetWriteLink unsets any flags that were previously set by
-// [Command.WriteLink].
+// UnsetWriteLink unsets any flags that were previously set by one of:
+//   - [Command.WriteLink]
 func (c *Command) UnsetWriteLink() *Command {
 	c.removeFlagByID("writelink")
 	return c
@@ -2868,8 +2924,8 @@ func (c *Command) WriteUrlLink() *Command {
 	return c
 }
 
-// UnsetWriteUrlLink unsets any flags that were previously set by
-// [Command.WriteUrlLink].
+// UnsetWriteUrlLink unsets any flags that were previously set by one of:
+//   - [Command.WriteUrlLink]
 func (c *Command) UnsetWriteUrlLink() *Command {
 	c.removeFlagByID("writeurllink")
 	return c
@@ -2889,8 +2945,8 @@ func (c *Command) WriteWeblocLink() *Command {
 	return c
 }
 
-// UnsetWriteWeblocLink unsets any flags that were previously set by
-// [Command.WriteWeblocLink].
+// UnsetWriteWeblocLink unsets any flags that were previously set by one of:
+//   - [Command.WriteWeblocLink]
 func (c *Command) UnsetWriteWeblocLink() *Command {
 	c.removeFlagByID("writewebloclink")
 	return c
@@ -2910,8 +2966,8 @@ func (c *Command) WriteDesktopLink() *Command {
 	return c
 }
 
-// UnsetWriteDesktopLink unsets any flags that were previously set by
-// [Command.WriteDesktopLink].
+// UnsetWriteDesktopLink unsets any flags that were previously set by one of:
+//   - [Command.WriteDesktopLink]
 func (c *Command) UnsetWriteDesktopLink() *Command {
 	c.removeFlagByID("writedesktoplink")
 	return c
@@ -2931,8 +2987,9 @@ func (c *Command) Quiet() *Command {
 	return c
 }
 
-// UnsetQuiet unsets any flags that were previously set by
-// [Command.Quiet].
+// UnsetQuiet unsets any flags that were previously set by one of:
+//   - [Command.Quiet]
+//   - [Command.NoQuiet]
 func (c *Command) UnsetQuiet() *Command {
 	c.removeFlagByID("quiet")
 	return c
@@ -2966,6 +3023,13 @@ func (c *Command) NoWarnings() *Command {
 	return c
 }
 
+// UnsetWarnings unsets any flags that were previously set by one of:
+//   - [Command.NoWarnings]
+func (c *Command) UnsetWarnings() *Command {
+	c.removeFlagByID("no_warnings")
+	return c
+}
+
 // Do not download the video and do not write anything to disk
 //
 //   - See [Command.UnsetSimulate], for unsetting the flag.
@@ -2980,8 +3044,9 @@ func (c *Command) Simulate() *Command {
 	return c
 }
 
-// UnsetSimulate unsets any flags that were previously set by
-// [Command.Simulate].
+// UnsetSimulate unsets any flags that were previously set by one of:
+//   - [Command.Simulate]
+//   - [Command.NoSimulate]
 func (c *Command) UnsetSimulate() *Command {
 	c.removeFlagByID("simulate")
 	return c
@@ -3016,8 +3081,9 @@ func (c *Command) IgnoreNoFormatsError() *Command {
 	return c
 }
 
-// UnsetIgnoreNoFormatsError unsets any flags that were previously set by
-// [Command.IgnoreNoFormatsError].
+// UnsetIgnoreNoFormatsError unsets any flags that were previously set by one of:
+//   - [Command.IgnoreNoFormatsError]
+//   - [Command.NoIgnoreNoFormatsError]
 func (c *Command) UnsetIgnoreNoFormatsError() *Command {
 	c.removeFlagByID("ignore_no_formats_error")
 	return c
@@ -3051,8 +3117,8 @@ func (c *Command) SkipDownload() *Command {
 	return c
 }
 
-// UnsetSkipDownload unsets any flags that were previously set by
-// [Command.SkipDownload].
+// UnsetSkipDownload unsets any flags that were previously set by one of:
+//   - [Command.SkipDownload]
 func (c *Command) UnsetSkipDownload() *Command {
 	c.removeFlagByID("skip_download")
 	return c
@@ -3076,8 +3142,8 @@ func (c *Command) Print(template string) *Command {
 	return c
 }
 
-// UnsetPrint unsets any flags that were previously set by
-// [Command.Print].
+// UnsetPrint unsets any flags that were previously set by one of:
+//   - [Command.Print]
 func (c *Command) UnsetPrint() *Command {
 	c.removeFlagByID("forceprint")
 	return c
@@ -3099,8 +3165,8 @@ func (c *Command) PrintToFile(template, file string) *Command {
 	return c
 }
 
-// UnsetPrintToFile unsets any flags that were previously set by
-// [Command.PrintToFile].
+// UnsetPrintToFile unsets any flags that were previously set by one of:
+//   - [Command.PrintToFile]
 func (c *Command) UnsetPrintToFile() *Command {
 	c.removeFlagByID("print_to_file")
 	return c
@@ -3120,8 +3186,8 @@ func (c *Command) GetUrl() *Command {
 	return c
 }
 
-// UnsetGetUrl unsets any flags that were previously set by
-// [Command.GetUrl].
+// UnsetGetUrl unsets any flags that were previously set by one of:
+//   - [Command.GetUrl]
 func (c *Command) UnsetGetUrl() *Command {
 	c.removeFlagByID("geturl")
 	return c
@@ -3141,8 +3207,8 @@ func (c *Command) GetTitle() *Command {
 	return c
 }
 
-// UnsetGetTitle unsets any flags that were previously set by
-// [Command.GetTitle].
+// UnsetGetTitle unsets any flags that were previously set by one of:
+//   - [Command.GetTitle]
 func (c *Command) UnsetGetTitle() *Command {
 	c.removeFlagByID("gettitle")
 	return c
@@ -3162,8 +3228,8 @@ func (c *Command) GetId() *Command {
 	return c
 }
 
-// UnsetGetId unsets any flags that were previously set by
-// [Command.GetId].
+// UnsetGetId unsets any flags that were previously set by one of:
+//   - [Command.GetId]
 func (c *Command) UnsetGetId() *Command {
 	c.removeFlagByID("getid")
 	return c
@@ -3183,8 +3249,8 @@ func (c *Command) GetThumbnail() *Command {
 	return c
 }
 
-// UnsetGetThumbnail unsets any flags that were previously set by
-// [Command.GetThumbnail].
+// UnsetGetThumbnail unsets any flags that were previously set by one of:
+//   - [Command.GetThumbnail]
 func (c *Command) UnsetGetThumbnail() *Command {
 	c.removeFlagByID("getthumbnail")
 	return c
@@ -3204,8 +3270,8 @@ func (c *Command) GetDescription() *Command {
 	return c
 }
 
-// UnsetGetDescription unsets any flags that were previously set by
-// [Command.GetDescription].
+// UnsetGetDescription unsets any flags that were previously set by one of:
+//   - [Command.GetDescription]
 func (c *Command) UnsetGetDescription() *Command {
 	c.removeFlagByID("getdescription")
 	return c
@@ -3225,8 +3291,8 @@ func (c *Command) GetDuration() *Command {
 	return c
 }
 
-// UnsetGetDuration unsets any flags that were previously set by
-// [Command.GetDuration].
+// UnsetGetDuration unsets any flags that were previously set by one of:
+//   - [Command.GetDuration]
 func (c *Command) UnsetGetDuration() *Command {
 	c.removeFlagByID("getduration")
 	return c
@@ -3246,8 +3312,8 @@ func (c *Command) GetFilename() *Command {
 	return c
 }
 
-// UnsetGetFilename unsets any flags that were previously set by
-// [Command.GetFilename].
+// UnsetGetFilename unsets any flags that were previously set by one of:
+//   - [Command.GetFilename]
 func (c *Command) UnsetGetFilename() *Command {
 	c.removeFlagByID("getfilename")
 	return c
@@ -3267,8 +3333,8 @@ func (c *Command) GetFormat() *Command {
 	return c
 }
 
-// UnsetGetFormat unsets any flags that were previously set by
-// [Command.GetFormat].
+// UnsetGetFormat unsets any flags that were previously set by one of:
+//   - [Command.GetFormat]
 func (c *Command) UnsetGetFormat() *Command {
 	c.removeFlagByID("getformat")
 	return c
@@ -3289,8 +3355,8 @@ func (c *Command) DumpJson() *Command {
 	return c
 }
 
-// UnsetDumpJson unsets any flags that were previously set by
-// [Command.DumpJson].
+// UnsetDumpJson unsets any flags that were previously set by one of:
+//   - [Command.DumpJson]
 func (c *Command) UnsetDumpJson() *Command {
 	c.removeFlagByID("dumpjson")
 	return c
@@ -3312,8 +3378,8 @@ func (c *Command) DumpSingleJson() *Command {
 	return c
 }
 
-// UnsetDumpSingleJson unsets any flags that were previously set by
-// [Command.DumpSingleJson].
+// UnsetDumpSingleJson unsets any flags that were previously set by one of:
+//   - [Command.DumpSingleJson]
 func (c *Command) UnsetDumpSingleJson() *Command {
 	c.removeFlagByID("dump_single_json")
 	return c
@@ -3333,8 +3399,8 @@ func (c *Command) PrintJson() *Command {
 	return c
 }
 
-// UnsetPrintJson unsets any flags that were previously set by
-// [Command.PrintJson].
+// UnsetPrintJson unsets any flags that were previously set by one of:
+//   - [Command.PrintJson]
 func (c *Command) UnsetPrintJson() *Command {
 	c.removeFlagByID("print_json")
 	return c
@@ -3355,8 +3421,8 @@ func (c *Command) ForceWriteArchive() *Command {
 	return c
 }
 
-// UnsetForceWriteArchive unsets any flags that were previously set by
-// [Command.ForceWriteArchive].
+// UnsetForceWriteArchive unsets any flags that were previously set by one of:
+//   - [Command.ForceWriteArchive]
 func (c *Command) UnsetForceWriteArchive() *Command {
 	c.removeFlagByID("force_write_download_archive")
 	return c
@@ -3376,8 +3442,8 @@ func (c *Command) Newline() *Command {
 	return c
 }
 
-// UnsetNewline unsets any flags that were previously set by
-// [Command.Newline].
+// UnsetNewline unsets any flags that were previously set by one of:
+//   - [Command.Newline]
 func (c *Command) UnsetNewline() *Command {
 	c.removeFlagByID("progress_with_newline")
 	return c
@@ -3397,6 +3463,14 @@ func (c *Command) NoProgress() *Command {
 	return c
 }
 
+// UnsetProgress unsets any flags that were previously set by one of:
+//   - [Command.NoProgress]
+//   - [Command.Progress]
+func (c *Command) UnsetProgress() *Command {
+	c.removeFlagByID("noprogress")
+	return c
+}
+
 // Show progress bar, even if in quiet mode
 //
 //   - See [Command.UnsetProgress], for unsetting the flag.
@@ -3408,13 +3482,6 @@ func (c *Command) Progress() *Command {
 		Flag: "--progress",
 		Args: nil,
 	})
-	return c
-}
-
-// UnsetProgress unsets any flags that were previously set by
-// [Command.Progress].
-func (c *Command) UnsetProgress() *Command {
-	c.removeFlagByID("noprogress")
 	return c
 }
 
@@ -3432,8 +3499,8 @@ func (c *Command) ConsoleTitle() *Command {
 	return c
 }
 
-// UnsetConsoleTitle unsets any flags that were previously set by
-// [Command.ConsoleTitle].
+// UnsetConsoleTitle unsets any flags that were previously set by one of:
+//   - [Command.ConsoleTitle]
 func (c *Command) UnsetConsoleTitle() *Command {
 	c.removeFlagByID("consoletitle")
 	return c
@@ -3458,8 +3525,8 @@ func (c *Command) ProgressTemplate(template string) *Command {
 	return c
 }
 
-// UnsetProgressTemplate unsets any flags that were previously set by
-// [Command.ProgressTemplate].
+// UnsetProgressTemplate unsets any flags that were previously set by one of:
+//   - [Command.ProgressTemplate]
 func (c *Command) UnsetProgressTemplate() *Command {
 	c.removeFlagByID("progress_template")
 	return c
@@ -3479,8 +3546,8 @@ func (c *Command) Verbose() *Command {
 	return c
 }
 
-// UnsetVerbose unsets any flags that were previously set by
-// [Command.Verbose].
+// UnsetVerbose unsets any flags that were previously set by one of:
+//   - [Command.Verbose]
 func (c *Command) UnsetVerbose() *Command {
 	c.removeFlagByID("verbose")
 	return c
@@ -3500,8 +3567,8 @@ func (c *Command) DumpPages() *Command {
 	return c
 }
 
-// UnsetDumpPages unsets any flags that were previously set by
-// [Command.DumpPages].
+// UnsetDumpPages unsets any flags that were previously set by one of:
+//   - [Command.DumpPages]
 func (c *Command) UnsetDumpPages() *Command {
 	c.removeFlagByID("dump_intermediate_pages")
 	return c
@@ -3522,8 +3589,8 @@ func (c *Command) WritePages() *Command {
 	return c
 }
 
-// UnsetWritePages unsets any flags that were previously set by
-// [Command.WritePages].
+// UnsetWritePages unsets any flags that were previously set by one of:
+//   - [Command.WritePages]
 func (c *Command) UnsetWritePages() *Command {
 	c.removeFlagByID("write_pages")
 	return c
@@ -3543,8 +3610,8 @@ func (c *Command) LoadPages() *Command {
 	return c
 }
 
-// UnsetLoadPages unsets any flags that were previously set by
-// [Command.LoadPages].
+// UnsetLoadPages unsets any flags that were previously set by one of:
+//   - [Command.LoadPages]
 func (c *Command) UnsetLoadPages() *Command {
 	c.removeFlagByID("load_pages")
 	return c
@@ -3564,8 +3631,8 @@ func (c *Command) YoutubePrintSigCode() *Command {
 	return c
 }
 
-// UnsetYoutubePrintSigCode unsets any flags that were previously set by
-// [Command.YoutubePrintSigCode].
+// UnsetYoutubePrintSigCode unsets any flags that were previously set by one of:
+//   - [Command.YoutubePrintSigCode]
 func (c *Command) UnsetYoutubePrintSigCode() *Command {
 	c.removeFlagByID("youtube_print_sig_code")
 	return c
@@ -3585,8 +3652,8 @@ func (c *Command) PrintTraffic() *Command {
 	return c
 }
 
-// UnsetPrintTraffic unsets any flags that were previously set by
-// [Command.PrintTraffic].
+// UnsetPrintTraffic unsets any flags that were previously set by one of:
+//   - [Command.PrintTraffic]
 func (c *Command) UnsetPrintTraffic() *Command {
 	c.removeFlagByID("debug_printtraffic")
 	return c
@@ -3606,8 +3673,9 @@ func (c *Command) CallHome() *Command {
 	return c
 }
 
-// UnsetCallHome unsets any flags that were previously set by
-// [Command.CallHome].
+// UnsetCallHome unsets any flags that were previously set by one of:
+//   - [Command.CallHome]
+//   - [Command.NoCallHome]
 func (c *Command) UnsetCallHome() *Command {
 	c.removeFlagByID("call_home")
 	return c
@@ -3641,8 +3709,8 @@ func (c *Command) Encoding(encoding string) *Command {
 	return c
 }
 
-// UnsetEncoding unsets any flags that were previously set by
-// [Command.Encoding].
+// UnsetEncoding unsets any flags that were previously set by one of:
+//   - [Command.Encoding]
 func (c *Command) UnsetEncoding() *Command {
 	c.removeFlagByID("encoding")
 	return c
@@ -3663,8 +3731,8 @@ func (c *Command) LegacyServerConnect() *Command {
 	return c
 }
 
-// UnsetLegacyServerConnect unsets any flags that were previously set by
-// [Command.LegacyServerConnect].
+// UnsetLegacyServerConnect unsets any flags that were previously set by one of:
+//   - [Command.LegacyServerConnect]
 func (c *Command) UnsetLegacyServerConnect() *Command {
 	c.removeFlagByID("legacy_server_connect")
 	return c
@@ -3684,6 +3752,13 @@ func (c *Command) NoCheckCertificates() *Command {
 	return c
 }
 
+// UnsetCheckCertificates unsets any flags that were previously set by one of:
+//   - [Command.NoCheckCertificates]
+func (c *Command) UnsetCheckCertificates() *Command {
+	c.removeFlagByID("no_check_certificate")
+	return c
+}
+
 // Use an unencrypted connection to retrieve information about the video (Currently
 // supported only for YouTube)
 //
@@ -3699,8 +3774,8 @@ func (c *Command) PreferInsecure() *Command {
 	return c
 }
 
-// UnsetPreferInsecure unsets any flags that were previously set by
-// [Command.PreferInsecure].
+// UnsetPreferInsecure unsets any flags that were previously set by one of:
+//   - [Command.PreferInsecure]
 func (c *Command) UnsetPreferInsecure() *Command {
 	c.removeFlagByID("prefer_insecure")
 	return c
@@ -3718,8 +3793,8 @@ func (c *Command) UserAgent(ua string) *Command {
 	return c
 }
 
-// UnsetUserAgent unsets any flags that were previously set by
-// [Command.UserAgent].
+// UnsetUserAgent unsets any flags that were previously set by one of:
+//   - [Command.UserAgent]
 func (c *Command) UnsetUserAgent() *Command {
 	c.removeFlagByID("user_agent")
 	return c
@@ -3737,8 +3812,8 @@ func (c *Command) Referer(url string) *Command {
 	return c
 }
 
-// UnsetReferer unsets any flags that were previously set by
-// [Command.Referer].
+// UnsetReferer unsets any flags that were previously set by one of:
+//   - [Command.Referer]
 func (c *Command) UnsetReferer() *Command {
 	c.removeFlagByID("referer")
 	return c
@@ -3759,8 +3834,8 @@ func (c *Command) AddHeaders(fieldvalue string) *Command {
 	return c
 }
 
-// UnsetAddHeaders unsets any flags that were previously set by
-// [Command.AddHeaders].
+// UnsetAddHeaders unsets any flags that were previously set by one of:
+//   - [Command.AddHeaders]
 func (c *Command) UnsetAddHeaders() *Command {
 	c.removeFlagByID("headers")
 	return c
@@ -3781,8 +3856,8 @@ func (c *Command) BidiWorkaround() *Command {
 	return c
 }
 
-// UnsetBidiWorkaround unsets any flags that were previously set by
-// [Command.BidiWorkaround].
+// UnsetBidiWorkaround unsets any flags that were previously set by one of:
+//   - [Command.BidiWorkaround]
 func (c *Command) UnsetBidiWorkaround() *Command {
 	c.removeFlagByID("bidi_workaround")
 	return c
@@ -3804,8 +3879,8 @@ func (c *Command) SleepRequests(seconds float64) *Command {
 	return c
 }
 
-// UnsetSleepRequests unsets any flags that were previously set by
-// [Command.SleepRequests].
+// UnsetSleepRequests unsets any flags that were previously set by one of:
+//   - [Command.SleepRequests]
 func (c *Command) UnsetSleepRequests() *Command {
 	c.removeFlagByID("sleep_interval_requests")
 	return c
@@ -3828,8 +3903,8 @@ func (c *Command) SleepInterval(seconds float64) *Command {
 	return c
 }
 
-// UnsetSleepInterval unsets any flags that were previously set by
-// [Command.SleepInterval].
+// UnsetSleepInterval unsets any flags that were previously set by one of:
+//   - [Command.SleepInterval]
 func (c *Command) UnsetSleepInterval() *Command {
 	c.removeFlagByID("sleep_interval")
 	return c
@@ -3852,8 +3927,8 @@ func (c *Command) MaxSleepInterval(seconds float64) *Command {
 	return c
 }
 
-// UnsetMaxSleepInterval unsets any flags that were previously set by
-// [Command.MaxSleepInterval].
+// UnsetMaxSleepInterval unsets any flags that were previously set by one of:
+//   - [Command.MaxSleepInterval]
 func (c *Command) UnsetMaxSleepInterval() *Command {
 	c.removeFlagByID("max_sleep_interval")
 	return c
@@ -3875,8 +3950,8 @@ func (c *Command) SleepSubtitles(seconds int) *Command {
 	return c
 }
 
-// UnsetSleepSubtitles unsets any flags that were previously set by
-// [Command.SleepSubtitles].
+// UnsetSleepSubtitles unsets any flags that were previously set by one of:
+//   - [Command.SleepSubtitles]
 func (c *Command) UnsetSleepSubtitles() *Command {
 	c.removeFlagByID("sleep_interval_subtitles")
 	return c
@@ -3896,8 +3971,8 @@ func (c *Command) Format(format string) *Command {
 	return c
 }
 
-// UnsetFormat unsets any flags that were previously set by
-// [Command.Format].
+// UnsetFormat unsets any flags that were previously set by one of:
+//   - [Command.Format]
 func (c *Command) UnsetFormat() *Command {
 	c.removeFlagByID("format")
 	return c
@@ -3917,8 +3992,8 @@ func (c *Command) FormatSort(sortorder string) *Command {
 	return c
 }
 
-// UnsetFormatSort unsets any flags that were previously set by
-// [Command.FormatSort].
+// UnsetFormatSort unsets any flags that were previously set by one of:
+//   - [Command.FormatSort]
 func (c *Command) UnsetFormatSort() *Command {
 	c.removeFlagByID("format_sort")
 	return c
@@ -3939,8 +4014,9 @@ func (c *Command) FormatSortForce() *Command {
 	return c
 }
 
-// UnsetFormatSortForce unsets any flags that were previously set by
-// [Command.FormatSortForce].
+// UnsetFormatSortForce unsets any flags that were previously set by one of:
+//   - [Command.FormatSortForce]
+//   - [Command.NoFormatSortForce]
 func (c *Command) UnsetFormatSortForce() *Command {
 	c.removeFlagByID("format_sort_force")
 	return c
@@ -3974,8 +4050,9 @@ func (c *Command) VideoMultistreams() *Command {
 	return c
 }
 
-// UnsetVideoMultistreams unsets any flags that were previously set by
-// [Command.VideoMultistreams].
+// UnsetVideoMultistreams unsets any flags that were previously set by one of:
+//   - [Command.VideoMultistreams]
+//   - [Command.NoVideoMultistreams]
 func (c *Command) UnsetVideoMultistreams() *Command {
 	c.removeFlagByID("allow_multiple_video_streams")
 	return c
@@ -4009,8 +4086,9 @@ func (c *Command) AudioMultistreams() *Command {
 	return c
 }
 
-// UnsetAudioMultistreams unsets any flags that were previously set by
-// [Command.AudioMultistreams].
+// UnsetAudioMultistreams unsets any flags that were previously set by one of:
+//   - [Command.AudioMultistreams]
+//   - [Command.NoAudioMultistreams]
 func (c *Command) UnsetAudioMultistreams() *Command {
 	c.removeFlagByID("allow_multiple_audio_streams")
 	return c
@@ -4044,8 +4122,8 @@ func (c *Command) AllFormats() *Command {
 	return c
 }
 
-// UnsetAllFormats unsets any flags that were previously set by
-// [Command.AllFormats].
+// UnsetAllFormats unsets any flags that were previously set by one of:
+//   - [Command.AllFormats]
 func (c *Command) UnsetAllFormats() *Command {
 	c.removeFlagByID("format")
 	return c
@@ -4066,8 +4144,9 @@ func (c *Command) PreferFreeFormats() *Command {
 	return c
 }
 
-// UnsetPreferFreeFormats unsets any flags that were previously set by
-// [Command.PreferFreeFormats].
+// UnsetPreferFreeFormats unsets any flags that were previously set by one of:
+//   - [Command.PreferFreeFormats]
+//   - [Command.NoPreferFreeFormats]
 func (c *Command) UnsetPreferFreeFormats() *Command {
 	c.removeFlagByID("prefer_free_formats")
 	return c
@@ -4101,8 +4180,9 @@ func (c *Command) CheckFormats() *Command {
 	return c
 }
 
-// UnsetCheckFormats unsets any flags that were previously set by
-// [Command.CheckFormats].
+// UnsetCheckFormats unsets any flags that were previously set by one of:
+//   - [Command.CheckFormats]
+//   - [Command.NoCheckFormats]
 func (c *Command) UnsetCheckFormats() *Command {
 	c.removeFlagByID("check_formats")
 	return c
@@ -4122,8 +4202,8 @@ func (c *Command) CheckAllFormats() *Command {
 	return c
 }
 
-// UnsetCheckAllFormats unsets any flags that were previously set by
-// [Command.CheckAllFormats].
+// UnsetCheckAllFormats unsets any flags that were previously set by one of:
+//   - [Command.CheckAllFormats]
 func (c *Command) UnsetCheckAllFormats() *Command {
 	c.removeFlagByID("check_formats")
 	return c
@@ -4157,8 +4237,8 @@ func (c *Command) ListFormats() *Command {
 	return c
 }
 
-// UnsetListFormats unsets any flags that were previously set by
-// [Command.ListFormats].
+// UnsetListFormats unsets any flags that were previously set by one of:
+//   - [Command.ListFormats]
 func (c *Command) UnsetListFormats() *Command {
 	c.removeFlagByID("listformats")
 	return c
@@ -4178,8 +4258,8 @@ func (c *Command) ListFormatsAsTable() *Command {
 	return c
 }
 
-// UnsetListFormatsAsTable unsets any flags that were previously set by
-// [Command.ListFormatsAsTable].
+// UnsetListFormatsAsTable unsets any flags that were previously set by one of:
+//   - [Command.ListFormatsAsTable]
 func (c *Command) UnsetListFormatsAsTable() *Command {
 	c.removeFlagByID("listformats_table")
 	return c
@@ -4199,8 +4279,8 @@ func (c *Command) ListFormatsOld() *Command {
 	return c
 }
 
-// UnsetListFormatsOld unsets any flags that were previously set by
-// [Command.ListFormatsOld].
+// UnsetListFormatsOld unsets any flags that were previously set by one of:
+//   - [Command.ListFormatsOld]
 func (c *Command) UnsetListFormatsOld() *Command {
 	c.removeFlagByID("listformats_table")
 	return c
@@ -4222,8 +4302,8 @@ func (c *Command) MergeOutputFormat(format string) *Command {
 	return c
 }
 
-// UnsetMergeOutputFormat unsets any flags that were previously set by
-// [Command.MergeOutputFormat].
+// UnsetMergeOutputFormat unsets any flags that were previously set by one of:
+//   - [Command.MergeOutputFormat]
 func (c *Command) UnsetMergeOutputFormat() *Command {
 	c.removeFlagByID("merge_output_format")
 	return c
@@ -4243,8 +4323,9 @@ func (c *Command) AllowUnplayableFormats() *Command {
 	return c
 }
 
-// UnsetAllowUnplayableFormats unsets any flags that were previously set by
-// [Command.AllowUnplayableFormats].
+// UnsetAllowUnplayableFormats unsets any flags that were previously set by one of:
+//   - [Command.AllowUnplayableFormats]
+//   - [Command.NoAllowUnplayableFormats]
 func (c *Command) UnsetAllowUnplayableFormats() *Command {
 	c.removeFlagByID("allow_unplayable_formats")
 	return c
@@ -4278,8 +4359,9 @@ func (c *Command) WriteSubs() *Command {
 	return c
 }
 
-// UnsetWriteSubs unsets any flags that were previously set by
-// [Command.WriteSubs].
+// UnsetWriteSubs unsets any flags that were previously set by one of:
+//   - [Command.WriteSubs]
+//   - [Command.NoWriteSubs]
 func (c *Command) UnsetWriteSubs() *Command {
 	c.removeFlagByID("writesubtitles")
 	return c
@@ -4313,8 +4395,9 @@ func (c *Command) WriteAutoSubs() *Command {
 	return c
 }
 
-// UnsetWriteAutoSubs unsets any flags that were previously set by
-// [Command.WriteAutoSubs].
+// UnsetWriteAutoSubs unsets any flags that were previously set by one of:
+//   - [Command.WriteAutoSubs]
+//   - [Command.NoWriteAutoSubs]
 func (c *Command) UnsetWriteAutoSubs() *Command {
 	c.removeFlagByID("writeautomaticsub")
 	return c
@@ -4348,8 +4431,8 @@ func (c *Command) AllSubs() *Command {
 	return c
 }
 
-// UnsetAllSubs unsets any flags that were previously set by
-// [Command.AllSubs].
+// UnsetAllSubs unsets any flags that were previously set by one of:
+//   - [Command.AllSubs]
 func (c *Command) UnsetAllSubs() *Command {
 	c.removeFlagByID("allsubtitles")
 	return c
@@ -4369,8 +4452,8 @@ func (c *Command) ListSubs() *Command {
 	return c
 }
 
-// UnsetListSubs unsets any flags that were previously set by
-// [Command.ListSubs].
+// UnsetListSubs unsets any flags that were previously set by one of:
+//   - [Command.ListSubs]
 func (c *Command) UnsetListSubs() *Command {
 	c.removeFlagByID("listsubtitles")
 	return c
@@ -4390,8 +4473,8 @@ func (c *Command) SubFormat(format string) *Command {
 	return c
 }
 
-// UnsetSubFormat unsets any flags that were previously set by
-// [Command.SubFormat].
+// UnsetSubFormat unsets any flags that were previously set by one of:
+//   - [Command.SubFormat]
 func (c *Command) UnsetSubFormat() *Command {
 	c.removeFlagByID("subtitlesformat")
 	return c
@@ -4414,8 +4497,8 @@ func (c *Command) SubLangs(langs string) *Command {
 	return c
 }
 
-// UnsetSubLangs unsets any flags that were previously set by
-// [Command.SubLangs].
+// UnsetSubLangs unsets any flags that were previously set by one of:
+//   - [Command.SubLangs]
 func (c *Command) UnsetSubLangs() *Command {
 	c.removeFlagByID("subtitleslangs")
 	return c
@@ -4435,8 +4518,8 @@ func (c *Command) Username(username string) *Command {
 	return c
 }
 
-// UnsetUsername unsets any flags that were previously set by
-// [Command.Username].
+// UnsetUsername unsets any flags that were previously set by one of:
+//   - [Command.Username]
 func (c *Command) UnsetUsername() *Command {
 	c.removeFlagByID("username")
 	return c
@@ -4456,8 +4539,8 @@ func (c *Command) Password(password string) *Command {
 	return c
 }
 
-// UnsetPassword unsets any flags that were previously set by
-// [Command.Password].
+// UnsetPassword unsets any flags that were previously set by one of:
+//   - [Command.Password]
 func (c *Command) UnsetPassword() *Command {
 	c.removeFlagByID("password")
 	return c
@@ -4477,8 +4560,8 @@ func (c *Command) Twofactor(twofactor string) *Command {
 	return c
 }
 
-// UnsetTwofactor unsets any flags that were previously set by
-// [Command.Twofactor].
+// UnsetTwofactor unsets any flags that were previously set by one of:
+//   - [Command.Twofactor]
 func (c *Command) UnsetTwofactor() *Command {
 	c.removeFlagByID("twofactor")
 	return c
@@ -4498,8 +4581,8 @@ func (c *Command) Netrc() *Command {
 	return c
 }
 
-// UnsetNetrc unsets any flags that were previously set by
-// [Command.Netrc].
+// UnsetNetrc unsets any flags that were previously set by one of:
+//   - [Command.Netrc]
 func (c *Command) UnsetNetrc() *Command {
 	c.removeFlagByID("usenetrc")
 	return c
@@ -4520,8 +4603,8 @@ func (c *Command) NetrcLocation(path string) *Command {
 	return c
 }
 
-// UnsetNetrcLocation unsets any flags that were previously set by
-// [Command.NetrcLocation].
+// UnsetNetrcLocation unsets any flags that were previously set by one of:
+//   - [Command.NetrcLocation]
 func (c *Command) UnsetNetrcLocation() *Command {
 	c.removeFlagByID("netrc_location")
 	return c
@@ -4541,8 +4624,8 @@ func (c *Command) NetrcCmd(netrcCmd string) *Command {
 	return c
 }
 
-// UnsetNetrcCmd unsets any flags that were previously set by
-// [Command.NetrcCmd].
+// UnsetNetrcCmd unsets any flags that were previously set by one of:
+//   - [Command.NetrcCmd]
 func (c *Command) UnsetNetrcCmd() *Command {
 	c.removeFlagByID("netrc_cmd")
 	return c
@@ -4562,8 +4645,8 @@ func (c *Command) VideoPassword(password string) *Command {
 	return c
 }
 
-// UnsetVideoPassword unsets any flags that were previously set by
-// [Command.VideoPassword].
+// UnsetVideoPassword unsets any flags that were previously set by one of:
+//   - [Command.VideoPassword]
 func (c *Command) UnsetVideoPassword() *Command {
 	c.removeFlagByID("videopassword")
 	return c
@@ -4584,8 +4667,8 @@ func (c *Command) ApMso(mso string) *Command {
 	return c
 }
 
-// UnsetApMso unsets any flags that were previously set by
-// [Command.ApMso].
+// UnsetApMso unsets any flags that were previously set by one of:
+//   - [Command.ApMso]
 func (c *Command) UnsetApMso() *Command {
 	c.removeFlagByID("ap_mso")
 	return c
@@ -4605,8 +4688,8 @@ func (c *Command) ApUsername(username string) *Command {
 	return c
 }
 
-// UnsetApUsername unsets any flags that were previously set by
-// [Command.ApUsername].
+// UnsetApUsername unsets any flags that were previously set by one of:
+//   - [Command.ApUsername]
 func (c *Command) UnsetApUsername() *Command {
 	c.removeFlagByID("ap_username")
 	return c
@@ -4627,8 +4710,8 @@ func (c *Command) ApPassword(password string) *Command {
 	return c
 }
 
-// UnsetApPassword unsets any flags that were previously set by
-// [Command.ApPassword].
+// UnsetApPassword unsets any flags that were previously set by one of:
+//   - [Command.ApPassword]
 func (c *Command) UnsetApPassword() *Command {
 	c.removeFlagByID("ap_password")
 	return c
@@ -4648,8 +4731,8 @@ func (c *Command) ApListMso() *Command {
 	return c
 }
 
-// UnsetApListMso unsets any flags that were previously set by
-// [Command.ApListMso].
+// UnsetApListMso unsets any flags that were previously set by one of:
+//   - [Command.ApListMso]
 func (c *Command) UnsetApListMso() *Command {
 	c.removeFlagByID("ap_list_mso")
 	return c
@@ -4669,8 +4752,8 @@ func (c *Command) ClientCertificate(certfile string) *Command {
 	return c
 }
 
-// UnsetClientCertificate unsets any flags that were previously set by
-// [Command.ClientCertificate].
+// UnsetClientCertificate unsets any flags that were previously set by one of:
+//   - [Command.ClientCertificate]
 func (c *Command) UnsetClientCertificate() *Command {
 	c.removeFlagByID("client_certificate")
 	return c
@@ -4690,8 +4773,8 @@ func (c *Command) ClientCertificateKey(keyfile string) *Command {
 	return c
 }
 
-// UnsetClientCertificateKey unsets any flags that were previously set by
-// [Command.ClientCertificateKey].
+// UnsetClientCertificateKey unsets any flags that were previously set by one of:
+//   - [Command.ClientCertificateKey]
 func (c *Command) UnsetClientCertificateKey() *Command {
 	c.removeFlagByID("client_certificate_key")
 	return c
@@ -4712,8 +4795,8 @@ func (c *Command) ClientCertificatePassword(password string) *Command {
 	return c
 }
 
-// UnsetClientCertificatePassword unsets any flags that were previously set by
-// [Command.ClientCertificatePassword].
+// UnsetClientCertificatePassword unsets any flags that were previously set by one of:
+//   - [Command.ClientCertificatePassword]
 func (c *Command) UnsetClientCertificatePassword() *Command {
 	c.removeFlagByID("client_certificate_password")
 	return c
@@ -4733,8 +4816,8 @@ func (c *Command) ExtractAudio() *Command {
 	return c
 }
 
-// UnsetExtractAudio unsets any flags that were previously set by
-// [Command.ExtractAudio].
+// UnsetExtractAudio unsets any flags that were previously set by one of:
+//   - [Command.ExtractAudio]
 func (c *Command) UnsetExtractAudio() *Command {
 	c.removeFlagByID("extractaudio")
 	return c
@@ -4756,8 +4839,8 @@ func (c *Command) AudioFormat(format string) *Command {
 	return c
 }
 
-// UnsetAudioFormat unsets any flags that were previously set by
-// [Command.AudioFormat].
+// UnsetAudioFormat unsets any flags that were previously set by one of:
+//   - [Command.AudioFormat]
 func (c *Command) UnsetAudioFormat() *Command {
 	c.removeFlagByID("audioformat")
 	return c
@@ -4779,8 +4862,8 @@ func (c *Command) AudioQuality(quality string) *Command {
 	return c
 }
 
-// UnsetAudioQuality unsets any flags that were previously set by
-// [Command.AudioQuality].
+// UnsetAudioQuality unsets any flags that were previously set by one of:
+//   - [Command.AudioQuality]
 func (c *Command) UnsetAudioQuality() *Command {
 	c.removeFlagByID("audioquality")
 	return c
@@ -4804,8 +4887,8 @@ func (c *Command) RemuxVideo(format string) *Command {
 	return c
 }
 
-// UnsetRemuxVideo unsets any flags that were previously set by
-// [Command.RemuxVideo].
+// UnsetRemuxVideo unsets any flags that were previously set by one of:
+//   - [Command.RemuxVideo]
 func (c *Command) UnsetRemuxVideo() *Command {
 	c.removeFlagByID("remuxvideo")
 	return c
@@ -4826,8 +4909,8 @@ func (c *Command) RecodeVideo(format string) *Command {
 	return c
 }
 
-// UnsetRecodeVideo unsets any flags that were previously set by
-// [Command.RecodeVideo].
+// UnsetRecodeVideo unsets any flags that were previously set by one of:
+//   - [Command.RecodeVideo]
 func (c *Command) UnsetRecodeVideo() *Command {
 	c.removeFlagByID("recodevideo")
 	return c
@@ -4859,8 +4942,8 @@ func (c *Command) PostprocessorArgs(nameargs string) *Command {
 	return c
 }
 
-// UnsetPostprocessorArgs unsets any flags that were previously set by
-// [Command.PostprocessorArgs].
+// UnsetPostprocessorArgs unsets any flags that were previously set by one of:
+//   - [Command.PostprocessorArgs]
 func (c *Command) UnsetPostprocessorArgs() *Command {
 	c.removeFlagByID("postprocessor_args")
 	return c
@@ -4880,8 +4963,9 @@ func (c *Command) KeepVideo() *Command {
 	return c
 }
 
-// UnsetKeepVideo unsets any flags that were previously set by
-// [Command.KeepVideo].
+// UnsetKeepVideo unsets any flags that were previously set by one of:
+//   - [Command.KeepVideo]
+//   - [Command.NoKeepVideo]
 func (c *Command) UnsetKeepVideo() *Command {
 	c.removeFlagByID("keepvideo")
 	return c
@@ -4915,8 +4999,9 @@ func (c *Command) PostOverwrites() *Command {
 	return c
 }
 
-// UnsetPostOverwrites unsets any flags that were previously set by
-// [Command.PostOverwrites].
+// UnsetPostOverwrites unsets any flags that were previously set by one of:
+//   - [Command.PostOverwrites]
+//   - [Command.NoPostOverwrites]
 func (c *Command) UnsetPostOverwrites() *Command {
 	c.removeFlagByID("nopostoverwrites")
 	return c
@@ -4950,8 +5035,9 @@ func (c *Command) EmbedSubs() *Command {
 	return c
 }
 
-// UnsetEmbedSubs unsets any flags that were previously set by
-// [Command.EmbedSubs].
+// UnsetEmbedSubs unsets any flags that were previously set by one of:
+//   - [Command.EmbedSubs]
+//   - [Command.NoEmbedSubs]
 func (c *Command) UnsetEmbedSubs() *Command {
 	c.removeFlagByID("embedsubtitles")
 	return c
@@ -4985,8 +5071,9 @@ func (c *Command) EmbedThumbnail() *Command {
 	return c
 }
 
-// UnsetEmbedThumbnail unsets any flags that were previously set by
-// [Command.EmbedThumbnail].
+// UnsetEmbedThumbnail unsets any flags that were previously set by one of:
+//   - [Command.EmbedThumbnail]
+//   - [Command.NoEmbedThumbnail]
 func (c *Command) UnsetEmbedThumbnail() *Command {
 	c.removeFlagByID("embedthumbnail")
 	return c
@@ -5021,8 +5108,9 @@ func (c *Command) EmbedMetadata() *Command {
 	return c
 }
 
-// UnsetEmbedMetadata unsets any flags that were previously set by
-// [Command.EmbedMetadata].
+// UnsetEmbedMetadata unsets any flags that were previously set by one of:
+//   - [Command.EmbedMetadata]
+//   - [Command.NoEmbedMetadata]
 func (c *Command) UnsetEmbedMetadata() *Command {
 	c.removeFlagByID("addmetadata")
 	return c
@@ -5056,8 +5144,9 @@ func (c *Command) EmbedChapters() *Command {
 	return c
 }
 
-// UnsetEmbedChapters unsets any flags that were previously set by
-// [Command.EmbedChapters].
+// UnsetEmbedChapters unsets any flags that were previously set by one of:
+//   - [Command.EmbedChapters]
+//   - [Command.NoEmbedChapters]
 func (c *Command) UnsetEmbedChapters() *Command {
 	c.removeFlagByID("addchapters")
 	return c
@@ -5091,8 +5180,9 @@ func (c *Command) EmbedInfoJson() *Command {
 	return c
 }
 
-// UnsetEmbedInfoJson unsets any flags that were previously set by
-// [Command.EmbedInfoJson].
+// UnsetEmbedInfoJson unsets any flags that were previously set by one of:
+//   - [Command.EmbedInfoJson]
+//   - [Command.NoEmbedInfoJson]
 func (c *Command) UnsetEmbedInfoJson() *Command {
 	c.removeFlagByID("embed_infojson")
 	return c
@@ -5124,8 +5214,8 @@ func (c *Command) MetadataFromTitle(format string) *Command {
 	return c
 }
 
-// UnsetMetadataFromTitle unsets any flags that were previously set by
-// [Command.MetadataFromTitle].
+// UnsetMetadataFromTitle unsets any flags that were previously set by one of:
+//   - [Command.MetadataFromTitle]
 func (c *Command) UnsetMetadataFromTitle() *Command {
 	c.removeFlagByID("metafromtitle")
 	return c
@@ -5147,8 +5237,8 @@ func (c *Command) ParseMetadata(fromto string) *Command {
 	return c
 }
 
-// UnsetParseMetadata unsets any flags that were previously set by
-// [Command.ParseMetadata].
+// UnsetParseMetadata unsets any flags that were previously set by one of:
+//   - [Command.ParseMetadata]
 func (c *Command) UnsetParseMetadata() *Command {
 	c.removeFlagByID("parse_metadata")
 	return c
@@ -5170,8 +5260,8 @@ func (c *Command) ReplaceInMetadata(fields, regex, replace string) *Command {
 	return c
 }
 
-// UnsetReplaceInMetadata unsets any flags that were previously set by
-// [Command.ReplaceInMetadata].
+// UnsetReplaceInMetadata unsets any flags that were previously set by one of:
+//   - [Command.ReplaceInMetadata]
 func (c *Command) UnsetReplaceInMetadata() *Command {
 	c.removeFlagByID("parse_metadata")
 	return c
@@ -5191,8 +5281,8 @@ func (c *Command) Xattrs() *Command {
 	return c
 }
 
-// UnsetXattrs unsets any flags that were previously set by
-// [Command.Xattrs].
+// UnsetXattrs unsets any flags that were previously set by one of:
+//   - [Command.Xattrs]
 func (c *Command) UnsetXattrs() *Command {
 	c.removeFlagByID("xattrs")
 	return c
@@ -5225,8 +5315,8 @@ func (c *Command) ConcatPlaylist(policy ConcatPlaylistOption) *Command {
 	return c
 }
 
-// UnsetConcatPlaylist unsets any flags that were previously set by
-// [Command.ConcatPlaylist].
+// UnsetConcatPlaylist unsets any flags that were previously set by one of:
+//   - [Command.ConcatPlaylist]
 func (c *Command) UnsetConcatPlaylist() *Command {
 	c.removeFlagByID("concat_playlist")
 	return c
@@ -5259,8 +5349,8 @@ func (c *Command) Fixup(policy FixupOption) *Command {
 	return c
 }
 
-// UnsetFixup unsets any flags that were previously set by
-// [Command.Fixup].
+// UnsetFixup unsets any flags that were previously set by one of:
+//   - [Command.Fixup]
 func (c *Command) UnsetFixup() *Command {
 	c.removeFlagByID("fixup")
 	return c
@@ -5280,8 +5370,8 @@ func (c *Command) PreferAvconv() *Command {
 	return c
 }
 
-// UnsetPreferAvconv unsets any flags that were previously set by
-// [Command.PreferAvconv].
+// UnsetPreferAvconv unsets any flags that were previously set by one of:
+//   - [Command.PreferAvconv]
 func (c *Command) UnsetPreferAvconv() *Command {
 	c.removeFlagByID("prefer_ffmpeg")
 	return c
@@ -5301,8 +5391,8 @@ func (c *Command) PreferFfmpeg() *Command {
 	return c
 }
 
-// UnsetPreferFfmpeg unsets any flags that were previously set by
-// [Command.PreferFfmpeg].
+// UnsetPreferFfmpeg unsets any flags that were previously set by one of:
+//   - [Command.PreferFfmpeg]
 func (c *Command) UnsetPreferFfmpeg() *Command {
 	c.removeFlagByID("prefer_ffmpeg")
 	return c
@@ -5323,8 +5413,8 @@ func (c *Command) FfmpegLocation(path string) *Command {
 	return c
 }
 
-// UnsetFfmpegLocation unsets any flags that were previously set by
-// [Command.FfmpegLocation].
+// UnsetFfmpegLocation unsets any flags that were previously set by one of:
+//   - [Command.FfmpegLocation]
 func (c *Command) UnsetFfmpegLocation() *Command {
 	c.removeFlagByID("ffmpeg_location")
 	return c
@@ -5349,8 +5439,9 @@ func (c *Command) Exec(cmd string) *Command {
 	return c
 }
 
-// UnsetExec unsets any flags that were previously set by
-// [Command.Exec].
+// UnsetExec unsets any flags that were previously set by one of:
+//   - [Command.Exec]
+//   - [Command.NoExec]
 func (c *Command) UnsetExec() *Command {
 	c.removeFlagByID("exec_cmd")
 	return c
@@ -5382,8 +5473,9 @@ func (c *Command) ExecBeforeDownload(cmd string) *Command {
 	return c
 }
 
-// UnsetExecBeforeDownload unsets any flags that were previously set by
-// [Command.ExecBeforeDownload].
+// UnsetExecBeforeDownload unsets any flags that were previously set by one of:
+//   - [Command.ExecBeforeDownload]
+//   - [Command.NoExecBeforeDownload]
 func (c *Command) UnsetExecBeforeDownload() *Command {
 	c.removeFlagByID("exec_before_dl_cmd")
 	return c
@@ -5418,8 +5510,8 @@ func (c *Command) ConvertSubs(format string) *Command {
 	return c
 }
 
-// UnsetConvertSubs unsets any flags that were previously set by
-// [Command.ConvertSubs].
+// UnsetConvertSubs unsets any flags that were previously set by one of:
+//   - [Command.ConvertSubs]
 func (c *Command) UnsetConvertSubs() *Command {
 	c.removeFlagByID("convertsubtitles")
 	return c
@@ -5440,8 +5532,8 @@ func (c *Command) ConvertThumbnails(format string) *Command {
 	return c
 }
 
-// UnsetConvertThumbnails unsets any flags that were previously set by
-// [Command.ConvertThumbnails].
+// UnsetConvertThumbnails unsets any flags that were previously set by one of:
+//   - [Command.ConvertThumbnails]
 func (c *Command) UnsetConvertThumbnails() *Command {
 	c.removeFlagByID("convertthumbnails")
 	return c
@@ -5463,8 +5555,9 @@ func (c *Command) SplitChapters() *Command {
 	return c
 }
 
-// UnsetSplitChapters unsets any flags that were previously set by
-// [Command.SplitChapters].
+// UnsetSplitChapters unsets any flags that were previously set by one of:
+//   - [Command.SplitChapters]
+//   - [Command.NoSplitChapters]
 func (c *Command) UnsetSplitChapters() *Command {
 	c.removeFlagByID("split_chapters")
 	return c
@@ -5499,8 +5592,9 @@ func (c *Command) RemoveChapters(regex string) *Command {
 	return c
 }
 
-// UnsetRemoveChapters unsets any flags that were previously set by
-// [Command.RemoveChapters].
+// UnsetRemoveChapters unsets any flags that were previously set by one of:
+//   - [Command.RemoveChapters]
+//   - [Command.NoRemoveChapters]
 func (c *Command) UnsetRemoveChapters() *Command {
 	c.removeFlagByID("remove_chapters")
 	return c
@@ -5536,8 +5630,9 @@ func (c *Command) ForceKeyframesAtCuts() *Command {
 	return c
 }
 
-// UnsetForceKeyframesAtCuts unsets any flags that were previously set by
-// [Command.ForceKeyframesAtCuts].
+// UnsetForceKeyframesAtCuts unsets any flags that were previously set by one of:
+//   - [Command.ForceKeyframesAtCuts]
+//   - [Command.NoForceKeyframesAtCuts]
 func (c *Command) UnsetForceKeyframesAtCuts() *Command {
 	c.removeFlagByID("force_keyframes_at_cuts")
 	return c
@@ -5580,8 +5675,8 @@ func (c *Command) UsePostprocessor(name string) *Command {
 	return c
 }
 
-// UnsetUsePostprocessor unsets any flags that were previously set by
-// [Command.UsePostprocessor].
+// UnsetUsePostprocessor unsets any flags that were previously set by one of:
+//   - [Command.UsePostprocessor]
 func (c *Command) UnsetUsePostprocessor() *Command {
 	c.removeFlagByID("add_postprocessors")
 	return c
@@ -5606,8 +5701,8 @@ func (c *Command) SponsorblockMark(cats string) *Command {
 	return c
 }
 
-// UnsetSponsorblockMark unsets any flags that were previously set by
-// [Command.SponsorblockMark].
+// UnsetSponsorblockMark unsets any flags that were previously set by one of:
+//   - [Command.SponsorblockMark]
 func (c *Command) UnsetSponsorblockMark() *Command {
 	c.removeFlagByID("sponsorblock_mark")
 	return c
@@ -5631,8 +5726,8 @@ func (c *Command) SponsorblockRemove(cats string) *Command {
 	return c
 }
 
-// UnsetSponsorblockRemove unsets any flags that were previously set by
-// [Command.SponsorblockRemove].
+// UnsetSponsorblockRemove unsets any flags that were previously set by one of:
+//   - [Command.SponsorblockRemove]
 func (c *Command) UnsetSponsorblockRemove() *Command {
 	c.removeFlagByID("sponsorblock_remove")
 	return c
@@ -5655,8 +5750,8 @@ func (c *Command) SponsorblockChapterTitle(template string) *Command {
 	return c
 }
 
-// UnsetSponsorblockChapterTitle unsets any flags that were previously set by
-// [Command.SponsorblockChapterTitle].
+// UnsetSponsorblockChapterTitle unsets any flags that were previously set by one of:
+//   - [Command.SponsorblockChapterTitle]
 func (c *Command) UnsetSponsorblockChapterTitle() *Command {
 	c.removeFlagByID("sponsorblock_chapter_title")
 	return c
@@ -5676,6 +5771,13 @@ func (c *Command) NoSponsorblock() *Command {
 	return c
 }
 
+// UnsetSponsorblock unsets any flags that were previously set by one of:
+//   - [Command.NoSponsorblock]
+func (c *Command) UnsetSponsorblock() *Command {
+	c.removeFlagByID("no_sponsorblock")
+	return c
+}
+
 // SponsorBlock API location, defaults to https://sponsor.ajay.app
 //
 //   - See [Command.UnsetSponsorblockApi], for unsetting the flag.
@@ -5690,8 +5792,8 @@ func (c *Command) SponsorblockApi(url string) *Command {
 	return c
 }
 
-// UnsetSponsorblockApi unsets any flags that were previously set by
-// [Command.SponsorblockApi].
+// UnsetSponsorblockApi unsets any flags that were previously set by one of:
+//   - [Command.SponsorblockApi]
 func (c *Command) UnsetSponsorblockApi() *Command {
 	c.removeFlagByID("sponsorblock_api")
 	return c
@@ -5711,8 +5813,9 @@ func (c *Command) Sponskrub() *Command {
 	return c
 }
 
-// UnsetSponskrub unsets any flags that were previously set by
-// [Command.Sponskrub].
+// UnsetSponskrub unsets any flags that were previously set by one of:
+//   - [Command.Sponskrub]
+//   - [Command.NoSponskrub]
 func (c *Command) UnsetSponskrub() *Command {
 	c.removeFlagByID("sponskrub")
 	return c
@@ -5746,8 +5849,9 @@ func (c *Command) SponskrubCut() *Command {
 	return c
 }
 
-// UnsetSponskrubCut unsets any flags that were previously set by
-// [Command.SponskrubCut].
+// UnsetSponskrubCut unsets any flags that were previously set by one of:
+//   - [Command.SponskrubCut]
+//   - [Command.NoSponskrubCut]
 func (c *Command) UnsetSponskrubCut() *Command {
 	c.removeFlagByID("sponskrub_cut")
 	return c
@@ -5781,8 +5885,9 @@ func (c *Command) SponskrubForce() *Command {
 	return c
 }
 
-// UnsetSponskrubForce unsets any flags that were previously set by
-// [Command.SponskrubForce].
+// UnsetSponskrubForce unsets any flags that were previously set by one of:
+//   - [Command.SponskrubForce]
+//   - [Command.NoSponskrubForce]
 func (c *Command) UnsetSponskrubForce() *Command {
 	c.removeFlagByID("sponskrub_force")
 	return c
@@ -5814,8 +5919,8 @@ func (c *Command) SponskrubLocation(path string) *Command {
 	return c
 }
 
-// UnsetSponskrubLocation unsets any flags that were previously set by
-// [Command.SponskrubLocation].
+// UnsetSponskrubLocation unsets any flags that were previously set by one of:
+//   - [Command.SponskrubLocation]
 func (c *Command) UnsetSponskrubLocation() *Command {
 	c.removeFlagByID("sponskrub_path")
 	return c
@@ -5833,8 +5938,8 @@ func (c *Command) SponskrubArgs(args string) *Command {
 	return c
 }
 
-// UnsetSponskrubArgs unsets any flags that were previously set by
-// [Command.SponskrubArgs].
+// UnsetSponskrubArgs unsets any flags that were previously set by one of:
+//   - [Command.SponskrubArgs]
 func (c *Command) UnsetSponskrubArgs() *Command {
 	c.removeFlagByID("sponskrub_args")
 	return c
@@ -5854,8 +5959,8 @@ func (c *Command) ExtractorRetries(retries string) *Command {
 	return c
 }
 
-// UnsetExtractorRetries unsets any flags that were previously set by
-// [Command.ExtractorRetries].
+// UnsetExtractorRetries unsets any flags that were previously set by one of:
+//   - [Command.ExtractorRetries]
 func (c *Command) UnsetExtractorRetries() *Command {
 	c.removeFlagByID("extractor_retries")
 	return c
@@ -5875,8 +5980,8 @@ func (c *Command) AllowDynamicMpd() *Command {
 	return c
 }
 
-// UnsetAllowDynamicMpd unsets any flags that were previously set by
-// [Command.AllowDynamicMpd].
+// UnsetAllowDynamicMpd unsets any flags that were previously set by one of:
+//   - [Command.AllowDynamicMpd]
 func (c *Command) UnsetAllowDynamicMpd() *Command {
 	c.removeFlagByID("dynamic_mpd")
 	return c
@@ -5896,8 +6001,8 @@ func (c *Command) IgnoreDynamicMpd() *Command {
 	return c
 }
 
-// UnsetIgnoreDynamicMpd unsets any flags that were previously set by
-// [Command.IgnoreDynamicMpd].
+// UnsetIgnoreDynamicMpd unsets any flags that were previously set by one of:
+//   - [Command.IgnoreDynamicMpd]
 func (c *Command) UnsetIgnoreDynamicMpd() *Command {
 	c.removeFlagByID("dynamic_mpd")
 	return c
@@ -5917,8 +6022,9 @@ func (c *Command) HlsSplitDiscontinuity() *Command {
 	return c
 }
 
-// UnsetHlsSplitDiscontinuity unsets any flags that were previously set by
-// [Command.HlsSplitDiscontinuity].
+// UnsetHlsSplitDiscontinuity unsets any flags that were previously set by one of:
+//   - [Command.HlsSplitDiscontinuity]
+//   - [Command.NoHlsSplitDiscontinuity]
 func (c *Command) UnsetHlsSplitDiscontinuity() *Command {
 	c.removeFlagByID("hls_split_discontinuity")
 	return c
@@ -5955,8 +6061,8 @@ func (c *Command) ExtractorArgs(ieKeyargs string) *Command {
 	return c
 }
 
-// UnsetExtractorArgs unsets any flags that were previously set by
-// [Command.ExtractorArgs].
+// UnsetExtractorArgs unsets any flags that were previously set by one of:
+//   - [Command.ExtractorArgs]
 func (c *Command) UnsetExtractorArgs() *Command {
 	c.removeFlagByID("extractor_args")
 	return c
@@ -5976,8 +6082,8 @@ func (c *Command) YoutubeIncludeDashManifest() *Command {
 	return c
 }
 
-// UnsetYoutubeIncludeDashManifest unsets any flags that were previously set by
-// [Command.YoutubeIncludeDashManifest].
+// UnsetYoutubeIncludeDashManifest unsets any flags that were previously set by one of:
+//   - [Command.YoutubeIncludeDashManifest]
 func (c *Command) UnsetYoutubeIncludeDashManifest() *Command {
 	c.removeFlagByID("youtube_include_dash_manifest")
 	return c
@@ -5997,8 +6103,8 @@ func (c *Command) YoutubeSkipDashManifest() *Command {
 	return c
 }
 
-// UnsetYoutubeSkipDashManifest unsets any flags that were previously set by
-// [Command.YoutubeSkipDashManifest].
+// UnsetYoutubeSkipDashManifest unsets any flags that were previously set by one of:
+//   - [Command.YoutubeSkipDashManifest]
 func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
 	c.removeFlagByID("youtube_include_dash_manifest")
 	return c
@@ -6018,8 +6124,8 @@ func (c *Command) YoutubeIncludeHlsManifest() *Command {
 	return c
 }
 
-// UnsetYoutubeIncludeHlsManifest unsets any flags that were previously set by
-// [Command.YoutubeIncludeHlsManifest].
+// UnsetYoutubeIncludeHlsManifest unsets any flags that were previously set by one of:
+//   - [Command.YoutubeIncludeHlsManifest]
 func (c *Command) UnsetYoutubeIncludeHlsManifest() *Command {
 	c.removeFlagByID("youtube_include_hls_manifest")
 	return c
@@ -6039,8 +6145,8 @@ func (c *Command) YoutubeSkipHlsManifest() *Command {
 	return c
 }
 
-// UnsetYoutubeSkipHlsManifest unsets any flags that were previously set by
-// [Command.YoutubeSkipHlsManifest].
+// UnsetYoutubeSkipHlsManifest unsets any flags that were previously set by one of:
+//   - [Command.YoutubeSkipHlsManifest]
 func (c *Command) UnsetYoutubeSkipHlsManifest() *Command {
 	c.removeFlagByID("youtube_include_hls_manifest")
 	return c
