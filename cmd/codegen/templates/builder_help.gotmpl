@@ -1,0 +1,15 @@
+{{/*
+    template: builder-help
+*/}}
+{{- define "builder-help" -}}
+{{- if .Help }}
+// {{ wrap 80 .Help | replace "\n" "\n// " }}
+{{- else if eq .Type "bool" }}
+// {{ .Name | to_camel }} sets the {{ .Name | quote }} flag (no description specified).
+{{- end }}{{/* end if help */}}
+//
+{{- if not .IsExecutable }}
+//  - See [Command.Unset{{ if hasPrefix "No" (.Name | to_camel) }}{{ .Name | to_camel | trimPrefix "No" }}{{ else }}{{ .Name | to_camel }}{{ end }}], for unsetting the flag.
+{{- end }}{{/* end if executable */}}
+//  - {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}{{ if .Hidden }} (hidden){{ end }}.
+{{- end -}}{{/* end define builder-help */}}

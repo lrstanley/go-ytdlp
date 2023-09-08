@@ -18,8 +18,6 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
-type M map[string]any
-
 var (
 	funcMap = mergeFuncMaps(
 		sprig.TxtFuncMap(), // http://masterminds.github.io/sprig/
@@ -48,11 +46,13 @@ var (
 			),
 	)
 
-	optionGroupTmpl = template.Must(
-		template.New("option_group.gotmpl").
+	builderTmpl = template.Must(
+		template.New("builder.gotmpl").
 			Funcs(funcMap).
 			ParseFiles(
-				"./templates/option_group.gotmpl",
+				"./templates/builder.gotmpl",
+				"./templates/builder_help.gotmpl",
+				"./templates/builder_meta_args.gotmpl",
 			),
 	)
 
@@ -123,6 +123,6 @@ func main() {
 	createTemplateFile(os.Args[2], "constants.gen.go", constantsTmpl, data)
 
 	for _, group := range data.OptionGroups {
-		createTemplateFile(os.Args[2], fmt.Sprintf("%s.gen.go", strcase.ToSnake(group.Name)), optionGroupTmpl, group)
+		createTemplateFile(os.Args[2], fmt.Sprintf("%s.gen.go", strcase.ToSnake(group.Name)), builderTmpl, group)
 	}
 }

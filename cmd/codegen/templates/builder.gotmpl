@@ -1,50 +1,3 @@
-{{/* global variables */}}
-{{- $id :=  .Name | to_camel | trimSuffix "s" -}}
-{{- $id_lower := to_lower_camel $id -}}
-
-{{/* template helpers */}}
-{{- define "optionHelp" -}}
-{{- if .Help }}
-// {{ wrap 80 .Help | replace "\n" "\n// " }}
-{{- else if eq .Type "bool" }}
-// {{ .Name | to_camel }} sets the {{ .Name | quote }} flag (no description specified).
-{{- end }}{{/* end if help */}}
-//
-{{- if not .IsExecutable }}
-//  - See [Command.Unset{{ if hasPrefix "No" (.Name | to_camel) }}{{ .Name | to_camel | trimPrefix "No" }}{{ else }}{{ .Name | to_camel }}{{ end }}], for unsetting the flag.
-{{- end }}{{/* end if executable */}}
-//  - {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}{{ if .Hidden }} (hidden){{ end }}.
-{{- end -}}{{/* end define optionHelp */}}
-
-{{- define "optionMetaArgs" -}}
-{{- if and (ne .Type "bool") (gt .NArgs 0) }}
-{{- .MetaVarFuncArgs | join ", " }} {{ if .Choices }}{{ .Name | to_camel }}Option{{ else }}{{ .Type }}{{ end }}
-{{- end }}{{/* end if type */}}
-{{- end -}}{{/* end define optionMetaArgs */}}
-
-{{- define "optionSliceMetaArgs" -}}
-{{- $option := . -}}
-{{- if or (eq $option.Type "bool") (eq .NArgs 0) }}
-nil
-{{- else }}
-[]string{
-    {{- range $index, $arg := .MetaVarFuncArgs }}
-    {{- if $option.Choices }}{{/* if choices, type cast back to the original type when we pass in. */}}
-    {{- $arg = printf "%s(%s)" $option.Type $arg }}
-    {{- end }}{{/* end if choices */}}
-    {{- if eq $option.Type "string" }}
-    {{- $arg }},
-    {{- else if eq $option.Type "int" }}
-    strconv.Itoa({{ $arg }}),
-    {{- else if eq $option.Type "float64" }}
-    strconv.FormatFloat({{ $arg }}, 'g', -1, 64),
-    {{- end }}{{/* end if type */}}
-    {{- end }}{{/* end range for args */}}
-}
-{{- end }}{{/* end if type */}}
-{{- end -}}{{/* end define optionSliceMetaArgs */}}
-
-{{- /* start of actual file */ -}}
 // Copyright (c) Liam Stanley <me@liamstanley.io>. All rights reserved. Use
 // of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
@@ -92,23 +45,23 @@ var (
 {{- end }}{{/* end if choices */}}
 
 {{- if $option.IsExecutable }}
-{{ template "optionHelp" $option }}
-func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template "optionMetaArgs" $option }}) (*Result, error) {
+{{ template "builder-help" $option }}
+func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template "builder-meta-args" $option }}) (*Result, error) {
     c.addFlag(&Flag{
         ID: {{ $option.Dest | quote }},
         Flag: {{ $option.Flag | quote }},
-        Args: {{ template "optionSliceMetaArgs" $option }},
+        Args: {{ template "builder-slice-meta-args" $option }},
     })
 
     return c.runWithResult(c.buildCommand(ctx))
 }
 {{- else if or (gt $option.NArgs 0) (eq $option.Type "bool") }}
-{{ template "optionHelp" $option }}
-func (c *Command) {{ $option.Name | to_camel }}({{ template "optionMetaArgs" $option }}) *Command {
+{{ template "builder-help" $option }}
+func (c *Command) {{ $option.Name | to_camel }}({{ template "builder-meta-args" $option }}) *Command {
     c.addFlag(&Flag{
         ID: {{ $option.Dest | quote }},
         Flag: {{ $option.Flag | quote }},
-        Args: {{ template "optionSliceMetaArgs" $option }},
+        Args: {{ template "builder-slice-meta-args" $option }},
     })
     return c
 }

@@ -1,0 +1,33 @@
+{{/*
+    template: builder-meta-args
+*/}}
+{{- define "builder-meta-args" -}}
+{{- if and (ne .Type "bool") (gt .NArgs 0) }}
+{{- .MetaVarFuncArgs | join ", " }} {{ if .Choices }}{{ .Name | to_camel }}Option{{ else }}{{ .Type }}{{ end }}
+{{- end }}{{/* end if type */}}
+{{- end -}}{{/* end define builder-meta-args */}}
+
+{{/*
+    template: builder-slice-meta-args
+*/}}
+{{- define "builder-slice-meta-args" -}}
+{{- $option := . -}}
+{{- if or (eq $option.Type "bool") (eq .NArgs 0) }}
+nil
+{{- else }}
+[]string{
+    {{- range $index, $arg := .MetaVarFuncArgs }}
+    {{- if $option.Choices }}{{/* if choices, type cast back to the original type when we pass in. */}}
+    {{- $arg = printf "%s(%s)" $option.Type $arg }}
+    {{- end }}{{/* end if choices */}}
+    {{- if eq $option.Type "string" }}
+    {{- $arg }},
+    {{- else if eq $option.Type "int" }}
+    strconv.Itoa({{ $arg }}),
+    {{- else if eq $option.Type "float64" }}
+    strconv.FormatFloat({{ $arg }}, 'g', -1, 64),
+    {{- end }}{{/* end if type */}}
+    {{- end }}{{/* end range for args */}}
+}
+{{- end }}{{/* end if type */}}
+{{- end -}}{{/* end define builder-slice-meta-args */}}
