@@ -4,33 +4,84 @@
 
 package ytdlp
 
-func wrapError(err error) error {
+import (
+	"errors"
+	"fmt"
+	"os/exec"
+	"strings"
+)
+
+func wrapError(r *Results, err error) (*Results, error) {
 	if err == nil {
-		return nil
+		return r, nil
 	}
 
-	return err // TODO
+	if r == nil {
+		return nil, &ErrUnknown{wrapped: err}
+	}
+
+	if errors.Is(err, exec.ErrDot) || errors.Is(err, exec.ErrNotFound) {
+		return r, &ErrMisconfig{wrapped: err, result: r}
+	}
+
+	if r.ExitCode != 0 {
+		return r, &ErrExitCode{wrapped: err, result: r}
+	}
+
+	if strings.Contains(r.Stderr, "error: no such option") {
+		return r, &ErrParsing{wrapped: err, result: r}
+	}
+
+	return r, &ErrUnknown{wrapped: err}
 }
 
-type ErrExecution struct {
+// ErrExitCode is returned when the exit code of the yt-dlp process is non-zero.
+type ErrExitCode struct {
 	wrapped error
+	result  *Results
 }
 
-func (e *ErrExecution) Unwrap() error {
+func (e *ErrExitCode) Unwrap() error {
 	return e.wrapped
 }
 
-func (e *ErrExecution) Error() string {
-	return "todo"
+func (e *ErrExitCode) Error() string {
+	return fmt.Sprintf("exit code %d: %s", e.result.ExitCode, e.wrapped)
 }
 
-func IsExecutionError(err error) bool {
-	_, ok := err.(*ErrExecution)
-	return ok
+// IsExitCodeError returns true when the exit code of the yt-dlp process is non-zero.
+func IsExitCodeError(err error) bool {
+	var e *ErrExitCode
+	return errors.As(err, &e)
 }
 
+// ErrMisconfig is returned when the yt-dlp executable is not found, or is not
+// configured properly.
+type ErrMisconfig struct {
+	wrapped error
+	result  *Results
+}
+
+func (e *ErrMisconfig) Unwrap() error {
+	return e.wrapped
+}
+
+func (e *ErrMisconfig) Error() string {
+	return fmt.Sprintf("misconfiguration error (executable: %q): %s", e.result.Executable, e.wrapped)
+}
+
+// IsMisconfigError returns true when the yt-dlp executable is not found, or is not
+// configured properly.
+func IsMisconfigError(err error) bool {
+	var e *ErrMisconfig
+	return errors.As(err, &e)
+}
+
+// ErrParsing is returned when the yt-dlp process fails due to an invalid flag or
+// argument, possibly due to a version mismatch or go-ytdlp bug.
 type ErrParsing struct {
 	wrapped error
+	result  *Results
 }
 
 func (e *ErrParsing) Unwrap() error {
@@ -38,14 +89,22 @@ func (e *ErrParsing) Unwrap() error {
 }
 
 func (e *ErrParsing) Error() string {
-	return "todo"
+	return fmt.Sprintf(
+		"parsing error (yt-dlp version might be too different, go-ytdlp version built with yt-dlp %s/%s): %s",
+		Channel,
+		Version,
+		e.wrapped,
+	)
 }
 
+// IsParsingError returns true when the yt-dlp process fails due to an invalid flag or
+// argument, possibly due to a version mismatch or go-ytdlp bug.
 func IsParsingError(err error) bool {
-	_, ok := err.(*ErrParsing)
-	return ok
+	var e *ErrParsing
+	return errors.As(err, &e)
 }
 
+// ErrUnknown is returned when the error is unknown according to go-ytdlp.
 type ErrUnknown struct {
 	wrapped error
 }
@@ -55,10 +114,11 @@ func (e *ErrUnknown) Unwrap() error {
 }
 
 func (e *ErrUnknown) Error() string {
-	return "todo"
+	return e.wrapped.Error()
 }
 
+// IsUnknownError returns true when the error is unknown according to go-ytdlp.
 func IsUnknownError(err error) bool {
-	_, ok := err.(*ErrUnknown)
-	return ok
+	var e *ErrUnknown
+	return errors.As(err, &e)
 }

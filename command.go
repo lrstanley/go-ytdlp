@@ -172,7 +172,7 @@ func (c *Command) runWithResults(cmd *exec.Cmd) (*Results, error) {
 		OutputLogs: stdout.mergeResults(stderr),
 	}
 
-	return result, wrapError(err)
+	return wrapError(result, err)
 }
 
 // Run invokes yt-dlp with the provided arguments (and any flags previously set),
