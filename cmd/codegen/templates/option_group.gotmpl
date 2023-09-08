@@ -93,14 +93,14 @@ var (
 
 {{- if $option.IsExecutable }}
 {{ template "optionHelp" $option }}
-func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template "optionMetaArgs" $option }}) (*Results, error) {
+func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template "optionMetaArgs" $option }}) (*Result, error) {
     c.addFlag(&Flag{
         ID: {{ $option.Dest | quote }},
         Flag: {{ $option.Flag | quote }},
         Args: {{ template "optionSliceMetaArgs" $option }},
     })
 
-    return c.runWithResults(c.buildCommand(ctx))
+    return c.runWithResult(c.buildCommand(ctx))
 }
 {{- else if or (gt $option.NArgs 0) (eq $option.Type "bool") }}
 {{ template "optionHelp" $option }}

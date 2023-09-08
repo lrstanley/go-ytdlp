@@ -15,28 +15,28 @@ import (
 // Print program version and exit
 //
 //   - Version maps to cli flags: --version.
-func (c *Command) Version(ctx context.Context) (*Results, error) {
+func (c *Command) Version(ctx context.Context) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "",
 		Flag: "--version",
 		Args: nil,
 	})
 
-	return c.runWithResults(c.buildCommand(ctx))
+	return c.runWithResult(c.buildCommand(ctx))
 }
 
 // Check if updates are available. You cannot update when running from source code;
 // Use git to pull the latest changes
 //
 //   - Update maps to cli flags: -U/--update.
-func (c *Command) Update(ctx context.Context) (*Results, error) {
+func (c *Command) Update(ctx context.Context) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "update_self",
 		Flag: "--update",
 		Args: nil,
 	})
 
-	return c.runWithResults(c.buildCommand(ctx))
+	return c.runWithResult(c.buildCommand(ctx))
 }
 
 // Do not check for updates (default)
@@ -57,14 +57,14 @@ func (c *Command) NoUpdate() *Command {
 // "UPDATE" for details. Supported channels: stable, nightly
 //
 //   - UpdateTo maps to cli flags: --update-to=[CHANNEL]@[TAG].
-func (c *Command) UpdateTo(ctx context.Context, value string) (*Results, error) {
+func (c *Command) UpdateTo(ctx context.Context, value string) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "update_self",
 		Flag: "--update-to",
 		Args: []string{value},
 	})
 
-	return c.runWithResults(c.buildCommand(ctx))
+	return c.runWithResult(c.buildCommand(ctx))
 }
 
 // Ignore download and postprocessing errors. The download will be considered
@@ -125,40 +125,40 @@ func (c *Command) UnsetAbortOnError() *Command {
 // Display the current user-agent and exit
 //
 //   - DumpUserAgent maps to cli flags: --dump-user-agent.
-func (c *Command) DumpUserAgent(ctx context.Context) (*Results, error) {
+func (c *Command) DumpUserAgent(ctx context.Context) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "dump_user_agent",
 		Flag: "--dump-user-agent",
 		Args: nil,
 	})
 
-	return c.runWithResults(c.buildCommand(ctx))
+	return c.runWithResult(c.buildCommand(ctx))
 }
 
 // List all supported extractors and exit
 //
 //   - ListExtractors maps to cli flags: --list-extractors.
-func (c *Command) ListExtractors(ctx context.Context) (*Results, error) {
+func (c *Command) ListExtractors(ctx context.Context) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "list_extractors",
 		Flag: "--list-extractors",
 		Args: nil,
 	})
 
-	return c.runWithResults(c.buildCommand(ctx))
+	return c.runWithResult(c.buildCommand(ctx))
 }
 
 // Output descriptions of all supported extractors and exit
 //
 //   - ExtractorDescriptions maps to cli flags: --extractor-descriptions.
-func (c *Command) ExtractorDescriptions(ctx context.Context) (*Results, error) {
+func (c *Command) ExtractorDescriptions(ctx context.Context) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "list_extractor_descriptions",
 		Flag: "--extractor-descriptions",
 		Args: nil,
 	})
 
-	return c.runWithResults(c.buildCommand(ctx))
+	return c.runWithResult(c.buildCommand(ctx))
 }
 
 // Extractor names to use separated by commas. You can also use regexes, "all",

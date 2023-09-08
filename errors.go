@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func wrapError(r *Results, err error) (*Results, error) {
+func wrapError(r *Result, err error) (*Result, error) {
 	if err == nil {
 		return r, nil
 	}
@@ -38,7 +38,7 @@ func wrapError(r *Results, err error) (*Results, error) {
 // ErrExitCode is returned when the exit code of the yt-dlp process is non-zero.
 type ErrExitCode struct {
 	wrapped error
-	result  *Results
+	result  *Result
 }
 
 func (e *ErrExitCode) Unwrap() error {
@@ -59,7 +59,7 @@ func IsExitCodeError(err error) bool {
 // configured properly.
 type ErrMisconfig struct {
 	wrapped error
-	result  *Results
+	result  *Result
 }
 
 func (e *ErrMisconfig) Unwrap() error {
@@ -81,7 +81,7 @@ func IsMisconfigError(err error) bool {
 // argument, possibly due to a version mismatch or go-ytdlp bug.
 type ErrParsing struct {
 	wrapped error
-	result  *Results
+	result  *Result
 }
 
 func (e *ErrParsing) Unwrap() error {

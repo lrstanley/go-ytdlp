@@ -147,9 +147,9 @@ func (c *Command) buildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	return cmd
 }
 
-// runWithResults runs the provided command, collects stdout/stderr, massages the
-// results into a Results struct, and returns it (with error wrapping).
-func (c *Command) runWithResults(cmd *exec.Cmd) (*Results, error) {
+// runWithResult runs the provided command, collects stdout/stderr, massages the
+// result into a Result struct, and returns it (with error wrapping).
+func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 	stdout := &timestampWriter{pipe: "stdout"}
 	stderr := &timestampWriter{pipe: "stderr"}
 
@@ -163,7 +163,7 @@ func (c *Command) runWithResults(cmd *exec.Cmd) (*Results, error) {
 
 	err := cmd.Run()
 
-	result := &Results{
+	result := &Result{
 		Executable: cmd.Path,
 		Args:       cmd.Args[1:],
 		ExitCode:   cmd.ProcessState.ExitCode(),
@@ -178,9 +178,9 @@ func (c *Command) runWithResults(cmd *exec.Cmd) (*Results, error) {
 // Run invokes yt-dlp with the provided arguments (and any flags previously set),
 // and returns the results (stdout/stderr, exit code, etc). args should be the
 // URLs that would normally be passed in to yt-dlp.
-func (c *Command) Run(ctx context.Context, args ...string) (*Results, error) {
+func (c *Command) Run(ctx context.Context, args ...string) (*Result, error) {
 	cmd := c.buildCommand(ctx, args...)
-	return c.runWithResults(cmd)
+	return c.runWithResult(cmd)
 }
 
 type Flag struct {
@@ -210,7 +210,7 @@ func (f *Flag) Raw() (args []string) {
 	return args
 }
 
-type Results struct {
+type Result struct {
 	Executable string       `json:"executable"`
 	Args       []string     `json:"args"`
 	ExitCode   int          `json:"exit_code"`
