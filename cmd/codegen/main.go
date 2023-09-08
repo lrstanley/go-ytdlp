@@ -49,11 +49,7 @@ var (
 	builderTmpl = template.Must(
 		template.New("builder.gotmpl").
 			Funcs(funcMap).
-			ParseFiles(
-				"./templates/builder.gotmpl",
-				"./templates/builder_help.gotmpl",
-				"./templates/builder_meta_args.gotmpl",
-			),
+			ParseGlob("./templates/builder*.gotmpl"),
 	)
 
 	optionGroupReplacer = strings.NewReplacer(
