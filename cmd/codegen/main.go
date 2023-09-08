@@ -121,8 +121,5 @@ func main() {
 	data.Generate()
 
 	createTemplateFile(os.Args[2], "constants.gen.go", constantsTmpl, data)
-
-	for _, group := range data.OptionGroups {
-		createTemplateFile(os.Args[2], fmt.Sprintf("%s.gen.go", strcase.ToSnake(group.Name)), builderTmpl, group)
-	}
+	createTemplateFile(os.Args[2], "builder.gen.go", builderTmpl, data)
 }
