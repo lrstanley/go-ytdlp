@@ -40,7 +40,7 @@ func TestCommand_Simple(t *testing.T) {
 	}
 
 	res, err := New().
-		Verbose().NoProgress().NoOverwrites().Output(filepath.Join(dir, "%(extractor)s - %(title)s.%(ext)s")).
+		Verbose().PrintJson().NoProgress().NoOverwrites().Output(filepath.Join(dir, "%(extractor)s - %(title)s.%(ext)s")).
 		Run(context.Background(), urls...)
 	if err != nil {
 		t.Fatal(err)
@@ -56,6 +56,18 @@ func TestCommand_Simple(t *testing.T) {
 
 	if !slices.Contains(res.Args, "--verbose") {
 		t.Fatal("expected --verbose flag to be set")
+	}
+
+	var hasJSON bool
+	for _, l := range res.OutputLogs {
+		if l.JSON != nil {
+			hasJSON = true
+			break
+		}
+	}
+
+	if !hasJSON {
+		t.Fatal("expected at least one log line to be valid JSON due to --print-json")
 	}
 
 	for _, f := range sampleFiles {
