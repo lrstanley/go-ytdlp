@@ -15,5 +15,8 @@ jobs:
     with: { num-minor: 1, num-patch: 2 }
   go-lint:
     uses: lrstanley/.github/.github/workflows/lang-go-lint.yml@master
+    permissions:
+      checks: write
+      pull-requests: read
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
