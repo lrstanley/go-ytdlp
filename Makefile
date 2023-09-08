@@ -21,14 +21,14 @@ go-upgrade-deps-patch:
 	go get -u=patch ./... && go mod tidy
 
 commit: generate
-	git add --all *.gen.go
+	git add --all *.gen.go *.gen_test.go
 	git commit -m "chore(codegen): generate updated cli bindings"
 
 patch:
 	./cmd/patch-ytdlp/run.sh ${YTDLP_VERSION}
 
 generate: license go-fetch patch
-	rm -rf *.gen.go
+	rm -rf *.gen.go *.gen_test.go
 	cd ./cmd/codegen && go run . ../patch-ytdlp/export-${YTDLP_VERSION}.json ../../
 	gofmt -e -s -w *.go
 	go vet *.go

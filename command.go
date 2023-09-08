@@ -82,7 +82,23 @@ func (c *Command) SetEnvVar(key, value string) *Command {
 	return c
 }
 
-// addFlag adds a flag to the command. If a flag with the same ID already
+// getFlagsByID returns all flags with the provided ID/"dest".
+func (c *Command) getFlagsByID(id string) []*Flag {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	var flags []*Flag
+
+	for _, f := range c.flags {
+		if f.ID == id {
+			flags = append(flags, f)
+		}
+	}
+
+	return flags
+}
+
+// addFlag adds a flag to the command. If a flag with the same ID/"dest" already
 // exists, it will be replaced.
 func (c *Command) addFlag(f *Flag) {
 	c.mu.Lock()
@@ -101,7 +117,7 @@ func (c *Command) addFlag(f *Flag) {
 	c.flags = append(c.flags, f)
 }
 
-// removeFlagByID removes a flag from the command by its ID.
+// removeFlagByID removes a flag from the command by its ID/"dest".
 func (c *Command) removeFlagByID(id string) {
 	c.mu.Lock()
 	defer c.mu.Unlock()

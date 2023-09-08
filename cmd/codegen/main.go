@@ -41,13 +41,17 @@ var (
 	constantsTmpl = template.Must(
 		template.New("constants.gotmpl").
 			Funcs(funcMap).
-			ParseFiles(
-				"./templates/constants.gotmpl",
-			),
+			ParseFiles("./templates/constants.gotmpl"),
 	)
 
 	builderTmpl = template.Must(
 		template.New("builder.gotmpl").
+			Funcs(funcMap).
+			ParseGlob("./templates/builder*.gotmpl"),
+	)
+
+	builderTestTmpl = template.Must(
+		template.New("buildertest.gotmpl").
 			Funcs(funcMap).
 			ParseGlob("./templates/builder*.gotmpl"),
 	)
@@ -118,4 +122,5 @@ func main() {
 
 	createTemplateFile(os.Args[2], "constants.gen.go", constantsTmpl, data)
 	createTemplateFile(os.Args[2], "builder.gen.go", builderTmpl, data)
+	createTemplateFile(os.Args[2], "builder.gen_test.go", builderTestTmpl, data)
 }

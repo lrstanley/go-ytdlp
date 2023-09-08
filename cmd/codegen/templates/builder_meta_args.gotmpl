@@ -2,8 +2,9 @@
     template: builder-meta-args
 */}}
 {{- define "builder-meta-args" -}}
-{{- if and (ne .Type "bool") (gt .NArgs 0) }}
-{{- .MetaVarFuncArgs | join ", " }} {{ if .Choices }}{{ .Name | to_camel }}Option{{ else }}{{ .Type }}{{ end }}
+{{- $option := . -}}
+{{- if and (ne $option.Type "bool") (gt $option.NArgs 0) }}
+{{- $option.MetaVarFuncArgs | join ", " }} {{ if $option.Choices }}{{ $option.Name | to_camel }}Option{{ else }}{{ $option.Type }}{{ end }}
 {{- end }}{{/* end if type */}}
 {{- end -}}{{/* end define builder-meta-args */}}
 
@@ -31,3 +32,22 @@ nil
 }
 {{- end }}{{/* end if type */}}
 {{- end -}}{{/* end define builder-slice-meta-args */}}
+
+{{/*
+    template: builder-test-args
+*/}}
+{{- define "builder-test-args" -}}
+{{- $option := . -}}
+{{- range $n := until $option.NArgs -}}
+    {{- if eq $option.Type "string" -}}
+        "test"
+    {{- else if eq $option.Type "bool" -}}
+        true
+    {{- else if eq $option.Type "int" -}}
+        1
+    {{- else if eq $option.Type "float64" -}}
+        1.0
+    {{- end -}}
+    {{- if not (last $n (until $option.NArgs)) }},{{ end -}}
+{{- end -}}{{/* end range for args */}}
+{{- end -}}{{/* end define builder-test-args */}}
