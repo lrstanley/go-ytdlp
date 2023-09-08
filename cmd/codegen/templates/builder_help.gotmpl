@@ -12,4 +12,5 @@
 //  - See [Command.Unset{{ if hasPrefix "No" (.Name | to_camel) }}{{ .Name | to_camel | trimPrefix "No" }}{{ else }}{{ .Name | to_camel }}{{ end }}], for unsetting the flag.
 {{- end }}{{/* end if executable */}}
 //  - {{ .Name | to_camel }} maps to cli flags: {{ .AllFlags | join "/" }}{{ if .MetaVar }}={{ .MetaVar }}{{ end }}{{ if .Hidden }} (hidden){{ end }}.
+//  - From option group: {{ .Parent.Name | quote }}
 {{- end -}}{{/* end define builder-help */}}

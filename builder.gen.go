@@ -14,6 +14,7 @@ import (
 // Print program version and exit
 //
 //   - Version maps to cli flags: --version.
+//   - From option group: "General"
 func (c *Command) Version(ctx context.Context) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "",
@@ -28,6 +29,7 @@ func (c *Command) Version(ctx context.Context) (*Result, error) {
 // Use git to pull the latest changes
 //
 //   - Update maps to cli flags: -U/--update.
+//   - From option group: "General"
 func (c *Command) Update(ctx context.Context) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "update_self",
@@ -42,6 +44,7 @@ func (c *Command) Update(ctx context.Context) (*Result, error) {
 //
 //   - See [Command.UnsetUpdate], for unsetting the flag.
 //   - NoUpdate maps to cli flags: --no-update.
+//   - From option group: "General"
 func (c *Command) NoUpdate() *Command {
 	c.addFlag(&Flag{
 		ID:   "update_self",
@@ -56,6 +59,7 @@ func (c *Command) NoUpdate() *Command {
 // "UPDATE" for details. Supported channels: stable, nightly
 //
 //   - UpdateTo maps to cli flags: --update-to=[CHANNEL]@[TAG].
+//   - From option group: "General"
 func (c *Command) UpdateTo(ctx context.Context, value string) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "update_self",
@@ -71,6 +75,7 @@ func (c *Command) UpdateTo(ctx context.Context, value string) (*Result, error) {
 //
 //   - See [Command.UnsetIgnoreErrors], for unsetting the flag.
 //   - IgnoreErrors maps to cli flags: -i/--ignore-errors.
+//   - From option group: "General"
 func (c *Command) IgnoreErrors() *Command {
 	c.addFlag(&Flag{
 		ID:   "ignoreerrors",
@@ -92,6 +97,7 @@ func (c *Command) UnsetIgnoreErrors() *Command {
 //
 //   - See [Command.UnsetAbortOnError], for unsetting the flag.
 //   - NoAbortOnError maps to cli flags: --no-abort-on-error.
+//   - From option group: "General"
 func (c *Command) NoAbortOnError() *Command {
 	c.addFlag(&Flag{
 		ID:   "ignoreerrors",
@@ -105,6 +111,7 @@ func (c *Command) NoAbortOnError() *Command {
 //
 //   - See [Command.UnsetAbortOnError], for unsetting the flag.
 //   - AbortOnError maps to cli flags: --abort-on-error/--no-ignore-errors.
+//   - From option group: "General"
 func (c *Command) AbortOnError() *Command {
 	c.addFlag(&Flag{
 		ID:   "ignoreerrors",
@@ -124,6 +131,7 @@ func (c *Command) UnsetAbortOnError() *Command {
 // Display the current user-agent and exit
 //
 //   - DumpUserAgent maps to cli flags: --dump-user-agent.
+//   - From option group: "General"
 func (c *Command) DumpUserAgent(ctx context.Context) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "dump_user_agent",
@@ -137,6 +145,7 @@ func (c *Command) DumpUserAgent(ctx context.Context) (*Result, error) {
 // List all supported extractors and exit
 //
 //   - ListExtractors maps to cli flags: --list-extractors.
+//   - From option group: "General"
 func (c *Command) ListExtractors(ctx context.Context) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "list_extractors",
@@ -150,6 +159,7 @@ func (c *Command) ListExtractors(ctx context.Context) (*Result, error) {
 // Output descriptions of all supported extractors and exit
 //
 //   - ExtractorDescriptions maps to cli flags: --extractor-descriptions.
+//   - From option group: "General"
 func (c *Command) ExtractorDescriptions(ctx context.Context) (*Result, error) {
 	c.addFlag(&Flag{
 		ID:   "list_extractor_descriptions",
@@ -167,6 +177,7 @@ func (c *Command) ExtractorDescriptions(ctx context.Context) (*Result, error) {
 //
 //   - See [Command.UnsetUseExtractors], for unsetting the flag.
 //   - UseExtractors maps to cli flags: --use-extractors/--ies=NAMES.
+//   - From option group: "General"
 func (c *Command) UseExtractors(names string) *Command {
 	c.addFlag(&Flag{
 		ID:   "allowed_extractors",
@@ -187,6 +198,7 @@ func (c *Command) UnsetUseExtractors() *Command {
 //
 //   - See [Command.UnsetForceGenericExtractor], for unsetting the flag.
 //   - ForceGenericExtractor maps to cli flags: --force-generic-extractor (hidden).
+//   - From option group: "General"
 func (c *Command) ForceGenericExtractor() *Command {
 	c.addFlag(&Flag{
 		ID:   "force_generic_extractor",
@@ -211,6 +223,7 @@ func (c *Command) UnsetForceGenericExtractor() *Command {
 //
 //   - See [Command.UnsetDefaultSearch], for unsetting the flag.
 //   - DefaultSearch maps to cli flags: --default-search=PREFIX.
+//   - From option group: "General"
 func (c *Command) DefaultSearch(prefix string) *Command {
 	c.addFlag(&Flag{
 		ID:   "default_search",
@@ -233,6 +246,7 @@ func (c *Command) UnsetDefaultSearch() *Command {
 //
 //   - See [Command.UnsetIgnoreConfig], for unsetting the flag.
 //   - IgnoreConfig maps to cli flags: --ignore-config/--no-config.
+//   - From option group: "General"
 func (c *Command) IgnoreConfig() *Command {
 	c.addFlag(&Flag{
 		ID:   "ignoreconfig",
@@ -255,6 +269,7 @@ func (c *Command) UnsetIgnoreConfig() *Command {
 //
 //   - See [Command.UnsetConfigLocations], for unsetting the flag.
 //   - NoConfigLocations maps to cli flags: --no-config-locations.
+//   - From option group: "General"
 func (c *Command) NoConfigLocations() *Command {
 	c.addFlag(&Flag{
 		ID:   "config_locations",
@@ -270,6 +285,7 @@ func (c *Command) NoConfigLocations() *Command {
 //
 //   - See [Command.UnsetConfigLocations], for unsetting the flag.
 //   - ConfigLocations maps to cli flags: --config-locations=PATH.
+//   - From option group: "General"
 func (c *Command) ConfigLocations(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "config_locations",
@@ -290,6 +306,7 @@ func (c *Command) UnsetConfigLocations() *Command {
 //
 //   - See [Command.UnsetFlatPlaylist], for unsetting the flag.
 //   - FlatPlaylist maps to cli flags: --flat-playlist.
+//   - From option group: "General"
 func (c *Command) FlatPlaylist() *Command {
 	c.addFlag(&Flag{
 		ID:   "extract_flat",
@@ -310,6 +327,7 @@ func (c *Command) UnsetFlatPlaylist() *Command {
 //
 //   - See [Command.UnsetFlatPlaylist], for unsetting the flag.
 //   - NoFlatPlaylist maps to cli flags: --no-flat-playlist.
+//   - From option group: "General"
 func (c *Command) NoFlatPlaylist() *Command {
 	c.addFlag(&Flag{
 		ID:   "extract_flat",
@@ -324,6 +342,7 @@ func (c *Command) NoFlatPlaylist() *Command {
 //
 //   - See [Command.UnsetLiveFromStart], for unsetting the flag.
 //   - LiveFromStart maps to cli flags: --live-from-start.
+//   - From option group: "General"
 func (c *Command) LiveFromStart() *Command {
 	c.addFlag(&Flag{
 		ID:   "live_from_start",
@@ -344,6 +363,7 @@ func (c *Command) UnsetLiveFromStart() *Command {
 //
 //   - See [Command.UnsetLiveFromStart], for unsetting the flag.
 //   - NoLiveFromStart maps to cli flags: --no-live-from-start.
+//   - From option group: "General"
 func (c *Command) NoLiveFromStart() *Command {
 	c.addFlag(&Flag{
 		ID:   "live_from_start",
@@ -358,6 +378,7 @@ func (c *Command) NoLiveFromStart() *Command {
 //
 //   - See [Command.UnsetWaitForVideo], for unsetting the flag.
 //   - WaitForVideo maps to cli flags: --wait-for-video=MIN[-MAX].
+//   - From option group: "General"
 func (c *Command) WaitForVideo(min string) *Command {
 	c.addFlag(&Flag{
 		ID:   "wait_for_video",
@@ -378,6 +399,7 @@ func (c *Command) UnsetWaitForVideo() *Command {
 //
 //   - See [Command.UnsetWaitForVideo], for unsetting the flag.
 //   - NoWaitForVideo maps to cli flags: --no-wait-for-video.
+//   - From option group: "General"
 func (c *Command) NoWaitForVideo() *Command {
 	c.addFlag(&Flag{
 		ID:   "wait_for_video",
@@ -391,6 +413,7 @@ func (c *Command) NoWaitForVideo() *Command {
 //
 //   - See [Command.UnsetMarkWatched], for unsetting the flag.
 //   - MarkWatched maps to cli flags: --mark-watched.
+//   - From option group: "General"
 func (c *Command) MarkWatched() *Command {
 	c.addFlag(&Flag{
 		ID:   "mark_watched",
@@ -411,6 +434,7 @@ func (c *Command) UnsetMarkWatched() *Command {
 //
 //   - See [Command.UnsetMarkWatched], for unsetting the flag.
 //   - NoMarkWatched maps to cli flags: --no-mark-watched.
+//   - From option group: "General"
 func (c *Command) NoMarkWatched() *Command {
 	c.addFlag(&Flag{
 		ID:   "mark_watched",
@@ -424,6 +448,7 @@ func (c *Command) NoMarkWatched() *Command {
 //
 //   - See [Command.UnsetColors], for unsetting the flag.
 //   - NoColors maps to cli flags: --no-colors/--no-colours (hidden).
+//   - From option group: "General"
 func (c *Command) NoColors() *Command {
 	c.addFlag(&Flag{
 		ID:   "color",
@@ -440,6 +465,7 @@ func (c *Command) NoColors() *Command {
 //
 //   - See [Command.UnsetColor], for unsetting the flag.
 //   - Color maps to cli flags: --color=[STREAM:]POLICY.
+//   - From option group: "General"
 func (c *Command) Color(policy string) *Command {
 	c.addFlag(&Flag{
 		ID:   "color",
@@ -462,6 +488,7 @@ func (c *Command) UnsetColor() *Command {
 //
 //   - See [Command.UnsetCompatOptions], for unsetting the flag.
 //   - CompatOptions maps to cli flags: --compat-options=OPTS.
+//   - From option group: "General"
 func (c *Command) CompatOptions(opts string) *Command {
 	c.addFlag(&Flag{
 		ID:   "compat_opts",
@@ -484,6 +511,7 @@ func (c *Command) UnsetCompatOptions() *Command {
 //
 //   - See [Command.UnsetProxy], for unsetting the flag.
 //   - Proxy maps to cli flags: --proxy=URL.
+//   - From option group: "Network"
 func (c *Command) Proxy(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "proxy",
@@ -504,6 +532,7 @@ func (c *Command) UnsetProxy() *Command {
 //
 //   - See [Command.UnsetSocketTimeout], for unsetting the flag.
 //   - SocketTimeout maps to cli flags: --socket-timeout=SECONDS.
+//   - From option group: "Network"
 func (c *Command) SocketTimeout(seconds float64) *Command {
 	c.addFlag(&Flag{
 		ID:   "socket_timeout",
@@ -526,6 +555,7 @@ func (c *Command) UnsetSocketTimeout() *Command {
 //
 //   - See [Command.UnsetSourceAddress], for unsetting the flag.
 //   - SourceAddress maps to cli flags: --source-address=IP.
+//   - From option group: "Network"
 func (c *Command) SourceAddress(ip string) *Command {
 	c.addFlag(&Flag{
 		ID:   "source_address",
@@ -546,6 +576,7 @@ func (c *Command) UnsetSourceAddress() *Command {
 //
 //   - See [Command.UnsetForceIpv4], for unsetting the flag.
 //   - ForceIpv4 maps to cli flags: -4/--force-ipv4.
+//   - From option group: "Network"
 func (c *Command) ForceIpv4() *Command {
 	c.addFlag(&Flag{
 		ID:   "source_address",
@@ -566,6 +597,7 @@ func (c *Command) UnsetForceIpv4() *Command {
 //
 //   - See [Command.UnsetForceIpv6], for unsetting the flag.
 //   - ForceIpv6 maps to cli flags: -6/--force-ipv6.
+//   - From option group: "Network"
 func (c *Command) ForceIpv6() *Command {
 	c.addFlag(&Flag{
 		ID:   "source_address",
@@ -586,6 +618,7 @@ func (c *Command) UnsetForceIpv6() *Command {
 //
 //   - See [Command.UnsetEnableFileUrls], for unsetting the flag.
 //   - EnableFileUrls maps to cli flags: --enable-file-urls.
+//   - From option group: "Network"
 func (c *Command) EnableFileUrls() *Command {
 	c.addFlag(&Flag{
 		ID:   "enable_file_urls",
@@ -608,6 +641,7 @@ func (c *Command) UnsetEnableFileUrls() *Command {
 //
 //   - See [Command.UnsetGeoVerificationProxy], for unsetting the flag.
 //   - GeoVerificationProxy maps to cli flags: --geo-verification-proxy=URL.
+//   - From option group: "Geo-restriction"
 func (c *Command) GeoVerificationProxy(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_verification_proxy",
@@ -626,6 +660,7 @@ func (c *Command) UnsetGeoVerificationProxy() *Command {
 
 // - See [Command.UnsetCnVerificationProxy], for unsetting the flag.
 // - CnVerificationProxy maps to cli flags: --cn-verification-proxy=URL (hidden).
+// - From option group: "Geo-restriction"
 func (c *Command) CnVerificationProxy(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "cn_verification_proxy",
@@ -648,6 +683,7 @@ func (c *Command) UnsetCnVerificationProxy() *Command {
 //
 //   - See [Command.UnsetXff], for unsetting the flag.
 //   - Xff maps to cli flags: --xff=VALUE.
+//   - From option group: "Geo-restriction"
 func (c *Command) Xff(value string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -668,6 +704,7 @@ func (c *Command) UnsetXff() *Command {
 //
 //   - See [Command.UnsetGeoBypass], for unsetting the flag.
 //   - GeoBypass maps to cli flags: --geo-bypass (hidden).
+//   - From option group: "Geo-restriction"
 func (c *Command) GeoBypass() *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -688,6 +725,7 @@ func (c *Command) UnsetGeoBypass() *Command {
 //
 //   - See [Command.UnsetGeoBypass], for unsetting the flag.
 //   - NoGeoBypass maps to cli flags: --no-geo-bypass (hidden).
+//   - From option group: "Geo-restriction"
 func (c *Command) NoGeoBypass() *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -699,6 +737,7 @@ func (c *Command) NoGeoBypass() *Command {
 
 // - See [Command.UnsetGeoBypassCountry], for unsetting the flag.
 // - GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE (hidden).
+// - From option group: "Geo-restriction"
 func (c *Command) GeoBypassCountry(code string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -717,6 +756,7 @@ func (c *Command) UnsetGeoBypassCountry() *Command {
 
 // - See [Command.UnsetGeoBypassIpBlock], for unsetting the flag.
 // - GeoBypassIpBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK (hidden).
+// - From option group: "Geo-restriction"
 func (c *Command) GeoBypassIpBlock(ipBlock string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -735,6 +775,7 @@ func (c *Command) UnsetGeoBypassIpBlock() *Command {
 
 // - See [Command.UnsetPlaylistStart], for unsetting the flag.
 // - PlaylistStart maps to cli flags: --playlist-start=NUMBER (hidden).
+// - From option group: "Video Selection"
 func (c *Command) PlaylistStart(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "playliststart",
@@ -755,6 +796,7 @@ func (c *Command) UnsetPlaylistStart() *Command {
 
 // - See [Command.UnsetPlaylistEnd], for unsetting the flag.
 // - PlaylistEnd maps to cli flags: --playlist-end=NUMBER (hidden).
+// - From option group: "Video Selection"
 func (c *Command) PlaylistEnd(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "playlistend",
@@ -781,6 +823,7 @@ func (c *Command) UnsetPlaylistEnd() *Command {
 //
 //   - See [Command.UnsetPlaylistItems], for unsetting the flag.
 //   - PlaylistItems maps to cli flags: -I/--playlist-items=ITEM_SPEC.
+//   - From option group: "Video Selection"
 func (c *Command) PlaylistItems(itemSpec string) *Command {
 	c.addFlag(&Flag{
 		ID:   "playlist_items",
@@ -799,6 +842,7 @@ func (c *Command) UnsetPlaylistItems() *Command {
 
 // - See [Command.UnsetMatchTitle], for unsetting the flag.
 // - MatchTitle maps to cli flags: --match-title=REGEX (hidden).
+// - From option group: "Video Selection"
 func (c *Command) MatchTitle(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "matchtitle",
@@ -817,6 +861,7 @@ func (c *Command) UnsetMatchTitle() *Command {
 
 // - See [Command.UnsetRejectTitle], for unsetting the flag.
 // - RejectTitle maps to cli flags: --reject-title=REGEX (hidden).
+// - From option group: "Video Selection"
 func (c *Command) RejectTitle(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "rejecttitle",
@@ -837,6 +882,7 @@ func (c *Command) UnsetRejectTitle() *Command {
 //
 //   - See [Command.UnsetMinFilesize], for unsetting the flag.
 //   - MinFilesize maps to cli flags: --min-filesize=SIZE.
+//   - From option group: "Video Selection"
 func (c *Command) MinFilesize(size string) *Command {
 	c.addFlag(&Flag{
 		ID:   "min_filesize",
@@ -857,6 +903,7 @@ func (c *Command) UnsetMinFilesize() *Command {
 //
 //   - See [Command.UnsetMaxFilesize], for unsetting the flag.
 //   - MaxFilesize maps to cli flags: --max-filesize=SIZE.
+//   - From option group: "Video Selection"
 func (c *Command) MaxFilesize(size string) *Command {
 	c.addFlag(&Flag{
 		ID:   "max_filesize",
@@ -879,6 +926,7 @@ func (c *Command) UnsetMaxFilesize() *Command {
 //
 //   - See [Command.UnsetDate], for unsetting the flag.
 //   - Date maps to cli flags: --date=DATE.
+//   - From option group: "Video Selection"
 func (c *Command) Date(date string) *Command {
 	c.addFlag(&Flag{
 		ID:   "date",
@@ -900,6 +948,7 @@ func (c *Command) UnsetDate() *Command {
 //
 //   - See [Command.UnsetDatebefore], for unsetting the flag.
 //   - Datebefore maps to cli flags: --datebefore=DATE.
+//   - From option group: "Video Selection"
 func (c *Command) Datebefore(date string) *Command {
 	c.addFlag(&Flag{
 		ID:   "datebefore",
@@ -921,6 +970,7 @@ func (c *Command) UnsetDatebefore() *Command {
 //
 //   - See [Command.UnsetDateafter], for unsetting the flag.
 //   - Dateafter maps to cli flags: --dateafter=DATE.
+//   - From option group: "Video Selection"
 func (c *Command) Dateafter(date string) *Command {
 	c.addFlag(&Flag{
 		ID:   "dateafter",
@@ -939,6 +989,7 @@ func (c *Command) UnsetDateafter() *Command {
 
 // - See [Command.UnsetMinViews], for unsetting the flag.
 // - MinViews maps to cli flags: --min-views=COUNT (hidden).
+// - From option group: "Video Selection"
 func (c *Command) MinViews(count int) *Command {
 	c.addFlag(&Flag{
 		ID:   "min_views",
@@ -959,6 +1010,7 @@ func (c *Command) UnsetMinViews() *Command {
 
 // - See [Command.UnsetMaxViews], for unsetting the flag.
 // - MaxViews maps to cli flags: --max-views=COUNT (hidden).
+// - From option group: "Video Selection"
 func (c *Command) MaxViews(count int) *Command {
 	c.addFlag(&Flag{
 		ID:   "max_views",
@@ -991,6 +1043,7 @@ func (c *Command) UnsetMaxViews() *Command {
 //
 //   - See [Command.UnsetMatchFilters], for unsetting the flag.
 //   - MatchFilters maps to cli flags: --match-filters=FILTER.
+//   - From option group: "Video Selection"
 func (c *Command) MatchFilters(filter string) *Command {
 	c.addFlag(&Flag{
 		ID:   "match_filter",
@@ -1011,6 +1064,7 @@ func (c *Command) UnsetMatchFilters() *Command {
 //
 //   - See [Command.UnsetMatchFilters], for unsetting the flag.
 //   - NoMatchFilters maps to cli flags: --no-match-filters.
+//   - From option group: "Video Selection"
 func (c *Command) NoMatchFilters() *Command {
 	c.addFlag(&Flag{
 		ID:   "match_filter",
@@ -1025,6 +1079,7 @@ func (c *Command) NoMatchFilters() *Command {
 //
 //   - See [Command.UnsetBreakMatchFilters], for unsetting the flag.
 //   - BreakMatchFilters maps to cli flags: --break-match-filters=FILTER.
+//   - From option group: "Video Selection"
 func (c *Command) BreakMatchFilters(filter string) *Command {
 	c.addFlag(&Flag{
 		ID:   "breaking_match_filter",
@@ -1045,6 +1100,7 @@ func (c *Command) UnsetBreakMatchFilters() *Command {
 //
 //   - See [Command.UnsetBreakMatchFilters], for unsetting the flag.
 //   - NoBreakMatchFilters maps to cli flags: --no-break-match-filters.
+//   - From option group: "Video Selection"
 func (c *Command) NoBreakMatchFilters() *Command {
 	c.addFlag(&Flag{
 		ID:   "breaking_match_filter",
@@ -1058,6 +1114,7 @@ func (c *Command) NoBreakMatchFilters() *Command {
 //
 //   - See [Command.UnsetPlaylist], for unsetting the flag.
 //   - NoPlaylist maps to cli flags: --no-playlist.
+//   - From option group: "Video Selection"
 func (c *Command) NoPlaylist() *Command {
 	c.addFlag(&Flag{
 		ID:   "noplaylist",
@@ -1071,6 +1128,7 @@ func (c *Command) NoPlaylist() *Command {
 //
 //   - See [Command.UnsetYesPlaylist], for unsetting the flag.
 //   - YesPlaylist maps to cli flags: --yes-playlist.
+//   - From option group: "Video Selection"
 func (c *Command) YesPlaylist() *Command {
 	c.addFlag(&Flag{
 		ID:   "noplaylist",
@@ -1091,6 +1149,7 @@ func (c *Command) UnsetYesPlaylist() *Command {
 //
 //   - See [Command.UnsetAgeLimit], for unsetting the flag.
 //   - AgeLimit maps to cli flags: --age-limit=YEARS.
+//   - From option group: "Video Selection"
 func (c *Command) AgeLimit(years int) *Command {
 	c.addFlag(&Flag{
 		ID:   "age_limit",
@@ -1114,6 +1173,7 @@ func (c *Command) UnsetAgeLimit() *Command {
 //
 //   - See [Command.UnsetDownloadArchive], for unsetting the flag.
 //   - DownloadArchive maps to cli flags: --download-archive=FILE.
+//   - From option group: "Video Selection"
 func (c *Command) DownloadArchive(file string) *Command {
 	c.addFlag(&Flag{
 		ID:   "download_archive",
@@ -1134,6 +1194,7 @@ func (c *Command) UnsetDownloadArchive() *Command {
 //
 //   - See [Command.UnsetDownloadArchive], for unsetting the flag.
 //   - NoDownloadArchive maps to cli flags: --no-download-archive.
+//   - From option group: "Video Selection"
 func (c *Command) NoDownloadArchive() *Command {
 	c.addFlag(&Flag{
 		ID:   "download_archive",
@@ -1147,6 +1208,7 @@ func (c *Command) NoDownloadArchive() *Command {
 //
 //   - See [Command.UnsetMaxDownloads], for unsetting the flag.
 //   - MaxDownloads maps to cli flags: --max-downloads=NUMBER.
+//   - From option group: "Video Selection"
 func (c *Command) MaxDownloads(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "max_downloads",
@@ -1169,6 +1231,7 @@ func (c *Command) UnsetMaxDownloads() *Command {
 //
 //   - See [Command.UnsetBreakOnExisting], for unsetting the flag.
 //   - BreakOnExisting maps to cli flags: --break-on-existing.
+//   - From option group: "Video Selection"
 func (c *Command) BreakOnExisting() *Command {
 	c.addFlag(&Flag{
 		ID:   "break_on_existing",
@@ -1189,6 +1252,7 @@ func (c *Command) UnsetBreakOnExisting() *Command {
 //
 //   - See [Command.UnsetBreakOnReject], for unsetting the flag.
 //   - BreakOnReject maps to cli flags: --break-on-reject (hidden).
+//   - From option group: "Video Selection"
 func (c *Command) BreakOnReject() *Command {
 	c.addFlag(&Flag{
 		ID:   "break_on_reject",
@@ -1210,6 +1274,7 @@ func (c *Command) UnsetBreakOnReject() *Command {
 //
 //   - See [Command.UnsetBreakPerInput], for unsetting the flag.
 //   - BreakPerInput maps to cli flags: --break-per-input.
+//   - From option group: "Video Selection"
 func (c *Command) BreakPerInput() *Command {
 	c.addFlag(&Flag{
 		ID:   "break_per_url",
@@ -1230,6 +1295,7 @@ func (c *Command) UnsetBreakPerInput() *Command {
 //
 //   - See [Command.UnsetBreakPerInput], for unsetting the flag.
 //   - NoBreakPerInput maps to cli flags: --no-break-per-input.
+//   - From option group: "Video Selection"
 func (c *Command) NoBreakPerInput() *Command {
 	c.addFlag(&Flag{
 		ID:   "break_per_url",
@@ -1243,6 +1309,7 @@ func (c *Command) NoBreakPerInput() *Command {
 //
 //   - See [Command.UnsetSkipPlaylistAfterErrors], for unsetting the flag.
 //   - SkipPlaylistAfterErrors maps to cli flags: --skip-playlist-after-errors=N.
+//   - From option group: "Video Selection"
 func (c *Command) SkipPlaylistAfterErrors(n int) *Command {
 	c.addFlag(&Flag{
 		ID:   "skip_playlist_after_errors",
@@ -1265,6 +1332,7 @@ func (c *Command) UnsetSkipPlaylistAfterErrors() *Command {
 //
 //   - See [Command.UnsetIncludeAds], for unsetting the flag.
 //   - IncludeAds maps to cli flags: --include-ads (hidden).
+//   - From option group: "Video Selection"
 func (c *Command) IncludeAds() *Command {
 	c.addFlag(&Flag{
 		ID:   "include_ads",
@@ -1285,6 +1353,7 @@ func (c *Command) UnsetIncludeAds() *Command {
 //
 //   - See [Command.UnsetIncludeAds], for unsetting the flag.
 //   - NoIncludeAds maps to cli flags: --no-include-ads (hidden).
+//   - From option group: "Video Selection"
 func (c *Command) NoIncludeAds() *Command {
 	c.addFlag(&Flag{
 		ID:   "include_ads",
@@ -1299,6 +1368,7 @@ func (c *Command) NoIncludeAds() *Command {
 //
 //   - See [Command.UnsetConcurrentFragments], for unsetting the flag.
 //   - ConcurrentFragments maps to cli flags: -N/--concurrent-fragments=N.
+//   - From option group: "Download"
 func (c *Command) ConcurrentFragments(n int) *Command {
 	c.addFlag(&Flag{
 		ID:   "concurrent_fragment_downloads",
@@ -1321,6 +1391,7 @@ func (c *Command) UnsetConcurrentFragments() *Command {
 //
 //   - See [Command.UnsetLimitRate], for unsetting the flag.
 //   - LimitRate maps to cli flags: -r/--limit-rate/--rate-limit=RATE.
+//   - From option group: "Download"
 func (c *Command) LimitRate(rate string) *Command {
 	c.addFlag(&Flag{
 		ID:   "ratelimit",
@@ -1342,6 +1413,7 @@ func (c *Command) UnsetLimitRate() *Command {
 //
 //   - See [Command.UnsetThrottledRate], for unsetting the flag.
 //   - ThrottledRate maps to cli flags: --throttled-rate=RATE.
+//   - From option group: "Download"
 func (c *Command) ThrottledRate(rate string) *Command {
 	c.addFlag(&Flag{
 		ID:   "throttledratelimit",
@@ -1362,6 +1434,7 @@ func (c *Command) UnsetThrottledRate() *Command {
 //
 //   - See [Command.UnsetRetries], for unsetting the flag.
 //   - Retries maps to cli flags: -R/--retries=RETRIES.
+//   - From option group: "Download"
 func (c *Command) Retries(retries string) *Command {
 	c.addFlag(&Flag{
 		ID:   "retries",
@@ -1382,6 +1455,7 @@ func (c *Command) UnsetRetries() *Command {
 //
 //   - See [Command.UnsetFileAccessRetries], for unsetting the flag.
 //   - FileAccessRetries maps to cli flags: --file-access-retries=RETRIES.
+//   - From option group: "Download"
 func (c *Command) FileAccessRetries(retries string) *Command {
 	c.addFlag(&Flag{
 		ID:   "file_access_retries",
@@ -1403,6 +1477,7 @@ func (c *Command) UnsetFileAccessRetries() *Command {
 //
 //   - See [Command.UnsetFragmentRetries], for unsetting the flag.
 //   - FragmentRetries maps to cli flags: --fragment-retries=RETRIES.
+//   - From option group: "Download"
 func (c *Command) FragmentRetries(retries string) *Command {
 	c.addFlag(&Flag{
 		ID:   "fragment_retries",
@@ -1427,6 +1502,7 @@ func (c *Command) UnsetFragmentRetries() *Command {
 //
 //   - See [Command.UnsetRetrySleep], for unsetting the flag.
 //   - RetrySleep maps to cli flags: --retry-sleep=[TYPE:]EXPR.
+//   - From option group: "Download"
 func (c *Command) RetrySleep(expr string) *Command {
 	c.addFlag(&Flag{
 		ID:   "retry_sleep",
@@ -1447,6 +1523,7 @@ func (c *Command) UnsetRetrySleep() *Command {
 //
 //   - See [Command.UnsetSkipUnavailableFragments], for unsetting the flag.
 //   - SkipUnavailableFragments maps to cli flags: --skip-unavailable-fragments/--no-abort-on-unavailable-fragments.
+//   - From option group: "Download"
 func (c *Command) SkipUnavailableFragments() *Command {
 	c.addFlag(&Flag{
 		ID:   "skip_unavailable_fragments",
@@ -1467,6 +1544,7 @@ func (c *Command) UnsetSkipUnavailableFragments() *Command {
 //
 //   - See [Command.UnsetAbortOnUnavailableFragments], for unsetting the flag.
 //   - AbortOnUnavailableFragments maps to cli flags: --abort-on-unavailable-fragments/--no-skip-unavailable-fragments.
+//   - From option group: "Download"
 func (c *Command) AbortOnUnavailableFragments() *Command {
 	c.addFlag(&Flag{
 		ID:   "skip_unavailable_fragments",
@@ -1487,6 +1565,7 @@ func (c *Command) UnsetAbortOnUnavailableFragments() *Command {
 //
 //   - See [Command.UnsetKeepFragments], for unsetting the flag.
 //   - KeepFragments maps to cli flags: --keep-fragments.
+//   - From option group: "Download"
 func (c *Command) KeepFragments() *Command {
 	c.addFlag(&Flag{
 		ID:   "keep_fragments",
@@ -1507,6 +1586,7 @@ func (c *Command) UnsetKeepFragments() *Command {
 //
 //   - See [Command.UnsetKeepFragments], for unsetting the flag.
 //   - NoKeepFragments maps to cli flags: --no-keep-fragments.
+//   - From option group: "Download"
 func (c *Command) NoKeepFragments() *Command {
 	c.addFlag(&Flag{
 		ID:   "keep_fragments",
@@ -1520,6 +1600,7 @@ func (c *Command) NoKeepFragments() *Command {
 //
 //   - See [Command.UnsetBufferSize], for unsetting the flag.
 //   - BufferSize maps to cli flags: --buffer-size=SIZE.
+//   - From option group: "Download"
 func (c *Command) BufferSize(size string) *Command {
 	c.addFlag(&Flag{
 		ID:   "buffersize",
@@ -1541,6 +1622,7 @@ func (c *Command) UnsetBufferSize() *Command {
 //
 //   - See [Command.UnsetResizeBuffer], for unsetting the flag.
 //   - ResizeBuffer maps to cli flags: --resize-buffer.
+//   - From option group: "Download"
 func (c *Command) ResizeBuffer() *Command {
 	c.addFlag(&Flag{
 		ID:   "noresizebuffer",
@@ -1561,6 +1643,7 @@ func (c *Command) UnsetResizeBuffer() *Command {
 //
 //   - See [Command.UnsetResizeBuffer], for unsetting the flag.
 //   - NoResizeBuffer maps to cli flags: --no-resize-buffer.
+//   - From option group: "Download"
 func (c *Command) NoResizeBuffer() *Command {
 	c.addFlag(&Flag{
 		ID:   "noresizebuffer",
@@ -1576,6 +1659,7 @@ func (c *Command) NoResizeBuffer() *Command {
 //
 //   - See [Command.UnsetHttpChunkSize], for unsetting the flag.
 //   - HttpChunkSize maps to cli flags: --http-chunk-size=SIZE.
+//   - From option group: "Download"
 func (c *Command) HttpChunkSize(size string) *Command {
 	c.addFlag(&Flag{
 		ID:   "http_chunk_size",
@@ -1596,6 +1680,7 @@ func (c *Command) UnsetHttpChunkSize() *Command {
 //
 //   - See [Command.UnsetTest], for unsetting the flag.
 //   - Test maps to cli flags: --test (hidden).
+//   - From option group: "Download"
 func (c *Command) Test() *Command {
 	c.addFlag(&Flag{
 		ID:   "test",
@@ -1616,6 +1701,7 @@ func (c *Command) UnsetTest() *Command {
 //
 //   - See [Command.UnsetPlaylistReverse], for unsetting the flag.
 //   - PlaylistReverse maps to cli flags: --playlist-reverse (hidden).
+//   - From option group: "Download"
 func (c *Command) PlaylistReverse() *Command {
 	c.addFlag(&Flag{
 		ID:   "playlist_reverse",
@@ -1636,6 +1722,7 @@ func (c *Command) UnsetPlaylistReverse() *Command {
 //
 //   - See [Command.UnsetPlaylistReverse], for unsetting the flag.
 //   - NoPlaylistReverse maps to cli flags: --no-playlist-reverse (hidden).
+//   - From option group: "Download"
 func (c *Command) NoPlaylistReverse() *Command {
 	c.addFlag(&Flag{
 		ID:   "playlist_reverse",
@@ -1649,6 +1736,7 @@ func (c *Command) NoPlaylistReverse() *Command {
 //
 //   - See [Command.UnsetPlaylistRandom], for unsetting the flag.
 //   - PlaylistRandom maps to cli flags: --playlist-random.
+//   - From option group: "Download"
 func (c *Command) PlaylistRandom() *Command {
 	c.addFlag(&Flag{
 		ID:   "playlist_random",
@@ -1670,6 +1758,7 @@ func (c *Command) UnsetPlaylistRandom() *Command {
 //
 //   - See [Command.UnsetLazyPlaylist], for unsetting the flag.
 //   - LazyPlaylist maps to cli flags: --lazy-playlist.
+//   - From option group: "Download"
 func (c *Command) LazyPlaylist() *Command {
 	c.addFlag(&Flag{
 		ID:   "lazy_playlist",
@@ -1691,6 +1780,7 @@ func (c *Command) UnsetLazyPlaylist() *Command {
 //
 //   - See [Command.UnsetLazyPlaylist], for unsetting the flag.
 //   - NoLazyPlaylist maps to cli flags: --no-lazy-playlist.
+//   - From option group: "Download"
 func (c *Command) NoLazyPlaylist() *Command {
 	c.addFlag(&Flag{
 		ID:   "lazy_playlist",
@@ -1704,6 +1794,7 @@ func (c *Command) NoLazyPlaylist() *Command {
 //
 //   - See [Command.UnsetXattrSetFilesize], for unsetting the flag.
 //   - XattrSetFilesize maps to cli flags: --xattr-set-filesize.
+//   - From option group: "Download"
 func (c *Command) XattrSetFilesize() *Command {
 	c.addFlag(&Flag{
 		ID:   "xattr_set_filesize",
@@ -1724,6 +1815,7 @@ func (c *Command) UnsetXattrSetFilesize() *Command {
 //
 //   - See [Command.UnsetHlsPreferNative], for unsetting the flag.
 //   - HlsPreferNative maps to cli flags: --hls-prefer-native (hidden).
+//   - From option group: "Download"
 func (c *Command) HlsPreferNative() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_prefer_native",
@@ -1744,6 +1836,7 @@ func (c *Command) UnsetHlsPreferNative() *Command {
 //
 //   - See [Command.UnsetHlsPreferFfmpeg], for unsetting the flag.
 //   - HlsPreferFfmpeg maps to cli flags: --hls-prefer-ffmpeg (hidden).
+//   - From option group: "Download"
 func (c *Command) HlsPreferFfmpeg() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_prefer_native",
@@ -1766,6 +1859,7 @@ func (c *Command) UnsetHlsPreferFfmpeg() *Command {
 //
 //   - See [Command.UnsetHlsUseMpegts], for unsetting the flag.
 //   - HlsUseMpegts maps to cli flags: --hls-use-mpegts.
+//   - From option group: "Download"
 func (c *Command) HlsUseMpegts() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_use_mpegts",
@@ -1787,6 +1881,7 @@ func (c *Command) UnsetHlsUseMpegts() *Command {
 //
 //   - See [Command.UnsetHlsUseMpegts], for unsetting the flag.
 //   - NoHlsUseMpegts maps to cli flags: --no-hls-use-mpegts.
+//   - From option group: "Download"
 func (c *Command) NoHlsUseMpegts() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_use_mpegts",
@@ -1805,6 +1900,7 @@ func (c *Command) NoHlsUseMpegts() *Command {
 //
 //   - See [Command.UnsetDownloadSections], for unsetting the flag.
 //   - DownloadSections maps to cli flags: --download-sections=REGEX.
+//   - From option group: "Download"
 func (c *Command) DownloadSections(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "download_ranges",
@@ -1830,6 +1926,7 @@ func (c *Command) UnsetDownloadSections() *Command {
 //
 //   - See [Command.UnsetDownloader], for unsetting the flag.
 //   - Downloader maps to cli flags: --downloader/--external-downloader=[PROTO:]NAME.
+//   - From option group: "Download"
 func (c *Command) Downloader(name string) *Command {
 	c.addFlag(&Flag{
 		ID:   "external_downloader",
@@ -1853,6 +1950,7 @@ func (c *Command) UnsetDownloader() *Command {
 //
 //   - See [Command.UnsetDownloaderArgs], for unsetting the flag.
 //   - DownloaderArgs maps to cli flags: --downloader-args/--external-downloader-args=NAME:ARGS.
+//   - From option group: "Download"
 func (c *Command) DownloaderArgs(nameargs string) *Command {
 	c.addFlag(&Flag{
 		ID:   "external_downloader_args",
@@ -1874,6 +1972,7 @@ func (c *Command) UnsetDownloaderArgs() *Command {
 //
 //   - See [Command.UnsetBatchFile], for unsetting the flag.
 //   - BatchFile maps to cli flags: -a/--batch-file=FILE.
+//   - From option group: "Filesystem"
 func (c *Command) BatchFile(file string) *Command {
 	c.addFlag(&Flag{
 		ID:   "batchfile",
@@ -1894,6 +1993,7 @@ func (c *Command) UnsetBatchFile() *Command {
 //
 //   - See [Command.UnsetBatchFile], for unsetting the flag.
 //   - NoBatchFile maps to cli flags: --no-batch-file.
+//   - From option group: "Filesystem"
 func (c *Command) NoBatchFile() *Command {
 	c.addFlag(&Flag{
 		ID:   "batchfile",
@@ -1907,6 +2007,7 @@ func (c *Command) NoBatchFile() *Command {
 //
 //   - See [Command.UnsetId], for unsetting the flag.
 //   - Id maps to cli flags: --id (hidden).
+//   - From option group: "Filesystem"
 func (c *Command) Id() *Command {
 	c.addFlag(&Flag{
 		ID:   "useid",
@@ -1932,6 +2033,7 @@ func (c *Command) UnsetId() *Command {
 //
 //   - See [Command.UnsetPaths], for unsetting the flag.
 //   - Paths maps to cli flags: -P/--paths=[TYPES:]PATH.
+//   - From option group: "Filesystem"
 func (c *Command) Paths(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "paths",
@@ -1952,6 +2054,7 @@ func (c *Command) UnsetPaths() *Command {
 //
 //   - See [Command.UnsetOutput], for unsetting the flag.
 //   - Output maps to cli flags: -o/--output=[TYPES:]TEMPLATE.
+//   - From option group: "Filesystem"
 func (c *Command) Output(template string) *Command {
 	c.addFlag(&Flag{
 		ID:   "outtmpl",
@@ -1972,6 +2075,7 @@ func (c *Command) UnsetOutput() *Command {
 //
 //   - See [Command.UnsetOutputNaPlaceholder], for unsetting the flag.
 //   - OutputNaPlaceholder maps to cli flags: --output-na-placeholder=TEXT.
+//   - From option group: "Filesystem"
 func (c *Command) OutputNaPlaceholder(text string) *Command {
 	c.addFlag(&Flag{
 		ID:   "outtmpl_na_placeholder",
@@ -1990,6 +2094,7 @@ func (c *Command) UnsetOutputNaPlaceholder() *Command {
 
 // - See [Command.UnsetAutonumberSize], for unsetting the flag.
 // - AutonumberSize maps to cli flags: --autonumber-size=NUMBER (hidden).
+// - From option group: "Filesystem"
 func (c *Command) AutonumberSize(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "autonumber_size",
@@ -2010,6 +2115,7 @@ func (c *Command) UnsetAutonumberSize() *Command {
 
 // - See [Command.UnsetAutonumberStart], for unsetting the flag.
 // - AutonumberStart maps to cli flags: --autonumber-start=NUMBER (hidden).
+// - From option group: "Filesystem"
 func (c *Command) AutonumberStart(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "autonumber_start",
@@ -2033,6 +2139,7 @@ func (c *Command) UnsetAutonumberStart() *Command {
 //
 //   - See [Command.UnsetRestrictFilenames], for unsetting the flag.
 //   - RestrictFilenames maps to cli flags: --restrict-filenames.
+//   - From option group: "Filesystem"
 func (c *Command) RestrictFilenames() *Command {
 	c.addFlag(&Flag{
 		ID:   "restrictfilenames",
@@ -2053,6 +2160,7 @@ func (c *Command) UnsetRestrictFilenames() *Command {
 //
 //   - See [Command.UnsetRestrictFilenames], for unsetting the flag.
 //   - NoRestrictFilenames maps to cli flags: --no-restrict-filenames.
+//   - From option group: "Filesystem"
 func (c *Command) NoRestrictFilenames() *Command {
 	c.addFlag(&Flag{
 		ID:   "restrictfilenames",
@@ -2066,6 +2174,7 @@ func (c *Command) NoRestrictFilenames() *Command {
 //
 //   - See [Command.UnsetWindowsFilenames], for unsetting the flag.
 //   - WindowsFilenames maps to cli flags: --windows-filenames.
+//   - From option group: "Filesystem"
 func (c *Command) WindowsFilenames() *Command {
 	c.addFlag(&Flag{
 		ID:   "windowsfilenames",
@@ -2086,6 +2195,7 @@ func (c *Command) UnsetWindowsFilenames() *Command {
 //
 //   - See [Command.UnsetWindowsFilenames], for unsetting the flag.
 //   - NoWindowsFilenames maps to cli flags: --no-windows-filenames.
+//   - From option group: "Filesystem"
 func (c *Command) NoWindowsFilenames() *Command {
 	c.addFlag(&Flag{
 		ID:   "windowsfilenames",
@@ -2100,6 +2210,7 @@ func (c *Command) NoWindowsFilenames() *Command {
 //
 //   - See [Command.UnsetTrimFilenames], for unsetting the flag.
 //   - TrimFilenames maps to cli flags: --trim-filenames/--trim-file-names=LENGTH.
+//   - From option group: "Filesystem"
 func (c *Command) TrimFilenames(length int) *Command {
 	c.addFlag(&Flag{
 		ID:   "trim_file_name",
@@ -2122,6 +2233,7 @@ func (c *Command) UnsetTrimFilenames() *Command {
 //
 //   - See [Command.UnsetOverwrites], for unsetting the flag.
 //   - NoOverwrites maps to cli flags: -w/--no-overwrites.
+//   - From option group: "Filesystem"
 func (c *Command) NoOverwrites() *Command {
 	c.addFlag(&Flag{
 		ID:   "overwrites",
@@ -2135,6 +2247,7 @@ func (c *Command) NoOverwrites() *Command {
 //
 //   - See [Command.UnsetForceOverwrites], for unsetting the flag.
 //   - ForceOverwrites maps to cli flags: --force-overwrites/--yes-overwrites.
+//   - From option group: "Filesystem"
 func (c *Command) ForceOverwrites() *Command {
 	c.addFlag(&Flag{
 		ID:   "overwrites",
@@ -2155,6 +2268,7 @@ func (c *Command) UnsetForceOverwrites() *Command {
 //
 //   - See [Command.UnsetForceOverwrites], for unsetting the flag.
 //   - NoForceOverwrites maps to cli flags: --no-force-overwrites.
+//   - From option group: "Filesystem"
 func (c *Command) NoForceOverwrites() *Command {
 	c.addFlag(&Flag{
 		ID:   "overwrites",
@@ -2168,6 +2282,7 @@ func (c *Command) NoForceOverwrites() *Command {
 //
 //   - See [Command.UnsetContinue], for unsetting the flag.
 //   - Continue maps to cli flags: -c/--continue.
+//   - From option group: "Filesystem"
 func (c *Command) Continue() *Command {
 	c.addFlag(&Flag{
 		ID:   "continue_dl",
@@ -2189,6 +2304,7 @@ func (c *Command) UnsetContinue() *Command {
 //
 //   - See [Command.UnsetContinue], for unsetting the flag.
 //   - NoContinue maps to cli flags: --no-continue.
+//   - From option group: "Filesystem"
 func (c *Command) NoContinue() *Command {
 	c.addFlag(&Flag{
 		ID:   "continue_dl",
@@ -2202,6 +2318,7 @@ func (c *Command) NoContinue() *Command {
 //
 //   - See [Command.UnsetPart], for unsetting the flag.
 //   - Part maps to cli flags: --part.
+//   - From option group: "Filesystem"
 func (c *Command) Part() *Command {
 	c.addFlag(&Flag{
 		ID:   "nopart",
@@ -2222,6 +2339,7 @@ func (c *Command) UnsetPart() *Command {
 //
 //   - See [Command.UnsetPart], for unsetting the flag.
 //   - NoPart maps to cli flags: --no-part.
+//   - From option group: "Filesystem"
 func (c *Command) NoPart() *Command {
 	c.addFlag(&Flag{
 		ID:   "nopart",
@@ -2235,6 +2353,7 @@ func (c *Command) NoPart() *Command {
 //
 //   - See [Command.UnsetMtime], for unsetting the flag.
 //   - Mtime maps to cli flags: --mtime.
+//   - From option group: "Filesystem"
 func (c *Command) Mtime() *Command {
 	c.addFlag(&Flag{
 		ID:   "updatetime",
@@ -2255,6 +2374,7 @@ func (c *Command) UnsetMtime() *Command {
 //
 //   - See [Command.UnsetMtime], for unsetting the flag.
 //   - NoMtime maps to cli flags: --no-mtime.
+//   - From option group: "Filesystem"
 func (c *Command) NoMtime() *Command {
 	c.addFlag(&Flag{
 		ID:   "updatetime",
@@ -2268,6 +2388,7 @@ func (c *Command) NoMtime() *Command {
 //
 //   - See [Command.UnsetWriteDescription], for unsetting the flag.
 //   - WriteDescription maps to cli flags: --write-description.
+//   - From option group: "Filesystem"
 func (c *Command) WriteDescription() *Command {
 	c.addFlag(&Flag{
 		ID:   "writedescription",
@@ -2288,6 +2409,7 @@ func (c *Command) UnsetWriteDescription() *Command {
 //
 //   - See [Command.UnsetWriteDescription], for unsetting the flag.
 //   - NoWriteDescription maps to cli flags: --no-write-description.
+//   - From option group: "Filesystem"
 func (c *Command) NoWriteDescription() *Command {
 	c.addFlag(&Flag{
 		ID:   "writedescription",
@@ -2302,6 +2424,7 @@ func (c *Command) NoWriteDescription() *Command {
 //
 //   - See [Command.UnsetWriteInfoJson], for unsetting the flag.
 //   - WriteInfoJson maps to cli flags: --write-info-json.
+//   - From option group: "Filesystem"
 func (c *Command) WriteInfoJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeinfojson",
@@ -2322,6 +2445,7 @@ func (c *Command) UnsetWriteInfoJson() *Command {
 //
 //   - See [Command.UnsetWriteInfoJson], for unsetting the flag.
 //   - NoWriteInfoJson maps to cli flags: --no-write-info-json.
+//   - From option group: "Filesystem"
 func (c *Command) NoWriteInfoJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeinfojson",
@@ -2335,6 +2459,7 @@ func (c *Command) NoWriteInfoJson() *Command {
 //
 //   - See [Command.UnsetWriteAnnotations], for unsetting the flag.
 //   - WriteAnnotations maps to cli flags: --write-annotations (hidden).
+//   - From option group: "Filesystem"
 func (c *Command) WriteAnnotations() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeannotations",
@@ -2355,6 +2480,7 @@ func (c *Command) UnsetWriteAnnotations() *Command {
 //
 //   - See [Command.UnsetWriteAnnotations], for unsetting the flag.
 //   - NoWriteAnnotations maps to cli flags: --no-write-annotations (hidden).
+//   - From option group: "Filesystem"
 func (c *Command) NoWriteAnnotations() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeannotations",
@@ -2369,6 +2495,7 @@ func (c *Command) NoWriteAnnotations() *Command {
 //
 //   - See [Command.UnsetWritePlaylistMetafiles], for unsetting the flag.
 //   - WritePlaylistMetafiles maps to cli flags: --write-playlist-metafiles.
+//   - From option group: "Filesystem"
 func (c *Command) WritePlaylistMetafiles() *Command {
 	c.addFlag(&Flag{
 		ID:   "allow_playlist_files",
@@ -2390,6 +2517,7 @@ func (c *Command) UnsetWritePlaylistMetafiles() *Command {
 //
 //   - See [Command.UnsetWritePlaylistMetafiles], for unsetting the flag.
 //   - NoWritePlaylistMetafiles maps to cli flags: --no-write-playlist-metafiles.
+//   - From option group: "Filesystem"
 func (c *Command) NoWritePlaylistMetafiles() *Command {
 	c.addFlag(&Flag{
 		ID:   "allow_playlist_files",
@@ -2403,6 +2531,7 @@ func (c *Command) NoWritePlaylistMetafiles() *Command {
 //
 //   - See [Command.UnsetCleanInfoJson], for unsetting the flag.
 //   - CleanInfoJson maps to cli flags: --clean-info-json/--clean-infojson.
+//   - From option group: "Filesystem"
 func (c *Command) CleanInfoJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "clean_infojson",
@@ -2423,6 +2552,7 @@ func (c *Command) UnsetCleanInfoJson() *Command {
 //
 //   - See [Command.UnsetCleanInfoJson], for unsetting the flag.
 //   - NoCleanInfoJson maps to cli flags: --no-clean-info-json/--no-clean-infojson.
+//   - From option group: "Filesystem"
 func (c *Command) NoCleanInfoJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "clean_infojson",
@@ -2437,6 +2567,7 @@ func (c *Command) NoCleanInfoJson() *Command {
 //
 //   - See [Command.UnsetWriteComments], for unsetting the flag.
 //   - WriteComments maps to cli flags: --write-comments/--get-comments.
+//   - From option group: "Filesystem"
 func (c *Command) WriteComments() *Command {
 	c.addFlag(&Flag{
 		ID:   "getcomments",
@@ -2457,6 +2588,7 @@ func (c *Command) UnsetWriteComments() *Command {
 //
 //   - See [Command.UnsetWriteComments], for unsetting the flag.
 //   - NoWriteComments maps to cli flags: --no-write-comments/--no-get-comments.
+//   - From option group: "Filesystem"
 func (c *Command) NoWriteComments() *Command {
 	c.addFlag(&Flag{
 		ID:   "getcomments",
@@ -2471,6 +2603,7 @@ func (c *Command) NoWriteComments() *Command {
 //
 //   - See [Command.UnsetLoadInfoJson], for unsetting the flag.
 //   - LoadInfoJson maps to cli flags: --load-info-json/--load-info=FILE.
+//   - From option group: "Filesystem"
 func (c *Command) LoadInfoJson(file string) *Command {
 	c.addFlag(&Flag{
 		ID:   "load_info_filename",
@@ -2491,6 +2624,7 @@ func (c *Command) UnsetLoadInfoJson() *Command {
 //
 //   - See [Command.UnsetCookies], for unsetting the flag.
 //   - Cookies maps to cli flags: --cookies=FILE.
+//   - From option group: "Filesystem"
 func (c *Command) Cookies(file string) *Command {
 	c.addFlag(&Flag{
 		ID:   "cookiefile",
@@ -2511,6 +2645,7 @@ func (c *Command) UnsetCookies() *Command {
 //
 //   - See [Command.UnsetCookies], for unsetting the flag.
 //   - NoCookies maps to cli flags: --no-cookies=FILE.
+//   - From option group: "Filesystem"
 func (c *Command) NoCookies() *Command {
 	c.addFlag(&Flag{
 		ID:   "cookiefile",
@@ -2530,6 +2665,7 @@ func (c *Command) NoCookies() *Command {
 //
 //   - See [Command.UnsetCookiesFromBrowser], for unsetting the flag.
 //   - CookiesFromBrowser maps to cli flags: --cookies-from-browser=BROWSER[+KEYRING][:PROFILE][::CONTAINER].
+//   - From option group: "Filesystem"
 func (c *Command) CookiesFromBrowser(browser string) *Command {
 	c.addFlag(&Flag{
 		ID:   "cookiesfrombrowser",
@@ -2550,6 +2686,7 @@ func (c *Command) UnsetCookiesFromBrowser() *Command {
 //
 //   - See [Command.UnsetCookiesFromBrowser], for unsetting the flag.
 //   - NoCookiesFromBrowser maps to cli flags: --no-cookies-from-browser.
+//   - From option group: "Filesystem"
 func (c *Command) NoCookiesFromBrowser() *Command {
 	c.addFlag(&Flag{
 		ID:   "cookiesfrombrowser",
@@ -2565,6 +2702,7 @@ func (c *Command) NoCookiesFromBrowser() *Command {
 //
 //   - See [Command.UnsetCacheDir], for unsetting the flag.
 //   - CacheDir maps to cli flags: --cache-dir=DIR.
+//   - From option group: "Filesystem"
 func (c *Command) CacheDir(dir string) *Command {
 	c.addFlag(&Flag{
 		ID:   "cachedir",
@@ -2585,6 +2723,7 @@ func (c *Command) UnsetCacheDir() *Command {
 //
 //   - See [Command.UnsetCacheDir], for unsetting the flag.
 //   - NoCacheDir maps to cli flags: --no-cache-dir.
+//   - From option group: "Filesystem"
 func (c *Command) NoCacheDir() *Command {
 	c.addFlag(&Flag{
 		ID:   "cachedir",
@@ -2598,6 +2737,7 @@ func (c *Command) NoCacheDir() *Command {
 //
 //   - See [Command.UnsetRmCacheDir], for unsetting the flag.
 //   - RmCacheDir maps to cli flags: --rm-cache-dir.
+//   - From option group: "Filesystem"
 func (c *Command) RmCacheDir() *Command {
 	c.addFlag(&Flag{
 		ID:   "rm_cachedir",
@@ -2618,6 +2758,7 @@ func (c *Command) UnsetRmCacheDir() *Command {
 //
 //   - See [Command.UnsetWriteThumbnail], for unsetting the flag.
 //   - WriteThumbnail maps to cli flags: --write-thumbnail.
+//   - From option group: "Thumbnail"
 func (c *Command) WriteThumbnail(value string) *Command {
 	c.addFlag(&Flag{
 		ID:   "writethumbnail",
@@ -2638,6 +2779,7 @@ func (c *Command) UnsetWriteThumbnail() *Command {
 //
 //   - See [Command.UnsetWriteThumbnail], for unsetting the flag.
 //   - NoWriteThumbnail maps to cli flags: --no-write-thumbnail.
+//   - From option group: "Thumbnail"
 func (c *Command) NoWriteThumbnail() *Command {
 	c.addFlag(&Flag{
 		ID:   "writethumbnail",
@@ -2651,6 +2793,7 @@ func (c *Command) NoWriteThumbnail() *Command {
 //
 //   - See [Command.UnsetWriteAllThumbnails], for unsetting the flag.
 //   - WriteAllThumbnails maps to cli flags: --write-all-thumbnails.
+//   - From option group: "Thumbnail"
 func (c *Command) WriteAllThumbnails() *Command {
 	c.addFlag(&Flag{
 		ID:   "writethumbnail",
@@ -2671,6 +2814,7 @@ func (c *Command) UnsetWriteAllThumbnails() *Command {
 //
 //   - See [Command.UnsetListThumbnails], for unsetting the flag.
 //   - ListThumbnails maps to cli flags: --list-thumbnails.
+//   - From option group: "Thumbnail"
 func (c *Command) ListThumbnails() *Command {
 	c.addFlag(&Flag{
 		ID:   "list_thumbnails",
@@ -2692,6 +2836,7 @@ func (c *Command) UnsetListThumbnails() *Command {
 //
 //   - See [Command.UnsetWriteLink], for unsetting the flag.
 //   - WriteLink maps to cli flags: --write-link.
+//   - From option group: "Internet Shortcut"
 func (c *Command) WriteLink() *Command {
 	c.addFlag(&Flag{
 		ID:   "writelink",
@@ -2713,6 +2858,7 @@ func (c *Command) UnsetWriteLink() *Command {
 //
 //   - See [Command.UnsetWriteUrlLink], for unsetting the flag.
 //   - WriteUrlLink maps to cli flags: --write-url-link.
+//   - From option group: "Internet Shortcut"
 func (c *Command) WriteUrlLink() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeurllink",
@@ -2733,6 +2879,7 @@ func (c *Command) UnsetWriteUrlLink() *Command {
 //
 //   - See [Command.UnsetWriteWeblocLink], for unsetting the flag.
 //   - WriteWeblocLink maps to cli flags: --write-webloc-link.
+//   - From option group: "Internet Shortcut"
 func (c *Command) WriteWeblocLink() *Command {
 	c.addFlag(&Flag{
 		ID:   "writewebloclink",
@@ -2753,6 +2900,7 @@ func (c *Command) UnsetWriteWeblocLink() *Command {
 //
 //   - See [Command.UnsetWriteDesktopLink], for unsetting the flag.
 //   - WriteDesktopLink maps to cli flags: --write-desktop-link.
+//   - From option group: "Internet Shortcut"
 func (c *Command) WriteDesktopLink() *Command {
 	c.addFlag(&Flag{
 		ID:   "writedesktoplink",
@@ -2773,6 +2921,7 @@ func (c *Command) UnsetWriteDesktopLink() *Command {
 //
 //   - See [Command.UnsetQuiet], for unsetting the flag.
 //   - Quiet maps to cli flags: -q/--quiet.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) Quiet() *Command {
 	c.addFlag(&Flag{
 		ID:   "quiet",
@@ -2793,6 +2942,7 @@ func (c *Command) UnsetQuiet() *Command {
 //
 //   - See [Command.UnsetQuiet], for unsetting the flag.
 //   - NoQuiet maps to cli flags: --no-quiet.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) NoQuiet() *Command {
 	c.addFlag(&Flag{
 		ID:   "quiet",
@@ -2806,6 +2956,7 @@ func (c *Command) NoQuiet() *Command {
 //
 //   - See [Command.UnsetWarnings], for unsetting the flag.
 //   - NoWarnings maps to cli flags: --no-warnings.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) NoWarnings() *Command {
 	c.addFlag(&Flag{
 		ID:   "no_warnings",
@@ -2819,6 +2970,7 @@ func (c *Command) NoWarnings() *Command {
 //
 //   - See [Command.UnsetSimulate], for unsetting the flag.
 //   - Simulate maps to cli flags: -s/--simulate.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) Simulate() *Command {
 	c.addFlag(&Flag{
 		ID:   "simulate",
@@ -2839,6 +2991,7 @@ func (c *Command) UnsetSimulate() *Command {
 //
 //   - See [Command.UnsetSimulate], for unsetting the flag.
 //   - NoSimulate maps to cli flags: --no-simulate.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) NoSimulate() *Command {
 	c.addFlag(&Flag{
 		ID:   "simulate",
@@ -2853,6 +3006,7 @@ func (c *Command) NoSimulate() *Command {
 //
 //   - See [Command.UnsetIgnoreNoFormatsError], for unsetting the flag.
 //   - IgnoreNoFormatsError maps to cli flags: --ignore-no-formats-error.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) IgnoreNoFormatsError() *Command {
 	c.addFlag(&Flag{
 		ID:   "ignore_no_formats_error",
@@ -2873,6 +3027,7 @@ func (c *Command) UnsetIgnoreNoFormatsError() *Command {
 //
 //   - See [Command.UnsetIgnoreNoFormatsError], for unsetting the flag.
 //   - NoIgnoreNoFormatsError maps to cli flags: --no-ignore-no-formats-error.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) NoIgnoreNoFormatsError() *Command {
 	c.addFlag(&Flag{
 		ID:   "ignore_no_formats_error",
@@ -2886,6 +3041,7 @@ func (c *Command) NoIgnoreNoFormatsError() *Command {
 //
 //   - See [Command.UnsetSkipDownload], for unsetting the flag.
 //   - SkipDownload maps to cli flags: --skip-download/--no-download.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) SkipDownload() *Command {
 	c.addFlag(&Flag{
 		ID:   "skip_download",
@@ -2910,6 +3066,7 @@ func (c *Command) UnsetSkipDownload() *Command {
 //
 //   - See [Command.UnsetPrint], for unsetting the flag.
 //   - Print maps to cli flags: -O/--print=[WHEN:]TEMPLATE.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) Print(template string) *Command {
 	c.addFlag(&Flag{
 		ID:   "forceprint",
@@ -2932,6 +3089,7 @@ func (c *Command) UnsetPrint() *Command {
 //
 //   - See [Command.UnsetPrintToFile], for unsetting the flag.
 //   - PrintToFile maps to cli flags: --print-to-file=[WHEN:]TEMPLATE FILE.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) PrintToFile(template, file string) *Command {
 	c.addFlag(&Flag{
 		ID:   "print_to_file",
@@ -2952,6 +3110,7 @@ func (c *Command) UnsetPrintToFile() *Command {
 //
 //   - See [Command.UnsetGetUrl], for unsetting the flag.
 //   - GetUrl maps to cli flags: -g/--get-url (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) GetUrl() *Command {
 	c.addFlag(&Flag{
 		ID:   "geturl",
@@ -2972,6 +3131,7 @@ func (c *Command) UnsetGetUrl() *Command {
 //
 //   - See [Command.UnsetGetTitle], for unsetting the flag.
 //   - GetTitle maps to cli flags: -e/--get-title (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) GetTitle() *Command {
 	c.addFlag(&Flag{
 		ID:   "gettitle",
@@ -2992,6 +3152,7 @@ func (c *Command) UnsetGetTitle() *Command {
 //
 //   - See [Command.UnsetGetId], for unsetting the flag.
 //   - GetId maps to cli flags: --get-id (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) GetId() *Command {
 	c.addFlag(&Flag{
 		ID:   "getid",
@@ -3012,6 +3173,7 @@ func (c *Command) UnsetGetId() *Command {
 //
 //   - See [Command.UnsetGetThumbnail], for unsetting the flag.
 //   - GetThumbnail maps to cli flags: --get-thumbnail (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) GetThumbnail() *Command {
 	c.addFlag(&Flag{
 		ID:   "getthumbnail",
@@ -3032,6 +3194,7 @@ func (c *Command) UnsetGetThumbnail() *Command {
 //
 //   - See [Command.UnsetGetDescription], for unsetting the flag.
 //   - GetDescription maps to cli flags: --get-description (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) GetDescription() *Command {
 	c.addFlag(&Flag{
 		ID:   "getdescription",
@@ -3052,6 +3215,7 @@ func (c *Command) UnsetGetDescription() *Command {
 //
 //   - See [Command.UnsetGetDuration], for unsetting the flag.
 //   - GetDuration maps to cli flags: --get-duration (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) GetDuration() *Command {
 	c.addFlag(&Flag{
 		ID:   "getduration",
@@ -3072,6 +3236,7 @@ func (c *Command) UnsetGetDuration() *Command {
 //
 //   - See [Command.UnsetGetFilename], for unsetting the flag.
 //   - GetFilename maps to cli flags: --get-filename (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) GetFilename() *Command {
 	c.addFlag(&Flag{
 		ID:   "getfilename",
@@ -3092,6 +3257,7 @@ func (c *Command) UnsetGetFilename() *Command {
 //
 //   - See [Command.UnsetGetFormat], for unsetting the flag.
 //   - GetFormat maps to cli flags: --get-format (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) GetFormat() *Command {
 	c.addFlag(&Flag{
 		ID:   "getformat",
@@ -3113,6 +3279,7 @@ func (c *Command) UnsetGetFormat() *Command {
 //
 //   - See [Command.UnsetDumpJson], for unsetting the flag.
 //   - DumpJson maps to cli flags: -j/--dump-json.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) DumpJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "dumpjson",
@@ -3135,6 +3302,7 @@ func (c *Command) UnsetDumpJson() *Command {
 //
 //   - See [Command.UnsetDumpSingleJson], for unsetting the flag.
 //   - DumpSingleJson maps to cli flags: -J/--dump-single-json.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) DumpSingleJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "dump_single_json",
@@ -3155,6 +3323,7 @@ func (c *Command) UnsetDumpSingleJson() *Command {
 //
 //   - See [Command.UnsetPrintJson], for unsetting the flag.
 //   - PrintJson maps to cli flags: --print-json (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) PrintJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "print_json",
@@ -3176,6 +3345,7 @@ func (c *Command) UnsetPrintJson() *Command {
 //
 //   - See [Command.UnsetForceWriteArchive], for unsetting the flag.
 //   - ForceWriteArchive maps to cli flags: --force-write-archive/--force-write-download-archive/--force-download-archive.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) ForceWriteArchive() *Command {
 	c.addFlag(&Flag{
 		ID:   "force_write_download_archive",
@@ -3196,6 +3366,7 @@ func (c *Command) UnsetForceWriteArchive() *Command {
 //
 //   - See [Command.UnsetNewline], for unsetting the flag.
 //   - Newline maps to cli flags: --newline.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) Newline() *Command {
 	c.addFlag(&Flag{
 		ID:   "progress_with_newline",
@@ -3216,6 +3387,7 @@ func (c *Command) UnsetNewline() *Command {
 //
 //   - See [Command.UnsetProgress], for unsetting the flag.
 //   - NoProgress maps to cli flags: --no-progress.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) NoProgress() *Command {
 	c.addFlag(&Flag{
 		ID:   "noprogress",
@@ -3229,6 +3401,7 @@ func (c *Command) NoProgress() *Command {
 //
 //   - See [Command.UnsetProgress], for unsetting the flag.
 //   - Progress maps to cli flags: --progress.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) Progress() *Command {
 	c.addFlag(&Flag{
 		ID:   "noprogress",
@@ -3249,6 +3422,7 @@ func (c *Command) UnsetProgress() *Command {
 //
 //   - See [Command.UnsetConsoleTitle], for unsetting the flag.
 //   - ConsoleTitle maps to cli flags: --console-title.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) ConsoleTitle() *Command {
 	c.addFlag(&Flag{
 		ID:   "consoletitle",
@@ -3274,6 +3448,7 @@ func (c *Command) UnsetConsoleTitle() *Command {
 //
 //   - See [Command.UnsetProgressTemplate], for unsetting the flag.
 //   - ProgressTemplate maps to cli flags: --progress-template=[TYPES:]TEMPLATE.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) ProgressTemplate(template string) *Command {
 	c.addFlag(&Flag{
 		ID:   "progress_template",
@@ -3294,6 +3469,7 @@ func (c *Command) UnsetProgressTemplate() *Command {
 //
 //   - See [Command.UnsetVerbose], for unsetting the flag.
 //   - Verbose maps to cli flags: -v/--verbose.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) Verbose() *Command {
 	c.addFlag(&Flag{
 		ID:   "verbose",
@@ -3314,6 +3490,7 @@ func (c *Command) UnsetVerbose() *Command {
 //
 //   - See [Command.UnsetDumpPages], for unsetting the flag.
 //   - DumpPages maps to cli flags: --dump-pages/--dump-intermediate-pages.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) DumpPages() *Command {
 	c.addFlag(&Flag{
 		ID:   "dump_intermediate_pages",
@@ -3335,6 +3512,7 @@ func (c *Command) UnsetDumpPages() *Command {
 //
 //   - See [Command.UnsetWritePages], for unsetting the flag.
 //   - WritePages maps to cli flags: --write-pages.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) WritePages() *Command {
 	c.addFlag(&Flag{
 		ID:   "write_pages",
@@ -3355,6 +3533,7 @@ func (c *Command) UnsetWritePages() *Command {
 //
 //   - See [Command.UnsetLoadPages], for unsetting the flag.
 //   - LoadPages maps to cli flags: --load-pages (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) LoadPages() *Command {
 	c.addFlag(&Flag{
 		ID:   "load_pages",
@@ -3375,6 +3554,7 @@ func (c *Command) UnsetLoadPages() *Command {
 //
 //   - See [Command.UnsetYoutubePrintSigCode], for unsetting the flag.
 //   - YoutubePrintSigCode maps to cli flags: --youtube-print-sig-code (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) YoutubePrintSigCode() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_print_sig_code",
@@ -3395,6 +3575,7 @@ func (c *Command) UnsetYoutubePrintSigCode() *Command {
 //
 //   - See [Command.UnsetPrintTraffic], for unsetting the flag.
 //   - PrintTraffic maps to cli flags: --print-traffic/--dump-headers.
+//   - From option group: "Verbosity Simulation"
 func (c *Command) PrintTraffic() *Command {
 	c.addFlag(&Flag{
 		ID:   "debug_printtraffic",
@@ -3415,6 +3596,7 @@ func (c *Command) UnsetPrintTraffic() *Command {
 //
 //   - See [Command.UnsetCallHome], for unsetting the flag.
 //   - CallHome maps to cli flags: -C/--call-home (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) CallHome() *Command {
 	c.addFlag(&Flag{
 		ID:   "call_home",
@@ -3435,6 +3617,7 @@ func (c *Command) UnsetCallHome() *Command {
 //
 //   - See [Command.UnsetCallHome], for unsetting the flag.
 //   - NoCallHome maps to cli flags: --no-call-home (hidden).
+//   - From option group: "Verbosity Simulation"
 func (c *Command) NoCallHome() *Command {
 	c.addFlag(&Flag{
 		ID:   "call_home",
@@ -3448,6 +3631,7 @@ func (c *Command) NoCallHome() *Command {
 //
 //   - See [Command.UnsetEncoding], for unsetting the flag.
 //   - Encoding maps to cli flags: --encoding=ENCODING.
+//   - From option group: "Workarounds"
 func (c *Command) Encoding(encoding string) *Command {
 	c.addFlag(&Flag{
 		ID:   "encoding",
@@ -3469,6 +3653,7 @@ func (c *Command) UnsetEncoding() *Command {
 //
 //   - See [Command.UnsetLegacyServerConnect], for unsetting the flag.
 //   - LegacyServerConnect maps to cli flags: --legacy-server-connect.
+//   - From option group: "Workarounds"
 func (c *Command) LegacyServerConnect() *Command {
 	c.addFlag(&Flag{
 		ID:   "legacy_server_connect",
@@ -3489,6 +3674,7 @@ func (c *Command) UnsetLegacyServerConnect() *Command {
 //
 //   - See [Command.UnsetCheckCertificates], for unsetting the flag.
 //   - NoCheckCertificates maps to cli flags: --no-check-certificates.
+//   - From option group: "Workarounds"
 func (c *Command) NoCheckCertificates() *Command {
 	c.addFlag(&Flag{
 		ID:   "no_check_certificate",
@@ -3503,6 +3689,7 @@ func (c *Command) NoCheckCertificates() *Command {
 //
 //   - See [Command.UnsetPreferInsecure], for unsetting the flag.
 //   - PreferInsecure maps to cli flags: --prefer-insecure/--prefer-unsecure.
+//   - From option group: "Workarounds"
 func (c *Command) PreferInsecure() *Command {
 	c.addFlag(&Flag{
 		ID:   "prefer_insecure",
@@ -3521,6 +3708,7 @@ func (c *Command) UnsetPreferInsecure() *Command {
 
 // - See [Command.UnsetUserAgent], for unsetting the flag.
 // - UserAgent maps to cli flags: --user-agent=UA (hidden).
+// - From option group: "Workarounds"
 func (c *Command) UserAgent(ua string) *Command {
 	c.addFlag(&Flag{
 		ID:   "user_agent",
@@ -3539,6 +3727,7 @@ func (c *Command) UnsetUserAgent() *Command {
 
 // - See [Command.UnsetReferer], for unsetting the flag.
 // - Referer maps to cli flags: --referer=URL (hidden).
+// - From option group: "Workarounds"
 func (c *Command) Referer(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "referer",
@@ -3560,6 +3749,7 @@ func (c *Command) UnsetReferer() *Command {
 //
 //   - See [Command.UnsetAddHeaders], for unsetting the flag.
 //   - AddHeaders maps to cli flags: --add-headers=FIELD:VALUE.
+//   - From option group: "Workarounds"
 func (c *Command) AddHeaders(fieldvalue string) *Command {
 	c.addFlag(&Flag{
 		ID:   "headers",
@@ -3581,6 +3771,7 @@ func (c *Command) UnsetAddHeaders() *Command {
 //
 //   - See [Command.UnsetBidiWorkaround], for unsetting the flag.
 //   - BidiWorkaround maps to cli flags: --bidi-workaround.
+//   - From option group: "Workarounds"
 func (c *Command) BidiWorkaround() *Command {
 	c.addFlag(&Flag{
 		ID:   "bidi_workaround",
@@ -3601,6 +3792,7 @@ func (c *Command) UnsetBidiWorkaround() *Command {
 //
 //   - See [Command.UnsetSleepRequests], for unsetting the flag.
 //   - SleepRequests maps to cli flags: --sleep-requests=SECONDS.
+//   - From option group: "Workarounds"
 func (c *Command) SleepRequests(seconds float64) *Command {
 	c.addFlag(&Flag{
 		ID:   "sleep_interval_requests",
@@ -3624,6 +3816,7 @@ func (c *Command) UnsetSleepRequests() *Command {
 //
 //   - See [Command.UnsetSleepInterval], for unsetting the flag.
 //   - SleepInterval maps to cli flags: --sleep-interval/--min-sleep-interval=SECONDS.
+//   - From option group: "Workarounds"
 func (c *Command) SleepInterval(seconds float64) *Command {
 	c.addFlag(&Flag{
 		ID:   "sleep_interval",
@@ -3647,6 +3840,7 @@ func (c *Command) UnsetSleepInterval() *Command {
 //
 //   - See [Command.UnsetMaxSleepInterval], for unsetting the flag.
 //   - MaxSleepInterval maps to cli flags: --max-sleep-interval=SECONDS.
+//   - From option group: "Workarounds"
 func (c *Command) MaxSleepInterval(seconds float64) *Command {
 	c.addFlag(&Flag{
 		ID:   "max_sleep_interval",
@@ -3669,6 +3863,7 @@ func (c *Command) UnsetMaxSleepInterval() *Command {
 //
 //   - See [Command.UnsetSleepSubtitles], for unsetting the flag.
 //   - SleepSubtitles maps to cli flags: --sleep-subtitles=SECONDS.
+//   - From option group: "Workarounds"
 func (c *Command) SleepSubtitles(seconds int) *Command {
 	c.addFlag(&Flag{
 		ID:   "sleep_interval_subtitles",
@@ -3691,6 +3886,7 @@ func (c *Command) UnsetSleepSubtitles() *Command {
 //
 //   - See [Command.UnsetFormat], for unsetting the flag.
 //   - Format maps to cli flags: -f/--format=FORMAT.
+//   - From option group: "Video Format"
 func (c *Command) Format(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "format",
@@ -3711,6 +3907,7 @@ func (c *Command) UnsetFormat() *Command {
 //
 //   - See [Command.UnsetFormatSort], for unsetting the flag.
 //   - FormatSort maps to cli flags: -S/--format-sort=SORTORDER.
+//   - From option group: "Video Format"
 func (c *Command) FormatSort(sortorder string) *Command {
 	c.addFlag(&Flag{
 		ID:   "format_sort",
@@ -3732,6 +3929,7 @@ func (c *Command) UnsetFormatSort() *Command {
 //
 //   - See [Command.UnsetFormatSortForce], for unsetting the flag.
 //   - FormatSortForce maps to cli flags: --format-sort-force/--S-force=FORMAT.
+//   - From option group: "Video Format"
 func (c *Command) FormatSortForce() *Command {
 	c.addFlag(&Flag{
 		ID:   "format_sort_force",
@@ -3752,6 +3950,7 @@ func (c *Command) UnsetFormatSortForce() *Command {
 //
 //   - See [Command.UnsetFormatSortForce], for unsetting the flag.
 //   - NoFormatSortForce maps to cli flags: --no-format-sort-force=FORMAT.
+//   - From option group: "Video Format"
 func (c *Command) NoFormatSortForce() *Command {
 	c.addFlag(&Flag{
 		ID:   "format_sort_force",
@@ -3765,6 +3964,7 @@ func (c *Command) NoFormatSortForce() *Command {
 //
 //   - See [Command.UnsetVideoMultistreams], for unsetting the flag.
 //   - VideoMultistreams maps to cli flags: --video-multistreams.
+//   - From option group: "Video Format"
 func (c *Command) VideoMultistreams() *Command {
 	c.addFlag(&Flag{
 		ID:   "allow_multiple_video_streams",
@@ -3785,6 +3985,7 @@ func (c *Command) UnsetVideoMultistreams() *Command {
 //
 //   - See [Command.UnsetVideoMultistreams], for unsetting the flag.
 //   - NoVideoMultistreams maps to cli flags: --no-video-multistreams.
+//   - From option group: "Video Format"
 func (c *Command) NoVideoMultistreams() *Command {
 	c.addFlag(&Flag{
 		ID:   "allow_multiple_video_streams",
@@ -3798,6 +3999,7 @@ func (c *Command) NoVideoMultistreams() *Command {
 //
 //   - See [Command.UnsetAudioMultistreams], for unsetting the flag.
 //   - AudioMultistreams maps to cli flags: --audio-multistreams.
+//   - From option group: "Video Format"
 func (c *Command) AudioMultistreams() *Command {
 	c.addFlag(&Flag{
 		ID:   "allow_multiple_audio_streams",
@@ -3818,6 +4020,7 @@ func (c *Command) UnsetAudioMultistreams() *Command {
 //
 //   - See [Command.UnsetAudioMultistreams], for unsetting the flag.
 //   - NoAudioMultistreams maps to cli flags: --no-audio-multistreams.
+//   - From option group: "Video Format"
 func (c *Command) NoAudioMultistreams() *Command {
 	c.addFlag(&Flag{
 		ID:   "allow_multiple_audio_streams",
@@ -3831,6 +4034,7 @@ func (c *Command) NoAudioMultistreams() *Command {
 //
 //   - See [Command.UnsetAllFormats], for unsetting the flag.
 //   - AllFormats maps to cli flags: --all-formats (hidden).
+//   - From option group: "Video Format"
 func (c *Command) AllFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "format",
@@ -3852,6 +4056,7 @@ func (c *Command) UnsetAllFormats() *Command {
 //
 //   - See [Command.UnsetPreferFreeFormats], for unsetting the flag.
 //   - PreferFreeFormats maps to cli flags: --prefer-free-formats.
+//   - From option group: "Video Format"
 func (c *Command) PreferFreeFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "prefer_free_formats",
@@ -3872,6 +4077,7 @@ func (c *Command) UnsetPreferFreeFormats() *Command {
 //
 //   - See [Command.UnsetPreferFreeFormats], for unsetting the flag.
 //   - NoPreferFreeFormats maps to cli flags: --no-prefer-free-formats.
+//   - From option group: "Video Format"
 func (c *Command) NoPreferFreeFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "prefer_free_formats",
@@ -3885,6 +4091,7 @@ func (c *Command) NoPreferFreeFormats() *Command {
 //
 //   - See [Command.UnsetCheckFormats], for unsetting the flag.
 //   - CheckFormats maps to cli flags: --check-formats.
+//   - From option group: "Video Format"
 func (c *Command) CheckFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "check_formats",
@@ -3905,6 +4112,7 @@ func (c *Command) UnsetCheckFormats() *Command {
 //
 //   - See [Command.UnsetCheckAllFormats], for unsetting the flag.
 //   - CheckAllFormats maps to cli flags: --check-all-formats.
+//   - From option group: "Video Format"
 func (c *Command) CheckAllFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "check_formats",
@@ -3925,6 +4133,7 @@ func (c *Command) UnsetCheckAllFormats() *Command {
 //
 //   - See [Command.UnsetCheckFormats], for unsetting the flag.
 //   - NoCheckFormats maps to cli flags: --no-check-formats.
+//   - From option group: "Video Format"
 func (c *Command) NoCheckFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "check_formats",
@@ -3938,6 +4147,7 @@ func (c *Command) NoCheckFormats() *Command {
 //
 //   - See [Command.UnsetListFormats], for unsetting the flag.
 //   - ListFormats maps to cli flags: -F/--list-formats.
+//   - From option group: "Video Format"
 func (c *Command) ListFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "listformats",
@@ -3958,6 +4168,7 @@ func (c *Command) UnsetListFormats() *Command {
 //
 //   - See [Command.UnsetListFormatsAsTable], for unsetting the flag.
 //   - ListFormatsAsTable maps to cli flags: --list-formats-as-table (hidden).
+//   - From option group: "Video Format"
 func (c *Command) ListFormatsAsTable() *Command {
 	c.addFlag(&Flag{
 		ID:   "listformats_table",
@@ -3978,6 +4189,7 @@ func (c *Command) UnsetListFormatsAsTable() *Command {
 //
 //   - See [Command.UnsetListFormatsOld], for unsetting the flag.
 //   - ListFormatsOld maps to cli flags: --list-formats-old/--no-list-formats-as-table (hidden).
+//   - From option group: "Video Format"
 func (c *Command) ListFormatsOld() *Command {
 	c.addFlag(&Flag{
 		ID:   "listformats_table",
@@ -4000,6 +4212,7 @@ func (c *Command) UnsetListFormatsOld() *Command {
 //
 //   - See [Command.UnsetMergeOutputFormat], for unsetting the flag.
 //   - MergeOutputFormat maps to cli flags: --merge-output-format=FORMAT.
+//   - From option group: "Video Format"
 func (c *Command) MergeOutputFormat(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "merge_output_format",
@@ -4020,6 +4233,7 @@ func (c *Command) UnsetMergeOutputFormat() *Command {
 //
 //   - See [Command.UnsetAllowUnplayableFormats], for unsetting the flag.
 //   - AllowUnplayableFormats maps to cli flags: --allow-unplayable-formats (hidden).
+//   - From option group: "Video Format"
 func (c *Command) AllowUnplayableFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "allow_unplayable_formats",
@@ -4040,6 +4254,7 @@ func (c *Command) UnsetAllowUnplayableFormats() *Command {
 //
 //   - See [Command.UnsetAllowUnplayableFormats], for unsetting the flag.
 //   - NoAllowUnplayableFormats maps to cli flags: --no-allow-unplayable-formats (hidden).
+//   - From option group: "Video Format"
 func (c *Command) NoAllowUnplayableFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "allow_unplayable_formats",
@@ -4053,6 +4268,7 @@ func (c *Command) NoAllowUnplayableFormats() *Command {
 //
 //   - See [Command.UnsetWriteSubs], for unsetting the flag.
 //   - WriteSubs maps to cli flags: --write-subs/--write-srt.
+//   - From option group: "Subtitle"
 func (c *Command) WriteSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "writesubtitles",
@@ -4073,6 +4289,7 @@ func (c *Command) UnsetWriteSubs() *Command {
 //
 //   - See [Command.UnsetWriteSubs], for unsetting the flag.
 //   - NoWriteSubs maps to cli flags: --no-write-subs/--no-write-srt.
+//   - From option group: "Subtitle"
 func (c *Command) NoWriteSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "writesubtitles",
@@ -4086,6 +4303,7 @@ func (c *Command) NoWriteSubs() *Command {
 //
 //   - See [Command.UnsetWriteAutoSubs], for unsetting the flag.
 //   - WriteAutoSubs maps to cli flags: --write-auto-subs/--write-automatic-subs.
+//   - From option group: "Subtitle"
 func (c *Command) WriteAutoSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeautomaticsub",
@@ -4106,6 +4324,7 @@ func (c *Command) UnsetWriteAutoSubs() *Command {
 //
 //   - See [Command.UnsetWriteAutoSubs], for unsetting the flag.
 //   - NoWriteAutoSubs maps to cli flags: --no-write-auto-subs/--no-write-automatic-subs.
+//   - From option group: "Subtitle"
 func (c *Command) NoWriteAutoSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeautomaticsub",
@@ -4119,6 +4338,7 @@ func (c *Command) NoWriteAutoSubs() *Command {
 //
 //   - See [Command.UnsetAllSubs], for unsetting the flag.
 //   - AllSubs maps to cli flags: --all-subs (hidden).
+//   - From option group: "Subtitle"
 func (c *Command) AllSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "allsubtitles",
@@ -4139,6 +4359,7 @@ func (c *Command) UnsetAllSubs() *Command {
 //
 //   - See [Command.UnsetListSubs], for unsetting the flag.
 //   - ListSubs maps to cli flags: --list-subs.
+//   - From option group: "Subtitle"
 func (c *Command) ListSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "listsubtitles",
@@ -4159,6 +4380,7 @@ func (c *Command) UnsetListSubs() *Command {
 //
 //   - See [Command.UnsetSubFormat], for unsetting the flag.
 //   - SubFormat maps to cli flags: --sub-format=FORMAT.
+//   - From option group: "Subtitle"
 func (c *Command) SubFormat(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "subtitlesformat",
@@ -4182,6 +4404,7 @@ func (c *Command) UnsetSubFormat() *Command {
 //
 //   - See [Command.UnsetSubLangs], for unsetting the flag.
 //   - SubLangs maps to cli flags: --sub-langs/--srt-langs=LANGS.
+//   - From option group: "Subtitle"
 func (c *Command) SubLangs(langs string) *Command {
 	c.addFlag(&Flag{
 		ID:   "subtitleslangs",
@@ -4202,6 +4425,7 @@ func (c *Command) UnsetSubLangs() *Command {
 //
 //   - See [Command.UnsetUsername], for unsetting the flag.
 //   - Username maps to cli flags: -u/--username=USERNAME.
+//   - From option group: "Authentication"
 func (c *Command) Username(username string) *Command {
 	c.addFlag(&Flag{
 		ID:   "username",
@@ -4222,6 +4446,7 @@ func (c *Command) UnsetUsername() *Command {
 //
 //   - See [Command.UnsetPassword], for unsetting the flag.
 //   - Password maps to cli flags: -p/--password=PASSWORD.
+//   - From option group: "Authentication"
 func (c *Command) Password(password string) *Command {
 	c.addFlag(&Flag{
 		ID:   "password",
@@ -4242,6 +4467,7 @@ func (c *Command) UnsetPassword() *Command {
 //
 //   - See [Command.UnsetTwofactor], for unsetting the flag.
 //   - Twofactor maps to cli flags: -2/--twofactor=TWOFACTOR.
+//   - From option group: "Authentication"
 func (c *Command) Twofactor(twofactor string) *Command {
 	c.addFlag(&Flag{
 		ID:   "twofactor",
@@ -4262,6 +4488,7 @@ func (c *Command) UnsetTwofactor() *Command {
 //
 //   - See [Command.UnsetNetrc], for unsetting the flag.
 //   - Netrc maps to cli flags: -n/--netrc.
+//   - From option group: "Authentication"
 func (c *Command) Netrc() *Command {
 	c.addFlag(&Flag{
 		ID:   "usenetrc",
@@ -4283,6 +4510,7 @@ func (c *Command) UnsetNetrc() *Command {
 //
 //   - See [Command.UnsetNetrcLocation], for unsetting the flag.
 //   - NetrcLocation maps to cli flags: --netrc-location=PATH.
+//   - From option group: "Authentication"
 func (c *Command) NetrcLocation(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "netrc_location",
@@ -4303,6 +4531,7 @@ func (c *Command) UnsetNetrcLocation() *Command {
 //
 //   - See [Command.UnsetNetrcCmd], for unsetting the flag.
 //   - NetrcCmd maps to cli flags: --netrc-cmd=NETRC_CMD.
+//   - From option group: "Authentication"
 func (c *Command) NetrcCmd(netrcCmd string) *Command {
 	c.addFlag(&Flag{
 		ID:   "netrc_cmd",
@@ -4323,6 +4552,7 @@ func (c *Command) UnsetNetrcCmd() *Command {
 //
 //   - See [Command.UnsetVideoPassword], for unsetting the flag.
 //   - VideoPassword maps to cli flags: --video-password=PASSWORD.
+//   - From option group: "Authentication"
 func (c *Command) VideoPassword(password string) *Command {
 	c.addFlag(&Flag{
 		ID:   "videopassword",
@@ -4344,6 +4574,7 @@ func (c *Command) UnsetVideoPassword() *Command {
 //
 //   - See [Command.UnsetApMso], for unsetting the flag.
 //   - ApMso maps to cli flags: --ap-mso=MSO.
+//   - From option group: "Authentication"
 func (c *Command) ApMso(mso string) *Command {
 	c.addFlag(&Flag{
 		ID:   "ap_mso",
@@ -4364,6 +4595,7 @@ func (c *Command) UnsetApMso() *Command {
 //
 //   - See [Command.UnsetApUsername], for unsetting the flag.
 //   - ApUsername maps to cli flags: --ap-username=USERNAME.
+//   - From option group: "Authentication"
 func (c *Command) ApUsername(username string) *Command {
 	c.addFlag(&Flag{
 		ID:   "ap_username",
@@ -4385,6 +4617,7 @@ func (c *Command) UnsetApUsername() *Command {
 //
 //   - See [Command.UnsetApPassword], for unsetting the flag.
 //   - ApPassword maps to cli flags: --ap-password=PASSWORD.
+//   - From option group: "Authentication"
 func (c *Command) ApPassword(password string) *Command {
 	c.addFlag(&Flag{
 		ID:   "ap_password",
@@ -4405,6 +4638,7 @@ func (c *Command) UnsetApPassword() *Command {
 //
 //   - See [Command.UnsetApListMso], for unsetting the flag.
 //   - ApListMso maps to cli flags: --ap-list-mso.
+//   - From option group: "Authentication"
 func (c *Command) ApListMso() *Command {
 	c.addFlag(&Flag{
 		ID:   "ap_list_mso",
@@ -4425,6 +4659,7 @@ func (c *Command) UnsetApListMso() *Command {
 //
 //   - See [Command.UnsetClientCertificate], for unsetting the flag.
 //   - ClientCertificate maps to cli flags: --client-certificate=CERTFILE.
+//   - From option group: "Authentication"
 func (c *Command) ClientCertificate(certfile string) *Command {
 	c.addFlag(&Flag{
 		ID:   "client_certificate",
@@ -4445,6 +4680,7 @@ func (c *Command) UnsetClientCertificate() *Command {
 //
 //   - See [Command.UnsetClientCertificateKey], for unsetting the flag.
 //   - ClientCertificateKey maps to cli flags: --client-certificate-key=KEYFILE.
+//   - From option group: "Authentication"
 func (c *Command) ClientCertificateKey(keyfile string) *Command {
 	c.addFlag(&Flag{
 		ID:   "client_certificate_key",
@@ -4466,6 +4702,7 @@ func (c *Command) UnsetClientCertificateKey() *Command {
 //
 //   - See [Command.UnsetClientCertificatePassword], for unsetting the flag.
 //   - ClientCertificatePassword maps to cli flags: --client-certificate-password=PASSWORD.
+//   - From option group: "Authentication"
 func (c *Command) ClientCertificatePassword(password string) *Command {
 	c.addFlag(&Flag{
 		ID:   "client_certificate_password",
@@ -4486,6 +4723,7 @@ func (c *Command) UnsetClientCertificatePassword() *Command {
 //
 //   - See [Command.UnsetExtractAudio], for unsetting the flag.
 //   - ExtractAudio maps to cli flags: -x/--extract-audio.
+//   - From option group: "Post-Processing"
 func (c *Command) ExtractAudio() *Command {
 	c.addFlag(&Flag{
 		ID:   "extractaudio",
@@ -4508,6 +4746,7 @@ func (c *Command) UnsetExtractAudio() *Command {
 //
 //   - See [Command.UnsetAudioFormat], for unsetting the flag.
 //   - AudioFormat maps to cli flags: --audio-format=FORMAT.
+//   - From option group: "Post-Processing"
 func (c *Command) AudioFormat(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "audioformat",
@@ -4530,6 +4769,7 @@ func (c *Command) UnsetAudioFormat() *Command {
 //
 //   - See [Command.UnsetAudioQuality], for unsetting the flag.
 //   - AudioQuality maps to cli flags: --audio-quality=QUALITY.
+//   - From option group: "Post-Processing"
 func (c *Command) AudioQuality(quality string) *Command {
 	c.addFlag(&Flag{
 		ID:   "audioquality",
@@ -4554,6 +4794,7 @@ func (c *Command) UnsetAudioQuality() *Command {
 //
 //   - See [Command.UnsetRemuxVideo], for unsetting the flag.
 //   - RemuxVideo maps to cli flags: --remux-video=FORMAT.
+//   - From option group: "Post-Processing"
 func (c *Command) RemuxVideo(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "remuxvideo",
@@ -4575,6 +4816,7 @@ func (c *Command) UnsetRemuxVideo() *Command {
 //
 //   - See [Command.UnsetRecodeVideo], for unsetting the flag.
 //   - RecodeVideo maps to cli flags: --recode-video=FORMAT.
+//   - From option group: "Post-Processing"
 func (c *Command) RecodeVideo(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "recodevideo",
@@ -4607,6 +4849,7 @@ func (c *Command) UnsetRecodeVideo() *Command {
 //
 //   - See [Command.UnsetPostprocessorArgs], for unsetting the flag.
 //   - PostprocessorArgs maps to cli flags: --postprocessor-args/--ppa=NAME:ARGS.
+//   - From option group: "Post-Processing"
 func (c *Command) PostprocessorArgs(nameargs string) *Command {
 	c.addFlag(&Flag{
 		ID:   "postprocessor_args",
@@ -4627,6 +4870,7 @@ func (c *Command) UnsetPostprocessorArgs() *Command {
 //
 //   - See [Command.UnsetKeepVideo], for unsetting the flag.
 //   - KeepVideo maps to cli flags: -k/--keep-video.
+//   - From option group: "Post-Processing"
 func (c *Command) KeepVideo() *Command {
 	c.addFlag(&Flag{
 		ID:   "keepvideo",
@@ -4647,6 +4891,7 @@ func (c *Command) UnsetKeepVideo() *Command {
 //
 //   - See [Command.UnsetKeepVideo], for unsetting the flag.
 //   - NoKeepVideo maps to cli flags: --no-keep-video.
+//   - From option group: "Post-Processing"
 func (c *Command) NoKeepVideo() *Command {
 	c.addFlag(&Flag{
 		ID:   "keepvideo",
@@ -4660,6 +4905,7 @@ func (c *Command) NoKeepVideo() *Command {
 //
 //   - See [Command.UnsetPostOverwrites], for unsetting the flag.
 //   - PostOverwrites maps to cli flags: --post-overwrites.
+//   - From option group: "Post-Processing"
 func (c *Command) PostOverwrites() *Command {
 	c.addFlag(&Flag{
 		ID:   "nopostoverwrites",
@@ -4680,6 +4926,7 @@ func (c *Command) UnsetPostOverwrites() *Command {
 //
 //   - See [Command.UnsetPostOverwrites], for unsetting the flag.
 //   - NoPostOverwrites maps to cli flags: --no-post-overwrites.
+//   - From option group: "Post-Processing"
 func (c *Command) NoPostOverwrites() *Command {
 	c.addFlag(&Flag{
 		ID:   "nopostoverwrites",
@@ -4693,6 +4940,7 @@ func (c *Command) NoPostOverwrites() *Command {
 //
 //   - See [Command.UnsetEmbedSubs], for unsetting the flag.
 //   - EmbedSubs maps to cli flags: --embed-subs.
+//   - From option group: "Post-Processing"
 func (c *Command) EmbedSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "embedsubtitles",
@@ -4713,6 +4961,7 @@ func (c *Command) UnsetEmbedSubs() *Command {
 //
 //   - See [Command.UnsetEmbedSubs], for unsetting the flag.
 //   - NoEmbedSubs maps to cli flags: --no-embed-subs.
+//   - From option group: "Post-Processing"
 func (c *Command) NoEmbedSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "embedsubtitles",
@@ -4726,6 +4975,7 @@ func (c *Command) NoEmbedSubs() *Command {
 //
 //   - See [Command.UnsetEmbedThumbnail], for unsetting the flag.
 //   - EmbedThumbnail maps to cli flags: --embed-thumbnail.
+//   - From option group: "Post-Processing"
 func (c *Command) EmbedThumbnail() *Command {
 	c.addFlag(&Flag{
 		ID:   "embedthumbnail",
@@ -4746,6 +4996,7 @@ func (c *Command) UnsetEmbedThumbnail() *Command {
 //
 //   - See [Command.UnsetEmbedThumbnail], for unsetting the flag.
 //   - NoEmbedThumbnail maps to cli flags: --no-embed-thumbnail.
+//   - From option group: "Post-Processing"
 func (c *Command) NoEmbedThumbnail() *Command {
 	c.addFlag(&Flag{
 		ID:   "embedthumbnail",
@@ -4760,6 +5011,7 @@ func (c *Command) NoEmbedThumbnail() *Command {
 //
 //   - See [Command.UnsetEmbedMetadata], for unsetting the flag.
 //   - EmbedMetadata maps to cli flags: --embed-metadata/--add-metadata.
+//   - From option group: "Post-Processing"
 func (c *Command) EmbedMetadata() *Command {
 	c.addFlag(&Flag{
 		ID:   "addmetadata",
@@ -4780,6 +5032,7 @@ func (c *Command) UnsetEmbedMetadata() *Command {
 //
 //   - See [Command.UnsetEmbedMetadata], for unsetting the flag.
 //   - NoEmbedMetadata maps to cli flags: --no-embed-metadata/--no-add-metadata.
+//   - From option group: "Post-Processing"
 func (c *Command) NoEmbedMetadata() *Command {
 	c.addFlag(&Flag{
 		ID:   "addmetadata",
@@ -4793,6 +5046,7 @@ func (c *Command) NoEmbedMetadata() *Command {
 //
 //   - See [Command.UnsetEmbedChapters], for unsetting the flag.
 //   - EmbedChapters maps to cli flags: --embed-chapters/--add-chapters.
+//   - From option group: "Post-Processing"
 func (c *Command) EmbedChapters() *Command {
 	c.addFlag(&Flag{
 		ID:   "addchapters",
@@ -4813,6 +5067,7 @@ func (c *Command) UnsetEmbedChapters() *Command {
 //
 //   - See [Command.UnsetEmbedChapters], for unsetting the flag.
 //   - NoEmbedChapters maps to cli flags: --no-embed-chapters/--no-add-chapters.
+//   - From option group: "Post-Processing"
 func (c *Command) NoEmbedChapters() *Command {
 	c.addFlag(&Flag{
 		ID:   "addchapters",
@@ -4826,6 +5081,7 @@ func (c *Command) NoEmbedChapters() *Command {
 //
 //   - See [Command.UnsetEmbedInfoJson], for unsetting the flag.
 //   - EmbedInfoJson maps to cli flags: --embed-info-json.
+//   - From option group: "Post-Processing"
 func (c *Command) EmbedInfoJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "embed_infojson",
@@ -4846,6 +5102,7 @@ func (c *Command) UnsetEmbedInfoJson() *Command {
 //
 //   - See [Command.UnsetEmbedInfoJson], for unsetting the flag.
 //   - NoEmbedInfoJson maps to cli flags: --no-embed-info-json.
+//   - From option group: "Post-Processing"
 func (c *Command) NoEmbedInfoJson() *Command {
 	c.addFlag(&Flag{
 		ID:   "embed_infojson",
@@ -4857,6 +5114,7 @@ func (c *Command) NoEmbedInfoJson() *Command {
 
 // - See [Command.UnsetMetadataFromTitle], for unsetting the flag.
 // - MetadataFromTitle maps to cli flags: --metadata-from-title=FORMAT (hidden).
+// - From option group: "Post-Processing"
 func (c *Command) MetadataFromTitle(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "metafromtitle",
@@ -4879,6 +5137,7 @@ func (c *Command) UnsetMetadataFromTitle() *Command {
 //
 //   - See [Command.UnsetParseMetadata], for unsetting the flag.
 //   - ParseMetadata maps to cli flags: --parse-metadata=[WHEN:]FROM:TO.
+//   - From option group: "Post-Processing"
 func (c *Command) ParseMetadata(fromto string) *Command {
 	c.addFlag(&Flag{
 		ID:   "parse_metadata",
@@ -4901,6 +5160,7 @@ func (c *Command) UnsetParseMetadata() *Command {
 //
 //   - See [Command.UnsetReplaceInMetadata], for unsetting the flag.
 //   - ReplaceInMetadata maps to cli flags: --replace-in-metadata=[WHEN:]FIELDS REGEX REPLACE.
+//   - From option group: "Post-Processing"
 func (c *Command) ReplaceInMetadata(fields, regex, replace string) *Command {
 	c.addFlag(&Flag{
 		ID:   "parse_metadata",
@@ -4921,6 +5181,7 @@ func (c *Command) UnsetReplaceInMetadata() *Command {
 //
 //   - See [Command.UnsetXattrs], for unsetting the flag.
 //   - Xattrs maps to cli flags: --xattrs/--xattr.
+//   - From option group: "Post-Processing"
 func (c *Command) Xattrs() *Command {
 	c.addFlag(&Flag{
 		ID:   "xattrs",
@@ -4954,6 +5215,7 @@ var (
 //
 //   - See [Command.UnsetConcatPlaylist], for unsetting the flag.
 //   - ConcatPlaylist maps to cli flags: --concat-playlist=POLICY.
+//   - From option group: "Post-Processing"
 func (c *Command) ConcatPlaylist(policy ConcatPlaylistOption) *Command {
 	c.addFlag(&Flag{
 		ID:   "concat_playlist",
@@ -4987,6 +5249,7 @@ var (
 //
 //   - See [Command.UnsetFixup], for unsetting the flag.
 //   - Fixup maps to cli flags: --fixup=POLICY.
+//   - From option group: "Post-Processing"
 func (c *Command) Fixup(policy FixupOption) *Command {
 	c.addFlag(&Flag{
 		ID:   "fixup",
@@ -5007,6 +5270,7 @@ func (c *Command) UnsetFixup() *Command {
 //
 //   - See [Command.UnsetPreferAvconv], for unsetting the flag.
 //   - PreferAvconv maps to cli flags: --prefer-avconv/--no-prefer-ffmpeg (hidden).
+//   - From option group: "Post-Processing"
 func (c *Command) PreferAvconv() *Command {
 	c.addFlag(&Flag{
 		ID:   "prefer_ffmpeg",
@@ -5027,6 +5291,7 @@ func (c *Command) UnsetPreferAvconv() *Command {
 //
 //   - See [Command.UnsetPreferFfmpeg], for unsetting the flag.
 //   - PreferFfmpeg maps to cli flags: --prefer-ffmpeg/--no-prefer-avconv (hidden).
+//   - From option group: "Post-Processing"
 func (c *Command) PreferFfmpeg() *Command {
 	c.addFlag(&Flag{
 		ID:   "prefer_ffmpeg",
@@ -5048,6 +5313,7 @@ func (c *Command) UnsetPreferFfmpeg() *Command {
 //
 //   - See [Command.UnsetFfmpegLocation], for unsetting the flag.
 //   - FfmpegLocation maps to cli flags: --ffmpeg-location/--avconv-location=PATH.
+//   - From option group: "Post-Processing"
 func (c *Command) FfmpegLocation(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "ffmpeg_location",
@@ -5073,6 +5339,7 @@ func (c *Command) UnsetFfmpegLocation() *Command {
 //
 //   - See [Command.UnsetExec], for unsetting the flag.
 //   - Exec maps to cli flags: --exec=[WHEN:]CMD.
+//   - From option group: "Post-Processing"
 func (c *Command) Exec(cmd string) *Command {
 	c.addFlag(&Flag{
 		ID:   "exec_cmd",
@@ -5093,6 +5360,7 @@ func (c *Command) UnsetExec() *Command {
 //
 //   - See [Command.UnsetExec], for unsetting the flag.
 //   - NoExec maps to cli flags: --no-exec.
+//   - From option group: "Post-Processing"
 func (c *Command) NoExec() *Command {
 	c.addFlag(&Flag{
 		ID:   "exec_cmd",
@@ -5104,6 +5372,7 @@ func (c *Command) NoExec() *Command {
 
 // - See [Command.UnsetExecBeforeDownload], for unsetting the flag.
 // - ExecBeforeDownload maps to cli flags: --exec-before-download=CMD (hidden).
+// - From option group: "Post-Processing"
 func (c *Command) ExecBeforeDownload(cmd string) *Command {
 	c.addFlag(&Flag{
 		ID:   "exec_before_dl_cmd",
@@ -5124,6 +5393,7 @@ func (c *Command) UnsetExecBeforeDownload() *Command {
 //
 //   - See [Command.UnsetExecBeforeDownload], for unsetting the flag.
 //   - NoExecBeforeDownload maps to cli flags: --no-exec-before-download (hidden).
+//   - From option group: "Post-Processing"
 func (c *Command) NoExecBeforeDownload() *Command {
 	c.addFlag(&Flag{
 		ID:   "exec_before_dl_cmd",
@@ -5138,6 +5408,7 @@ func (c *Command) NoExecBeforeDownload() *Command {
 //
 //   - See [Command.UnsetConvertSubs], for unsetting the flag.
 //   - ConvertSubs maps to cli flags: --convert-subs/--convert-sub/--convert-subtitles=FORMAT.
+//   - From option group: "Post-Processing"
 func (c *Command) ConvertSubs(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "convertsubtitles",
@@ -5159,6 +5430,7 @@ func (c *Command) UnsetConvertSubs() *Command {
 //
 //   - See [Command.UnsetConvertThumbnails], for unsetting the flag.
 //   - ConvertThumbnails maps to cli flags: --convert-thumbnails=FORMAT.
+//   - From option group: "Post-Processing"
 func (c *Command) ConvertThumbnails(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "convertthumbnails",
@@ -5181,6 +5453,7 @@ func (c *Command) UnsetConvertThumbnails() *Command {
 //
 //   - See [Command.UnsetSplitChapters], for unsetting the flag.
 //   - SplitChapters maps to cli flags: --split-chapters/--split-tracks.
+//   - From option group: "Post-Processing"
 func (c *Command) SplitChapters() *Command {
 	c.addFlag(&Flag{
 		ID:   "split_chapters",
@@ -5201,6 +5474,7 @@ func (c *Command) UnsetSplitChapters() *Command {
 //
 //   - See [Command.UnsetSplitChapters], for unsetting the flag.
 //   - NoSplitChapters maps to cli flags: --no-split-chapters/--no-split-tracks.
+//   - From option group: "Post-Processing"
 func (c *Command) NoSplitChapters() *Command {
 	c.addFlag(&Flag{
 		ID:   "split_chapters",
@@ -5215,6 +5489,7 @@ func (c *Command) NoSplitChapters() *Command {
 //
 //   - See [Command.UnsetRemoveChapters], for unsetting the flag.
 //   - RemoveChapters maps to cli flags: --remove-chapters=REGEX.
+//   - From option group: "Post-Processing"
 func (c *Command) RemoveChapters(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "remove_chapters",
@@ -5235,6 +5510,7 @@ func (c *Command) UnsetRemoveChapters() *Command {
 //
 //   - See [Command.UnsetRemoveChapters], for unsetting the flag.
 //   - NoRemoveChapters maps to cli flags: --no-remove-chapters.
+//   - From option group: "Post-Processing"
 func (c *Command) NoRemoveChapters() *Command {
 	c.addFlag(&Flag{
 		ID:   "remove_chapters",
@@ -5250,6 +5526,7 @@ func (c *Command) NoRemoveChapters() *Command {
 //
 //   - See [Command.UnsetForceKeyframesAtCuts], for unsetting the flag.
 //   - ForceKeyframesAtCuts maps to cli flags: --force-keyframes-at-cuts.
+//   - From option group: "Post-Processing"
 func (c *Command) ForceKeyframesAtCuts() *Command {
 	c.addFlag(&Flag{
 		ID:   "force_keyframes_at_cuts",
@@ -5270,6 +5547,7 @@ func (c *Command) UnsetForceKeyframesAtCuts() *Command {
 //
 //   - See [Command.UnsetForceKeyframesAtCuts], for unsetting the flag.
 //   - NoForceKeyframesAtCuts maps to cli flags: --no-force-keyframes-at-cuts.
+//   - From option group: "Post-Processing"
 func (c *Command) NoForceKeyframesAtCuts() *Command {
 	c.addFlag(&Flag{
 		ID:   "force_keyframes_at_cuts",
@@ -5292,6 +5570,7 @@ func (c *Command) NoForceKeyframesAtCuts() *Command {
 //
 //   - See [Command.UnsetUsePostprocessor], for unsetting the flag.
 //   - UsePostprocessor maps to cli flags: --use-postprocessor=NAME[:ARGS].
+//   - From option group: "Post-Processing"
 func (c *Command) UsePostprocessor(name string) *Command {
 	c.addFlag(&Flag{
 		ID:   "add_postprocessors",
@@ -5317,6 +5596,7 @@ func (c *Command) UnsetUsePostprocessor() *Command {
 //
 //   - See [Command.UnsetSponsorblockMark], for unsetting the flag.
 //   - SponsorblockMark maps to cli flags: --sponsorblock-mark=CATS.
+//   - From option group: "SponsorBlock"
 func (c *Command) SponsorblockMark(cats string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponsorblock_mark",
@@ -5341,6 +5621,7 @@ func (c *Command) UnsetSponsorblockMark() *Command {
 //
 //   - See [Command.UnsetSponsorblockRemove], for unsetting the flag.
 //   - SponsorblockRemove maps to cli flags: --sponsorblock-remove=CATS.
+//   - From option group: "SponsorBlock"
 func (c *Command) SponsorblockRemove(cats string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponsorblock_remove",
@@ -5364,6 +5645,7 @@ func (c *Command) UnsetSponsorblockRemove() *Command {
 //
 //   - See [Command.UnsetSponsorblockChapterTitle], for unsetting the flag.
 //   - SponsorblockChapterTitle maps to cli flags: --sponsorblock-chapter-title=TEMPLATE.
+//   - From option group: "SponsorBlock"
 func (c *Command) SponsorblockChapterTitle(template string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponsorblock_chapter_title",
@@ -5384,6 +5666,7 @@ func (c *Command) UnsetSponsorblockChapterTitle() *Command {
 //
 //   - See [Command.UnsetSponsorblock], for unsetting the flag.
 //   - NoSponsorblock maps to cli flags: --no-sponsorblock.
+//   - From option group: "SponsorBlock"
 func (c *Command) NoSponsorblock() *Command {
 	c.addFlag(&Flag{
 		ID:   "no_sponsorblock",
@@ -5397,6 +5680,7 @@ func (c *Command) NoSponsorblock() *Command {
 //
 //   - See [Command.UnsetSponsorblockApi], for unsetting the flag.
 //   - SponsorblockApi maps to cli flags: --sponsorblock-api=URL.
+//   - From option group: "SponsorBlock"
 func (c *Command) SponsorblockApi(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponsorblock_api",
@@ -5417,6 +5701,7 @@ func (c *Command) UnsetSponsorblockApi() *Command {
 //
 //   - See [Command.UnsetSponskrub], for unsetting the flag.
 //   - Sponskrub maps to cli flags: --sponskrub (hidden).
+//   - From option group: "SponsorBlock"
 func (c *Command) Sponskrub() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub",
@@ -5437,6 +5722,7 @@ func (c *Command) UnsetSponskrub() *Command {
 //
 //   - See [Command.UnsetSponskrub], for unsetting the flag.
 //   - NoSponskrub maps to cli flags: --no-sponskrub (hidden).
+//   - From option group: "SponsorBlock"
 func (c *Command) NoSponskrub() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub",
@@ -5450,6 +5736,7 @@ func (c *Command) NoSponskrub() *Command {
 //
 //   - See [Command.UnsetSponskrubCut], for unsetting the flag.
 //   - SponskrubCut maps to cli flags: --sponskrub-cut (hidden).
+//   - From option group: "SponsorBlock"
 func (c *Command) SponskrubCut() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
@@ -5470,6 +5757,7 @@ func (c *Command) UnsetSponskrubCut() *Command {
 //
 //   - See [Command.UnsetSponskrubCut], for unsetting the flag.
 //   - NoSponskrubCut maps to cli flags: --no-sponskrub-cut (hidden).
+//   - From option group: "SponsorBlock"
 func (c *Command) NoSponskrubCut() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
@@ -5483,6 +5771,7 @@ func (c *Command) NoSponskrubCut() *Command {
 //
 //   - See [Command.UnsetSponskrubForce], for unsetting the flag.
 //   - SponskrubForce maps to cli flags: --sponskrub-force (hidden).
+//   - From option group: "SponsorBlock"
 func (c *Command) SponskrubForce() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_force",
@@ -5503,6 +5792,7 @@ func (c *Command) UnsetSponskrubForce() *Command {
 //
 //   - See [Command.UnsetSponskrubForce], for unsetting the flag.
 //   - NoSponskrubForce maps to cli flags: --no-sponskrub-force (hidden).
+//   - From option group: "SponsorBlock"
 func (c *Command) NoSponskrubForce() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_force",
@@ -5514,6 +5804,7 @@ func (c *Command) NoSponskrubForce() *Command {
 
 // - See [Command.UnsetSponskrubLocation], for unsetting the flag.
 // - SponskrubLocation maps to cli flags: --sponskrub-location=PATH (hidden).
+// - From option group: "SponsorBlock"
 func (c *Command) SponskrubLocation(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_path",
@@ -5532,6 +5823,7 @@ func (c *Command) UnsetSponskrubLocation() *Command {
 
 // - See [Command.UnsetSponskrubArgs], for unsetting the flag.
 // - SponskrubArgs maps to cli flags: --sponskrub-args=ARGS (hidden).
+// - From option group: "SponsorBlock"
 func (c *Command) SponskrubArgs(args string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_args",
@@ -5552,6 +5844,7 @@ func (c *Command) UnsetSponskrubArgs() *Command {
 //
 //   - See [Command.UnsetExtractorRetries], for unsetting the flag.
 //   - ExtractorRetries maps to cli flags: --extractor-retries=RETRIES.
+//   - From option group: "Extractor"
 func (c *Command) ExtractorRetries(retries string) *Command {
 	c.addFlag(&Flag{
 		ID:   "extractor_retries",
@@ -5572,6 +5865,7 @@ func (c *Command) UnsetExtractorRetries() *Command {
 //
 //   - See [Command.UnsetAllowDynamicMpd], for unsetting the flag.
 //   - AllowDynamicMpd maps to cli flags: --allow-dynamic-mpd/--no-ignore-dynamic-mpd.
+//   - From option group: "Extractor"
 func (c *Command) AllowDynamicMpd() *Command {
 	c.addFlag(&Flag{
 		ID:   "dynamic_mpd",
@@ -5592,6 +5886,7 @@ func (c *Command) UnsetAllowDynamicMpd() *Command {
 //
 //   - See [Command.UnsetIgnoreDynamicMpd], for unsetting the flag.
 //   - IgnoreDynamicMpd maps to cli flags: --ignore-dynamic-mpd/--no-allow-dynamic-mpd.
+//   - From option group: "Extractor"
 func (c *Command) IgnoreDynamicMpd() *Command {
 	c.addFlag(&Flag{
 		ID:   "dynamic_mpd",
@@ -5612,6 +5907,7 @@ func (c *Command) UnsetIgnoreDynamicMpd() *Command {
 //
 //   - See [Command.UnsetHlsSplitDiscontinuity], for unsetting the flag.
 //   - HlsSplitDiscontinuity maps to cli flags: --hls-split-discontinuity.
+//   - From option group: "Extractor"
 func (c *Command) HlsSplitDiscontinuity() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_split_discontinuity",
@@ -5633,6 +5929,7 @@ func (c *Command) UnsetHlsSplitDiscontinuity() *Command {
 //
 //   - See [Command.UnsetHlsSplitDiscontinuity], for unsetting the flag.
 //   - NoHlsSplitDiscontinuity maps to cli flags: --no-hls-split-discontinuity.
+//   - From option group: "Extractor"
 func (c *Command) NoHlsSplitDiscontinuity() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_split_discontinuity",
@@ -5648,6 +5945,7 @@ func (c *Command) NoHlsSplitDiscontinuity() *Command {
 //
 //   - See [Command.UnsetExtractorArgs], for unsetting the flag.
 //   - ExtractorArgs maps to cli flags: --extractor-args=IE_KEY:ARGS.
+//   - From option group: "Extractor"
 func (c *Command) ExtractorArgs(ieKeyargs string) *Command {
 	c.addFlag(&Flag{
 		ID:   "extractor_args",
@@ -5668,6 +5966,7 @@ func (c *Command) UnsetExtractorArgs() *Command {
 //
 //   - See [Command.UnsetYoutubeIncludeDashManifest], for unsetting the flag.
 //   - YoutubeIncludeDashManifest maps to cli flags: --youtube-include-dash-manifest/--no-youtube-skip-dash-manifest (hidden).
+//   - From option group: "Extractor"
 func (c *Command) YoutubeIncludeDashManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_dash_manifest",
@@ -5688,6 +5987,7 @@ func (c *Command) UnsetYoutubeIncludeDashManifest() *Command {
 //
 //   - See [Command.UnsetYoutubeSkipDashManifest], for unsetting the flag.
 //   - YoutubeSkipDashManifest maps to cli flags: --youtube-skip-dash-manifest/--no-youtube-include-dash-manifest (hidden).
+//   - From option group: "Extractor"
 func (c *Command) YoutubeSkipDashManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_dash_manifest",
@@ -5708,6 +6008,7 @@ func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
 //
 //   - See [Command.UnsetYoutubeIncludeHlsManifest], for unsetting the flag.
 //   - YoutubeIncludeHlsManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest (hidden).
+//   - From option group: "Extractor"
 func (c *Command) YoutubeIncludeHlsManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",
@@ -5728,6 +6029,7 @@ func (c *Command) UnsetYoutubeIncludeHlsManifest() *Command {
 //
 //   - See [Command.UnsetYoutubeSkipHlsManifest], for unsetting the flag.
 //   - YoutubeSkipHlsManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest (hidden).
+//   - From option group: "Extractor"
 func (c *Command) YoutubeSkipHlsManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",

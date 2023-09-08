@@ -54,13 +54,14 @@ type CommandData struct {
 
 func (c *CommandData) Generate() {
 	for i := range c.OptionGroups {
-		c.OptionGroups[i].Generate()
+		c.OptionGroups[i].Generate(c)
 	}
 }
 
 type OptionGroup struct {
 	// Generated fields.
-	Name string `json:"-"`
+	Parent *CommandData `json:"-"` // Reference to parent.
+	Name   string       `json:"-"`
 
 	// Command data fields.
 	OriginalTitle string   `json:"title"`
@@ -68,11 +69,12 @@ type OptionGroup struct {
 	Options       []Option `json:"options"`
 }
 
-func (o *OptionGroup) Generate() {
+func (o *OptionGroup) Generate(parent *CommandData) {
+	o.Parent = parent
 	o.Name = optionGroupReplacer.Replace(o.OriginalTitle)
 
 	for i := range o.Options {
-		o.Options[i].Generate()
+		o.Options[i].Generate(o)
 	}
 
 	// Remove any ignored flags.
@@ -83,11 +85,12 @@ func (o *OptionGroup) Generate() {
 
 type Option struct {
 	// Generated fields.
-	Name            string   `json:"-"` // simplified name, based off the first found flags.
-	Flag            string   `json:"-"` // first flag (priority on long flags).
-	AllFlags        []string `json:"-"` // all flags, short + long.
-	MetaVarFuncArgs []string `json:"-"` // MetaVar converted to function arguments.
-	IsExecutable    bool     `json:"-"` // if the option means yt-dlp doesn't accept arguments, and some callback is done.
+	Parent          *OptionGroup `json:"-"` // Reference to parent.
+	Name            string       `json:"-"` // simplified name, based off the first found flags.
+	Flag            string       `json:"-"` // first flag (priority on long flags).
+	AllFlags        []string     `json:"-"` // all flags, short + long.
+	MetaVarFuncArgs []string     `json:"-"` // MetaVar converted to function arguments.
+	IsExecutable    bool         `json:"-"` // if the option means yt-dlp doesn't accept arguments, and some callback is done.
 
 	// Command data fields.
 	Action  string   `json:"action"`
@@ -109,7 +112,8 @@ var (
 	reRemoveAlias  = regexp.MustCompile(`\s+\(Alias:.*\)`)
 )
 
-func (o *Option) Generate() {
+func (o *Option) Generate(parent *OptionGroup) {
+	o.Parent = parent
 	o.AllFlags = append(o.Short, o.Long...) //nolint:gocritic
 
 	if len(o.Long) > 0 {
