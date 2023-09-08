@@ -107,7 +107,7 @@ func TestCommand_Version(t *testing.T) {
 }
 
 func TestCommand_Unset(t *testing.T) {
-	builder := New().NoProgress().Output("test.mp4")
+	builder := New().Progress().NoProgress().Output("test.mp4")
 
 	cmd := builder.buildCommand(context.TODO(), sampleFiles[0].url)
 
@@ -123,6 +123,11 @@ func TestCommand_Unset(t *testing.T) {
 	// Make sure --no-progress is not set.
 	if slices.Contains(cmd.Args, "--no-progress") {
 		t.Fatal("expected --no-progress flag to not be set")
+	}
+
+	// Progress and NoProgress should conflict, so arg length should be 4 (executable, output, output value, and url).
+	if len(cmd.Args) != 4 {
+		t.Fatalf("expected arg length to be 4, got %d: %#v", len(cmd.Args), cmd.Args)
 	}
 }
 
