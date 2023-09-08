@@ -50,21 +50,27 @@ func (c *Command) Clone() *Command {
 }
 
 // SetExecutable sets the executable path to yt-dlp for the command.
-func (c *Command) SetExecutable(path string) {
+func (c *Command) SetExecutable(path string) *Command {
 	c.mu.Lock()
 	c.executable = path
 	c.mu.Unlock()
+
+	return c
 }
 
 // SetWorkDir sets the working directory for the command. Defaults to current working
 // directory.
-func (c *Command) SetWorkDir(path string) {
+func (c *Command) SetWorkDir(path string) *Command {
 	c.mu.Lock()
 	c.directory = path
 	c.mu.Unlock()
+
+	return c
 }
 
-func (c *Command) SetEnvVar(key, value string) {
+// SetEnvVar sets an environment variable for the command. If value is empty, it will
+// be removed.
+func (c *Command) SetEnvVar(key, value string) *Command {
 	c.mu.Lock()
 	if value == "" {
 		delete(c.env, key)
@@ -72,6 +78,8 @@ func (c *Command) SetEnvVar(key, value string) {
 		c.env[key] = value
 	}
 	c.mu.Unlock()
+
+	return c
 }
 
 // addFlag adds a flag to the command. If a flag with the same ID already
