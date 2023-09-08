@@ -17,6 +17,7 @@ jobs:
     uses: lrstanley/.github/.github/workflows/lang-go-lint.yml@master
     permissions:
       checks: write
+      contents: read
       pull-requests: read
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
