@@ -54,8 +54,9 @@
 ## :link: Table of Contents
 
   - [Features](#sparkles-features)
+    - [Help Documentation Example](#sparkles-help-documentation-example)
   - [Usage](#gear-usage)
-  - [Examples](#clap--examples)
+  - [Examples](#clap-examples)
     - [Simple](#simple)
   - [Support &amp; Assistance](#raising_hand_man-support--assistance)
   - [Contributing](#handshake-contributing)
