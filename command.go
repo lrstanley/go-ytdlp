@@ -7,7 +7,6 @@ package ytdlp
 import (
 	"context"
 	"os/exec"
-	"slices"
 	"sync"
 )
 
@@ -134,6 +133,14 @@ func (c *Command) removeFlagByID(id string) {
 	}
 }
 
+func (c *Command) hasJSONFlag() bool {
+	pf := c.getFlagsByID("forceprint")
+
+	return (len(pf) > 0 && len(pf[0].Args) > 0 && pf[0].Args[0] == "%()j") ||
+		c.getFlagsByID("print_json") != nil ||
+		c.getFlagsByID("dumpjson") != nil
+}
+
 // buildCommand builds the command to be executed. args passed here are any additional
 // arguments to be passed to yt-dlp (commonly URLs or similar).
 func (c *Command) buildCommand(ctx context.Context, args ...string) *exec.Cmd {
@@ -190,7 +197,7 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 	stdout := &timestampWriter{pipe: "stdout"}
 	stderr := &timestampWriter{pipe: "stderr"}
 
-	if slices.Contains(cmd.Args, "--print-json") {
+	if c.hasJSONFlag() {
 		stdout.checkJSON = true
 		stderr.checkJSON = true
 	}

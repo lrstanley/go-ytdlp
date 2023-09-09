@@ -69,7 +69,7 @@ func TestCommand_Simple(t *testing.T) {
 	}
 
 	if !hasJSON {
-		t.Fatal("expected at least one log line to be valid JSON due to --print-json")
+		t.Fatal("expected at least one log line to be valid JSON due to one of --print-json/--dump-json/--print '%()j'")
 	}
 
 	for _, f := range sampleFiles {
