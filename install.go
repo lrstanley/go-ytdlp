@@ -90,7 +90,8 @@ type InstallOptions struct {
 // Install will check to see if yt-dlp is installed (if it's the right version),
 // and if not, will download it from GitHub. If yt-dlp is already installed, it will
 // check to see if the version matches (unless disabled with [AllowVersionMismatch]),
-// and if not, will download the latest version.
+// and if not, will download the same version that go-ytdlp (the version you are using)
+// was built with.
 //
 // Note: If [Install] is not called, go-ytdlp WILL NOT DOWNLOAD yt-dlp. Only use
 // this function if you want to ensure yt-dlp is installed, and are ok with it being
