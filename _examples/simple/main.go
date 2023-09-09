@@ -18,7 +18,7 @@ func main() {
 	_ = ytdlp.MustInstall(context.TODO(), nil)
 
 	dl := ytdlp.New().
-		PrintJson().
+		PrintJSON().
 		NoProgress().
 		FormatSort("res,ext:mp4:m4a").
 		RecodeVideo("mp4").

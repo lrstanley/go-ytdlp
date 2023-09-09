@@ -190,22 +190,22 @@ func TestBuilder_Network_NonExecutable(t *testing.T) {
 		_ = builder.UnsetSourceAddress()
 		validateFlagRemoved(t, builder, "source_address", "--source-address")
 	})
-	t.Run("ForceIpv4", func(t *testing.T) {
-		builder := New().ForceIpv4()
+	t.Run("ForceIPv4", func(t *testing.T) {
+		builder := New().ForceIPv4()
 		validateFlagAdded(t, builder, "source_address", "--force-ipv4", 0)
-		_ = builder.UnsetForceIpv4()
+		_ = builder.UnsetForceIPv4()
 		validateFlagRemoved(t, builder, "source_address", "--force-ipv4")
 	})
-	t.Run("ForceIpv6", func(t *testing.T) {
-		builder := New().ForceIpv6()
+	t.Run("ForceIPv6", func(t *testing.T) {
+		builder := New().ForceIPv6()
 		validateFlagAdded(t, builder, "source_address", "--force-ipv6", 0)
-		_ = builder.UnsetForceIpv6()
+		_ = builder.UnsetForceIPv6()
 		validateFlagRemoved(t, builder, "source_address", "--force-ipv6")
 	})
-	t.Run("EnableFileUrls", func(t *testing.T) {
-		builder := New().EnableFileUrls()
+	t.Run("EnableFileURLs", func(t *testing.T) {
+		builder := New().EnableFileURLs()
 		validateFlagAdded(t, builder, "enable_file_urls", "--enable-file-urls", 0)
-		_ = builder.UnsetEnableFileUrls()
+		_ = builder.UnsetEnableFileURLs()
 		validateFlagRemoved(t, builder, "enable_file_urls", "--enable-file-urls")
 	})
 }
@@ -218,16 +218,16 @@ func TestBuilder_GeoRestriction_NonExecutable(t *testing.T) {
 		_ = builder.UnsetGeoVerificationProxy()
 		validateFlagRemoved(t, builder, "geo_verification_proxy", "--geo-verification-proxy")
 	})
-	t.Run("CnVerificationProxy", func(t *testing.T) {
-		builder := New().CnVerificationProxy("test")
+	t.Run("CNVerificationProxy", func(t *testing.T) {
+		builder := New().CNVerificationProxy("test")
 		validateFlagAdded(t, builder, "cn_verification_proxy", "--cn-verification-proxy", 1)
-		_ = builder.UnsetCnVerificationProxy()
+		_ = builder.UnsetCNVerificationProxy()
 		validateFlagRemoved(t, builder, "cn_verification_proxy", "--cn-verification-proxy")
 	})
-	t.Run("Xff", func(t *testing.T) {
-		builder := New().Xff("test")
+	t.Run("XFF", func(t *testing.T) {
+		builder := New().XFF("test")
 		validateFlagAdded(t, builder, "geo_bypass", "--xff", 1)
-		_ = builder.UnsetXff()
+		_ = builder.UnsetXFF()
 		validateFlagRemoved(t, builder, "geo_bypass", "--xff")
 	})
 	t.Run("GeoBypass", func(t *testing.T) {
@@ -248,10 +248,10 @@ func TestBuilder_GeoRestriction_NonExecutable(t *testing.T) {
 		_ = builder.UnsetGeoBypassCountry()
 		validateFlagRemoved(t, builder, "geo_bypass", "--geo-bypass-country")
 	})
-	t.Run("GeoBypassIpBlock", func(t *testing.T) {
-		builder := New().GeoBypassIpBlock("test")
+	t.Run("GeoBypassIPBlock", func(t *testing.T) {
+		builder := New().GeoBypassIPBlock("test")
 		validateFlagAdded(t, builder, "geo_bypass", "--geo-bypass-ip-block", 1)
-		_ = builder.UnsetGeoBypassIpBlock()
+		_ = builder.UnsetGeoBypassIPBlock()
 		validateFlagRemoved(t, builder, "geo_bypass", "--geo-bypass-ip-block")
 	})
 }
@@ -306,16 +306,16 @@ func TestBuilder_VideoSelection_NonExecutable(t *testing.T) {
 		_ = builder.UnsetDate()
 		validateFlagRemoved(t, builder, "date", "--date")
 	})
-	t.Run("Datebefore", func(t *testing.T) {
-		builder := New().Datebefore("test")
+	t.Run("DateBefore", func(t *testing.T) {
+		builder := New().DateBefore("test")
 		validateFlagAdded(t, builder, "datebefore", "--datebefore", 1)
-		_ = builder.UnsetDatebefore()
+		_ = builder.UnsetDateBefore()
 		validateFlagRemoved(t, builder, "datebefore", "--datebefore")
 	})
-	t.Run("Dateafter", func(t *testing.T) {
-		builder := New().Dateafter("test")
+	t.Run("DateAfter", func(t *testing.T) {
+		builder := New().DateAfter("test")
 		validateFlagAdded(t, builder, "dateafter", "--dateafter", 1)
-		_ = builder.UnsetDateafter()
+		_ = builder.UnsetDateAfter()
 		validateFlagRemoved(t, builder, "dateafter", "--dateafter")
 	})
 	t.Run("MinViews", func(t *testing.T) {
@@ -520,10 +520,10 @@ func TestBuilder_Download_NonExecutable(t *testing.T) {
 		_ = builder.UnsetResizeBuffer()
 		validateFlagRemoved(t, builder, "noresizebuffer", "--no-resize-buffer")
 	})
-	t.Run("HttpChunkSize", func(t *testing.T) {
-		builder := New().HttpChunkSize("test")
+	t.Run("HTTPChunkSize", func(t *testing.T) {
+		builder := New().HTTPChunkSize("test")
 		validateFlagAdded(t, builder, "http_chunk_size", "--http-chunk-size", 1)
-		_ = builder.UnsetHttpChunkSize()
+		_ = builder.UnsetHTTPChunkSize()
 		validateFlagRemoved(t, builder, "http_chunk_size", "--http-chunk-size")
 	})
 	t.Run("PlaylistReverse", func(t *testing.T) {
@@ -562,28 +562,28 @@ func TestBuilder_Download_NonExecutable(t *testing.T) {
 		_ = builder.UnsetXattrSetFilesize()
 		validateFlagRemoved(t, builder, "xattr_set_filesize", "--xattr-set-filesize")
 	})
-	t.Run("HlsPreferNative", func(t *testing.T) {
-		builder := New().HlsPreferNative()
+	t.Run("HLSPreferNative", func(t *testing.T) {
+		builder := New().HLSPreferNative()
 		validateFlagAdded(t, builder, "hls_prefer_native", "--hls-prefer-native", 0)
-		_ = builder.UnsetHlsPreferNative()
+		_ = builder.UnsetHLSPreferNative()
 		validateFlagRemoved(t, builder, "hls_prefer_native", "--hls-prefer-native")
 	})
-	t.Run("HlsPreferFfmpeg", func(t *testing.T) {
-		builder := New().HlsPreferFfmpeg()
+	t.Run("HLSPreferFFmpeg", func(t *testing.T) {
+		builder := New().HLSPreferFFmpeg()
 		validateFlagAdded(t, builder, "hls_prefer_native", "--hls-prefer-ffmpeg", 0)
-		_ = builder.UnsetHlsPreferFfmpeg()
+		_ = builder.UnsetHLSPreferFFmpeg()
 		validateFlagRemoved(t, builder, "hls_prefer_native", "--hls-prefer-ffmpeg")
 	})
-	t.Run("HlsUseMpegts", func(t *testing.T) {
-		builder := New().HlsUseMpegts()
+	t.Run("HLSUseMPEGTS", func(t *testing.T) {
+		builder := New().HLSUseMPEGTS()
 		validateFlagAdded(t, builder, "hls_use_mpegts", "--hls-use-mpegts", 0)
-		_ = builder.UnsetHlsUseMpegts()
+		_ = builder.UnsetHLSUseMPEGTS()
 		validateFlagRemoved(t, builder, "hls_use_mpegts", "--hls-use-mpegts")
 	})
-	t.Run("NoHlsUseMpegts", func(t *testing.T) {
-		builder := New().NoHlsUseMpegts()
+	t.Run("NoHLSUseMPEGTS", func(t *testing.T) {
+		builder := New().NoHLSUseMPEGTS()
 		validateFlagAdded(t, builder, "hls_use_mpegts", "--no-hls-use-mpegts", 0)
-		_ = builder.UnsetHlsUseMpegts()
+		_ = builder.UnsetHLSUseMPEGTS()
 		validateFlagRemoved(t, builder, "hls_use_mpegts", "--no-hls-use-mpegts")
 	})
 	t.Run("DownloadSections", func(t *testing.T) {
@@ -620,10 +620,10 @@ func TestBuilder_Filesystem_NonExecutable(t *testing.T) {
 		_ = builder.UnsetBatchFile()
 		validateFlagRemoved(t, builder, "batchfile", "--no-batch-file")
 	})
-	t.Run("Id", func(t *testing.T) {
-		builder := New().Id()
+	t.Run("ID", func(t *testing.T) {
+		builder := New().ID()
 		validateFlagAdded(t, builder, "useid", "--id", 0)
-		_ = builder.UnsetId()
+		_ = builder.UnsetID()
 		validateFlagRemoved(t, builder, "useid", "--id")
 	})
 	t.Run("Paths", func(t *testing.T) {
@@ -644,16 +644,16 @@ func TestBuilder_Filesystem_NonExecutable(t *testing.T) {
 		_ = builder.UnsetOutputNaPlaceholder()
 		validateFlagRemoved(t, builder, "outtmpl_na_placeholder", "--output-na-placeholder")
 	})
-	t.Run("AutonumberSize", func(t *testing.T) {
-		builder := New().AutonumberSize(1)
+	t.Run("AutoNumberSize", func(t *testing.T) {
+		builder := New().AutoNumberSize(1)
 		validateFlagAdded(t, builder, "autonumber_size", "--autonumber-size", 1)
-		_ = builder.UnsetAutonumberSize()
+		_ = builder.UnsetAutoNumberSize()
 		validateFlagRemoved(t, builder, "autonumber_size", "--autonumber-size")
 	})
-	t.Run("AutonumberStart", func(t *testing.T) {
-		builder := New().AutonumberStart(1)
+	t.Run("AutoNumberStart", func(t *testing.T) {
+		builder := New().AutoNumberStart(1)
 		validateFlagAdded(t, builder, "autonumber_start", "--autonumber-start", 1)
-		_ = builder.UnsetAutonumberStart()
+		_ = builder.UnsetAutoNumberStart()
 		validateFlagRemoved(t, builder, "autonumber_start", "--autonumber-start")
 	})
 	t.Run("RestrictFilenames", func(t *testing.T) {
@@ -752,16 +752,16 @@ func TestBuilder_Filesystem_NonExecutable(t *testing.T) {
 		_ = builder.UnsetWriteDescription()
 		validateFlagRemoved(t, builder, "writedescription", "--no-write-description")
 	})
-	t.Run("WriteInfoJson", func(t *testing.T) {
-		builder := New().WriteInfoJson()
+	t.Run("WriteInfoJSON", func(t *testing.T) {
+		builder := New().WriteInfoJSON()
 		validateFlagAdded(t, builder, "writeinfojson", "--write-info-json", 0)
-		_ = builder.UnsetWriteInfoJson()
+		_ = builder.UnsetWriteInfoJSON()
 		validateFlagRemoved(t, builder, "writeinfojson", "--write-info-json")
 	})
-	t.Run("NoWriteInfoJson", func(t *testing.T) {
-		builder := New().NoWriteInfoJson()
+	t.Run("NoWriteInfoJSON", func(t *testing.T) {
+		builder := New().NoWriteInfoJSON()
 		validateFlagAdded(t, builder, "writeinfojson", "--no-write-info-json", 0)
-		_ = builder.UnsetWriteInfoJson()
+		_ = builder.UnsetWriteInfoJSON()
 		validateFlagRemoved(t, builder, "writeinfojson", "--no-write-info-json")
 	})
 	t.Run("WriteAnnotations", func(t *testing.T) {
@@ -788,16 +788,16 @@ func TestBuilder_Filesystem_NonExecutable(t *testing.T) {
 		_ = builder.UnsetWritePlaylistMetafiles()
 		validateFlagRemoved(t, builder, "allow_playlist_files", "--no-write-playlist-metafiles")
 	})
-	t.Run("CleanInfoJson", func(t *testing.T) {
-		builder := New().CleanInfoJson()
+	t.Run("CleanInfoJSON", func(t *testing.T) {
+		builder := New().CleanInfoJSON()
 		validateFlagAdded(t, builder, "clean_infojson", "--clean-info-json", 0)
-		_ = builder.UnsetCleanInfoJson()
+		_ = builder.UnsetCleanInfoJSON()
 		validateFlagRemoved(t, builder, "clean_infojson", "--clean-info-json")
 	})
-	t.Run("NoCleanInfoJson", func(t *testing.T) {
-		builder := New().NoCleanInfoJson()
+	t.Run("NoCleanInfoJSON", func(t *testing.T) {
+		builder := New().NoCleanInfoJSON()
 		validateFlagAdded(t, builder, "clean_infojson", "--no-clean-info-json", 0)
-		_ = builder.UnsetCleanInfoJson()
+		_ = builder.UnsetCleanInfoJSON()
 		validateFlagRemoved(t, builder, "clean_infojson", "--no-clean-info-json")
 	})
 	t.Run("WriteComments", func(t *testing.T) {
@@ -812,10 +812,10 @@ func TestBuilder_Filesystem_NonExecutable(t *testing.T) {
 		_ = builder.UnsetWriteComments()
 		validateFlagRemoved(t, builder, "getcomments", "--no-write-comments")
 	})
-	t.Run("LoadInfoJson", func(t *testing.T) {
-		builder := New().LoadInfoJson("test")
+	t.Run("LoadInfoJSON", func(t *testing.T) {
+		builder := New().LoadInfoJSON("test")
 		validateFlagAdded(t, builder, "load_info_filename", "--load-info-json", 1)
-		_ = builder.UnsetLoadInfoJson()
+		_ = builder.UnsetLoadInfoJSON()
 		validateFlagRemoved(t, builder, "load_info_filename", "--load-info-json")
 	})
 	t.Run("Cookies", func(t *testing.T) {
@@ -898,10 +898,10 @@ func TestBuilder_InternetShortcut_NonExecutable(t *testing.T) {
 		_ = builder.UnsetWriteLink()
 		validateFlagRemoved(t, builder, "writelink", "--write-link")
 	})
-	t.Run("WriteUrlLink", func(t *testing.T) {
-		builder := New().WriteUrlLink()
+	t.Run("WriteURLLink", func(t *testing.T) {
+		builder := New().WriteURLLink()
 		validateFlagAdded(t, builder, "writeurllink", "--write-url-link", 0)
-		_ = builder.UnsetWriteUrlLink()
+		_ = builder.UnsetWriteURLLink()
 		validateFlagRemoved(t, builder, "writeurllink", "--write-url-link")
 	})
 	t.Run("WriteWeblocLink", func(t *testing.T) {
@@ -980,10 +980,10 @@ func TestBuilder_VerbositySimulation_NonExecutable(t *testing.T) {
 		_ = builder.UnsetPrintToFile()
 		validateFlagRemoved(t, builder, "print_to_file", "--print-to-file")
 	})
-	t.Run("GetUrl", func(t *testing.T) {
-		builder := New().GetUrl()
+	t.Run("GetURL", func(t *testing.T) {
+		builder := New().GetURL()
 		validateFlagAdded(t, builder, "geturl", "--get-url", 0)
-		_ = builder.UnsetGetUrl()
+		_ = builder.UnsetGetURL()
 		validateFlagRemoved(t, builder, "geturl", "--get-url")
 	})
 	t.Run("GetTitle", func(t *testing.T) {
@@ -992,10 +992,10 @@ func TestBuilder_VerbositySimulation_NonExecutable(t *testing.T) {
 		_ = builder.UnsetGetTitle()
 		validateFlagRemoved(t, builder, "gettitle", "--get-title")
 	})
-	t.Run("GetId", func(t *testing.T) {
-		builder := New().GetId()
+	t.Run("GetID", func(t *testing.T) {
+		builder := New().GetID()
 		validateFlagAdded(t, builder, "getid", "--get-id", 0)
-		_ = builder.UnsetGetId()
+		_ = builder.UnsetGetID()
 		validateFlagRemoved(t, builder, "getid", "--get-id")
 	})
 	t.Run("GetThumbnail", func(t *testing.T) {
@@ -1028,22 +1028,22 @@ func TestBuilder_VerbositySimulation_NonExecutable(t *testing.T) {
 		_ = builder.UnsetGetFormat()
 		validateFlagRemoved(t, builder, "getformat", "--get-format")
 	})
-	t.Run("DumpJson", func(t *testing.T) {
-		builder := New().DumpJson()
+	t.Run("DumpJSON", func(t *testing.T) {
+		builder := New().DumpJSON()
 		validateFlagAdded(t, builder, "dumpjson", "--dump-json", 0)
-		_ = builder.UnsetDumpJson()
+		_ = builder.UnsetDumpJSON()
 		validateFlagRemoved(t, builder, "dumpjson", "--dump-json")
 	})
-	t.Run("DumpSingleJson", func(t *testing.T) {
-		builder := New().DumpSingleJson()
+	t.Run("DumpSingleJSON", func(t *testing.T) {
+		builder := New().DumpSingleJSON()
 		validateFlagAdded(t, builder, "dump_single_json", "--dump-single-json", 0)
-		_ = builder.UnsetDumpSingleJson()
+		_ = builder.UnsetDumpSingleJSON()
 		validateFlagRemoved(t, builder, "dump_single_json", "--dump-single-json")
 	})
-	t.Run("PrintJson", func(t *testing.T) {
-		builder := New().PrintJson()
+	t.Run("PrintJSON", func(t *testing.T) {
+		builder := New().PrintJSON()
 		validateFlagAdded(t, builder, "print_json", "--print-json", 0)
-		_ = builder.UnsetPrintJson()
+		_ = builder.UnsetPrintJSON()
 		validateFlagRemoved(t, builder, "print_json", "--print-json")
 	})
 	t.Run("ForceWriteArchive", func(t *testing.T) {
@@ -1374,10 +1374,10 @@ func TestBuilder_Authentication_NonExecutable(t *testing.T) {
 		_ = builder.UnsetPassword()
 		validateFlagRemoved(t, builder, "password", "--password")
 	})
-	t.Run("Twofactor", func(t *testing.T) {
-		builder := New().Twofactor("test")
+	t.Run("TwoFactor", func(t *testing.T) {
+		builder := New().TwoFactor("test")
 		validateFlagAdded(t, builder, "twofactor", "--twofactor", 1)
-		_ = builder.UnsetTwofactor()
+		_ = builder.UnsetTwoFactor()
 		validateFlagRemoved(t, builder, "twofactor", "--twofactor")
 	})
 	t.Run("Netrc", func(t *testing.T) {
@@ -1404,10 +1404,10 @@ func TestBuilder_Authentication_NonExecutable(t *testing.T) {
 		_ = builder.UnsetVideoPassword()
 		validateFlagRemoved(t, builder, "videopassword", "--video-password")
 	})
-	t.Run("ApMso", func(t *testing.T) {
-		builder := New().ApMso("test")
+	t.Run("ApMSO", func(t *testing.T) {
+		builder := New().ApMSO("test")
 		validateFlagAdded(t, builder, "ap_mso", "--ap-mso", 1)
-		_ = builder.UnsetApMso()
+		_ = builder.UnsetApMSO()
 		validateFlagRemoved(t, builder, "ap_mso", "--ap-mso")
 	})
 	t.Run("ApUsername", func(t *testing.T) {
@@ -1422,10 +1422,10 @@ func TestBuilder_Authentication_NonExecutable(t *testing.T) {
 		_ = builder.UnsetApPassword()
 		validateFlagRemoved(t, builder, "ap_password", "--ap-password")
 	})
-	t.Run("ApListMso", func(t *testing.T) {
-		builder := New().ApListMso()
+	t.Run("ApListMSO", func(t *testing.T) {
+		builder := New().ApListMSO()
 		validateFlagAdded(t, builder, "ap_list_mso", "--ap-list-mso", 0)
-		_ = builder.UnsetApListMso()
+		_ = builder.UnsetApListMSO()
 		validateFlagRemoved(t, builder, "ap_list_mso", "--ap-list-mso")
 	})
 	t.Run("ClientCertificate", func(t *testing.T) {
@@ -1480,10 +1480,10 @@ func TestBuilder_PostProcessing_NonExecutable(t *testing.T) {
 		_ = builder.UnsetRecodeVideo()
 		validateFlagRemoved(t, builder, "recodevideo", "--recode-video")
 	})
-	t.Run("PostprocessorArgs", func(t *testing.T) {
-		builder := New().PostprocessorArgs("test")
+	t.Run("PostProcessorArgs", func(t *testing.T) {
+		builder := New().PostProcessorArgs("test")
 		validateFlagAdded(t, builder, "postprocessor_args", "--postprocessor-args", 1)
-		_ = builder.UnsetPostprocessorArgs()
+		_ = builder.UnsetPostProcessorArgs()
 		validateFlagRemoved(t, builder, "postprocessor_args", "--postprocessor-args")
 	})
 	t.Run("KeepVideo", func(t *testing.T) {
@@ -1558,16 +1558,16 @@ func TestBuilder_PostProcessing_NonExecutable(t *testing.T) {
 		_ = builder.UnsetEmbedChapters()
 		validateFlagRemoved(t, builder, "addchapters", "--no-embed-chapters")
 	})
-	t.Run("EmbedInfoJson", func(t *testing.T) {
-		builder := New().EmbedInfoJson()
+	t.Run("EmbedInfoJSON", func(t *testing.T) {
+		builder := New().EmbedInfoJSON()
 		validateFlagAdded(t, builder, "embed_infojson", "--embed-info-json", 0)
-		_ = builder.UnsetEmbedInfoJson()
+		_ = builder.UnsetEmbedInfoJSON()
 		validateFlagRemoved(t, builder, "embed_infojson", "--embed-info-json")
 	})
-	t.Run("NoEmbedInfoJson", func(t *testing.T) {
-		builder := New().NoEmbedInfoJson()
+	t.Run("NoEmbedInfoJSON", func(t *testing.T) {
+		builder := New().NoEmbedInfoJSON()
 		validateFlagAdded(t, builder, "embed_infojson", "--no-embed-info-json", 0)
-		_ = builder.UnsetEmbedInfoJson()
+		_ = builder.UnsetEmbedInfoJSON()
 		validateFlagRemoved(t, builder, "embed_infojson", "--no-embed-info-json")
 	})
 	t.Run("MetadataFromTitle", func(t *testing.T) {
@@ -1606,22 +1606,22 @@ func TestBuilder_PostProcessing_NonExecutable(t *testing.T) {
 		_ = builder.UnsetFixup()
 		validateFlagRemoved(t, builder, "fixup", "--fixup")
 	})
-	t.Run("PreferAvconv", func(t *testing.T) {
-		builder := New().PreferAvconv()
+	t.Run("PreferAVConv", func(t *testing.T) {
+		builder := New().PreferAVConv()
 		validateFlagAdded(t, builder, "prefer_ffmpeg", "--prefer-avconv", 0)
-		_ = builder.UnsetPreferAvconv()
+		_ = builder.UnsetPreferAVConv()
 		validateFlagRemoved(t, builder, "prefer_ffmpeg", "--prefer-avconv")
 	})
-	t.Run("PreferFfmpeg", func(t *testing.T) {
-		builder := New().PreferFfmpeg()
+	t.Run("PreferFFmpeg", func(t *testing.T) {
+		builder := New().PreferFFmpeg()
 		validateFlagAdded(t, builder, "prefer_ffmpeg", "--prefer-ffmpeg", 0)
-		_ = builder.UnsetPreferFfmpeg()
+		_ = builder.UnsetPreferFFmpeg()
 		validateFlagRemoved(t, builder, "prefer_ffmpeg", "--prefer-ffmpeg")
 	})
-	t.Run("FfmpegLocation", func(t *testing.T) {
-		builder := New().FfmpegLocation("test")
+	t.Run("FFmpegLocation", func(t *testing.T) {
+		builder := New().FFmpegLocation("test")
 		validateFlagAdded(t, builder, "ffmpeg_location", "--ffmpeg-location", 1)
-		_ = builder.UnsetFfmpegLocation()
+		_ = builder.UnsetFFmpegLocation()
 		validateFlagRemoved(t, builder, "ffmpeg_location", "--ffmpeg-location")
 	})
 	t.Run("Exec", func(t *testing.T) {
@@ -1696,10 +1696,10 @@ func TestBuilder_PostProcessing_NonExecutable(t *testing.T) {
 		_ = builder.UnsetForceKeyframesAtCuts()
 		validateFlagRemoved(t, builder, "force_keyframes_at_cuts", "--no-force-keyframes-at-cuts")
 	})
-	t.Run("UsePostprocessor", func(t *testing.T) {
-		builder := New().UsePostprocessor("test")
+	t.Run("UsePostProcessor", func(t *testing.T) {
+		builder := New().UsePostProcessor("test")
 		validateFlagAdded(t, builder, "add_postprocessors", "--use-postprocessor", 1)
-		_ = builder.UnsetUsePostprocessor()
+		_ = builder.UnsetUsePostProcessor()
 		validateFlagRemoved(t, builder, "add_postprocessors", "--use-postprocessor")
 	})
 }
@@ -1730,10 +1730,10 @@ func TestBuilder_SponsorBlock_NonExecutable(t *testing.T) {
 		_ = builder.UnsetSponsorblock()
 		validateFlagRemoved(t, builder, "no_sponsorblock", "--no-sponsorblock")
 	})
-	t.Run("SponsorblockApi", func(t *testing.T) {
-		builder := New().SponsorblockApi("test")
+	t.Run("SponsorblockAPI", func(t *testing.T) {
+		builder := New().SponsorblockAPI("test")
 		validateFlagAdded(t, builder, "sponsorblock_api", "--sponsorblock-api", 1)
-		_ = builder.UnsetSponsorblockApi()
+		_ = builder.UnsetSponsorblockAPI()
 		validateFlagRemoved(t, builder, "sponsorblock_api", "--sponsorblock-api")
 	})
 	t.Run("Sponskrub", func(t *testing.T) {
@@ -1794,28 +1794,28 @@ func TestBuilder_Extractor_NonExecutable(t *testing.T) {
 		_ = builder.UnsetExtractorRetries()
 		validateFlagRemoved(t, builder, "extractor_retries", "--extractor-retries")
 	})
-	t.Run("AllowDynamicMpd", func(t *testing.T) {
-		builder := New().AllowDynamicMpd()
+	t.Run("AllowDynamicMPD", func(t *testing.T) {
+		builder := New().AllowDynamicMPD()
 		validateFlagAdded(t, builder, "dynamic_mpd", "--allow-dynamic-mpd", 0)
-		_ = builder.UnsetAllowDynamicMpd()
+		_ = builder.UnsetAllowDynamicMPD()
 		validateFlagRemoved(t, builder, "dynamic_mpd", "--allow-dynamic-mpd")
 	})
-	t.Run("IgnoreDynamicMpd", func(t *testing.T) {
-		builder := New().IgnoreDynamicMpd()
+	t.Run("IgnoreDynamicMPD", func(t *testing.T) {
+		builder := New().IgnoreDynamicMPD()
 		validateFlagAdded(t, builder, "dynamic_mpd", "--ignore-dynamic-mpd", 0)
-		_ = builder.UnsetIgnoreDynamicMpd()
+		_ = builder.UnsetIgnoreDynamicMPD()
 		validateFlagRemoved(t, builder, "dynamic_mpd", "--ignore-dynamic-mpd")
 	})
-	t.Run("HlsSplitDiscontinuity", func(t *testing.T) {
-		builder := New().HlsSplitDiscontinuity()
+	t.Run("HLSSplitDiscontinuity", func(t *testing.T) {
+		builder := New().HLSSplitDiscontinuity()
 		validateFlagAdded(t, builder, "hls_split_discontinuity", "--hls-split-discontinuity", 0)
-		_ = builder.UnsetHlsSplitDiscontinuity()
+		_ = builder.UnsetHLSSplitDiscontinuity()
 		validateFlagRemoved(t, builder, "hls_split_discontinuity", "--hls-split-discontinuity")
 	})
-	t.Run("NoHlsSplitDiscontinuity", func(t *testing.T) {
-		builder := New().NoHlsSplitDiscontinuity()
+	t.Run("NoHLSSplitDiscontinuity", func(t *testing.T) {
+		builder := New().NoHLSSplitDiscontinuity()
 		validateFlagAdded(t, builder, "hls_split_discontinuity", "--no-hls-split-discontinuity", 0)
-		_ = builder.UnsetHlsSplitDiscontinuity()
+		_ = builder.UnsetHLSSplitDiscontinuity()
 		validateFlagRemoved(t, builder, "hls_split_discontinuity", "--no-hls-split-discontinuity")
 	})
 	t.Run("ExtractorArgs", func(t *testing.T) {
@@ -1836,16 +1836,16 @@ func TestBuilder_Extractor_NonExecutable(t *testing.T) {
 		_ = builder.UnsetYoutubeSkipDashManifest()
 		validateFlagRemoved(t, builder, "youtube_include_dash_manifest", "--youtube-skip-dash-manifest")
 	})
-	t.Run("YoutubeIncludeHlsManifest", func(t *testing.T) {
-		builder := New().YoutubeIncludeHlsManifest()
+	t.Run("YoutubeIncludeHLSManifest", func(t *testing.T) {
+		builder := New().YoutubeIncludeHLSManifest()
 		validateFlagAdded(t, builder, "youtube_include_hls_manifest", "--youtube-include-hls-manifest", 0)
-		_ = builder.UnsetYoutubeIncludeHlsManifest()
+		_ = builder.UnsetYoutubeIncludeHLSManifest()
 		validateFlagRemoved(t, builder, "youtube_include_hls_manifest", "--youtube-include-hls-manifest")
 	})
-	t.Run("YoutubeSkipHlsManifest", func(t *testing.T) {
-		builder := New().YoutubeSkipHlsManifest()
+	t.Run("YoutubeSkipHLSManifest", func(t *testing.T) {
+		builder := New().YoutubeSkipHLSManifest()
 		validateFlagAdded(t, builder, "youtube_include_hls_manifest", "--youtube-skip-hls-manifest", 0)
-		_ = builder.UnsetYoutubeSkipHlsManifest()
+		_ = builder.UnsetYoutubeSkipHLSManifest()
 		validateFlagRemoved(t, builder, "youtube_include_hls_manifest", "--youtube-skip-hls-manifest")
 	})
 }

@@ -594,10 +594,10 @@ func (c *Command) UnsetSourceAddress() *Command {
 
 // Make all connections via IPv4
 //
-//   - See [Command.UnsetForceIpv4], for unsetting the flag.
-//   - ForceIpv4 maps to cli flags: -4/--force-ipv4.
+//   - See [Command.UnsetForceIPv4], for unsetting the flag.
+//   - ForceIPv4 maps to cli flags: -4/--force-ipv4.
 //   - From option group: "Network"
-func (c *Command) ForceIpv4() *Command {
+func (c *Command) ForceIPv4() *Command {
 	c.addFlag(&Flag{
 		ID:   "source_address",
 		Flag: "--force-ipv4",
@@ -606,19 +606,19 @@ func (c *Command) ForceIpv4() *Command {
 	return c
 }
 
-// UnsetForceIpv4 unsets any flags that were previously set by one of:
-//   - [Command.ForceIpv4]
-func (c *Command) UnsetForceIpv4() *Command {
+// UnsetForceIPv4 unsets any flags that were previously set by one of:
+//   - [Command.ForceIPv4]
+func (c *Command) UnsetForceIPv4() *Command {
 	c.removeFlagByID("source_address")
 	return c
 }
 
 // Make all connections via IPv6
 //
-//   - See [Command.UnsetForceIpv6], for unsetting the flag.
-//   - ForceIpv6 maps to cli flags: -6/--force-ipv6.
+//   - See [Command.UnsetForceIPv6], for unsetting the flag.
+//   - ForceIPv6 maps to cli flags: -6/--force-ipv6.
 //   - From option group: "Network"
-func (c *Command) ForceIpv6() *Command {
+func (c *Command) ForceIPv6() *Command {
 	c.addFlag(&Flag{
 		ID:   "source_address",
 		Flag: "--force-ipv6",
@@ -627,19 +627,19 @@ func (c *Command) ForceIpv6() *Command {
 	return c
 }
 
-// UnsetForceIpv6 unsets any flags that were previously set by one of:
-//   - [Command.ForceIpv6]
-func (c *Command) UnsetForceIpv6() *Command {
+// UnsetForceIPv6 unsets any flags that were previously set by one of:
+//   - [Command.ForceIPv6]
+func (c *Command) UnsetForceIPv6() *Command {
 	c.removeFlagByID("source_address")
 	return c
 }
 
 // Enable file:// URLs. This is disabled by default for security reasons.
 //
-//   - See [Command.UnsetEnableFileUrls], for unsetting the flag.
-//   - EnableFileUrls maps to cli flags: --enable-file-urls.
+//   - See [Command.UnsetEnableFileURLs], for unsetting the flag.
+//   - EnableFileURLs maps to cli flags: --enable-file-urls.
 //   - From option group: "Network"
-func (c *Command) EnableFileUrls() *Command {
+func (c *Command) EnableFileURLs() *Command {
 	c.addFlag(&Flag{
 		ID:   "enable_file_urls",
 		Flag: "--enable-file-urls",
@@ -648,9 +648,9 @@ func (c *Command) EnableFileUrls() *Command {
 	return c
 }
 
-// UnsetEnableFileUrls unsets any flags that were previously set by one of:
-//   - [Command.EnableFileUrls]
-func (c *Command) UnsetEnableFileUrls() *Command {
+// UnsetEnableFileURLs unsets any flags that were previously set by one of:
+//   - [Command.EnableFileURLs]
+func (c *Command) UnsetEnableFileURLs() *Command {
 	c.removeFlagByID("enable_file_urls")
 	return c
 }
@@ -678,14 +678,14 @@ func (c *Command) UnsetGeoVerificationProxy() *Command {
 	return c
 }
 
-// CnVerificationProxy sets the "cn-verification-proxy" flag (no description specified).
+// CNVerificationProxy sets the "cn-verification-proxy" flag (no description specified).
 //
-//   - See [Command.UnsetCnVerificationProxy], for unsetting the flag.
-//   - CnVerificationProxy maps to cli flags: --cn-verification-proxy=URL (hidden).
+//   - See [Command.UnsetCNVerificationProxy], for unsetting the flag.
+//   - CNVerificationProxy maps to cli flags: --cn-verification-proxy=URL (hidden).
 //   - From option group: "Geo-restriction"
 //
 // Deprecated: Use [Command.GeoVerificationProxy] instead.
-func (c *Command) CnVerificationProxy(url string) *Command {
+func (c *Command) CNVerificationProxy(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "cn_verification_proxy",
 		Flag: "--cn-verification-proxy",
@@ -694,11 +694,11 @@ func (c *Command) CnVerificationProxy(url string) *Command {
 	return c
 }
 
-// UnsetCnVerificationProxy unsets any flags that were previously set by one of:
-//   - [Command.CnVerificationProxy]
+// UnsetCNVerificationProxy unsets any flags that were previously set by one of:
+//   - [Command.CNVerificationProxy]
 //
 // Deprecated: Use [Command.GeoVerificationProxy] instead.
-func (c *Command) UnsetCnVerificationProxy() *Command {
+func (c *Command) UnsetCNVerificationProxy() *Command {
 	c.removeFlagByID("cn_verification_proxy")
 	return c
 }
@@ -707,10 +707,10 @@ func (c *Command) UnsetCnVerificationProxy() *Command {
 // One of "default" (only when known to be useful), "never", an IP block in CIDR
 // notation, or a two-letter ISO 3166-2 country code
 //
-//   - See [Command.UnsetXff], for unsetting the flag.
-//   - Xff maps to cli flags: --xff=VALUE.
+//   - See [Command.UnsetXFF], for unsetting the flag.
+//   - XFF maps to cli flags: --xff=VALUE.
 //   - From option group: "Geo-restriction"
-func (c *Command) Xff(value string) *Command {
+func (c *Command) XFF(value string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
 		Flag: "--xff",
@@ -719,9 +719,9 @@ func (c *Command) Xff(value string) *Command {
 	return c
 }
 
-// UnsetXff unsets any flags that were previously set by one of:
-//   - [Command.Xff]
-func (c *Command) UnsetXff() *Command {
+// UnsetXFF unsets any flags that were previously set by one of:
+//   - [Command.XFF]
+func (c *Command) UnsetXFF() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
 }
@@ -783,12 +783,12 @@ func (c *Command) UnsetGeoBypassCountry() *Command {
 	return c
 }
 
-// GeoBypassIpBlock sets the "geo-bypass-ip-block" flag (no description specified).
+// GeoBypassIPBlock sets the "geo-bypass-ip-block" flag (no description specified).
 //
-//   - See [Command.UnsetGeoBypassIpBlock], for unsetting the flag.
-//   - GeoBypassIpBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK (hidden).
+//   - See [Command.UnsetGeoBypassIPBlock], for unsetting the flag.
+//   - GeoBypassIPBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK (hidden).
 //   - From option group: "Geo-restriction"
-func (c *Command) GeoBypassIpBlock(ipBlock string) *Command {
+func (c *Command) GeoBypassIPBlock(ipBlock string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
 		Flag: "--geo-bypass-ip-block",
@@ -797,9 +797,9 @@ func (c *Command) GeoBypassIpBlock(ipBlock string) *Command {
 	return c
 }
 
-// UnsetGeoBypassIpBlock unsets any flags that were previously set by one of:
-//   - [Command.GeoBypassIpBlock]
-func (c *Command) UnsetGeoBypassIpBlock() *Command {
+// UnsetGeoBypassIPBlock unsets any flags that were previously set by one of:
+//   - [Command.GeoBypassIPBlock]
+func (c *Command) UnsetGeoBypassIPBlock() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
 }
@@ -985,10 +985,10 @@ func (c *Command) UnsetDate() *Command {
 // Download only videos uploaded on or before this date. The date formats accepted
 // is the same as --date
 //
-//   - See [Command.UnsetDatebefore], for unsetting the flag.
-//   - Datebefore maps to cli flags: --datebefore=DATE.
+//   - See [Command.UnsetDateBefore], for unsetting the flag.
+//   - DateBefore maps to cli flags: --datebefore=DATE.
 //   - From option group: "Video Selection"
-func (c *Command) Datebefore(date string) *Command {
+func (c *Command) DateBefore(date string) *Command {
 	c.addFlag(&Flag{
 		ID:   "datebefore",
 		Flag: "--datebefore",
@@ -997,9 +997,9 @@ func (c *Command) Datebefore(date string) *Command {
 	return c
 }
 
-// UnsetDatebefore unsets any flags that were previously set by one of:
-//   - [Command.Datebefore]
-func (c *Command) UnsetDatebefore() *Command {
+// UnsetDateBefore unsets any flags that were previously set by one of:
+//   - [Command.DateBefore]
+func (c *Command) UnsetDateBefore() *Command {
 	c.removeFlagByID("datebefore")
 	return c
 }
@@ -1007,10 +1007,10 @@ func (c *Command) UnsetDatebefore() *Command {
 // Download only videos uploaded on or after this date. The date formats accepted
 // is the same as --date
 //
-//   - See [Command.UnsetDateafter], for unsetting the flag.
-//   - Dateafter maps to cli flags: --dateafter=DATE.
+//   - See [Command.UnsetDateAfter], for unsetting the flag.
+//   - DateAfter maps to cli flags: --dateafter=DATE.
 //   - From option group: "Video Selection"
-func (c *Command) Dateafter(date string) *Command {
+func (c *Command) DateAfter(date string) *Command {
 	c.addFlag(&Flag{
 		ID:   "dateafter",
 		Flag: "--dateafter",
@@ -1019,9 +1019,9 @@ func (c *Command) Dateafter(date string) *Command {
 	return c
 }
 
-// UnsetDateafter unsets any flags that were previously set by one of:
-//   - [Command.Dateafter]
-func (c *Command) UnsetDateafter() *Command {
+// UnsetDateAfter unsets any flags that were previously set by one of:
+//   - [Command.DateAfter]
+func (c *Command) UnsetDateAfter() *Command {
 	c.removeFlagByID("dateafter")
 	return c
 }
@@ -1714,10 +1714,10 @@ func (c *Command) NoResizeBuffer() *Command {
 // is disabled). May be useful for bypassing bandwidth throttling imposed by a
 // webserver (experimental)
 //
-//   - See [Command.UnsetHttpChunkSize], for unsetting the flag.
-//   - HttpChunkSize maps to cli flags: --http-chunk-size=SIZE.
+//   - See [Command.UnsetHTTPChunkSize], for unsetting the flag.
+//   - HTTPChunkSize maps to cli flags: --http-chunk-size=SIZE.
 //   - From option group: "Download"
-func (c *Command) HttpChunkSize(size string) *Command {
+func (c *Command) HTTPChunkSize(size string) *Command {
 	c.addFlag(&Flag{
 		ID:   "http_chunk_size",
 		Flag: "--http-chunk-size",
@@ -1726,9 +1726,9 @@ func (c *Command) HttpChunkSize(size string) *Command {
 	return c
 }
 
-// UnsetHttpChunkSize unsets any flags that were previously set by one of:
-//   - [Command.HttpChunkSize]
-func (c *Command) UnsetHttpChunkSize() *Command {
+// UnsetHTTPChunkSize unsets any flags that were previously set by one of:
+//   - [Command.HTTPChunkSize]
+func (c *Command) UnsetHTTPChunkSize() *Command {
 	c.removeFlagByID("http_chunk_size")
 	return c
 }
@@ -1849,12 +1849,12 @@ func (c *Command) UnsetXattrSetFilesize() *Command {
 	return c
 }
 
-// HlsPreferNative sets the "hls-prefer-native" flag (no description specified).
+// HLSPreferNative sets the "hls-prefer-native" flag (no description specified).
 //
-//   - See [Command.UnsetHlsPreferNative], for unsetting the flag.
-//   - HlsPreferNative maps to cli flags: --hls-prefer-native (hidden).
+//   - See [Command.UnsetHLSPreferNative], for unsetting the flag.
+//   - HLSPreferNative maps to cli flags: --hls-prefer-native (hidden).
 //   - From option group: "Download"
-func (c *Command) HlsPreferNative() *Command {
+func (c *Command) HLSPreferNative() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_prefer_native",
 		Flag: "--hls-prefer-native",
@@ -1863,19 +1863,19 @@ func (c *Command) HlsPreferNative() *Command {
 	return c
 }
 
-// UnsetHlsPreferNative unsets any flags that were previously set by one of:
-//   - [Command.HlsPreferNative]
-func (c *Command) UnsetHlsPreferNative() *Command {
+// UnsetHLSPreferNative unsets any flags that were previously set by one of:
+//   - [Command.HLSPreferNative]
+func (c *Command) UnsetHLSPreferNative() *Command {
 	c.removeFlagByID("hls_prefer_native")
 	return c
 }
 
-// HlsPreferFfmpeg sets the "hls-prefer-ffmpeg" flag (no description specified).
+// HLSPreferFFmpeg sets the "hls-prefer-ffmpeg" flag (no description specified).
 //
-//   - See [Command.UnsetHlsPreferFfmpeg], for unsetting the flag.
-//   - HlsPreferFfmpeg maps to cli flags: --hls-prefer-ffmpeg (hidden).
+//   - See [Command.UnsetHLSPreferFFmpeg], for unsetting the flag.
+//   - HLSPreferFFmpeg maps to cli flags: --hls-prefer-ffmpeg (hidden).
 //   - From option group: "Download"
-func (c *Command) HlsPreferFfmpeg() *Command {
+func (c *Command) HLSPreferFFmpeg() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_prefer_native",
 		Flag: "--hls-prefer-ffmpeg",
@@ -1884,9 +1884,9 @@ func (c *Command) HlsPreferFfmpeg() *Command {
 	return c
 }
 
-// UnsetHlsPreferFfmpeg unsets any flags that were previously set by one of:
-//   - [Command.HlsPreferFfmpeg]
-func (c *Command) UnsetHlsPreferFfmpeg() *Command {
+// UnsetHLSPreferFFmpeg unsets any flags that were previously set by one of:
+//   - [Command.HLSPreferFFmpeg]
+func (c *Command) UnsetHLSPreferFFmpeg() *Command {
 	c.removeFlagByID("hls_prefer_native")
 	return c
 }
@@ -1895,10 +1895,10 @@ func (c *Command) UnsetHlsPreferFfmpeg() *Command {
 // while downloading, and reducing the chance of file corruption if download is
 // interrupted. This is enabled by default for live streams
 //
-//   - See [Command.UnsetHlsUseMpegts], for unsetting the flag.
-//   - HlsUseMpegts maps to cli flags: --hls-use-mpegts.
+//   - See [Command.UnsetHLSUseMPEGTS], for unsetting the flag.
+//   - HLSUseMPEGTS maps to cli flags: --hls-use-mpegts.
 //   - From option group: "Download"
-func (c *Command) HlsUseMpegts() *Command {
+func (c *Command) HLSUseMPEGTS() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_use_mpegts",
 		Flag: "--hls-use-mpegts",
@@ -1907,10 +1907,10 @@ func (c *Command) HlsUseMpegts() *Command {
 	return c
 }
 
-// UnsetHlsUseMpegts unsets any flags that were previously set by one of:
-//   - [Command.HlsUseMpegts]
-//   - [Command.NoHlsUseMpegts]
-func (c *Command) UnsetHlsUseMpegts() *Command {
+// UnsetHLSUseMPEGTS unsets any flags that were previously set by one of:
+//   - [Command.HLSUseMPEGTS]
+//   - [Command.NoHLSUseMPEGTS]
+func (c *Command) UnsetHLSUseMPEGTS() *Command {
 	c.removeFlagByID("hls_use_mpegts")
 	return c
 }
@@ -1918,10 +1918,10 @@ func (c *Command) UnsetHlsUseMpegts() *Command {
 // Do not use the mpegts container for HLS videos. This is default when not
 // downloading live streams
 //
-//   - See [Command.UnsetHlsUseMpegts], for unsetting the flag.
-//   - NoHlsUseMpegts maps to cli flags: --no-hls-use-mpegts.
+//   - See [Command.UnsetHLSUseMPEGTS], for unsetting the flag.
+//   - NoHLSUseMPEGTS maps to cli flags: --no-hls-use-mpegts.
 //   - From option group: "Download"
-func (c *Command) NoHlsUseMpegts() *Command {
+func (c *Command) NoHLSUseMPEGTS() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_use_mpegts",
 		Flag: "--no-hls-use-mpegts",
@@ -2043,12 +2043,12 @@ func (c *Command) NoBatchFile() *Command {
 	return c
 }
 
-// Id sets the "id" flag (no description specified).
+// ID sets the "id" flag (no description specified).
 //
-//   - See [Command.UnsetId], for unsetting the flag.
-//   - Id maps to cli flags: --id (hidden).
+//   - See [Command.UnsetID], for unsetting the flag.
+//   - ID maps to cli flags: --id (hidden).
 //   - From option group: "Filesystem"
-func (c *Command) Id() *Command {
+func (c *Command) ID() *Command {
 	c.addFlag(&Flag{
 		ID:   "useid",
 		Flag: "--id",
@@ -2057,9 +2057,9 @@ func (c *Command) Id() *Command {
 	return c
 }
 
-// UnsetId unsets any flags that were previously set by one of:
-//   - [Command.Id]
-func (c *Command) UnsetId() *Command {
+// UnsetID unsets any flags that were previously set by one of:
+//   - [Command.ID]
+func (c *Command) UnsetID() *Command {
 	c.removeFlagByID("useid")
 	return c
 }
@@ -2132,12 +2132,12 @@ func (c *Command) UnsetOutputNaPlaceholder() *Command {
 	return c
 }
 
-// AutonumberSize sets the "autonumber-size" flag (no description specified).
+// AutoNumberSize sets the "autonumber-size" flag (no description specified).
 //
-//   - See [Command.UnsetAutonumberSize], for unsetting the flag.
-//   - AutonumberSize maps to cli flags: --autonumber-size=NUMBER (hidden).
+//   - See [Command.UnsetAutoNumberSize], for unsetting the flag.
+//   - AutoNumberSize maps to cli flags: --autonumber-size=NUMBER (hidden).
 //   - From option group: "Filesystem"
-func (c *Command) AutonumberSize(number int) *Command {
+func (c *Command) AutoNumberSize(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "autonumber_size",
 		Flag: "--autonumber-size",
@@ -2148,19 +2148,19 @@ func (c *Command) AutonumberSize(number int) *Command {
 	return c
 }
 
-// UnsetAutonumberSize unsets any flags that were previously set by one of:
-//   - [Command.AutonumberSize]
-func (c *Command) UnsetAutonumberSize() *Command {
+// UnsetAutoNumberSize unsets any flags that were previously set by one of:
+//   - [Command.AutoNumberSize]
+func (c *Command) UnsetAutoNumberSize() *Command {
 	c.removeFlagByID("autonumber_size")
 	return c
 }
 
-// AutonumberStart sets the "autonumber-start" flag (no description specified).
+// AutoNumberStart sets the "autonumber-start" flag (no description specified).
 //
-//   - See [Command.UnsetAutonumberStart], for unsetting the flag.
-//   - AutonumberStart maps to cli flags: --autonumber-start=NUMBER (hidden).
+//   - See [Command.UnsetAutoNumberStart], for unsetting the flag.
+//   - AutoNumberStart maps to cli flags: --autonumber-start=NUMBER (hidden).
 //   - From option group: "Filesystem"
-func (c *Command) AutonumberStart(number int) *Command {
+func (c *Command) AutoNumberStart(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "autonumber_start",
 		Flag: "--autonumber-start",
@@ -2171,9 +2171,9 @@ func (c *Command) AutonumberStart(number int) *Command {
 	return c
 }
 
-// UnsetAutonumberStart unsets any flags that were previously set by one of:
-//   - [Command.AutonumberStart]
-func (c *Command) UnsetAutonumberStart() *Command {
+// UnsetAutoNumberStart unsets any flags that were previously set by one of:
+//   - [Command.AutoNumberStart]
+func (c *Command) UnsetAutoNumberStart() *Command {
 	c.removeFlagByID("autonumber_start")
 	return c
 }
@@ -2480,10 +2480,10 @@ func (c *Command) NoWriteDescription() *Command {
 // Write video metadata to a .info.json file (this may contain personal
 // information)
 //
-//   - See [Command.UnsetWriteInfoJson], for unsetting the flag.
-//   - WriteInfoJson maps to cli flags: --write-info-json.
+//   - See [Command.UnsetWriteInfoJSON], for unsetting the flag.
+//   - WriteInfoJSON maps to cli flags: --write-info-json.
 //   - From option group: "Filesystem"
-func (c *Command) WriteInfoJson() *Command {
+func (c *Command) WriteInfoJSON() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeinfojson",
 		Flag: "--write-info-json",
@@ -2492,20 +2492,20 @@ func (c *Command) WriteInfoJson() *Command {
 	return c
 }
 
-// UnsetWriteInfoJson unsets any flags that were previously set by one of:
-//   - [Command.WriteInfoJson]
-//   - [Command.NoWriteInfoJson]
-func (c *Command) UnsetWriteInfoJson() *Command {
+// UnsetWriteInfoJSON unsets any flags that were previously set by one of:
+//   - [Command.WriteInfoJSON]
+//   - [Command.NoWriteInfoJSON]
+func (c *Command) UnsetWriteInfoJSON() *Command {
 	c.removeFlagByID("writeinfojson")
 	return c
 }
 
 // Do not write video metadata (default)
 //
-//   - See [Command.UnsetWriteInfoJson], for unsetting the flag.
-//   - NoWriteInfoJson maps to cli flags: --no-write-info-json.
+//   - See [Command.UnsetWriteInfoJSON], for unsetting the flag.
+//   - NoWriteInfoJSON maps to cli flags: --no-write-info-json.
 //   - From option group: "Filesystem"
-func (c *Command) NoWriteInfoJson() *Command {
+func (c *Command) NoWriteInfoJSON() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeinfojson",
 		Flag: "--no-write-info-json",
@@ -2596,10 +2596,10 @@ func (c *Command) NoWritePlaylistMetafiles() *Command {
 
 // Remove some internal metadata such as filenames from the infojson (default)
 //
-//   - See [Command.UnsetCleanInfoJson], for unsetting the flag.
-//   - CleanInfoJson maps to cli flags: --clean-info-json/--clean-infojson.
+//   - See [Command.UnsetCleanInfoJSON], for unsetting the flag.
+//   - CleanInfoJSON maps to cli flags: --clean-info-json/--clean-infojson.
 //   - From option group: "Filesystem"
-func (c *Command) CleanInfoJson() *Command {
+func (c *Command) CleanInfoJSON() *Command {
 	c.addFlag(&Flag{
 		ID:   "clean_infojson",
 		Flag: "--clean-info-json",
@@ -2608,20 +2608,20 @@ func (c *Command) CleanInfoJson() *Command {
 	return c
 }
 
-// UnsetCleanInfoJson unsets any flags that were previously set by one of:
-//   - [Command.CleanInfoJson]
-//   - [Command.NoCleanInfoJson]
-func (c *Command) UnsetCleanInfoJson() *Command {
+// UnsetCleanInfoJSON unsets any flags that were previously set by one of:
+//   - [Command.CleanInfoJSON]
+//   - [Command.NoCleanInfoJSON]
+func (c *Command) UnsetCleanInfoJSON() *Command {
 	c.removeFlagByID("clean_infojson")
 	return c
 }
 
 // Write all fields to the infojson
 //
-//   - See [Command.UnsetCleanInfoJson], for unsetting the flag.
-//   - NoCleanInfoJson maps to cli flags: --no-clean-info-json/--no-clean-infojson.
+//   - See [Command.UnsetCleanInfoJSON], for unsetting the flag.
+//   - NoCleanInfoJSON maps to cli flags: --no-clean-info-json/--no-clean-infojson.
 //   - From option group: "Filesystem"
-func (c *Command) NoCleanInfoJson() *Command {
+func (c *Command) NoCleanInfoJSON() *Command {
 	c.addFlag(&Flag{
 		ID:   "clean_infojson",
 		Flag: "--no-clean-info-json",
@@ -2670,10 +2670,10 @@ func (c *Command) NoWriteComments() *Command {
 // JSON file containing the video information (created with the "--write-info-json"
 // option)
 //
-//   - See [Command.UnsetLoadInfoJson], for unsetting the flag.
-//   - LoadInfoJson maps to cli flags: --load-info-json/--load-info=FILE.
+//   - See [Command.UnsetLoadInfoJSON], for unsetting the flag.
+//   - LoadInfoJSON maps to cli flags: --load-info-json/--load-info=FILE.
 //   - From option group: "Filesystem"
-func (c *Command) LoadInfoJson(file string) *Command {
+func (c *Command) LoadInfoJSON(file string) *Command {
 	c.addFlag(&Flag{
 		ID:   "load_info_filename",
 		Flag: "--load-info-json",
@@ -2682,9 +2682,9 @@ func (c *Command) LoadInfoJson(file string) *Command {
 	return c
 }
 
-// UnsetLoadInfoJson unsets any flags that were previously set by one of:
-//   - [Command.LoadInfoJson]
-func (c *Command) UnsetLoadInfoJson() *Command {
+// UnsetLoadInfoJSON unsets any flags that were previously set by one of:
+//   - [Command.LoadInfoJSON]
+func (c *Command) UnsetLoadInfoJSON() *Command {
 	c.removeFlagByID("load_info_filename")
 	return c
 }
@@ -2929,10 +2929,10 @@ func (c *Command) UnsetWriteLink() *Command {
 // Write a .url Windows internet shortcut. The OS caches the URL based on the file
 // path
 //
-//   - See [Command.UnsetWriteUrlLink], for unsetting the flag.
-//   - WriteUrlLink maps to cli flags: --write-url-link.
+//   - See [Command.UnsetWriteURLLink], for unsetting the flag.
+//   - WriteURLLink maps to cli flags: --write-url-link.
 //   - From option group: "Internet Shortcut"
-func (c *Command) WriteUrlLink() *Command {
+func (c *Command) WriteURLLink() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeurllink",
 		Flag: "--write-url-link",
@@ -2941,9 +2941,9 @@ func (c *Command) WriteUrlLink() *Command {
 	return c
 }
 
-// UnsetWriteUrlLink unsets any flags that were previously set by one of:
-//   - [Command.WriteUrlLink]
-func (c *Command) UnsetWriteUrlLink() *Command {
+// UnsetWriteURLLink unsets any flags that were previously set by one of:
+//   - [Command.WriteURLLink]
+func (c *Command) UnsetWriteURLLink() *Command {
 	c.removeFlagByID("writeurllink")
 	return c
 }
@@ -3189,12 +3189,12 @@ func (c *Command) UnsetPrintToFile() *Command {
 	return c
 }
 
-// GetUrl sets the "get-url" flag (no description specified).
+// GetURL sets the "get-url" flag (no description specified).
 //
-//   - See [Command.UnsetGetUrl], for unsetting the flag.
-//   - GetUrl maps to cli flags: -g/--get-url (hidden).
+//   - See [Command.UnsetGetURL], for unsetting the flag.
+//   - GetURL maps to cli flags: -g/--get-url (hidden).
 //   - From option group: "Verbosity Simulation"
-func (c *Command) GetUrl() *Command {
+func (c *Command) GetURL() *Command {
 	c.addFlag(&Flag{
 		ID:   "geturl",
 		Flag: "--get-url",
@@ -3203,9 +3203,9 @@ func (c *Command) GetUrl() *Command {
 	return c
 }
 
-// UnsetGetUrl unsets any flags that were previously set by one of:
-//   - [Command.GetUrl]
-func (c *Command) UnsetGetUrl() *Command {
+// UnsetGetURL unsets any flags that were previously set by one of:
+//   - [Command.GetURL]
+func (c *Command) UnsetGetURL() *Command {
 	c.removeFlagByID("geturl")
 	return c
 }
@@ -3231,12 +3231,12 @@ func (c *Command) UnsetGetTitle() *Command {
 	return c
 }
 
-// GetId sets the "get-id" flag (no description specified).
+// GetID sets the "get-id" flag (no description specified).
 //
-//   - See [Command.UnsetGetId], for unsetting the flag.
-//   - GetId maps to cli flags: --get-id (hidden).
+//   - See [Command.UnsetGetID], for unsetting the flag.
+//   - GetID maps to cli flags: --get-id (hidden).
 //   - From option group: "Verbosity Simulation"
-func (c *Command) GetId() *Command {
+func (c *Command) GetID() *Command {
 	c.addFlag(&Flag{
 		ID:   "getid",
 		Flag: "--get-id",
@@ -3245,9 +3245,9 @@ func (c *Command) GetId() *Command {
 	return c
 }
 
-// UnsetGetId unsets any flags that were previously set by one of:
-//   - [Command.GetId]
-func (c *Command) UnsetGetId() *Command {
+// UnsetGetID unsets any flags that were previously set by one of:
+//   - [Command.GetID]
+func (c *Command) UnsetGetID() *Command {
 	c.removeFlagByID("getid")
 	return c
 }
@@ -3360,10 +3360,10 @@ func (c *Command) UnsetGetFormat() *Command {
 // Quiet, but print JSON information for each video. Simulate unless --no-simulate
 // is used. See "OUTPUT TEMPLATE" for a description of available keys
 //
-//   - See [Command.UnsetDumpJson], for unsetting the flag.
-//   - DumpJson maps to cli flags: -j/--dump-json.
+//   - See [Command.UnsetDumpJSON], for unsetting the flag.
+//   - DumpJSON maps to cli flags: -j/--dump-json.
 //   - From option group: "Verbosity Simulation"
-func (c *Command) DumpJson() *Command {
+func (c *Command) DumpJSON() *Command {
 	c.addFlag(&Flag{
 		ID:   "dumpjson",
 		Flag: "--dump-json",
@@ -3372,9 +3372,9 @@ func (c *Command) DumpJson() *Command {
 	return c
 }
 
-// UnsetDumpJson unsets any flags that were previously set by one of:
-//   - [Command.DumpJson]
-func (c *Command) UnsetDumpJson() *Command {
+// UnsetDumpJSON unsets any flags that were previously set by one of:
+//   - [Command.DumpJSON]
+func (c *Command) UnsetDumpJSON() *Command {
 	c.removeFlagByID("dumpjson")
 	return c
 }
@@ -3383,10 +3383,10 @@ func (c *Command) UnsetDumpJson() *Command {
 // unless --no-simulate is used. If the URL refers to a playlist, the whole
 // playlist information is dumped in a single line
 //
-//   - See [Command.UnsetDumpSingleJson], for unsetting the flag.
-//   - DumpSingleJson maps to cli flags: -J/--dump-single-json.
+//   - See [Command.UnsetDumpSingleJSON], for unsetting the flag.
+//   - DumpSingleJSON maps to cli flags: -J/--dump-single-json.
 //   - From option group: "Verbosity Simulation"
-func (c *Command) DumpSingleJson() *Command {
+func (c *Command) DumpSingleJSON() *Command {
 	c.addFlag(&Flag{
 		ID:   "dump_single_json",
 		Flag: "--dump-single-json",
@@ -3395,19 +3395,19 @@ func (c *Command) DumpSingleJson() *Command {
 	return c
 }
 
-// UnsetDumpSingleJson unsets any flags that were previously set by one of:
-//   - [Command.DumpSingleJson]
-func (c *Command) UnsetDumpSingleJson() *Command {
+// UnsetDumpSingleJSON unsets any flags that were previously set by one of:
+//   - [Command.DumpSingleJSON]
+func (c *Command) UnsetDumpSingleJSON() *Command {
 	c.removeFlagByID("dump_single_json")
 	return c
 }
 
-// PrintJson sets the "print-json" flag (no description specified).
+// PrintJSON sets the "print-json" flag (no description specified).
 //
-//   - See [Command.UnsetPrintJson], for unsetting the flag.
-//   - PrintJson maps to cli flags: --print-json (hidden).
+//   - See [Command.UnsetPrintJSON], for unsetting the flag.
+//   - PrintJSON maps to cli flags: --print-json (hidden).
 //   - From option group: "Verbosity Simulation"
-func (c *Command) PrintJson() *Command {
+func (c *Command) PrintJSON() *Command {
 	c.addFlag(&Flag{
 		ID:   "print_json",
 		Flag: "--print-json",
@@ -3416,9 +3416,9 @@ func (c *Command) PrintJson() *Command {
 	return c
 }
 
-// UnsetPrintJson unsets any flags that were previously set by one of:
-//   - [Command.PrintJson]
-func (c *Command) UnsetPrintJson() *Command {
+// UnsetPrintJSON unsets any flags that were previously set by one of:
+//   - [Command.PrintJSON]
+func (c *Command) UnsetPrintJSON() *Command {
 	c.removeFlagByID("print_json")
 	return c
 }
@@ -4497,10 +4497,10 @@ func (c *Command) UnsetPassword() *Command {
 
 // Two-factor authentication code
 //
-//   - See [Command.UnsetTwofactor], for unsetting the flag.
-//   - Twofactor maps to cli flags: -2/--twofactor=TWOFACTOR.
+//   - See [Command.UnsetTwoFactor], for unsetting the flag.
+//   - TwoFactor maps to cli flags: -2/--twofactor=TWOFACTOR.
 //   - From option group: "Authentication"
-func (c *Command) Twofactor(twofactor string) *Command {
+func (c *Command) TwoFactor(twofactor string) *Command {
 	c.addFlag(&Flag{
 		ID:   "twofactor",
 		Flag: "--twofactor",
@@ -4509,9 +4509,9 @@ func (c *Command) Twofactor(twofactor string) *Command {
 	return c
 }
 
-// UnsetTwofactor unsets any flags that were previously set by one of:
-//   - [Command.Twofactor]
-func (c *Command) UnsetTwofactor() *Command {
+// UnsetTwoFactor unsets any flags that were previously set by one of:
+//   - [Command.TwoFactor]
+func (c *Command) UnsetTwoFactor() *Command {
 	c.removeFlagByID("twofactor")
 	return c
 }
@@ -4604,10 +4604,10 @@ func (c *Command) UnsetVideoPassword() *Command {
 // Adobe Pass multiple-system operator (TV provider) identifier, use --ap-list-mso
 // for a list of available MSOs
 //
-//   - See [Command.UnsetApMso], for unsetting the flag.
-//   - ApMso maps to cli flags: --ap-mso=MSO.
+//   - See [Command.UnsetApMSO], for unsetting the flag.
+//   - ApMSO maps to cli flags: --ap-mso=MSO.
 //   - From option group: "Authentication"
-func (c *Command) ApMso(mso string) *Command {
+func (c *Command) ApMSO(mso string) *Command {
 	c.addFlag(&Flag{
 		ID:   "ap_mso",
 		Flag: "--ap-mso",
@@ -4616,9 +4616,9 @@ func (c *Command) ApMso(mso string) *Command {
 	return c
 }
 
-// UnsetApMso unsets any flags that were previously set by one of:
-//   - [Command.ApMso]
-func (c *Command) UnsetApMso() *Command {
+// UnsetApMSO unsets any flags that were previously set by one of:
+//   - [Command.ApMSO]
+func (c *Command) UnsetApMSO() *Command {
 	c.removeFlagByID("ap_mso")
 	return c
 }
@@ -4668,10 +4668,10 @@ func (c *Command) UnsetApPassword() *Command {
 
 // List all supported multiple-system operators
 //
-//   - See [Command.UnsetApListMso], for unsetting the flag.
-//   - ApListMso maps to cli flags: --ap-list-mso.
+//   - See [Command.UnsetApListMSO], for unsetting the flag.
+//   - ApListMSO maps to cli flags: --ap-list-mso.
 //   - From option group: "Authentication"
-func (c *Command) ApListMso() *Command {
+func (c *Command) ApListMSO() *Command {
 	c.addFlag(&Flag{
 		ID:   "ap_list_mso",
 		Flag: "--ap-list-mso",
@@ -4680,9 +4680,9 @@ func (c *Command) ApListMso() *Command {
 	return c
 }
 
-// UnsetApListMso unsets any flags that were previously set by one of:
-//   - [Command.ApListMso]
-func (c *Command) UnsetApListMso() *Command {
+// UnsetApListMSO unsets any flags that were previously set by one of:
+//   - [Command.ApListMSO]
+func (c *Command) UnsetApListMSO() *Command {
 	c.removeFlagByID("ap_list_mso")
 	return c
 }
@@ -4879,10 +4879,10 @@ func (c *Command) UnsetRecodeVideo() *Command {
 // "Merger+ffmpeg_i1:-v quiet". You can use this option multiple times to give
 // different arguments to different postprocessors.
 //
-//   - See [Command.UnsetPostprocessorArgs], for unsetting the flag.
-//   - PostprocessorArgs maps to cli flags: --postprocessor-args/--ppa=NAME:ARGS.
+//   - See [Command.UnsetPostProcessorArgs], for unsetting the flag.
+//   - PostProcessorArgs maps to cli flags: --postprocessor-args/--ppa=NAME:ARGS.
 //   - From option group: "Post-Processing"
-func (c *Command) PostprocessorArgs(nameargs string) *Command {
+func (c *Command) PostProcessorArgs(nameargs string) *Command {
 	c.addFlag(&Flag{
 		ID:   "postprocessor_args",
 		Flag: "--postprocessor-args",
@@ -4891,9 +4891,9 @@ func (c *Command) PostprocessorArgs(nameargs string) *Command {
 	return c
 }
 
-// UnsetPostprocessorArgs unsets any flags that were previously set by one of:
-//   - [Command.PostprocessorArgs]
-func (c *Command) UnsetPostprocessorArgs() *Command {
+// UnsetPostProcessorArgs unsets any flags that were previously set by one of:
+//   - [Command.PostProcessorArgs]
+func (c *Command) UnsetPostProcessorArgs() *Command {
 	c.removeFlagByID("postprocessor_args")
 	return c
 }
@@ -5117,10 +5117,10 @@ func (c *Command) NoEmbedChapters() *Command {
 
 // Embed the infojson as an attachment to mkv/mka video files
 //
-//   - See [Command.UnsetEmbedInfoJson], for unsetting the flag.
-//   - EmbedInfoJson maps to cli flags: --embed-info-json.
+//   - See [Command.UnsetEmbedInfoJSON], for unsetting the flag.
+//   - EmbedInfoJSON maps to cli flags: --embed-info-json.
 //   - From option group: "Post-Processing"
-func (c *Command) EmbedInfoJson() *Command {
+func (c *Command) EmbedInfoJSON() *Command {
 	c.addFlag(&Flag{
 		ID:   "embed_infojson",
 		Flag: "--embed-info-json",
@@ -5129,20 +5129,20 @@ func (c *Command) EmbedInfoJson() *Command {
 	return c
 }
 
-// UnsetEmbedInfoJson unsets any flags that were previously set by one of:
-//   - [Command.EmbedInfoJson]
-//   - [Command.NoEmbedInfoJson]
-func (c *Command) UnsetEmbedInfoJson() *Command {
+// UnsetEmbedInfoJSON unsets any flags that were previously set by one of:
+//   - [Command.EmbedInfoJSON]
+//   - [Command.NoEmbedInfoJSON]
+func (c *Command) UnsetEmbedInfoJSON() *Command {
 	c.removeFlagByID("embed_infojson")
 	return c
 }
 
 // Do not embed the infojson as an attachment to the video file
 //
-//   - See [Command.UnsetEmbedInfoJson], for unsetting the flag.
-//   - NoEmbedInfoJson maps to cli flags: --no-embed-info-json.
+//   - See [Command.UnsetEmbedInfoJSON], for unsetting the flag.
+//   - NoEmbedInfoJSON maps to cli flags: --no-embed-info-json.
 //   - From option group: "Post-Processing"
-func (c *Command) NoEmbedInfoJson() *Command {
+func (c *Command) NoEmbedInfoJSON() *Command {
 	c.addFlag(&Flag{
 		ID:   "embed_infojson",
 		Flag: "--no-embed-info-json",
@@ -5307,14 +5307,14 @@ func (c *Command) UnsetFixup() *Command {
 	return c
 }
 
-// PreferAvconv sets the "prefer-avconv" flag (no description specified).
+// PreferAVConv sets the "prefer-avconv" flag (no description specified).
 //
-//   - See [Command.UnsetPreferAvconv], for unsetting the flag.
-//   - PreferAvconv maps to cli flags: --prefer-avconv/--no-prefer-ffmpeg (hidden).
+//   - See [Command.UnsetPreferAVConv], for unsetting the flag.
+//   - PreferAVConv maps to cli flags: --prefer-avconv/--no-prefer-ffmpeg (hidden).
 //   - From option group: "Post-Processing"
 //
 // Deprecated: avconv is not officially supported by yt-dlp.
-func (c *Command) PreferAvconv() *Command {
+func (c *Command) PreferAVConv() *Command {
 	c.addFlag(&Flag{
 		ID:   "prefer_ffmpeg",
 		Flag: "--prefer-avconv",
@@ -5323,23 +5323,23 @@ func (c *Command) PreferAvconv() *Command {
 	return c
 }
 
-// UnsetPreferAvconv unsets any flags that were previously set by one of:
-//   - [Command.PreferAvconv]
+// UnsetPreferAVConv unsets any flags that were previously set by one of:
+//   - [Command.PreferAVConv]
 //
 // Deprecated: avconv is not officially supported by yt-dlp.
-func (c *Command) UnsetPreferAvconv() *Command {
+func (c *Command) UnsetPreferAVConv() *Command {
 	c.removeFlagByID("prefer_ffmpeg")
 	return c
 }
 
-// PreferFfmpeg sets the "prefer-ffmpeg" flag (no description specified).
+// PreferFFmpeg sets the "prefer-ffmpeg" flag (no description specified).
 //
-//   - See [Command.UnsetPreferFfmpeg], for unsetting the flag.
-//   - PreferFfmpeg maps to cli flags: --prefer-ffmpeg/--no-prefer-avconv (hidden).
+//   - See [Command.UnsetPreferFFmpeg], for unsetting the flag.
+//   - PreferFFmpeg maps to cli flags: --prefer-ffmpeg/--no-prefer-avconv (hidden).
 //   - From option group: "Post-Processing"
 //
 // Deprecated: This flag is now default in yt-dlp.
-func (c *Command) PreferFfmpeg() *Command {
+func (c *Command) PreferFFmpeg() *Command {
 	c.addFlag(&Flag{
 		ID:   "prefer_ffmpeg",
 		Flag: "--prefer-ffmpeg",
@@ -5348,11 +5348,11 @@ func (c *Command) PreferFfmpeg() *Command {
 	return c
 }
 
-// UnsetPreferFfmpeg unsets any flags that were previously set by one of:
-//   - [Command.PreferFfmpeg]
+// UnsetPreferFFmpeg unsets any flags that were previously set by one of:
+//   - [Command.PreferFFmpeg]
 //
 // Deprecated: This flag is now default in yt-dlp.
-func (c *Command) UnsetPreferFfmpeg() *Command {
+func (c *Command) UnsetPreferFFmpeg() *Command {
 	c.removeFlagByID("prefer_ffmpeg")
 	return c
 }
@@ -5360,10 +5360,10 @@ func (c *Command) UnsetPreferFfmpeg() *Command {
 // Location of the ffmpeg binary; either the path to the binary or its containing
 // directory
 //
-//   - See [Command.UnsetFfmpegLocation], for unsetting the flag.
-//   - FfmpegLocation maps to cli flags: --ffmpeg-location/--avconv-location=PATH.
+//   - See [Command.UnsetFFmpegLocation], for unsetting the flag.
+//   - FFmpegLocation maps to cli flags: --ffmpeg-location/--avconv-location=PATH.
 //   - From option group: "Post-Processing"
-func (c *Command) FfmpegLocation(path string) *Command {
+func (c *Command) FFmpegLocation(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "ffmpeg_location",
 		Flag: "--ffmpeg-location",
@@ -5372,9 +5372,9 @@ func (c *Command) FfmpegLocation(path string) *Command {
 	return c
 }
 
-// UnsetFfmpegLocation unsets any flags that were previously set by one of:
-//   - [Command.FfmpegLocation]
-func (c *Command) UnsetFfmpegLocation() *Command {
+// UnsetFFmpegLocation unsets any flags that were previously set by one of:
+//   - [Command.FFmpegLocation]
+func (c *Command) UnsetFFmpegLocation() *Command {
 	c.removeFlagByID("ffmpeg_location")
 	return c
 }
@@ -5624,10 +5624,10 @@ func (c *Command) NoForceKeyframesAtCuts() *Command {
 // processing all formats of a video), or "playlist" (at end of playlist). This
 // option can be used multiple times to add different postprocessors
 //
-//   - See [Command.UnsetUsePostprocessor], for unsetting the flag.
-//   - UsePostprocessor maps to cli flags: --use-postprocessor=NAME[:ARGS].
+//   - See [Command.UnsetUsePostProcessor], for unsetting the flag.
+//   - UsePostProcessor maps to cli flags: --use-postprocessor=NAME[:ARGS].
 //   - From option group: "Post-Processing"
-func (c *Command) UsePostprocessor(name string) *Command {
+func (c *Command) UsePostProcessor(name string) *Command {
 	c.addFlag(&Flag{
 		ID:   "add_postprocessors",
 		Flag: "--use-postprocessor",
@@ -5636,9 +5636,9 @@ func (c *Command) UsePostprocessor(name string) *Command {
 	return c
 }
 
-// UnsetUsePostprocessor unsets any flags that were previously set by one of:
-//   - [Command.UsePostprocessor]
-func (c *Command) UnsetUsePostprocessor() *Command {
+// UnsetUsePostProcessor unsets any flags that were previously set by one of:
+//   - [Command.UsePostProcessor]
+func (c *Command) UnsetUsePostProcessor() *Command {
 	c.removeFlagByID("add_postprocessors")
 	return c
 }
@@ -5741,10 +5741,10 @@ func (c *Command) UnsetSponsorblock() *Command {
 
 // SponsorBlock API location, defaults to https://sponsor.ajay.app
 //
-//   - See [Command.UnsetSponsorblockApi], for unsetting the flag.
-//   - SponsorblockApi maps to cli flags: --sponsorblock-api=URL.
+//   - See [Command.UnsetSponsorblockAPI], for unsetting the flag.
+//   - SponsorblockAPI maps to cli flags: --sponsorblock-api=URL.
 //   - From option group: "SponsorBlock"
-func (c *Command) SponsorblockApi(url string) *Command {
+func (c *Command) SponsorblockAPI(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponsorblock_api",
 		Flag: "--sponsorblock-api",
@@ -5753,9 +5753,9 @@ func (c *Command) SponsorblockApi(url string) *Command {
 	return c
 }
 
-// UnsetSponsorblockApi unsets any flags that were previously set by one of:
-//   - [Command.SponsorblockApi]
-func (c *Command) UnsetSponsorblockApi() *Command {
+// UnsetSponsorblockAPI unsets any flags that were previously set by one of:
+//   - [Command.SponsorblockAPI]
+func (c *Command) UnsetSponsorblockAPI() *Command {
 	c.removeFlagByID("sponsorblock_api")
 	return c
 }
@@ -5933,10 +5933,10 @@ func (c *Command) UnsetExtractorRetries() *Command {
 
 // Process dynamic DASH manifests (default)
 //
-//   - See [Command.UnsetAllowDynamicMpd], for unsetting the flag.
-//   - AllowDynamicMpd maps to cli flags: --allow-dynamic-mpd/--no-ignore-dynamic-mpd.
+//   - See [Command.UnsetAllowDynamicMPD], for unsetting the flag.
+//   - AllowDynamicMPD maps to cli flags: --allow-dynamic-mpd/--no-ignore-dynamic-mpd.
 //   - From option group: "Extractor"
-func (c *Command) AllowDynamicMpd() *Command {
+func (c *Command) AllowDynamicMPD() *Command {
 	c.addFlag(&Flag{
 		ID:   "dynamic_mpd",
 		Flag: "--allow-dynamic-mpd",
@@ -5945,19 +5945,19 @@ func (c *Command) AllowDynamicMpd() *Command {
 	return c
 }
 
-// UnsetAllowDynamicMpd unsets any flags that were previously set by one of:
-//   - [Command.AllowDynamicMpd]
-func (c *Command) UnsetAllowDynamicMpd() *Command {
+// UnsetAllowDynamicMPD unsets any flags that were previously set by one of:
+//   - [Command.AllowDynamicMPD]
+func (c *Command) UnsetAllowDynamicMPD() *Command {
 	c.removeFlagByID("dynamic_mpd")
 	return c
 }
 
 // Do not process dynamic DASH manifests
 //
-//   - See [Command.UnsetIgnoreDynamicMpd], for unsetting the flag.
-//   - IgnoreDynamicMpd maps to cli flags: --ignore-dynamic-mpd/--no-allow-dynamic-mpd.
+//   - See [Command.UnsetIgnoreDynamicMPD], for unsetting the flag.
+//   - IgnoreDynamicMPD maps to cli flags: --ignore-dynamic-mpd/--no-allow-dynamic-mpd.
 //   - From option group: "Extractor"
-func (c *Command) IgnoreDynamicMpd() *Command {
+func (c *Command) IgnoreDynamicMPD() *Command {
 	c.addFlag(&Flag{
 		ID:   "dynamic_mpd",
 		Flag: "--ignore-dynamic-mpd",
@@ -5966,19 +5966,19 @@ func (c *Command) IgnoreDynamicMpd() *Command {
 	return c
 }
 
-// UnsetIgnoreDynamicMpd unsets any flags that were previously set by one of:
-//   - [Command.IgnoreDynamicMpd]
-func (c *Command) UnsetIgnoreDynamicMpd() *Command {
+// UnsetIgnoreDynamicMPD unsets any flags that were previously set by one of:
+//   - [Command.IgnoreDynamicMPD]
+func (c *Command) UnsetIgnoreDynamicMPD() *Command {
 	c.removeFlagByID("dynamic_mpd")
 	return c
 }
 
 // Split HLS playlists to different formats at discontinuities such as ad breaks
 //
-//   - See [Command.UnsetHlsSplitDiscontinuity], for unsetting the flag.
-//   - HlsSplitDiscontinuity maps to cli flags: --hls-split-discontinuity.
+//   - See [Command.UnsetHLSSplitDiscontinuity], for unsetting the flag.
+//   - HLSSplitDiscontinuity maps to cli flags: --hls-split-discontinuity.
 //   - From option group: "Extractor"
-func (c *Command) HlsSplitDiscontinuity() *Command {
+func (c *Command) HLSSplitDiscontinuity() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_split_discontinuity",
 		Flag: "--hls-split-discontinuity",
@@ -5987,10 +5987,10 @@ func (c *Command) HlsSplitDiscontinuity() *Command {
 	return c
 }
 
-// UnsetHlsSplitDiscontinuity unsets any flags that were previously set by one of:
-//   - [Command.HlsSplitDiscontinuity]
-//   - [Command.NoHlsSplitDiscontinuity]
-func (c *Command) UnsetHlsSplitDiscontinuity() *Command {
+// UnsetHLSSplitDiscontinuity unsets any flags that were previously set by one of:
+//   - [Command.HLSSplitDiscontinuity]
+//   - [Command.NoHLSSplitDiscontinuity]
+func (c *Command) UnsetHLSSplitDiscontinuity() *Command {
 	c.removeFlagByID("hls_split_discontinuity")
 	return c
 }
@@ -5998,10 +5998,10 @@ func (c *Command) UnsetHlsSplitDiscontinuity() *Command {
 // Do not split HLS playlists to different formats at discontinuities such as ad
 // breaks (default)
 //
-//   - See [Command.UnsetHlsSplitDiscontinuity], for unsetting the flag.
-//   - NoHlsSplitDiscontinuity maps to cli flags: --no-hls-split-discontinuity.
+//   - See [Command.UnsetHLSSplitDiscontinuity], for unsetting the flag.
+//   - NoHLSSplitDiscontinuity maps to cli flags: --no-hls-split-discontinuity.
 //   - From option group: "Extractor"
-func (c *Command) NoHlsSplitDiscontinuity() *Command {
+func (c *Command) NoHLSSplitDiscontinuity() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_split_discontinuity",
 		Flag: "--no-hls-split-discontinuity",
@@ -6075,12 +6075,12 @@ func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
 	return c
 }
 
-// YoutubeIncludeHlsManifest sets the "youtube-include-hls-manifest" flag (no description specified).
+// YoutubeIncludeHLSManifest sets the "youtube-include-hls-manifest" flag (no description specified).
 //
-//   - See [Command.UnsetYoutubeIncludeHlsManifest], for unsetting the flag.
-//   - YoutubeIncludeHlsManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest (hidden).
+//   - See [Command.UnsetYoutubeIncludeHLSManifest], for unsetting the flag.
+//   - YoutubeIncludeHLSManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest (hidden).
 //   - From option group: "Extractor"
-func (c *Command) YoutubeIncludeHlsManifest() *Command {
+func (c *Command) YoutubeIncludeHLSManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",
 		Flag: "--youtube-include-hls-manifest",
@@ -6089,19 +6089,19 @@ func (c *Command) YoutubeIncludeHlsManifest() *Command {
 	return c
 }
 
-// UnsetYoutubeIncludeHlsManifest unsets any flags that were previously set by one of:
-//   - [Command.YoutubeIncludeHlsManifest]
-func (c *Command) UnsetYoutubeIncludeHlsManifest() *Command {
+// UnsetYoutubeIncludeHLSManifest unsets any flags that were previously set by one of:
+//   - [Command.YoutubeIncludeHLSManifest]
+func (c *Command) UnsetYoutubeIncludeHLSManifest() *Command {
 	c.removeFlagByID("youtube_include_hls_manifest")
 	return c
 }
 
-// YoutubeSkipHlsManifest sets the "youtube-skip-hls-manifest" flag (no description specified).
+// YoutubeSkipHLSManifest sets the "youtube-skip-hls-manifest" flag (no description specified).
 //
-//   - See [Command.UnsetYoutubeSkipHlsManifest], for unsetting the flag.
-//   - YoutubeSkipHlsManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest (hidden).
+//   - See [Command.UnsetYoutubeSkipHLSManifest], for unsetting the flag.
+//   - YoutubeSkipHLSManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest (hidden).
 //   - From option group: "Extractor"
-func (c *Command) YoutubeSkipHlsManifest() *Command {
+func (c *Command) YoutubeSkipHLSManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",
 		Flag: "--youtube-skip-hls-manifest",
@@ -6110,9 +6110,9 @@ func (c *Command) YoutubeSkipHlsManifest() *Command {
 	return c
 }
 
-// UnsetYoutubeSkipHlsManifest unsets any flags that were previously set by one of:
-//   - [Command.YoutubeSkipHlsManifest]
-func (c *Command) UnsetYoutubeSkipHlsManifest() *Command {
+// UnsetYoutubeSkipHLSManifest unsets any flags that were previously set by one of:
+//   - [Command.YoutubeSkipHLSManifest]
+func (c *Command) UnsetYoutubeSkipHLSManifest() *Command {
 	c.removeFlagByID("youtube_include_hls_manifest")
 	return c
 }

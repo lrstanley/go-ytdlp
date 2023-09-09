@@ -42,7 +42,7 @@ func TestCommand_Simple(t *testing.T) {
 	}
 
 	res, err := New().
-		Verbose().PrintJson().NoProgress().NoOverwrites().Output(filepath.Join(dir, "%(extractor)s - %(title)s.%(ext)s")).
+		Verbose().PrintJSON().NoProgress().NoOverwrites().Output(filepath.Join(dir, "%(extractor)s - %(title)s.%(ext)s")).
 		Run(context.Background(), urls...)
 	if err != nil {
 		t.Fatal(err)

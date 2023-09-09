@@ -7,7 +7,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"net/url"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -22,19 +21,17 @@ var (
 	funcMap = mergeFuncMaps(
 		sprig.TxtFuncMap(), // http://masterminds.github.io/sprig/
 		template.FuncMap{
-			"urlenc": url.QueryEscape,
 			"last": func(x int, a interface{}) bool {
 				return x == reflect.ValueOf(a).Len()-1 // if last index.
 			},
 
 			// https://github.com/iancoleman/strcase?tab=readme-ov-file#example
-			"to_snake":             strcase.ToSnake,           // any_kind_of_string
-			"to_snake_with_ignore": strcase.ToSnakeWithIgnore, // ".", any_kind.of_string
-			"to_screaming_snake":   strcase.ToScreamingSnake,  // ANY_KIND_OF_STRING
-			"to_kebab":             strcase.ToKebab,           // any-kind-of-string
-			"to_screaming_kebab":   strcase.ToScreamingKebab,  // ANY-KIND-OF-STRING
-			"to_camel":             strcase.ToCamel,           // AnyKindOfString
-			"to_lower_camel":       strcase.ToLowerCamel,      // anyKindOfString
+			"to_camel": func(s string) string {
+				return acronymReplacer.Replace(strcase.ToCamel(s))
+			}, // AnyKindOfString
+			"to_lower_camel": func(s string) string {
+				return acronymReplacer.Replace(strcase.ToLowerCamel(s))
+			}, // anyKindOfString
 		},
 	)
 
@@ -59,6 +56,49 @@ var (
 	optionGroupReplacer = strings.NewReplacer(
 		" Options", "",
 		" and ", " ",
+	)
+
+	// TODO: can be replaced when this is supported: https://github.com/iancoleman/strcase/issues/13
+	acronymReplacer = strings.NewReplacer(
+		"Api", "API",
+		"Https", "HTTPS",
+		"Http", "HTTP",
+		"Id", "ID",
+		"Json", "JSON",
+		"Html", "HTML",
+		"Xml", "XML",
+		"Ascii", "ASCII",
+		"Cpu", "CPU",
+		"Dns", "DNS",
+		"Ip", "IP",
+		"Tls", "TLS",
+		"Tcp", "TCP",
+		"Ttl", "TTL",
+		"Uuid", "UUID",
+		"Uid", "UID",
+		"Uri", "URI",
+		"Url", "URL",
+		"Xxs", "XXS",
+		"Xff", "XFF",
+		"Ffmpeg", "FFmpeg",
+		"Avconv", "AVConv",
+		"Mpegts", "MPEGTS",
+		"mpegts", "mpegTS",
+		"Mpeg", "MPEG",
+		"Mpd", "MPD",
+		"Mso", "MSO",
+		"Cn", "CN",
+		"Hls", "HLS",
+		"Autonumber", "AutoNumber",
+		"autonumber", "autoNumber",
+		"Datebefore", "DateBefore",
+		"Dateafter", "DateAfter",
+		"datebefore", "dateBefore",
+		"dateafter", "dateAfter",
+		"Twofactor", "TwoFactor",
+		"twofactor", "twoFactor",
+		"Postprocessor", "PostProcessor",
+		"postprocessor", "postProcessor",
 	)
 )
 
