@@ -678,9 +678,11 @@ func (c *Command) UnsetGeoVerificationProxy() *Command {
 	return c
 }
 
-// - See [Command.UnsetCnVerificationProxy], for unsetting the flag.
-// - CnVerificationProxy maps to cli flags: --cn-verification-proxy=URL (hidden).
-// - From option group: "Geo-restriction"
+//   - See [Command.UnsetCnVerificationProxy], for unsetting the flag.
+//   - CnVerificationProxy maps to cli flags: --cn-verification-proxy=URL (hidden).
+//   - From option group: "Geo-restriction"
+//
+// Deprecated: Use [Command.GeoVerificationProxy] instead.
 func (c *Command) CnVerificationProxy(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "cn_verification_proxy",
@@ -692,6 +694,8 @@ func (c *Command) CnVerificationProxy(url string) *Command {
 
 // UnsetCnVerificationProxy unsets any flags that were previously set by one of:
 //   - [Command.CnVerificationProxy]
+//
+// Deprecated: Use [Command.GeoVerificationProxy] instead.
 func (c *Command) UnsetCnVerificationProxy() *Command {
 	c.removeFlagByID("cn_verification_proxy")
 	return c
@@ -1359,6 +1363,8 @@ func (c *Command) UnsetSkipPlaylistAfterErrors() *Command {
 //   - See [Command.UnsetIncludeAds], for unsetting the flag.
 //   - IncludeAds maps to cli flags: --include-ads (hidden).
 //   - From option group: "Video Selection"
+//
+// Deprecated: No longer supported.
 func (c *Command) IncludeAds() *Command {
 	c.addFlag(&Flag{
 		ID:   "include_ads",
@@ -1371,6 +1377,8 @@ func (c *Command) IncludeAds() *Command {
 // UnsetIncludeAds unsets any flags that were previously set by one of:
 //   - [Command.IncludeAds]
 //   - [Command.NoIncludeAds]
+//
+// Deprecated: No longer supported.
 func (c *Command) UnsetIncludeAds() *Command {
 	c.removeFlagByID("include_ads")
 	return c
@@ -1381,6 +1389,8 @@ func (c *Command) UnsetIncludeAds() *Command {
 //   - See [Command.UnsetIncludeAds], for unsetting the flag.
 //   - NoIncludeAds maps to cli flags: --no-include-ads (hidden).
 //   - From option group: "Video Selection"
+//
+// Deprecated: This flag is now default in yt-dlp.
 func (c *Command) NoIncludeAds() *Command {
 	c.addFlag(&Flag{
 		ID:   "include_ads",
@@ -1702,27 +1712,6 @@ func (c *Command) HttpChunkSize(size string) *Command {
 //   - [Command.HttpChunkSize]
 func (c *Command) UnsetHttpChunkSize() *Command {
 	c.removeFlagByID("http_chunk_size")
-	return c
-}
-
-// Test sets the "test" flag (no description specified).
-//
-//   - See [Command.UnsetTest], for unsetting the flag.
-//   - Test maps to cli flags: --test (hidden).
-//   - From option group: "Download"
-func (c *Command) Test() *Command {
-	c.addFlag(&Flag{
-		ID:   "test",
-		Flag: "--test",
-		Args: nil,
-	})
-	return c
-}
-
-// UnsetTest unsets any flags that were previously set by one of:
-//   - [Command.Test]
-func (c *Command) UnsetTest() *Command {
-	c.removeFlagByID("test")
 	return c
 }
 
@@ -2508,6 +2497,8 @@ func (c *Command) NoWriteInfoJson() *Command {
 //   - See [Command.UnsetWriteAnnotations], for unsetting the flag.
 //   - WriteAnnotations maps to cli flags: --write-annotations (hidden).
 //   - From option group: "Filesystem"
+//
+// Deprecated: No supported site has annotations now.
 func (c *Command) WriteAnnotations() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeannotations",
@@ -2520,6 +2511,8 @@ func (c *Command) WriteAnnotations() *Command {
 // UnsetWriteAnnotations unsets any flags that were previously set by one of:
 //   - [Command.WriteAnnotations]
 //   - [Command.NoWriteAnnotations]
+//
+// Deprecated: No supported site has annotations now.
 func (c *Command) UnsetWriteAnnotations() *Command {
 	c.removeFlagByID("writeannotations")
 	return c
@@ -2530,6 +2523,8 @@ func (c *Command) UnsetWriteAnnotations() *Command {
 //   - See [Command.UnsetWriteAnnotations], for unsetting the flag.
 //   - NoWriteAnnotations maps to cli flags: --no-write-annotations (hidden).
 //   - From option group: "Filesystem"
+//
+// Deprecated: This flag is now default in yt-dlp.
 func (c *Command) NoWriteAnnotations() *Command {
 	c.addFlag(&Flag{
 		ID:   "writeannotations",
@@ -3596,48 +3591,6 @@ func (c *Command) UnsetWritePages() *Command {
 	return c
 }
 
-// LoadPages sets the "load-pages" flag (no description specified).
-//
-//   - See [Command.UnsetLoadPages], for unsetting the flag.
-//   - LoadPages maps to cli flags: --load-pages (hidden).
-//   - From option group: "Verbosity Simulation"
-func (c *Command) LoadPages() *Command {
-	c.addFlag(&Flag{
-		ID:   "load_pages",
-		Flag: "--load-pages",
-		Args: nil,
-	})
-	return c
-}
-
-// UnsetLoadPages unsets any flags that were previously set by one of:
-//   - [Command.LoadPages]
-func (c *Command) UnsetLoadPages() *Command {
-	c.removeFlagByID("load_pages")
-	return c
-}
-
-// YoutubePrintSigCode sets the "youtube-print-sig-code" flag (no description specified).
-//
-//   - See [Command.UnsetYoutubePrintSigCode], for unsetting the flag.
-//   - YoutubePrintSigCode maps to cli flags: --youtube-print-sig-code (hidden).
-//   - From option group: "Verbosity Simulation"
-func (c *Command) YoutubePrintSigCode() *Command {
-	c.addFlag(&Flag{
-		ID:   "youtube_print_sig_code",
-		Flag: "--youtube-print-sig-code",
-		Args: nil,
-	})
-	return c
-}
-
-// UnsetYoutubePrintSigCode unsets any flags that were previously set by one of:
-//   - [Command.YoutubePrintSigCode]
-func (c *Command) UnsetYoutubePrintSigCode() *Command {
-	c.removeFlagByID("youtube_print_sig_code")
-	return c
-}
-
 // Display sent and read HTTP traffic
 //
 //   - See [Command.UnsetPrintTraffic], for unsetting the flag.
@@ -3664,6 +3617,8 @@ func (c *Command) UnsetPrintTraffic() *Command {
 //   - See [Command.UnsetCallHome], for unsetting the flag.
 //   - CallHome maps to cli flags: -C/--call-home (hidden).
 //   - From option group: "Verbosity Simulation"
+//
+// Deprecated: Not implemented.
 func (c *Command) CallHome() *Command {
 	c.addFlag(&Flag{
 		ID:   "call_home",
@@ -3676,6 +3631,8 @@ func (c *Command) CallHome() *Command {
 // UnsetCallHome unsets any flags that were previously set by one of:
 //   - [Command.CallHome]
 //   - [Command.NoCallHome]
+//
+// Deprecated: Not implemented.
 func (c *Command) UnsetCallHome() *Command {
 	c.removeFlagByID("call_home")
 	return c
@@ -3686,6 +3643,8 @@ func (c *Command) UnsetCallHome() *Command {
 //   - See [Command.UnsetCallHome], for unsetting the flag.
 //   - NoCallHome maps to cli flags: --no-call-home (hidden).
 //   - From option group: "Verbosity Simulation"
+//
+// Deprecated: This flag is now default in yt-dlp.
 func (c *Command) NoCallHome() *Command {
 	c.addFlag(&Flag{
 		ID:   "call_home",
@@ -4306,42 +4265,6 @@ func (c *Command) MergeOutputFormat(format string) *Command {
 //   - [Command.MergeOutputFormat]
 func (c *Command) UnsetMergeOutputFormat() *Command {
 	c.removeFlagByID("merge_output_format")
-	return c
-}
-
-// AllowUnplayableFormats sets the "allow-unplayable-formats" flag (no description specified).
-//
-//   - See [Command.UnsetAllowUnplayableFormats], for unsetting the flag.
-//   - AllowUnplayableFormats maps to cli flags: --allow-unplayable-formats (hidden).
-//   - From option group: "Video Format"
-func (c *Command) AllowUnplayableFormats() *Command {
-	c.addFlag(&Flag{
-		ID:   "allow_unplayable_formats",
-		Flag: "--allow-unplayable-formats",
-		Args: nil,
-	})
-	return c
-}
-
-// UnsetAllowUnplayableFormats unsets any flags that were previously set by one of:
-//   - [Command.AllowUnplayableFormats]
-//   - [Command.NoAllowUnplayableFormats]
-func (c *Command) UnsetAllowUnplayableFormats() *Command {
-	c.removeFlagByID("allow_unplayable_formats")
-	return c
-}
-
-// NoAllowUnplayableFormats sets the "no-allow-unplayable-formats" flag (no description specified).
-//
-//   - See [Command.UnsetAllowUnplayableFormats], for unsetting the flag.
-//   - NoAllowUnplayableFormats maps to cli flags: --no-allow-unplayable-formats (hidden).
-//   - From option group: "Video Format"
-func (c *Command) NoAllowUnplayableFormats() *Command {
-	c.addFlag(&Flag{
-		ID:   "allow_unplayable_formats",
-		Flag: "--no-allow-unplayable-formats",
-		Args: nil,
-	})
 	return c
 }
 
@@ -5361,6 +5284,8 @@ func (c *Command) UnsetFixup() *Command {
 //   - See [Command.UnsetPreferAvconv], for unsetting the flag.
 //   - PreferAvconv maps to cli flags: --prefer-avconv/--no-prefer-ffmpeg (hidden).
 //   - From option group: "Post-Processing"
+//
+// Deprecated: avconv is not officially supported by yt-dlp.
 func (c *Command) PreferAvconv() *Command {
 	c.addFlag(&Flag{
 		ID:   "prefer_ffmpeg",
@@ -5372,6 +5297,8 @@ func (c *Command) PreferAvconv() *Command {
 
 // UnsetPreferAvconv unsets any flags that were previously set by one of:
 //   - [Command.PreferAvconv]
+//
+// Deprecated: avconv is not officially supported by yt-dlp.
 func (c *Command) UnsetPreferAvconv() *Command {
 	c.removeFlagByID("prefer_ffmpeg")
 	return c
@@ -5382,6 +5309,8 @@ func (c *Command) UnsetPreferAvconv() *Command {
 //   - See [Command.UnsetPreferFfmpeg], for unsetting the flag.
 //   - PreferFfmpeg maps to cli flags: --prefer-ffmpeg/--no-prefer-avconv (hidden).
 //   - From option group: "Post-Processing"
+//
+// Deprecated: This flag is now default in yt-dlp.
 func (c *Command) PreferFfmpeg() *Command {
 	c.addFlag(&Flag{
 		ID:   "prefer_ffmpeg",
@@ -5393,6 +5322,8 @@ func (c *Command) PreferFfmpeg() *Command {
 
 // UnsetPreferFfmpeg unsets any flags that were previously set by one of:
 //   - [Command.PreferFfmpeg]
+//
+// Deprecated: This flag is now default in yt-dlp.
 func (c *Command) UnsetPreferFfmpeg() *Command {
 	c.removeFlagByID("prefer_ffmpeg")
 	return c

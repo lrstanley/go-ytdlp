@@ -71,6 +71,10 @@ func (c *Command) {{ $option.Name | to_camel }}({{ template "builder-meta-args" 
 //   - [Command.{{ $coption.Name | to_camel }}]
 {{- end }}{{/* end if has suffix */}}
 {{- end }}{{/* end range for options */}}
+{{- if $option.Deprecated }}
+//
+// Deprecated: {{ $option.Deprecated }}
+{{- end }}{{/* end if deprecated */}}
 func (c *Command) Unset{{ $unsetID }}() *Command {
     c.removeFlagByID({{ $option.Dest | quote }})
     return c

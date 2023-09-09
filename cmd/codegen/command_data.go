@@ -12,10 +12,52 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
+// ignoredFlags are flags that are not intended to be used by the end-user and/or
+// don't make sense in a binding library scenario.
+//
+//   - https://github.com/yt-dlp/yt-dlp/blob/master/README.md#developer-options
 var ignoredFlags = []string{
-	"--help",
-	"--export-options",
-	"--alias",
+	"--alias",                       // Higher-level abstraction, that go-ytdlp can do directly.
+	"--allow-unplayable-formats",    // Not intended to be used by the end-user.
+	"--export-options",              // Not intended to be used by the end-user.
+	"--help",                        // Not needed.
+	"--load-pages",                  // Not intended to be used by the end-user.
+	"--no-allow-unplayable-formats", // Not intended to be used by the end-user.
+	"--test",                        // Not intended to be used by the end-user.
+	"--youtube-print-sig-code",      // Not intended to be used by the end-user.
+}
+
+// deprecatedFlags are flags that are deprecated (but still work), and should be replaced
+// with alternatives (in most cases).
+//
+//   - https://github.com/yt-dlp/yt-dlp/blob/master/README.md#old-aliases
+//   - https://github.com/yt-dlp/yt-dlp/blob/master/README.md#no-longer-supported
+var deprecatedFlags = [][]string{
+	{"--avconv-location", "Use [Command.FfmpegLocation] instead."},
+	{"--call-home", "Not implemented."},
+	{"--clean-infojson", "Use [Command.CleanInfoJson] instead."},
+	{"--cn-verification-proxy", "Use [Command.GeoVerificationProxy] instead."},
+	{"--dump-headers", "Use [Command.PrintTraffic] instead."},
+	{"--dump-intermediate-pages", "Use [Command.DumpPages] instead."},
+	{"--force-write-download-archive", "Use [Command.ForceWriteArchive] instead."},
+	{"--include-ads", "No longer supported."},
+	{"--load-info", "Use [Command.LoadInfoJson] instead."},
+	{"--no-call-home", "This flag is now default in yt-dlp."},
+	{"--no-clean-infojson", "Use [Command.NoCleanInfoJson] instead."},
+	{"--no-include-ads", "This flag is now default in yt-dlp."},
+	{"--no-split-tracks", "Use [Command.NoSplitChapters] instead."},
+	{"--no-write-annotations", "This flag is now default in yt-dlp."},
+	{"--no-write-srt", "Use [Command.NoWriteSubs] instead."},
+	{"--prefer-avconv", "avconv is not officially supported by yt-dlp."},
+	{"--prefer-ffmpeg", "This flag is now default in yt-dlp."},
+	{"--prefer-unsecure", "Use [Command.PreferInsecure] instead."},
+	{"--rate-limit", "Use [Command.LimitRate] instead."},
+	{"--split-tracks", "Use [Command.SplitChapters] instead."},
+	{"--srt-lang", "Use [Command.SubLangs] instead."},
+	{"--trim-file-names", "Use [Command.TrimFilenames] instead."},
+	{"--write-annotations", "No supported site has annotations now."},
+	{"--write-srt", "Use [Command.WriteSubs] instead."},
+	{"--yes-overwrites", "Use [Command.ForceOverwrites] instead."},
 }
 
 // knownExecutable are dest or flag names that are executable (override the default url input).
@@ -91,6 +133,7 @@ type Option struct {
 	AllFlags        []string     `json:"-"` // all flags, short + long.
 	MetaVarFuncArgs []string     `json:"-"` // MetaVar converted to function arguments.
 	IsExecutable    bool         `json:"-"` // if the option means yt-dlp doesn't accept arguments, and some callback is done.
+	Deprecated      string       `json:"-"` // if the option is deprecated, this will be the deprecation description.
 
 	// Command data fields.
 	Action  string   `json:"action"`
@@ -126,6 +169,12 @@ func (o *Option) Generate(parent *OptionGroup) {
 
 	if slices.Contains(knownExecutable, o.Dest) || slices.Contains(knownExecutable, o.Flag) {
 		o.IsExecutable = true
+	}
+
+	for _, d := range deprecatedFlags {
+		if strings.EqualFold(d[0], o.Dest) || strings.EqualFold(d[0], o.Flag) {
+			o.Deprecated = d[1]
+		}
 	}
 
 	switch o.Type {

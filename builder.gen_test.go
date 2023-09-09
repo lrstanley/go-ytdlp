@@ -526,12 +526,6 @@ func TestBuilder_Download_NonExecutable(t *testing.T) {
 		_ = builder.UnsetHttpChunkSize()
 		validateFlagRemoved(t, builder, "http_chunk_size", "--http-chunk-size")
 	})
-	t.Run("Test", func(t *testing.T) {
-		builder := New().Test()
-		validateFlagAdded(t, builder, "test", "--test", 0)
-		_ = builder.UnsetTest()
-		validateFlagRemoved(t, builder, "test", "--test")
-	})
 	t.Run("PlaylistReverse", func(t *testing.T) {
 		builder := New().PlaylistReverse()
 		validateFlagAdded(t, builder, "playlist_reverse", "--playlist-reverse", 0)
@@ -1106,18 +1100,6 @@ func TestBuilder_VerbositySimulation_NonExecutable(t *testing.T) {
 		_ = builder.UnsetWritePages()
 		validateFlagRemoved(t, builder, "write_pages", "--write-pages")
 	})
-	t.Run("LoadPages", func(t *testing.T) {
-		builder := New().LoadPages()
-		validateFlagAdded(t, builder, "load_pages", "--load-pages", 0)
-		_ = builder.UnsetLoadPages()
-		validateFlagRemoved(t, builder, "load_pages", "--load-pages")
-	})
-	t.Run("YoutubePrintSigCode", func(t *testing.T) {
-		builder := New().YoutubePrintSigCode()
-		validateFlagAdded(t, builder, "youtube_print_sig_code", "--youtube-print-sig-code", 0)
-		_ = builder.UnsetYoutubePrintSigCode()
-		validateFlagRemoved(t, builder, "youtube_print_sig_code", "--youtube-print-sig-code")
-	})
 	t.Run("PrintTraffic", func(t *testing.T) {
 		builder := New().PrintTraffic()
 		validateFlagAdded(t, builder, "debug_printtraffic", "--print-traffic", 0)
@@ -1323,18 +1305,6 @@ func TestBuilder_VideoFormat_NonExecutable(t *testing.T) {
 		validateFlagAdded(t, builder, "merge_output_format", "--merge-output-format", 1)
 		_ = builder.UnsetMergeOutputFormat()
 		validateFlagRemoved(t, builder, "merge_output_format", "--merge-output-format")
-	})
-	t.Run("AllowUnplayableFormats", func(t *testing.T) {
-		builder := New().AllowUnplayableFormats()
-		validateFlagAdded(t, builder, "allow_unplayable_formats", "--allow-unplayable-formats", 0)
-		_ = builder.UnsetAllowUnplayableFormats()
-		validateFlagRemoved(t, builder, "allow_unplayable_formats", "--allow-unplayable-formats")
-	})
-	t.Run("NoAllowUnplayableFormats", func(t *testing.T) {
-		builder := New().NoAllowUnplayableFormats()
-		validateFlagAdded(t, builder, "allow_unplayable_formats", "--no-allow-unplayable-formats", 0)
-		_ = builder.UnsetAllowUnplayableFormats()
-		validateFlagRemoved(t, builder, "allow_unplayable_formats", "--no-allow-unplayable-formats")
 	})
 }
 

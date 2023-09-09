@@ -14,4 +14,8 @@
 {{- end }}{{/* end if executable */}}
 //  - {{ $option.Name | to_camel }} maps to cli flags: {{ $option.AllFlags | join "/" }}{{ if $option.MetaVar }}={{ $option.MetaVar }}{{ end }}{{ if $option.Hidden }} (hidden){{ end }}.
 //  - From option group: {{ $option.Parent.Name | quote }}
+{{- if $option.Deprecated }}
+//
+// Deprecated: {{ $option.Deprecated }}
+{{- end }}{{/* end if deprecated */}}
 {{- end -}}{{/* end define builder-help */}}
