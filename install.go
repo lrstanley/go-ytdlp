@@ -5,9 +5,13 @@
 package ytdlp
 
 import (
+	"bufio"
 	"bytes"
 	"context"
+	"crypto/sha256"
+	_ "embed"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -17,6 +21,8 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/ProtonMail/go-crypto/openpgp"
 )
 
 const (
@@ -25,6 +31,9 @@ const (
 )
 
 var (
+	//go:embed ytdlp-public.key
+	ytdlpPublicKey []byte // From: https://github.com/yt-dlp/yt-dlp/blob/master/public.key
+
 	resolveCache = atomic.Pointer[ResolvedInstall]{} // Should only be used by [Install].
 	installLock  sync.Mutex
 
@@ -75,6 +84,9 @@ type InstallOptions struct {
 	// be the same as never calling [Install] or [MustInstall] in the first place.
 	DisableDownload bool
 
+	// DisableChecksum disables checksum verification when downloading.
+	DisableChecksum bool
+
 	// AllowVersionMismatch allows mismatched versions to be used and installed.
 	// This will only be used when the yt-dlp executable is resolved outside of
 	// go-ytdlp's cache.
@@ -85,6 +97,127 @@ type InstallOptions struct {
 	// DownloadURL is the exact url to the binary location to download (and store).
 	// Leave empty to use GitHub + auto-detected os/arch.
 	DownloadURL string
+}
+
+func downloadFile(ctx context.Context, url, dest string, perms os.FileMode) error {
+	f, err := os.OpenFile(dest, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, perms)
+	if err != nil {
+		return fmt.Errorf("unable to create go-ytdlp dependent cache file %q: %w", dest, err)
+	}
+	defer f.Close()
+
+	// Download the binary.
+	client := &http.Client{Timeout: downloadTimeout}
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, http.NoBody)
+	if err != nil {
+		return fmt.Errorf("unable to download go-ytdlp dependent file %q: request creation: %w", dest, err)
+	}
+
+	req.Header.Set("User-Agent", fmt.Sprintf("github.com/lrstanley/go-ytdlp; version/%s", Version))
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("unable to download go-ytdlp dependent file %q: %w", dest, err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("unable to download go-ytdlp dependent file %q: bad status: %s", dest, resp.Status)
+	}
+
+	_, err = f.ReadFrom(resp.Body)
+	if err != nil {
+		return fmt.Errorf("unable to download go-ytdlp dependent file %q: streaming data: %w", dest, err)
+	}
+
+	err = f.Close()
+	if err != nil {
+		return fmt.Errorf("unable to download go-ytdlp dependent file %q: closing file: %w", dest, err)
+	}
+
+	return nil
+}
+
+func githubReleaseAsset(name string) string {
+	return fmt.Sprintf("https://github.com/yt-dlp/yt-dlp/releases/download/%s/%s", Version, name)
+}
+
+// verifyFileChecksum will verify the checksum of the target file, using the
+// checksum file and signature file. If the checksum does not match, an error
+// is returned. If the checksum file wasn't signed with the bundled public key,
+// an error is also returned.
+//
+//   - checksum file is expected to be SHA256.
+//   - checkAgainst is the name that we should compare to, that will be in the checksum
+//     file. If empty, it will use the base name of targetPath.
+func verifyFileChecksum(checksumPath, signaturePath, targetPath, checkAgainst string) error {
+	if checkAgainst == "" {
+		checkAgainst = filepath.Base(targetPath)
+	}
+
+	// First validate that the checksum has been properly signed using the known key.
+	keyBuf := bytes.NewBuffer(ytdlpPublicKey)
+
+	signatureFile, err := os.Open(signaturePath)
+	if err != nil {
+		return err
+	}
+	defer signatureFile.Close()
+
+	checksumFile, err := os.Open(checksumPath)
+	if err != nil {
+		return err
+	}
+	defer checksumFile.Close()
+
+	targetFile, err := os.Open(targetPath)
+	if err != nil {
+		return err
+	}
+	defer targetFile.Close()
+
+	keyring, err := openpgp.ReadArmoredKeyRing(keyBuf)
+	if err != nil {
+		return fmt.Errorf("unable to read armored key ring: %w", err)
+	}
+
+	_, err = openpgp.CheckDetachedSignature(keyring, checksumFile, signatureFile, nil)
+	if err != nil {
+		return fmt.Errorf("unable to check detached signature: %w", err)
+	}
+
+	// Now make sure the checksum from checksumFile matches the target file.
+	hash := sha256.New()
+	if _, err = io.Copy(hash, targetFile); err != nil {
+		return err
+	}
+
+	sum := fmt.Sprintf("%x", hash.Sum(nil))
+
+	_, err = checksumFile.Seek(0, 0)
+	if err != nil {
+		return err
+	}
+
+	scanner := bufio.NewScanner(checksumFile)
+
+	for scanner.Scan() {
+		fields := strings.Fields(scanner.Text())
+
+		if len(fields) != 2 { //nolint:gomnd
+			continue
+		}
+
+		if fields[1] == checkAgainst {
+			if fields[0] != sum {
+				return fmt.Errorf("checksum mismatch: expected %s, got %s", fields[0], sum)
+			}
+
+			return nil
+		}
+	}
+
+	return fmt.Errorf("unable to find checksum for %s", filepath.Base(targetPath))
 }
 
 // Install will check to see if yt-dlp is installed (if it's the right version),
@@ -140,7 +273,7 @@ func Install(ctx context.Context, opts *InstallOptions) (*ResolvedInstall, error
 	downloadURL := opts.DownloadURL
 
 	if downloadURL == "" {
-		downloadURL = fmt.Sprintf("https://github.com/yt-dlp/yt-dlp/releases/download/%s/%s", Version, src)
+		downloadURL = githubReleaseAsset(src)
 	}
 
 	baseCacheDir, err := os.UserCacheDir()
@@ -154,41 +287,40 @@ func Install(ctx context.Context, opts *InstallOptions) (*ResolvedInstall, error
 		return nil, fmt.Errorf("unable to create yt-dlp executable cache directory: %w", err)
 	}
 
-	f, err := os.OpenFile(filepath.Join(dir, dest[0]), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o750)
+	err = downloadFile(ctx, downloadURL, filepath.Join(dir, dest[0]+".tmp"), 0o750) //nolint:gomnd
 	if err != nil {
-		return nil, fmt.Errorf("unable to create yt-dlp executable cache file: %w", err)
+		return nil, err
 	}
-	defer f.Close()
 
-	// Download the binary.
-	client := &http.Client{Timeout: downloadTimeout}
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, downloadURL, http.NoBody)
+	if !opts.DisableChecksum {
+		err = downloadFile(ctx, githubReleaseAsset("SHA2-256SUMS"), filepath.Join(dir, "SHA2-256SUMS-"+Version), 0o640) //nolint:gomnd
+		if err != nil {
+			return nil, err
+		}
+
+		err = downloadFile(ctx, githubReleaseAsset("SHA2-256SUMS.sig"), filepath.Join(dir, "SHA2-256SUMS-"+Version+".sig"), 0o640) //nolint:gomnd
+		if err != nil {
+			return nil, err
+		}
+
+		err = verifyFileChecksum(
+			filepath.Join(dir, "SHA2-256SUMS-"+Version),
+			filepath.Join(dir, "SHA2-256SUMS-"+Version+".sig"),
+			filepath.Join(dir, dest[0]+".tmp"),
+			src,
+		)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// Rename the file to the correct name.
+	err = os.Rename(filepath.Join(dir, dest[0]+".tmp"), filepath.Join(dir, dest[0]))
 	if err != nil {
-		return nil, fmt.Errorf("unable to download yt-dlp executable: request creation: %w", err)
+		return nil, fmt.Errorf("unable to rename yt-dlp executable: %w", err)
 	}
 
-	req.Header.Set("User-Agent", fmt.Sprintf("github.com/lrstanley/go-ytdlp; version/%s", Version))
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("unable to download yt-dlp executable: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unable to download yt-dlp executable: bad status: %s", resp.Status)
-	}
-
-	_, err = f.ReadFrom(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("unable to download yt-dlp executable: streaming data: %w", err)
-	}
-
-	err = f.Close()
-	if err != nil {
-		return nil, fmt.Errorf("unable to download yt-dlp executable: closing file: %w", err)
-	}
-
+	// re-resolve now that we've downloaded the binary, and validated things.
 	resolved, err = resolveExecutable(false, true)
 	if err != nil {
 		return nil, err
@@ -231,23 +363,25 @@ func resolveExecutable(fromCache, calleeIsDownloader bool) (r *ResolvedInstall, 
 			bin = filepath.Join(baseCacheDir, xdgCacheDir, d)
 
 			stat, err = os.Stat(bin)
-			if err == nil {
-				if !stat.IsDir() && (stat.Mode().Perm()&0o100 != 0 || stat.Mode().Perm()&0o010 != 0 || stat.Mode().Perm()&0o001 != 0) {
-					r = &ResolvedInstall{
-						Executable: bin,
-						FromCache:  true,
-						Downloaded: calleeIsDownloader,
-					}
-					if calleeIsDownloader {
-						r.Version = Version
-					} else {
-						err = r.getVersion()
-						if err != nil {
-							return nil, err
-						}
-					}
-					return r, nil
+			if err != nil {
+				continue
+			}
+
+			if !stat.IsDir() && (stat.Mode().Perm()&0o100 != 0 || stat.Mode().Perm()&0o010 != 0 || stat.Mode().Perm()&0o001 != 0) {
+				r = &ResolvedInstall{
+					Executable: bin,
+					FromCache:  true,
+					Downloaded: calleeIsDownloader,
 				}
+				if calleeIsDownloader {
+					r.Version = Version
+				} else {
+					err = r.getVersion()
+					if err != nil {
+						return nil, err
+					}
+				}
+				return r, nil
 			}
 		}
 	}
