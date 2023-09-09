@@ -31,6 +31,8 @@ var sampleFiles = []testSampleFile{
 }
 
 func TestCommand_Simple(t *testing.T) {
+	_ = MustInstall(context.Background(), nil)
+
 	dir := t.TempDir()
 
 	var urls []string
@@ -87,6 +89,8 @@ func TestCommand_Simple(t *testing.T) {
 }
 
 func TestCommand_Version(t *testing.T) {
+	_ = MustInstall(context.Background(), nil)
+
 	res, err := New().Version(context.Background())
 	if err != nil {
 		t.Fatal(err)
@@ -107,6 +111,8 @@ func TestCommand_Version(t *testing.T) {
 }
 
 func TestCommand_Unset(t *testing.T) {
+	_ = MustInstall(context.Background(), nil)
+
 	builder := New().Progress().NoProgress().Output("test.mp4")
 
 	cmd := builder.buildCommand(context.TODO(), sampleFiles[0].url)
@@ -132,6 +138,8 @@ func TestCommand_Unset(t *testing.T) {
 }
 
 func TestCommand_Clone(t *testing.T) {
+	_ = MustInstall(context.Background(), nil)
+
 	builder1 := New().NoProgress().Output("test.mp4")
 
 	builder2 := builder1.Clone()
@@ -145,6 +153,8 @@ func TestCommand_Clone(t *testing.T) {
 }
 
 func TestCommand_SetExecutable(t *testing.T) {
+	_ = MustInstall(context.Background(), nil)
+
 	cmd := New().SetExecutable("/usr/bin/test").buildCommand(context.Background(), sampleFiles[0].url)
 
 	if cmd.Path != "/usr/bin/test" {
@@ -153,6 +163,8 @@ func TestCommand_SetExecutable(t *testing.T) {
 }
 
 func TestCommand_SetWorkDir(t *testing.T) {
+	_ = MustInstall(context.Background(), nil)
+
 	cmd := New().SetWorkDir("/tmp").buildCommand(context.Background(), sampleFiles[0].url)
 
 	if cmd.Dir != "/tmp" {
@@ -161,6 +173,8 @@ func TestCommand_SetWorkDir(t *testing.T) {
 }
 
 func TestCommand_SetEnvVar(t *testing.T) {
+	_ = MustInstall(context.Background(), nil)
+
 	cmd := New().SetEnvVar("TEST", "1").buildCommand(context.Background(), sampleFiles[0].url)
 
 	if cmd.Env[0] != "TEST=1" {

@@ -7,7 +7,6 @@ package ytdlp
 import (
 	"context"
 	"os/exec"
-	"runtime"
 	"slices"
 	"sync"
 )
@@ -142,19 +141,24 @@ func (c *Command) buildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	cmdArgs = append(cmdArgs, args...) // URLs or similar.
 
 	var name string
+	var err error
 
 	c.mu.RLock()
 	name = c.executable
 
 	if name == "" {
-		if runtime.GOOS == "windows" {
-			name = "yt-dlp.exe"
-		} else {
-			name = "yt-dlp"
+		var r *ResolvedInstall
+		r, err = resolveExecutable(true, false)
+		if err == nil {
+			name = r.Executable
 		}
 	}
 
 	cmd := exec.CommandContext(ctx, name, cmdArgs...)
+
+	if err != nil {
+		cmd.Err = err // Hijack the existing command to return the error from resolveExecutable.
+	}
 
 	if c.directory != "" {
 		cmd.Dir = c.directory
@@ -174,6 +178,10 @@ func (c *Command) buildCommand(ctx context.Context, args ...string) *exec.Cmd {
 // runWithResult runs the provided command, collects stdout/stderr, massages the
 // result into a Result struct, and returns it (with error wrapping).
 func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
+	if cmd.Err != nil {
+		return wrapError(nil, cmd.Err)
+	}
+
 	stdout := &timestampWriter{pipe: "stdout"}
 	stderr := &timestampWriter{pipe: "stderr"}
 
