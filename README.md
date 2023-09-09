@@ -64,7 +64,8 @@
 
 ## :sparkles: Features
 
-**!!! NOTE: go-ytdlp isn't stable yet, and as such, there may be wide-reaching changes, until 1.0.0 !!!**
+**!!! NOTE: go-ytdlp isn't stable yet, and as such, there may be wide-reaching _breaking_ changes,
+until 1.0.0 !!!**
 
 - CLI bindings for yt-dlp -- including all flags/commands.
 - Optional `Install` and `MustInstall` helpers to auto-download the latest supported version of
@@ -75,6 +76,10 @@
 - Deprecated flags are marked as deprecated in a way that should be caught by most IDEs/linters.
   - Worry less about making sure yt-dlp is installed wherever **go-ytdlp** is running from!
 - Stdout/Stderr parsing, with timestamps, and optional JSON post-processing.
+
+### :sparkles: Help Documentation Example
+
+![help documentation example](https://cdn.liam.sh/share/2023/09/Code_m1wz0zsCj9.png)
 
 ---
 
@@ -87,7 +92,7 @@ go get -u github.com/lrstanley/go-ytdlp@latest
 ```
 <!-- template:end:goget -->
 
-## :clap:  Examples
+## :clap: Examples
 
 ### Simple
 
