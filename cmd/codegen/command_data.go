@@ -32,6 +32,7 @@ var ignoredFlags = []string{
 //
 //   - https://github.com/yt-dlp/yt-dlp/blob/master/README.md#old-aliases
 //   - https://github.com/yt-dlp/yt-dlp/blob/master/README.md#no-longer-supported
+//   - https://github.com/yt-dlp/yt-dlp/blob/master/README.md#sponskrub-options
 var deprecatedFlags = [][]string{
 	{"--avconv-location", "Use [Command.FfmpegLocation] instead."},
 	{"--call-home", "Not implemented."},
@@ -46,6 +47,9 @@ var deprecatedFlags = [][]string{
 	{"--no-clean-infojson", "Use [Command.NoCleanInfoJson] instead."},
 	{"--no-include-ads", "This flag is now default in yt-dlp."},
 	{"--no-split-tracks", "Use [Command.NoSplitChapters] instead."},
+	{"--no-sponskrub-cut", "Use [Command.SponsorblockRemove] with \"-all\" as an argument."},
+	{"--no-sponskrub-force", "No longer applicable."},
+	{"--no-sponskrub", "Use [Command.NoSponsorblock] instead."},
 	{"--no-write-annotations", "This flag is now default in yt-dlp."},
 	{"--no-write-srt", "Use [Command.NoWriteSubs] instead."},
 	{"--prefer-avconv", "avconv is not officially supported by yt-dlp."},
@@ -53,6 +57,11 @@ var deprecatedFlags = [][]string{
 	{"--prefer-unsecure", "Use [Command.PreferInsecure] instead."},
 	{"--rate-limit", "Use [Command.LimitRate] instead."},
 	{"--split-tracks", "Use [Command.SplitChapters] instead."},
+	{"--sponskrub-args", "No longer applicable."},
+	{"--sponskrub-cut", "Use [Command.SponsorblockRemove] with \"all\" as an argument."},
+	{"--sponskrub-force", "No longer applicable."},
+	{"--sponskrub-location", "No longer applicable."},
+	{"--sponskrub", "Use [Command.SponsorblockMark] with \"all\" as an argument."},
 	{"--srt-lang", "Use [Command.SubLangs] instead."},
 	{"--trim-file-names", "Use [Command.TrimFilenames] instead."},
 	{"--write-annotations", "No supported site has annotations now."},

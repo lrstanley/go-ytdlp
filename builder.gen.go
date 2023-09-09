@@ -5765,6 +5765,8 @@ func (c *Command) UnsetSponsorblockAPI() *Command {
 //   - See [Command.UnsetSponskrub], for unsetting the flag.
 //   - Sponskrub maps to cli flags: --sponskrub (hidden).
 //   - From option group: "SponsorBlock"
+//
+// Deprecated: Use [Command.SponsorblockMark] with "all" as an argument.
 func (c *Command) Sponskrub() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub",
@@ -5777,6 +5779,8 @@ func (c *Command) Sponskrub() *Command {
 // UnsetSponskrub unsets any flags that were previously set by one of:
 //   - [Command.Sponskrub]
 //   - [Command.NoSponskrub]
+//
+// Deprecated: Use [Command.SponsorblockMark] with "all" as an argument.
 func (c *Command) UnsetSponskrub() *Command {
 	c.removeFlagByID("sponskrub")
 	return c
@@ -5787,6 +5791,8 @@ func (c *Command) UnsetSponskrub() *Command {
 //   - See [Command.UnsetSponskrub], for unsetting the flag.
 //   - NoSponskrub maps to cli flags: --no-sponskrub (hidden).
 //   - From option group: "SponsorBlock"
+//
+// Deprecated: Use [Command.NoSponsorblock] instead.
 func (c *Command) NoSponskrub() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub",
@@ -5801,6 +5807,8 @@ func (c *Command) NoSponskrub() *Command {
 //   - See [Command.UnsetSponskrubCut], for unsetting the flag.
 //   - SponskrubCut maps to cli flags: --sponskrub-cut (hidden).
 //   - From option group: "SponsorBlock"
+//
+// Deprecated: Use [Command.SponsorblockRemove] with "all" as an argument.
 func (c *Command) SponskrubCut() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
@@ -5813,6 +5821,8 @@ func (c *Command) SponskrubCut() *Command {
 // UnsetSponskrubCut unsets any flags that were previously set by one of:
 //   - [Command.SponskrubCut]
 //   - [Command.NoSponskrubCut]
+//
+// Deprecated: Use [Command.SponsorblockRemove] with "all" as an argument.
 func (c *Command) UnsetSponskrubCut() *Command {
 	c.removeFlagByID("sponskrub_cut")
 	return c
@@ -5823,6 +5833,8 @@ func (c *Command) UnsetSponskrubCut() *Command {
 //   - See [Command.UnsetSponskrubCut], for unsetting the flag.
 //   - NoSponskrubCut maps to cli flags: --no-sponskrub-cut (hidden).
 //   - From option group: "SponsorBlock"
+//
+// Deprecated: Use [Command.SponsorblockRemove] with "-all" as an argument.
 func (c *Command) NoSponskrubCut() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
@@ -5837,6 +5849,8 @@ func (c *Command) NoSponskrubCut() *Command {
 //   - See [Command.UnsetSponskrubForce], for unsetting the flag.
 //   - SponskrubForce maps to cli flags: --sponskrub-force (hidden).
 //   - From option group: "SponsorBlock"
+//
+// Deprecated: No longer applicable.
 func (c *Command) SponskrubForce() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_force",
@@ -5849,6 +5863,8 @@ func (c *Command) SponskrubForce() *Command {
 // UnsetSponskrubForce unsets any flags that were previously set by one of:
 //   - [Command.SponskrubForce]
 //   - [Command.NoSponskrubForce]
+//
+// Deprecated: No longer applicable.
 func (c *Command) UnsetSponskrubForce() *Command {
 	c.removeFlagByID("sponskrub_force")
 	return c
@@ -5859,6 +5875,8 @@ func (c *Command) UnsetSponskrubForce() *Command {
 //   - See [Command.UnsetSponskrubForce], for unsetting the flag.
 //   - NoSponskrubForce maps to cli flags: --no-sponskrub-force (hidden).
 //   - From option group: "SponsorBlock"
+//
+// Deprecated: No longer applicable.
 func (c *Command) NoSponskrubForce() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_force",
@@ -5873,6 +5891,8 @@ func (c *Command) NoSponskrubForce() *Command {
 //   - See [Command.UnsetSponskrubLocation], for unsetting the flag.
 //   - SponskrubLocation maps to cli flags: --sponskrub-location=PATH (hidden).
 //   - From option group: "SponsorBlock"
+//
+// Deprecated: No longer applicable.
 func (c *Command) SponskrubLocation(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_path",
@@ -5884,6 +5904,8 @@ func (c *Command) SponskrubLocation(path string) *Command {
 
 // UnsetSponskrubLocation unsets any flags that were previously set by one of:
 //   - [Command.SponskrubLocation]
+//
+// Deprecated: No longer applicable.
 func (c *Command) UnsetSponskrubLocation() *Command {
 	c.removeFlagByID("sponskrub_path")
 	return c
@@ -5894,6 +5916,8 @@ func (c *Command) UnsetSponskrubLocation() *Command {
 //   - See [Command.UnsetSponskrubArgs], for unsetting the flag.
 //   - SponskrubArgs maps to cli flags: --sponskrub-args=ARGS (hidden).
 //   - From option group: "SponsorBlock"
+//
+// Deprecated: No longer applicable.
 func (c *Command) SponskrubArgs(args string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_args",
@@ -5905,6 +5929,8 @@ func (c *Command) SponskrubArgs(args string) *Command {
 
 // UnsetSponskrubArgs unsets any flags that were previously set by one of:
 //   - [Command.SponskrubArgs]
+//
+// Deprecated: No longer applicable.
 func (c *Command) UnsetSponskrubArgs() *Command {
 	c.removeFlagByID("sponskrub_args")
 	return c
