@@ -678,6 +678,8 @@ func (c *Command) UnsetGeoVerificationProxy() *Command {
 	return c
 }
 
+// CnVerificationProxy sets the "cn-verification-proxy" flag (no description specified).
+//
 //   - See [Command.UnsetCnVerificationProxy], for unsetting the flag.
 //   - CnVerificationProxy maps to cli flags: --cn-verification-proxy=URL (hidden).
 //   - From option group: "Geo-restriction"
@@ -760,9 +762,11 @@ func (c *Command) NoGeoBypass() *Command {
 	return c
 }
 
-// - See [Command.UnsetGeoBypassCountry], for unsetting the flag.
-// - GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE (hidden).
-// - From option group: "Geo-restriction"
+// GeoBypassCountry sets the "geo-bypass-country" flag (no description specified).
+//
+//   - See [Command.UnsetGeoBypassCountry], for unsetting the flag.
+//   - GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE (hidden).
+//   - From option group: "Geo-restriction"
 func (c *Command) GeoBypassCountry(code string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -779,9 +783,11 @@ func (c *Command) UnsetGeoBypassCountry() *Command {
 	return c
 }
 
-// - See [Command.UnsetGeoBypassIpBlock], for unsetting the flag.
-// - GeoBypassIpBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK (hidden).
-// - From option group: "Geo-restriction"
+// GeoBypassIpBlock sets the "geo-bypass-ip-block" flag (no description specified).
+//
+//   - See [Command.UnsetGeoBypassIpBlock], for unsetting the flag.
+//   - GeoBypassIpBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK (hidden).
+//   - From option group: "Geo-restriction"
 func (c *Command) GeoBypassIpBlock(ipBlock string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -798,9 +804,11 @@ func (c *Command) UnsetGeoBypassIpBlock() *Command {
 	return c
 }
 
-// - See [Command.UnsetPlaylistStart], for unsetting the flag.
-// - PlaylistStart maps to cli flags: --playlist-start=NUMBER (hidden).
-// - From option group: "Video Selection"
+// PlaylistStart sets the "playlist-start" flag (no description specified).
+//
+//   - See [Command.UnsetPlaylistStart], for unsetting the flag.
+//   - PlaylistStart maps to cli flags: --playlist-start=NUMBER (hidden).
+//   - From option group: "Video Selection"
 func (c *Command) PlaylistStart(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "playliststart",
@@ -819,9 +827,11 @@ func (c *Command) UnsetPlaylistStart() *Command {
 	return c
 }
 
-// - See [Command.UnsetPlaylistEnd], for unsetting the flag.
-// - PlaylistEnd maps to cli flags: --playlist-end=NUMBER (hidden).
-// - From option group: "Video Selection"
+// PlaylistEnd sets the "playlist-end" flag (no description specified).
+//
+//   - See [Command.UnsetPlaylistEnd], for unsetting the flag.
+//   - PlaylistEnd maps to cli flags: --playlist-end=NUMBER (hidden).
+//   - From option group: "Video Selection"
 func (c *Command) PlaylistEnd(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "playlistend",
@@ -865,9 +875,11 @@ func (c *Command) UnsetPlaylistItems() *Command {
 	return c
 }
 
-// - See [Command.UnsetMatchTitle], for unsetting the flag.
-// - MatchTitle maps to cli flags: --match-title=REGEX (hidden).
-// - From option group: "Video Selection"
+// MatchTitle sets the "match-title" flag (no description specified).
+//
+//   - See [Command.UnsetMatchTitle], for unsetting the flag.
+//   - MatchTitle maps to cli flags: --match-title=REGEX (hidden).
+//   - From option group: "Video Selection"
 func (c *Command) MatchTitle(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "matchtitle",
@@ -884,9 +896,11 @@ func (c *Command) UnsetMatchTitle() *Command {
 	return c
 }
 
-// - See [Command.UnsetRejectTitle], for unsetting the flag.
-// - RejectTitle maps to cli flags: --reject-title=REGEX (hidden).
-// - From option group: "Video Selection"
+// RejectTitle sets the "reject-title" flag (no description specified).
+//
+//   - See [Command.UnsetRejectTitle], for unsetting the flag.
+//   - RejectTitle maps to cli flags: --reject-title=REGEX (hidden).
+//   - From option group: "Video Selection"
 func (c *Command) RejectTitle(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "rejecttitle",
@@ -1012,9 +1026,11 @@ func (c *Command) UnsetDateafter() *Command {
 	return c
 }
 
-// - See [Command.UnsetMinViews], for unsetting the flag.
-// - MinViews maps to cli flags: --min-views=COUNT (hidden).
-// - From option group: "Video Selection"
+// MinViews sets the "min-views" flag (no description specified).
+//
+//   - See [Command.UnsetMinViews], for unsetting the flag.
+//   - MinViews maps to cli flags: --min-views=COUNT (hidden).
+//   - From option group: "Video Selection"
 func (c *Command) MinViews(count int) *Command {
 	c.addFlag(&Flag{
 		ID:   "min_views",
@@ -1033,9 +1049,11 @@ func (c *Command) UnsetMinViews() *Command {
 	return c
 }
 
-// - See [Command.UnsetMaxViews], for unsetting the flag.
-// - MaxViews maps to cli flags: --max-views=COUNT (hidden).
-// - From option group: "Video Selection"
+// MaxViews sets the "max-views" flag (no description specified).
+//
+//   - See [Command.UnsetMaxViews], for unsetting the flag.
+//   - MaxViews maps to cli flags: --max-views=COUNT (hidden).
+//   - From option group: "Video Selection"
 func (c *Command) MaxViews(count int) *Command {
 	c.addFlag(&Flag{
 		ID:   "max_views",
@@ -2114,9 +2132,11 @@ func (c *Command) UnsetOutputNaPlaceholder() *Command {
 	return c
 }
 
-// - See [Command.UnsetAutonumberSize], for unsetting the flag.
-// - AutonumberSize maps to cli flags: --autonumber-size=NUMBER (hidden).
-// - From option group: "Filesystem"
+// AutonumberSize sets the "autonumber-size" flag (no description specified).
+//
+//   - See [Command.UnsetAutonumberSize], for unsetting the flag.
+//   - AutonumberSize maps to cli flags: --autonumber-size=NUMBER (hidden).
+//   - From option group: "Filesystem"
 func (c *Command) AutonumberSize(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "autonumber_size",
@@ -2135,9 +2155,11 @@ func (c *Command) UnsetAutonumberSize() *Command {
 	return c
 }
 
-// - See [Command.UnsetAutonumberStart], for unsetting the flag.
-// - AutonumberStart maps to cli flags: --autonumber-start=NUMBER (hidden).
-// - From option group: "Filesystem"
+// AutonumberStart sets the "autonumber-start" flag (no description specified).
+//
+//   - See [Command.UnsetAutonumberStart], for unsetting the flag.
+//   - AutonumberStart maps to cli flags: --autonumber-start=NUMBER (hidden).
+//   - From option group: "Filesystem"
 func (c *Command) AutonumberStart(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "autonumber_start",
@@ -3740,9 +3762,11 @@ func (c *Command) UnsetPreferInsecure() *Command {
 	return c
 }
 
-// - See [Command.UnsetUserAgent], for unsetting the flag.
-// - UserAgent maps to cli flags: --user-agent=UA (hidden).
-// - From option group: "Workarounds"
+// UserAgent sets the "user-agent" flag (no description specified).
+//
+//   - See [Command.UnsetUserAgent], for unsetting the flag.
+//   - UserAgent maps to cli flags: --user-agent=UA (hidden).
+//   - From option group: "Workarounds"
 func (c *Command) UserAgent(ua string) *Command {
 	c.addFlag(&Flag{
 		ID:   "user_agent",
@@ -3759,9 +3783,11 @@ func (c *Command) UnsetUserAgent() *Command {
 	return c
 }
 
-// - See [Command.UnsetReferer], for unsetting the flag.
-// - Referer maps to cli flags: --referer=URL (hidden).
-// - From option group: "Workarounds"
+// Referer sets the "referer" flag (no description specified).
+//
+//   - See [Command.UnsetReferer], for unsetting the flag.
+//   - Referer maps to cli flags: --referer=URL (hidden).
+//   - From option group: "Workarounds"
 func (c *Command) Referer(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "referer",
@@ -5125,9 +5151,11 @@ func (c *Command) NoEmbedInfoJson() *Command {
 	return c
 }
 
-// - See [Command.UnsetMetadataFromTitle], for unsetting the flag.
-// - MetadataFromTitle maps to cli flags: --metadata-from-title=FORMAT (hidden).
-// - From option group: "Post-Processing"
+// MetadataFromTitle sets the "metadata-from-title" flag (no description specified).
+//
+//   - See [Command.UnsetMetadataFromTitle], for unsetting the flag.
+//   - MetadataFromTitle maps to cli flags: --metadata-from-title=FORMAT (hidden).
+//   - From option group: "Post-Processing"
 func (c *Command) MetadataFromTitle(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "metafromtitle",
@@ -5392,9 +5420,11 @@ func (c *Command) NoExec() *Command {
 	return c
 }
 
-// - See [Command.UnsetExecBeforeDownload], for unsetting the flag.
-// - ExecBeforeDownload maps to cli flags: --exec-before-download=CMD (hidden).
-// - From option group: "Post-Processing"
+// ExecBeforeDownload sets the "exec-before-download" flag (no description specified).
+//
+//   - See [Command.UnsetExecBeforeDownload], for unsetting the flag.
+//   - ExecBeforeDownload maps to cli flags: --exec-before-download=CMD (hidden).
+//   - From option group: "Post-Processing"
 func (c *Command) ExecBeforeDownload(cmd string) *Command {
 	c.addFlag(&Flag{
 		ID:   "exec_before_dl_cmd",
@@ -5838,9 +5868,11 @@ func (c *Command) NoSponskrubForce() *Command {
 	return c
 }
 
-// - See [Command.UnsetSponskrubLocation], for unsetting the flag.
-// - SponskrubLocation maps to cli flags: --sponskrub-location=PATH (hidden).
-// - From option group: "SponsorBlock"
+// SponskrubLocation sets the "sponskrub-location" flag (no description specified).
+//
+//   - See [Command.UnsetSponskrubLocation], for unsetting the flag.
+//   - SponskrubLocation maps to cli flags: --sponskrub-location=PATH (hidden).
+//   - From option group: "SponsorBlock"
 func (c *Command) SponskrubLocation(path string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_path",
@@ -5857,9 +5889,11 @@ func (c *Command) UnsetSponskrubLocation() *Command {
 	return c
 }
 
-// - See [Command.UnsetSponskrubArgs], for unsetting the flag.
-// - SponskrubArgs maps to cli flags: --sponskrub-args=ARGS (hidden).
-// - From option group: "SponsorBlock"
+// SponskrubArgs sets the "sponskrub-args" flag (no description specified).
+//
+//   - See [Command.UnsetSponskrubArgs], for unsetting the flag.
+//   - SponskrubArgs maps to cli flags: --sponskrub-args=ARGS (hidden).
+//   - From option group: "SponsorBlock"
 func (c *Command) SponskrubArgs(args string) *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_args",

@@ -5,7 +5,7 @@
 {{- $option := . -}}
 {{- if $option.Help }}
 // {{ wrap 80 $option.Help | replace "\n" "\n// " }}
-{{- else if eq $option.Type "bool" }}
+{{- else }}
 // {{ $option.Name | to_camel }} sets the {{ $option.Name | quote }} flag (no description specified).
 {{- end }}{{/* end if help */}}
 //
