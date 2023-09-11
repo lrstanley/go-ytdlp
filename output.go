@@ -38,9 +38,8 @@ func (w *timestampWriter) Write(p []byte) (n int, err error) {
 		w.buf.Write(p[:i+1])
 		w.flush()
 
-		w.buf.Write(p[i+1:])
-
-		return len(p), nil
+		_, err = w.Write(p[i+1:]) // Recursively write the rest of the buffer, in case it contains multiple lines.
+		return len(p), err
 	}
 
 	return w.buf.Write(p)
