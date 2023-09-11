@@ -99,6 +99,8 @@ var (
 		"twofactor", "twoFactor",
 		"Postprocessor", "PostProcessor",
 		"postprocessor", "postProcessor",
+		"Filesize", "FileSize",
+		"filesize", "fileSize",
 	)
 )
 

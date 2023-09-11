@@ -288,16 +288,16 @@ func TestBuilder_VideoSelection_NonExecutable(t *testing.T) {
 		_ = builder.UnsetRejectTitle()
 		validateFlagRemoved(t, builder, "rejecttitle", "--reject-title")
 	})
-	t.Run("MinFilesize", func(t *testing.T) {
-		builder := New().MinFilesize("test")
+	t.Run("MinFileSize", func(t *testing.T) {
+		builder := New().MinFileSize("test")
 		validateFlagAdded(t, builder, "min_filesize", "--min-filesize", 1)
-		_ = builder.UnsetMinFilesize()
+		_ = builder.UnsetMinFileSize()
 		validateFlagRemoved(t, builder, "min_filesize", "--min-filesize")
 	})
-	t.Run("MaxFilesize", func(t *testing.T) {
-		builder := New().MaxFilesize("test")
+	t.Run("MaxFileSize", func(t *testing.T) {
+		builder := New().MaxFileSize("test")
 		validateFlagAdded(t, builder, "max_filesize", "--max-filesize", 1)
-		_ = builder.UnsetMaxFilesize()
+		_ = builder.UnsetMaxFileSize()
 		validateFlagRemoved(t, builder, "max_filesize", "--max-filesize")
 	})
 	t.Run("Date", func(t *testing.T) {
@@ -556,10 +556,10 @@ func TestBuilder_Download_NonExecutable(t *testing.T) {
 		_ = builder.UnsetLazyPlaylist()
 		validateFlagRemoved(t, builder, "lazy_playlist", "--no-lazy-playlist")
 	})
-	t.Run("XattrSetFilesize", func(t *testing.T) {
-		builder := New().XattrSetFilesize()
+	t.Run("XattrSetFileSize", func(t *testing.T) {
+		builder := New().XattrSetFileSize()
 		validateFlagAdded(t, builder, "xattr_set_filesize", "--xattr-set-filesize", 0)
-		_ = builder.UnsetXattrSetFilesize()
+		_ = builder.UnsetXattrSetFileSize()
 		validateFlagRemoved(t, builder, "xattr_set_filesize", "--xattr-set-filesize")
 	})
 	t.Run("HLSPreferNative", func(t *testing.T) {

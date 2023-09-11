@@ -919,10 +919,10 @@ func (c *Command) UnsetRejectTitle() *Command {
 
 // Abort download if filesize is smaller than SIZE, e.g. 50k or 44.6M
 //
-//   - See [Command.UnsetMinFilesize], for unsetting the flag.
-//   - MinFilesize maps to cli flags: --min-filesize=SIZE.
+//   - See [Command.UnsetMinFileSize], for unsetting the flag.
+//   - MinFileSize maps to cli flags: --min-filesize=SIZE.
 //   - From option group: "Video Selection"
-func (c *Command) MinFilesize(size string) *Command {
+func (c *Command) MinFileSize(size string) *Command {
 	c.addFlag(&Flag{
 		ID:   "min_filesize",
 		Flag: "--min-filesize",
@@ -931,19 +931,19 @@ func (c *Command) MinFilesize(size string) *Command {
 	return c
 }
 
-// UnsetMinFilesize unsets any flags that were previously set by one of:
-//   - [Command.MinFilesize]
-func (c *Command) UnsetMinFilesize() *Command {
+// UnsetMinFileSize unsets any flags that were previously set by one of:
+//   - [Command.MinFileSize]
+func (c *Command) UnsetMinFileSize() *Command {
 	c.removeFlagByID("min_filesize")
 	return c
 }
 
 // Abort download if filesize is larger than SIZE, e.g. 50k or 44.6M
 //
-//   - See [Command.UnsetMaxFilesize], for unsetting the flag.
-//   - MaxFilesize maps to cli flags: --max-filesize=SIZE.
+//   - See [Command.UnsetMaxFileSize], for unsetting the flag.
+//   - MaxFileSize maps to cli flags: --max-filesize=SIZE.
 //   - From option group: "Video Selection"
-func (c *Command) MaxFilesize(size string) *Command {
+func (c *Command) MaxFileSize(size string) *Command {
 	c.addFlag(&Flag{
 		ID:   "max_filesize",
 		Flag: "--max-filesize",
@@ -952,9 +952,9 @@ func (c *Command) MaxFilesize(size string) *Command {
 	return c
 }
 
-// UnsetMaxFilesize unsets any flags that were previously set by one of:
-//   - [Command.MaxFilesize]
-func (c *Command) UnsetMaxFilesize() *Command {
+// UnsetMaxFileSize unsets any flags that were previously set by one of:
+//   - [Command.MaxFileSize]
+func (c *Command) UnsetMaxFileSize() *Command {
 	c.removeFlagByID("max_filesize")
 	return c
 }
@@ -1830,10 +1830,10 @@ func (c *Command) NoLazyPlaylist() *Command {
 
 // Set file xattribute ytdl.filesize with expected file size
 //
-//   - See [Command.UnsetXattrSetFilesize], for unsetting the flag.
-//   - XattrSetFilesize maps to cli flags: --xattr-set-filesize.
+//   - See [Command.UnsetXattrSetFileSize], for unsetting the flag.
+//   - XattrSetFileSize maps to cli flags: --xattr-set-filesize.
 //   - From option group: "Download"
-func (c *Command) XattrSetFilesize() *Command {
+func (c *Command) XattrSetFileSize() *Command {
 	c.addFlag(&Flag{
 		ID:   "xattr_set_filesize",
 		Flag: "--xattr-set-filesize",
@@ -1842,9 +1842,9 @@ func (c *Command) XattrSetFilesize() *Command {
 	return c
 }
 
-// UnsetXattrSetFilesize unsets any flags that were previously set by one of:
-//   - [Command.XattrSetFilesize]
-func (c *Command) UnsetXattrSetFilesize() *Command {
+// UnsetXattrSetFileSize unsets any flags that were previously set by one of:
+//   - [Command.XattrSetFileSize]
+func (c *Command) UnsetXattrSetFileSize() *Command {
 	c.removeFlagByID("xattr_set_filesize")
 	return c
 }
