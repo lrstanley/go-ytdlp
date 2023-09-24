@@ -13,6 +13,7 @@ import (
 
 // Print program version and exit
 //
+// Additional information:
 //   - Version maps to cli flags: --version.
 //   - From option group: "General"
 func (c *Command) Version(ctx context.Context) (*Result, error) {
@@ -28,6 +29,10 @@ func (c *Command) Version(ctx context.Context) (*Result, error) {
 // Check if updates are available. You cannot update when running from source code;
 // Use git to pull the latest changes
 //
+// References:
+//   - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#update
+//
+// Additional information:
 //   - Update maps to cli flags: -U/--update.
 //   - From option group: "General"
 func (c *Command) Update(ctx context.Context) (*Result, error) {
@@ -42,6 +47,7 @@ func (c *Command) Update(ctx context.Context) (*Result, error) {
 
 // Do not check for updates (default)
 //
+// Additional information:
 //   - See [Command.UnsetUpdate], for unsetting the flag.
 //   - NoUpdate maps to cli flags: --no-update.
 //   - From option group: "General"
@@ -65,6 +71,10 @@ func (c *Command) UnsetUpdate() *Command {
 // CHANNEL and TAG default to "stable" and "latest" respectively if omitted; See
 // "UPDATE" for details. Supported channels: stable, nightly
 //
+// References:
+//   - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#update
+//
+// Additional information:
 //   - UpdateTo maps to cli flags: --update-to=[CHANNEL]@[TAG].
 //   - From option group: "General"
 func (c *Command) UpdateTo(ctx context.Context, value string) (*Result, error) {
@@ -80,6 +90,7 @@ func (c *Command) UpdateTo(ctx context.Context, value string) (*Result, error) {
 // Ignore download and postprocessing errors. The download will be considered
 // successful even if the postprocessing fails
 //
+// Additional information:
 //   - See [Command.UnsetIgnoreErrors], for unsetting the flag.
 //   - IgnoreErrors maps to cli flags: -i/--ignore-errors.
 //   - From option group: "General"
@@ -102,6 +113,7 @@ func (c *Command) UnsetIgnoreErrors() *Command {
 // Continue with next video on download errors; e.g. to skip unavailable videos in
 // a playlist (default)
 //
+// Additional information:
 //   - See [Command.UnsetAbortOnError], for unsetting the flag.
 //   - NoAbortOnError maps to cli flags: --no-abort-on-error.
 //   - From option group: "General"
@@ -124,6 +136,7 @@ func (c *Command) UnsetAbortOnError() *Command {
 
 // Abort downloading of further videos if an error occurs
 //
+// Additional information:
 //   - See [Command.UnsetAbortOnError], for unsetting the flag.
 //   - AbortOnError maps to cli flags: --abort-on-error/--no-ignore-errors.
 //   - From option group: "General"
@@ -138,6 +151,7 @@ func (c *Command) AbortOnError() *Command {
 
 // Display the current user-agent and exit
 //
+// Additional information:
 //   - DumpUserAgent maps to cli flags: --dump-user-agent.
 //   - From option group: "General"
 func (c *Command) DumpUserAgent(ctx context.Context) (*Result, error) {
@@ -152,6 +166,7 @@ func (c *Command) DumpUserAgent(ctx context.Context) (*Result, error) {
 
 // List all supported extractors and exit
 //
+// Additional information:
 //   - ListExtractors maps to cli flags: --list-extractors.
 //   - From option group: "General"
 func (c *Command) ListExtractors(ctx context.Context) (*Result, error) {
@@ -166,6 +181,7 @@ func (c *Command) ListExtractors(ctx context.Context) (*Result, error) {
 
 // Output descriptions of all supported extractors and exit
 //
+// Additional information:
 //   - ExtractorDescriptions maps to cli flags: --extractor-descriptions.
 //   - From option group: "General"
 func (c *Command) ExtractorDescriptions(ctx context.Context) (*Result, error) {
@@ -183,6 +199,7 @@ func (c *Command) ExtractorDescriptions(ctx context.Context) (*Result, error) {
 // Prefix the name with a "-" to exclude it, e.g. --ies default,-generic. Use
 // --list-extractors for a list of extractor names.
 //
+// Additional information:
 //   - See [Command.UnsetUseExtractors], for unsetting the flag.
 //   - UseExtractors maps to cli flags: --use-extractors/--ies=NAMES.
 //   - From option group: "General"
@@ -204,6 +221,7 @@ func (c *Command) UnsetUseExtractors() *Command {
 
 // ForceGenericExtractor sets the "force-generic-extractor" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetForceGenericExtractor], for unsetting the flag.
 //   - ForceGenericExtractor maps to cli flags: --force-generic-extractor (hidden).
 //   - From option group: "General"
@@ -229,6 +247,7 @@ func (c *Command) UnsetForceGenericExtractor() *Command {
 // throws an error. The default value "fixup_error" repairs broken URLs, but emits
 // an error if this is not possible instead of searching
 //
+// Additional information:
 //   - See [Command.UnsetDefaultSearch], for unsetting the flag.
 //   - DefaultSearch maps to cli flags: --default-search=PREFIX.
 //   - From option group: "General"
@@ -252,6 +271,7 @@ func (c *Command) UnsetDefaultSearch() *Command {
 // --config-locations. For backward compatibility, if this option is found inside
 // the system configuration file, the user configuration is not loaded.
 //
+// Additional information:
 //   - See [Command.UnsetIgnoreConfig], for unsetting the flag.
 //   - IgnoreConfig maps to cli flags: --ignore-config/--no-config.
 //   - From option group: "General"
@@ -275,6 +295,7 @@ func (c *Command) UnsetIgnoreConfig() *Command {
 // configuration file, ignore all previous --config-locations defined in the
 // current file
 //
+// Additional information:
 //   - See [Command.UnsetConfigLocations], for unsetting the flag.
 //   - NoConfigLocations maps to cli flags: --no-config-locations.
 //   - From option group: "General"
@@ -299,6 +320,7 @@ func (c *Command) UnsetConfigLocations() *Command {
 // containing directory ("-" for stdin). Can be used multiple times and inside
 // other configuration files
 //
+// Additional information:
 //   - See [Command.UnsetConfigLocations], for unsetting the flag.
 //   - ConfigLocations maps to cli flags: --config-locations=PATH.
 //   - From option group: "General"
@@ -313,6 +335,7 @@ func (c *Command) ConfigLocations(path string) *Command {
 
 // Do not extract the videos of a playlist, only list them
 //
+// Additional information:
 //   - See [Command.UnsetFlatPlaylist], for unsetting the flag.
 //   - FlatPlaylist maps to cli flags: --flat-playlist.
 //   - From option group: "General"
@@ -335,6 +358,7 @@ func (c *Command) UnsetFlatPlaylist() *Command {
 
 // Fully extract the videos of a playlist (default)
 //
+// Additional information:
 //   - See [Command.UnsetFlatPlaylist], for unsetting the flag.
 //   - NoFlatPlaylist maps to cli flags: --no-flat-playlist.
 //   - From option group: "General"
@@ -350,6 +374,7 @@ func (c *Command) NoFlatPlaylist() *Command {
 // Download livestreams from the start. Currently only supported for YouTube
 // (Experimental)
 //
+// Additional information:
 //   - See [Command.UnsetLiveFromStart], for unsetting the flag.
 //   - LiveFromStart maps to cli flags: --live-from-start.
 //   - From option group: "General"
@@ -372,6 +397,7 @@ func (c *Command) UnsetLiveFromStart() *Command {
 
 // Download livestreams from the current time (default)
 //
+// Additional information:
 //   - See [Command.UnsetLiveFromStart], for unsetting the flag.
 //   - NoLiveFromStart maps to cli flags: --no-live-from-start.
 //   - From option group: "General"
@@ -387,6 +413,7 @@ func (c *Command) NoLiveFromStart() *Command {
 // Wait for scheduled streams to become available. Pass the minimum number of
 // seconds (or range) to wait between retries
 //
+// Additional information:
 //   - See [Command.UnsetWaitForVideo], for unsetting the flag.
 //   - WaitForVideo maps to cli flags: --wait-for-video=MIN[-MAX].
 //   - From option group: "General"
@@ -409,6 +436,7 @@ func (c *Command) UnsetWaitForVideo() *Command {
 
 // Do not wait for scheduled streams (default)
 //
+// Additional information:
 //   - See [Command.UnsetWaitForVideo], for unsetting the flag.
 //   - NoWaitForVideo maps to cli flags: --no-wait-for-video.
 //   - From option group: "General"
@@ -423,6 +451,7 @@ func (c *Command) NoWaitForVideo() *Command {
 
 // Mark videos watched (even with --simulate)
 //
+// Additional information:
 //   - See [Command.UnsetMarkWatched], for unsetting the flag.
 //   - MarkWatched maps to cli flags: --mark-watched.
 //   - From option group: "General"
@@ -445,6 +474,7 @@ func (c *Command) UnsetMarkWatched() *Command {
 
 // Do not mark videos watched (default)
 //
+// Additional information:
 //   - See [Command.UnsetMarkWatched], for unsetting the flag.
 //   - NoMarkWatched maps to cli flags: --no-mark-watched.
 //   - From option group: "General"
@@ -459,6 +489,7 @@ func (c *Command) NoMarkWatched() *Command {
 
 // NoColors sets the "no-colors" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetColors], for unsetting the flag.
 //   - NoColors maps to cli flags: --no-colors/--no-colours (hidden).
 //   - From option group: "General"
@@ -483,6 +514,7 @@ func (c *Command) UnsetColors() *Command {
 // "never", or "no_color" (use non color terminal sequences). Can be used multiple
 // times
 //
+// Additional information:
 //   - See [Command.UnsetColor], for unsetting the flag.
 //   - Color maps to cli flags: --color=[STREAM:]POLICY.
 //   - From option group: "General"
@@ -506,6 +538,10 @@ func (c *Command) UnsetColor() *Command {
 // configurations by reverting some of the changes made in yt-dlp. See "Differences
 // in default behavior" for details
 //
+// References:
+//   - Compatibility Options: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#differences-in-default-behavior
+//
+// Additional information:
 //   - See [Command.UnsetCompatOptions], for unsetting the flag.
 //   - CompatOptions maps to cli flags: --compat-options=OPTS.
 //   - From option group: "General"
@@ -529,6 +565,7 @@ func (c *Command) UnsetCompatOptions() *Command {
 // proper scheme, e.g. socks5://user:pass@127.0.0.1:1080/. Pass in an empty string
 // (--proxy "") for direct connection
 //
+// Additional information:
 //   - See [Command.UnsetProxy], for unsetting the flag.
 //   - Proxy maps to cli flags: --proxy=URL.
 //   - From option group: "Network"
@@ -550,6 +587,7 @@ func (c *Command) UnsetProxy() *Command {
 
 // Time to wait before giving up, in seconds
 //
+// Additional information:
 //   - See [Command.UnsetSocketTimeout], for unsetting the flag.
 //   - SocketTimeout maps to cli flags: --socket-timeout=SECONDS.
 //   - From option group: "Network"
@@ -573,6 +611,7 @@ func (c *Command) UnsetSocketTimeout() *Command {
 
 // Client-side IP address to bind to
 //
+// Additional information:
 //   - See [Command.UnsetSourceAddress], for unsetting the flag.
 //   - SourceAddress maps to cli flags: --source-address=IP.
 //   - From option group: "Network"
@@ -594,6 +633,7 @@ func (c *Command) UnsetSourceAddress() *Command {
 
 // Make all connections via IPv4
 //
+// Additional information:
 //   - See [Command.UnsetForceIPv4], for unsetting the flag.
 //   - ForceIPv4 maps to cli flags: -4/--force-ipv4.
 //   - From option group: "Network"
@@ -615,6 +655,7 @@ func (c *Command) UnsetForceIPv4() *Command {
 
 // Make all connections via IPv6
 //
+// Additional information:
 //   - See [Command.UnsetForceIPv6], for unsetting the flag.
 //   - ForceIPv6 maps to cli flags: -6/--force-ipv6.
 //   - From option group: "Network"
@@ -636,6 +677,7 @@ func (c *Command) UnsetForceIPv6() *Command {
 
 // Enable file:// URLs. This is disabled by default for security reasons.
 //
+// Additional information:
 //   - See [Command.UnsetEnableFileURLs], for unsetting the flag.
 //   - EnableFileURLs maps to cli flags: --enable-file-urls.
 //   - From option group: "Network"
@@ -659,6 +701,7 @@ func (c *Command) UnsetEnableFileURLs() *Command {
 // default proxy specified by --proxy (or none, if the option is not present) is
 // used for the actual downloading
 //
+// Additional information:
 //   - See [Command.UnsetGeoVerificationProxy], for unsetting the flag.
 //   - GeoVerificationProxy maps to cli flags: --geo-verification-proxy=URL.
 //   - From option group: "Geo-restriction"
@@ -680,6 +723,7 @@ func (c *Command) UnsetGeoVerificationProxy() *Command {
 
 // CNVerificationProxy sets the "cn-verification-proxy" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetCNVerificationProxy], for unsetting the flag.
 //   - CNVerificationProxy maps to cli flags: --cn-verification-proxy=URL (hidden).
 //   - From option group: "Geo-restriction"
@@ -707,6 +751,7 @@ func (c *Command) UnsetCNVerificationProxy() *Command {
 // One of "default" (only when known to be useful), "never", an IP block in CIDR
 // notation, or a two-letter ISO 3166-2 country code
 //
+// Additional information:
 //   - See [Command.UnsetXFF], for unsetting the flag.
 //   - XFF maps to cli flags: --xff=VALUE.
 //   - From option group: "Geo-restriction"
@@ -728,6 +773,7 @@ func (c *Command) UnsetXFF() *Command {
 
 // GeoBypass sets the "geo-bypass" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGeoBypass], for unsetting the flag.
 //   - GeoBypass maps to cli flags: --geo-bypass (hidden).
 //   - From option group: "Geo-restriction"
@@ -750,6 +796,7 @@ func (c *Command) UnsetGeoBypass() *Command {
 
 // NoGeoBypass sets the "no-geo-bypass" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGeoBypass], for unsetting the flag.
 //   - NoGeoBypass maps to cli flags: --no-geo-bypass (hidden).
 //   - From option group: "Geo-restriction"
@@ -764,6 +811,7 @@ func (c *Command) NoGeoBypass() *Command {
 
 // GeoBypassCountry sets the "geo-bypass-country" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGeoBypassCountry], for unsetting the flag.
 //   - GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE (hidden).
 //   - From option group: "Geo-restriction"
@@ -785,6 +833,7 @@ func (c *Command) UnsetGeoBypassCountry() *Command {
 
 // GeoBypassIPBlock sets the "geo-bypass-ip-block" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGeoBypassIPBlock], for unsetting the flag.
 //   - GeoBypassIPBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK (hidden).
 //   - From option group: "Geo-restriction"
@@ -806,6 +855,7 @@ func (c *Command) UnsetGeoBypassIPBlock() *Command {
 
 // PlaylistStart sets the "playlist-start" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetPlaylistStart], for unsetting the flag.
 //   - PlaylistStart maps to cli flags: --playlist-start=NUMBER (hidden).
 //   - From option group: "Video Selection"
@@ -829,6 +879,7 @@ func (c *Command) UnsetPlaylistStart() *Command {
 
 // PlaylistEnd sets the "playlist-end" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetPlaylistEnd], for unsetting the flag.
 //   - PlaylistEnd maps to cli flags: --playlist-end=NUMBER (hidden).
 //   - From option group: "Video Selection"
@@ -856,6 +907,7 @@ func (c *Command) UnsetPlaylistEnd() *Command {
 // download in reverse order. E.g. "-I 1:3,7,-5::2" used on a playlist of size 15
 // will download the items at index 1,2,3,7,11,13,15
 //
+// Additional information:
 //   - See [Command.UnsetPlaylistItems], for unsetting the flag.
 //   - PlaylistItems maps to cli flags: -I/--playlist-items=ITEM_SPEC.
 //   - From option group: "Video Selection"
@@ -877,6 +929,7 @@ func (c *Command) UnsetPlaylistItems() *Command {
 
 // MatchTitle sets the "match-title" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetMatchTitle], for unsetting the flag.
 //   - MatchTitle maps to cli flags: --match-title=REGEX (hidden).
 //   - From option group: "Video Selection"
@@ -898,6 +951,7 @@ func (c *Command) UnsetMatchTitle() *Command {
 
 // RejectTitle sets the "reject-title" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetRejectTitle], for unsetting the flag.
 //   - RejectTitle maps to cli flags: --reject-title=REGEX (hidden).
 //   - From option group: "Video Selection"
@@ -919,6 +973,7 @@ func (c *Command) UnsetRejectTitle() *Command {
 
 // Abort download if filesize is smaller than SIZE, e.g. 50k or 44.6M
 //
+// Additional information:
 //   - See [Command.UnsetMinFileSize], for unsetting the flag.
 //   - MinFileSize maps to cli flags: --min-filesize=SIZE.
 //   - From option group: "Video Selection"
@@ -940,6 +995,7 @@ func (c *Command) UnsetMinFileSize() *Command {
 
 // Abort download if filesize is larger than SIZE, e.g. 50k or 44.6M
 //
+// Additional information:
 //   - See [Command.UnsetMaxFileSize], for unsetting the flag.
 //   - MaxFileSize maps to cli flags: --max-filesize=SIZE.
 //   - From option group: "Video Selection"
@@ -963,6 +1019,7 @@ func (c *Command) UnsetMaxFileSize() *Command {
 // format [now|today|yesterday][-N[day|week|month|year]]. E.g. "--date
 // today-2weeks" downloads only videos uploaded on the same day two weeks ago
 //
+// Additional information:
 //   - See [Command.UnsetDate], for unsetting the flag.
 //   - Date maps to cli flags: --date=DATE.
 //   - From option group: "Video Selection"
@@ -985,6 +1042,7 @@ func (c *Command) UnsetDate() *Command {
 // Download only videos uploaded on or before this date. The date formats accepted
 // is the same as --date
 //
+// Additional information:
 //   - See [Command.UnsetDateBefore], for unsetting the flag.
 //   - DateBefore maps to cli flags: --datebefore=DATE.
 //   - From option group: "Video Selection"
@@ -1007,6 +1065,7 @@ func (c *Command) UnsetDateBefore() *Command {
 // Download only videos uploaded on or after this date. The date formats accepted
 // is the same as --date
 //
+// Additional information:
 //   - See [Command.UnsetDateAfter], for unsetting the flag.
 //   - DateAfter maps to cli flags: --dateafter=DATE.
 //   - From option group: "Video Selection"
@@ -1028,6 +1087,7 @@ func (c *Command) UnsetDateAfter() *Command {
 
 // MinViews sets the "min-views" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetMinViews], for unsetting the flag.
 //   - MinViews maps to cli flags: --min-views=COUNT (hidden).
 //   - From option group: "Video Selection"
@@ -1051,6 +1111,7 @@ func (c *Command) UnsetMinViews() *Command {
 
 // MaxViews sets the "max-views" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetMaxViews], for unsetting the flag.
 //   - MaxViews maps to cli flags: --max-views=COUNT (hidden).
 //   - From option group: "Video Selection"
@@ -1084,6 +1145,7 @@ func (c *Command) UnsetMaxViews() *Command {
 // phrase "cats & dogs" (caseless). Use "--match-filter -" to interactively ask
 // whether to download each video
 //
+// Additional information:
 //   - See [Command.UnsetMatchFilters], for unsetting the flag.
 //   - MatchFilters maps to cli flags: --match-filters=FILTER.
 //   - From option group: "Video Selection"
@@ -1106,6 +1168,7 @@ func (c *Command) UnsetMatchFilters() *Command {
 
 // Do not use any --match-filter (default)
 //
+// Additional information:
 //   - See [Command.UnsetMatchFilters], for unsetting the flag.
 //   - NoMatchFilters maps to cli flags: --no-match-filters.
 //   - From option group: "Video Selection"
@@ -1121,6 +1184,7 @@ func (c *Command) NoMatchFilters() *Command {
 // Same as "--match-filters" but stops the download process when a video is
 // rejected
 //
+// Additional information:
 //   - See [Command.UnsetBreakMatchFilters], for unsetting the flag.
 //   - BreakMatchFilters maps to cli flags: --break-match-filters=FILTER.
 //   - From option group: "Video Selection"
@@ -1143,6 +1207,7 @@ func (c *Command) UnsetBreakMatchFilters() *Command {
 
 // Do not use any --break-match-filters (default)
 //
+// Additional information:
 //   - See [Command.UnsetBreakMatchFilters], for unsetting the flag.
 //   - NoBreakMatchFilters maps to cli flags: --no-break-match-filters.
 //   - From option group: "Video Selection"
@@ -1157,6 +1222,7 @@ func (c *Command) NoBreakMatchFilters() *Command {
 
 // Download only the video, if the URL refers to a video and a playlist
 //
+// Additional information:
 //   - See [Command.UnsetPlaylist], for unsetting the flag.
 //   - NoPlaylist maps to cli flags: --no-playlist.
 //   - From option group: "Video Selection"
@@ -1179,6 +1245,7 @@ func (c *Command) UnsetPlaylist() *Command {
 
 // Download the playlist, if the URL refers to a video and a playlist
 //
+// Additional information:
 //   - See [Command.UnsetPlaylist], for unsetting the flag.
 //   - YesPlaylist maps to cli flags: --yes-playlist.
 //   - From option group: "Video Selection"
@@ -1193,6 +1260,7 @@ func (c *Command) YesPlaylist() *Command {
 
 // Download only videos suitable for the given age
 //
+// Additional information:
 //   - See [Command.UnsetAgeLimit], for unsetting the flag.
 //   - AgeLimit maps to cli flags: --age-limit=YEARS.
 //   - From option group: "Video Selection"
@@ -1217,6 +1285,7 @@ func (c *Command) UnsetAgeLimit() *Command {
 // Download only videos not listed in the archive file. Record the IDs of all
 // downloaded videos in it
 //
+// Additional information:
 //   - See [Command.UnsetDownloadArchive], for unsetting the flag.
 //   - DownloadArchive maps to cli flags: --download-archive=FILE.
 //   - From option group: "Video Selection"
@@ -1239,6 +1308,7 @@ func (c *Command) UnsetDownloadArchive() *Command {
 
 // Do not use archive file (default)
 //
+// Additional information:
 //   - See [Command.UnsetDownloadArchive], for unsetting the flag.
 //   - NoDownloadArchive maps to cli flags: --no-download-archive.
 //   - From option group: "Video Selection"
@@ -1253,6 +1323,7 @@ func (c *Command) NoDownloadArchive() *Command {
 
 // Abort after downloading NUMBER files
 //
+// Additional information:
 //   - See [Command.UnsetMaxDownloads], for unsetting the flag.
 //   - MaxDownloads maps to cli flags: --max-downloads=NUMBER.
 //   - From option group: "Video Selection"
@@ -1276,6 +1347,7 @@ func (c *Command) UnsetMaxDownloads() *Command {
 
 // Stop the download process when encountering a file that is in the archive
 //
+// Additional information:
 //   - See [Command.UnsetBreakOnExisting], for unsetting the flag.
 //   - BreakOnExisting maps to cli flags: --break-on-existing.
 //   - From option group: "Video Selection"
@@ -1297,6 +1369,7 @@ func (c *Command) UnsetBreakOnExisting() *Command {
 
 // BreakOnReject sets the "break-on-reject" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetBreakOnReject], for unsetting the flag.
 //   - BreakOnReject maps to cli flags: --break-on-reject (hidden).
 //   - From option group: "Video Selection"
@@ -1319,6 +1392,7 @@ func (c *Command) UnsetBreakOnReject() *Command {
 // Alters --max-downloads, --break-on-existing, --break-match-filter, and
 // autonumber to reset per input URL
 //
+// Additional information:
 //   - See [Command.UnsetBreakPerInput], for unsetting the flag.
 //   - BreakPerInput maps to cli flags: --break-per-input.
 //   - From option group: "Video Selection"
@@ -1341,6 +1415,7 @@ func (c *Command) UnsetBreakPerInput() *Command {
 
 // --break-on-existing and similar options terminates the entire download queue
 //
+// Additional information:
 //   - See [Command.UnsetBreakPerInput], for unsetting the flag.
 //   - NoBreakPerInput maps to cli flags: --no-break-per-input.
 //   - From option group: "Video Selection"
@@ -1355,6 +1430,7 @@ func (c *Command) NoBreakPerInput() *Command {
 
 // Number of allowed failures until the rest of the playlist is skipped
 //
+// Additional information:
 //   - See [Command.UnsetSkipPlaylistAfterErrors], for unsetting the flag.
 //   - SkipPlaylistAfterErrors maps to cli flags: --skip-playlist-after-errors=N.
 //   - From option group: "Video Selection"
@@ -1378,6 +1454,7 @@ func (c *Command) UnsetSkipPlaylistAfterErrors() *Command {
 
 // IncludeAds sets the "include-ads" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetIncludeAds], for unsetting the flag.
 //   - IncludeAds maps to cli flags: --include-ads (hidden).
 //   - From option group: "Video Selection"
@@ -1404,6 +1481,7 @@ func (c *Command) UnsetIncludeAds() *Command {
 
 // NoIncludeAds sets the "no-include-ads" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetIncludeAds], for unsetting the flag.
 //   - NoIncludeAds maps to cli flags: --no-include-ads (hidden).
 //   - From option group: "Video Selection"
@@ -1421,6 +1499,7 @@ func (c *Command) NoIncludeAds() *Command {
 // Number of fragments of a dash/hlsnative video that should be downloaded
 // concurrently (default is 1)
 //
+// Additional information:
 //   - See [Command.UnsetConcurrentFragments], for unsetting the flag.
 //   - ConcurrentFragments maps to cli flags: -N/--concurrent-fragments=N.
 //   - From option group: "Download"
@@ -1444,6 +1523,7 @@ func (c *Command) UnsetConcurrentFragments() *Command {
 
 // Maximum download rate in bytes per second, e.g. 50K or 4.2M
 //
+// Additional information:
 //   - See [Command.UnsetLimitRate], for unsetting the flag.
 //   - LimitRate maps to cli flags: -r/--limit-rate/--rate-limit=RATE.
 //   - From option group: "Download"
@@ -1466,6 +1546,7 @@ func (c *Command) UnsetLimitRate() *Command {
 // Minimum download rate in bytes per second below which throttling is assumed and
 // the video data is re-extracted, e.g. 100K
 //
+// Additional information:
 //   - See [Command.UnsetThrottledRate], for unsetting the flag.
 //   - ThrottledRate maps to cli flags: --throttled-rate=RATE.
 //   - From option group: "Download"
@@ -1487,6 +1568,7 @@ func (c *Command) UnsetThrottledRate() *Command {
 
 // Number of retries (default is 10), or "infinite"
 //
+// Additional information:
 //   - See [Command.UnsetRetries], for unsetting the flag.
 //   - Retries maps to cli flags: -R/--retries=RETRIES.
 //   - From option group: "Download"
@@ -1508,6 +1590,7 @@ func (c *Command) UnsetRetries() *Command {
 
 // Number of times to retry on file access error (default is 3), or "infinite"
 //
+// Additional information:
 //   - See [Command.UnsetFileAccessRetries], for unsetting the flag.
 //   - FileAccessRetries maps to cli flags: --file-access-retries=RETRIES.
 //   - From option group: "Download"
@@ -1530,6 +1613,7 @@ func (c *Command) UnsetFileAccessRetries() *Command {
 // Number of retries for a fragment (default is 10), or "infinite" (DASH, hlsnative
 // and ISM)
 //
+// Additional information:
 //   - See [Command.UnsetFragmentRetries], for unsetting the flag.
 //   - FragmentRetries maps to cli flags: --fragment-retries=RETRIES.
 //   - From option group: "Download"
@@ -1555,6 +1639,7 @@ func (c *Command) UnsetFragmentRetries() *Command {
 // This option can be used multiple times to set the sleep for the different retry
 // types, e.g. --retry-sleep linear=1::2 --retry-sleep fragment:exp=1:20
 //
+// Additional information:
 //   - See [Command.UnsetRetrySleep], for unsetting the flag.
 //   - RetrySleep maps to cli flags: --retry-sleep=[TYPE:]EXPR.
 //   - From option group: "Download"
@@ -1576,6 +1661,7 @@ func (c *Command) UnsetRetrySleep() *Command {
 
 // Skip unavailable fragments for DASH, hlsnative and ISM downloads (default)
 //
+// Additional information:
 //   - See [Command.UnsetSkipUnavailableFragments], for unsetting the flag.
 //   - SkipUnavailableFragments maps to cli flags: --skip-unavailable-fragments/--no-abort-on-unavailable-fragments.
 //   - From option group: "Download"
@@ -1597,6 +1683,7 @@ func (c *Command) UnsetSkipUnavailableFragments() *Command {
 
 // Abort download if a fragment is unavailable
 //
+// Additional information:
 //   - See [Command.UnsetAbortOnUnavailableFragments], for unsetting the flag.
 //   - AbortOnUnavailableFragments maps to cli flags: --abort-on-unavailable-fragments/--no-skip-unavailable-fragments.
 //   - From option group: "Download"
@@ -1618,6 +1705,7 @@ func (c *Command) UnsetAbortOnUnavailableFragments() *Command {
 
 // Keep downloaded fragments on disk after downloading is finished
 //
+// Additional information:
 //   - See [Command.UnsetKeepFragments], for unsetting the flag.
 //   - KeepFragments maps to cli flags: --keep-fragments.
 //   - From option group: "Download"
@@ -1640,6 +1728,7 @@ func (c *Command) UnsetKeepFragments() *Command {
 
 // Delete downloaded fragments after downloading is finished (default)
 //
+// Additional information:
 //   - See [Command.UnsetKeepFragments], for unsetting the flag.
 //   - NoKeepFragments maps to cli flags: --no-keep-fragments.
 //   - From option group: "Download"
@@ -1654,6 +1743,7 @@ func (c *Command) NoKeepFragments() *Command {
 
 // Size of download buffer, e.g. 1024 or 16K (default is 1024)
 //
+// Additional information:
 //   - See [Command.UnsetBufferSize], for unsetting the flag.
 //   - BufferSize maps to cli flags: --buffer-size=SIZE.
 //   - From option group: "Download"
@@ -1676,6 +1766,7 @@ func (c *Command) UnsetBufferSize() *Command {
 // The buffer size is automatically resized from an initial value of --buffer-size
 // (default)
 //
+// Additional information:
 //   - See [Command.UnsetResizeBuffer], for unsetting the flag.
 //   - ResizeBuffer maps to cli flags: --resize-buffer.
 //   - From option group: "Download"
@@ -1698,6 +1789,7 @@ func (c *Command) UnsetResizeBuffer() *Command {
 
 // Do not automatically adjust the buffer size
 //
+// Additional information:
 //   - See [Command.UnsetResizeBuffer], for unsetting the flag.
 //   - NoResizeBuffer maps to cli flags: --no-resize-buffer.
 //   - From option group: "Download"
@@ -1714,6 +1806,7 @@ func (c *Command) NoResizeBuffer() *Command {
 // is disabled). May be useful for bypassing bandwidth throttling imposed by a
 // webserver (experimental)
 //
+// Additional information:
 //   - See [Command.UnsetHTTPChunkSize], for unsetting the flag.
 //   - HTTPChunkSize maps to cli flags: --http-chunk-size=SIZE.
 //   - From option group: "Download"
@@ -1735,6 +1828,7 @@ func (c *Command) UnsetHTTPChunkSize() *Command {
 
 // PlaylistReverse sets the "playlist-reverse" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetPlaylistReverse], for unsetting the flag.
 //   - PlaylistReverse maps to cli flags: --playlist-reverse (hidden).
 //   - From option group: "Download"
@@ -1757,6 +1851,7 @@ func (c *Command) UnsetPlaylistReverse() *Command {
 
 // NoPlaylistReverse sets the "no-playlist-reverse" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetPlaylistReverse], for unsetting the flag.
 //   - NoPlaylistReverse maps to cli flags: --no-playlist-reverse (hidden).
 //   - From option group: "Download"
@@ -1771,6 +1866,7 @@ func (c *Command) NoPlaylistReverse() *Command {
 
 // Download playlist videos in random order
 //
+// Additional information:
 //   - See [Command.UnsetPlaylistRandom], for unsetting the flag.
 //   - PlaylistRandom maps to cli flags: --playlist-random.
 //   - From option group: "Download"
@@ -1793,6 +1889,7 @@ func (c *Command) UnsetPlaylistRandom() *Command {
 // Process entries in the playlist as they are received. This disables n_entries,
 // --playlist-random and --playlist-reverse
 //
+// Additional information:
 //   - See [Command.UnsetLazyPlaylist], for unsetting the flag.
 //   - LazyPlaylist maps to cli flags: --lazy-playlist.
 //   - From option group: "Download"
@@ -1816,6 +1913,7 @@ func (c *Command) UnsetLazyPlaylist() *Command {
 // Process videos in the playlist only after the entire playlist is parsed
 // (default)
 //
+// Additional information:
 //   - See [Command.UnsetLazyPlaylist], for unsetting the flag.
 //   - NoLazyPlaylist maps to cli flags: --no-lazy-playlist.
 //   - From option group: "Download"
@@ -1830,6 +1928,7 @@ func (c *Command) NoLazyPlaylist() *Command {
 
 // Set file xattribute ytdl.filesize with expected file size
 //
+// Additional information:
 //   - See [Command.UnsetXattrSetFileSize], for unsetting the flag.
 //   - XattrSetFileSize maps to cli flags: --xattr-set-filesize.
 //   - From option group: "Download"
@@ -1851,6 +1950,7 @@ func (c *Command) UnsetXattrSetFileSize() *Command {
 
 // HLSPreferNative sets the "hls-prefer-native" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetHLSPreferNative], for unsetting the flag.
 //   - HLSPreferNative maps to cli flags: --hls-prefer-native (hidden).
 //   - From option group: "Download"
@@ -1872,6 +1972,7 @@ func (c *Command) UnsetHLSPreferNative() *Command {
 
 // HLSPreferFFmpeg sets the "hls-prefer-ffmpeg" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetHLSPreferFFmpeg], for unsetting the flag.
 //   - HLSPreferFFmpeg maps to cli flags: --hls-prefer-ffmpeg (hidden).
 //   - From option group: "Download"
@@ -1895,6 +1996,7 @@ func (c *Command) UnsetHLSPreferFFmpeg() *Command {
 // while downloading, and reducing the chance of file corruption if download is
 // interrupted. This is enabled by default for live streams
 //
+// Additional information:
 //   - See [Command.UnsetHLSUseMPEGTS], for unsetting the flag.
 //   - HLSUseMPEGTS maps to cli flags: --hls-use-mpegts.
 //   - From option group: "Download"
@@ -1918,6 +2020,7 @@ func (c *Command) UnsetHLSUseMPEGTS() *Command {
 // Do not use the mpegts container for HLS videos. This is default when not
 // downloading live streams
 //
+// Additional information:
 //   - See [Command.UnsetHLSUseMPEGTS], for unsetting the flag.
 //   - NoHLSUseMPEGTS maps to cli flags: --no-hls-use-mpegts.
 //   - From option group: "Download"
@@ -1937,6 +2040,7 @@ func (c *Command) NoHLSUseMPEGTS() *Command {
 // download multiple sections, e.g. --download-sections "*10:15-inf"
 // --download-sections "intro"
 //
+// Additional information:
 //   - See [Command.UnsetDownloadSections], for unsetting the flag.
 //   - DownloadSections maps to cli flags: --download-sections=REGEX.
 //   - From option group: "Download"
@@ -1963,6 +2067,7 @@ func (c *Command) UnsetDownloadSections() *Command {
 // E.g. --downloader aria2c --downloader "dash,m3u8:native" will use aria2c for
 // http/ftp downloads, and the native downloader for dash/m3u8 downloads
 //
+// Additional information:
 //   - See [Command.UnsetDownloader], for unsetting the flag.
 //   - Downloader maps to cli flags: --downloader/--external-downloader=[PROTO:]NAME.
 //   - From option group: "Download"
@@ -1987,6 +2092,7 @@ func (c *Command) UnsetDownloader() *Command {
 // different positions using the same syntax as --postprocessor-args. You can use
 // this option multiple times to give different arguments to different downloaders
 //
+// Additional information:
 //   - See [Command.UnsetDownloaderArgs], for unsetting the flag.
 //   - DownloaderArgs maps to cli flags: --downloader-args/--external-downloader-args=NAME:ARGS.
 //   - From option group: "Download"
@@ -2009,6 +2115,7 @@ func (c *Command) UnsetDownloaderArgs() *Command {
 // File containing URLs to download ("-" for stdin), one URL per line. Lines
 // starting with "#", ";" or "]" are considered as comments and ignored
 //
+// Additional information:
 //   - See [Command.UnsetBatchFile], for unsetting the flag.
 //   - BatchFile maps to cli flags: -a/--batch-file=FILE.
 //   - From option group: "Filesystem"
@@ -2031,6 +2138,7 @@ func (c *Command) UnsetBatchFile() *Command {
 
 // Do not read URLs from batch file (default)
 //
+// Additional information:
 //   - See [Command.UnsetBatchFile], for unsetting the flag.
 //   - NoBatchFile maps to cli flags: --no-batch-file.
 //   - From option group: "Filesystem"
@@ -2045,6 +2153,7 @@ func (c *Command) NoBatchFile() *Command {
 
 // ID sets the "id" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetID], for unsetting the flag.
 //   - ID maps to cli flags: --id (hidden).
 //   - From option group: "Filesystem"
@@ -2071,6 +2180,7 @@ func (c *Command) UnsetID() *Command {
 // files are moved over to the home path after download is finished. This option is
 // ignored if --output is an absolute path
 //
+// Additional information:
 //   - See [Command.UnsetPaths], for unsetting the flag.
 //   - Paths maps to cli flags: -P/--paths=[TYPES:]PATH.
 //   - From option group: "Filesystem"
@@ -2092,6 +2202,10 @@ func (c *Command) UnsetPaths() *Command {
 
 // Output filename template; see "OUTPUT TEMPLATE" for details
 //
+// References:
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#output-template
+//
+// Additional information:
 //   - See [Command.UnsetOutput], for unsetting the flag.
 //   - Output maps to cli flags: -o/--output=[TYPES:]TEMPLATE.
 //   - From option group: "Filesystem"
@@ -2113,6 +2227,7 @@ func (c *Command) UnsetOutput() *Command {
 
 // Placeholder for unavailable fields in "OUTPUT TEMPLATE" (default: "NA")
 //
+// Additional information:
 //   - See [Command.UnsetOutputNaPlaceholder], for unsetting the flag.
 //   - OutputNaPlaceholder maps to cli flags: --output-na-placeholder=TEXT.
 //   - From option group: "Filesystem"
@@ -2134,6 +2249,7 @@ func (c *Command) UnsetOutputNaPlaceholder() *Command {
 
 // AutoNumberSize sets the "autonumber-size" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetAutoNumberSize], for unsetting the flag.
 //   - AutoNumberSize maps to cli flags: --autonumber-size=NUMBER (hidden).
 //   - From option group: "Filesystem"
@@ -2157,6 +2273,7 @@ func (c *Command) UnsetAutoNumberSize() *Command {
 
 // AutoNumberStart sets the "autonumber-start" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetAutoNumberStart], for unsetting the flag.
 //   - AutoNumberStart maps to cli flags: --autonumber-start=NUMBER (hidden).
 //   - From option group: "Filesystem"
@@ -2181,6 +2298,7 @@ func (c *Command) UnsetAutoNumberStart() *Command {
 // Restrict filenames to only ASCII characters, and avoid "&" and spaces in
 // filenames
 //
+// Additional information:
 //   - See [Command.UnsetRestrictFilenames], for unsetting the flag.
 //   - RestrictFilenames maps to cli flags: --restrict-filenames.
 //   - From option group: "Filesystem"
@@ -2203,6 +2321,7 @@ func (c *Command) UnsetRestrictFilenames() *Command {
 
 // Allow Unicode characters, "&" and spaces in filenames (default)
 //
+// Additional information:
 //   - See [Command.UnsetRestrictFilenames], for unsetting the flag.
 //   - NoRestrictFilenames maps to cli flags: --no-restrict-filenames.
 //   - From option group: "Filesystem"
@@ -2217,6 +2336,7 @@ func (c *Command) NoRestrictFilenames() *Command {
 
 // Force filenames to be Windows-compatible
 //
+// Additional information:
 //   - See [Command.UnsetWindowsFilenames], for unsetting the flag.
 //   - WindowsFilenames maps to cli flags: --windows-filenames.
 //   - From option group: "Filesystem"
@@ -2239,6 +2359,7 @@ func (c *Command) UnsetWindowsFilenames() *Command {
 
 // Make filenames Windows-compatible only if using Windows (default)
 //
+// Additional information:
 //   - See [Command.UnsetWindowsFilenames], for unsetting the flag.
 //   - NoWindowsFilenames maps to cli flags: --no-windows-filenames.
 //   - From option group: "Filesystem"
@@ -2254,6 +2375,7 @@ func (c *Command) NoWindowsFilenames() *Command {
 // Limit the filename length (excluding extension) to the specified number of
 // characters
 //
+// Additional information:
 //   - See [Command.UnsetTrimFilenames], for unsetting the flag.
 //   - TrimFilenames maps to cli flags: --trim-filenames/--trim-file-names=LENGTH.
 //   - From option group: "Filesystem"
@@ -2277,6 +2399,7 @@ func (c *Command) UnsetTrimFilenames() *Command {
 
 // Do not overwrite any files
 //
+// Additional information:
 //   - See [Command.UnsetOverwrites], for unsetting the flag.
 //   - NoOverwrites maps to cli flags: -w/--no-overwrites.
 //   - From option group: "Filesystem"
@@ -2298,6 +2421,7 @@ func (c *Command) UnsetOverwrites() *Command {
 
 // Overwrite all video and metadata files. This option includes --no-continue
 //
+// Additional information:
 //   - See [Command.UnsetForceOverwrites], for unsetting the flag.
 //   - ForceOverwrites maps to cli flags: --force-overwrites/--yes-overwrites.
 //   - From option group: "Filesystem"
@@ -2320,6 +2444,7 @@ func (c *Command) UnsetForceOverwrites() *Command {
 
 // Do not overwrite the video, but overwrite related files (default)
 //
+// Additional information:
 //   - See [Command.UnsetForceOverwrites], for unsetting the flag.
 //   - NoForceOverwrites maps to cli flags: --no-force-overwrites.
 //   - From option group: "Filesystem"
@@ -2334,6 +2459,7 @@ func (c *Command) NoForceOverwrites() *Command {
 
 // Resume partially downloaded files/fragments (default)
 //
+// Additional information:
 //   - See [Command.UnsetContinue], for unsetting the flag.
 //   - Continue maps to cli flags: -c/--continue.
 //   - From option group: "Filesystem"
@@ -2357,6 +2483,7 @@ func (c *Command) UnsetContinue() *Command {
 // Do not resume partially downloaded fragments. If the file is not fragmented,
 // restart download of the entire file
 //
+// Additional information:
 //   - See [Command.UnsetContinue], for unsetting the flag.
 //   - NoContinue maps to cli flags: --no-continue.
 //   - From option group: "Filesystem"
@@ -2371,6 +2498,7 @@ func (c *Command) NoContinue() *Command {
 
 // Use .part files instead of writing directly into output file (default)
 //
+// Additional information:
 //   - See [Command.UnsetPart], for unsetting the flag.
 //   - Part maps to cli flags: --part.
 //   - From option group: "Filesystem"
@@ -2393,6 +2521,7 @@ func (c *Command) UnsetPart() *Command {
 
 // Do not use .part files - write directly into output file
 //
+// Additional information:
 //   - See [Command.UnsetPart], for unsetting the flag.
 //   - NoPart maps to cli flags: --no-part.
 //   - From option group: "Filesystem"
@@ -2407,6 +2536,7 @@ func (c *Command) NoPart() *Command {
 
 // Use the Last-modified header to set the file modification time (default)
 //
+// Additional information:
 //   - See [Command.UnsetMtime], for unsetting the flag.
 //   - Mtime maps to cli flags: --mtime.
 //   - From option group: "Filesystem"
@@ -2429,6 +2559,7 @@ func (c *Command) UnsetMtime() *Command {
 
 // Do not use the Last-modified header to set the file modification time
 //
+// Additional information:
 //   - See [Command.UnsetMtime], for unsetting the flag.
 //   - NoMtime maps to cli flags: --no-mtime.
 //   - From option group: "Filesystem"
@@ -2443,6 +2574,7 @@ func (c *Command) NoMtime() *Command {
 
 // Write video description to a .description file
 //
+// Additional information:
 //   - See [Command.UnsetWriteDescription], for unsetting the flag.
 //   - WriteDescription maps to cli flags: --write-description.
 //   - From option group: "Filesystem"
@@ -2465,6 +2597,7 @@ func (c *Command) UnsetWriteDescription() *Command {
 
 // Do not write video description (default)
 //
+// Additional information:
 //   - See [Command.UnsetWriteDescription], for unsetting the flag.
 //   - NoWriteDescription maps to cli flags: --no-write-description.
 //   - From option group: "Filesystem"
@@ -2480,6 +2613,7 @@ func (c *Command) NoWriteDescription() *Command {
 // Write video metadata to a .info.json file (this may contain personal
 // information)
 //
+// Additional information:
 //   - See [Command.UnsetWriteInfoJSON], for unsetting the flag.
 //   - WriteInfoJSON maps to cli flags: --write-info-json.
 //   - From option group: "Filesystem"
@@ -2502,6 +2636,7 @@ func (c *Command) UnsetWriteInfoJSON() *Command {
 
 // Do not write video metadata (default)
 //
+// Additional information:
 //   - See [Command.UnsetWriteInfoJSON], for unsetting the flag.
 //   - NoWriteInfoJSON maps to cli flags: --no-write-info-json.
 //   - From option group: "Filesystem"
@@ -2516,6 +2651,7 @@ func (c *Command) NoWriteInfoJSON() *Command {
 
 // WriteAnnotations sets the "write-annotations" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetWriteAnnotations], for unsetting the flag.
 //   - WriteAnnotations maps to cli flags: --write-annotations (hidden).
 //   - From option group: "Filesystem"
@@ -2542,6 +2678,7 @@ func (c *Command) UnsetWriteAnnotations() *Command {
 
 // NoWriteAnnotations sets the "no-write-annotations" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetWriteAnnotations], for unsetting the flag.
 //   - NoWriteAnnotations maps to cli flags: --no-write-annotations (hidden).
 //   - From option group: "Filesystem"
@@ -2559,6 +2696,7 @@ func (c *Command) NoWriteAnnotations() *Command {
 // Write playlist metadata in addition to the video metadata when using
 // --write-info-json, --write-description etc. (default)
 //
+// Additional information:
 //   - See [Command.UnsetWritePlaylistMetafiles], for unsetting the flag.
 //   - WritePlaylistMetafiles maps to cli flags: --write-playlist-metafiles.
 //   - From option group: "Filesystem"
@@ -2582,6 +2720,7 @@ func (c *Command) UnsetWritePlaylistMetafiles() *Command {
 // Do not write playlist metadata when using --write-info-json, --write-description
 // etc.
 //
+// Additional information:
 //   - See [Command.UnsetWritePlaylistMetafiles], for unsetting the flag.
 //   - NoWritePlaylistMetafiles maps to cli flags: --no-write-playlist-metafiles.
 //   - From option group: "Filesystem"
@@ -2596,6 +2735,7 @@ func (c *Command) NoWritePlaylistMetafiles() *Command {
 
 // Remove some internal metadata such as filenames from the infojson (default)
 //
+// Additional information:
 //   - See [Command.UnsetCleanInfoJSON], for unsetting the flag.
 //   - CleanInfoJSON maps to cli flags: --clean-info-json/--clean-infojson.
 //   - From option group: "Filesystem"
@@ -2618,6 +2758,7 @@ func (c *Command) UnsetCleanInfoJSON() *Command {
 
 // Write all fields to the infojson
 //
+// Additional information:
 //   - See [Command.UnsetCleanInfoJSON], for unsetting the flag.
 //   - NoCleanInfoJSON maps to cli flags: --no-clean-info-json/--no-clean-infojson.
 //   - From option group: "Filesystem"
@@ -2633,6 +2774,7 @@ func (c *Command) NoCleanInfoJSON() *Command {
 // Retrieve video comments to be placed in the infojson. The comments are fetched
 // even without this option if the extraction is known to be quick
 //
+// Additional information:
 //   - See [Command.UnsetWriteComments], for unsetting the flag.
 //   - WriteComments maps to cli flags: --write-comments/--get-comments.
 //   - From option group: "Filesystem"
@@ -2655,6 +2797,7 @@ func (c *Command) UnsetWriteComments() *Command {
 
 // Do not retrieve video comments unless the extraction is known to be quick
 //
+// Additional information:
 //   - See [Command.UnsetWriteComments], for unsetting the flag.
 //   - NoWriteComments maps to cli flags: --no-write-comments/--no-get-comments.
 //   - From option group: "Filesystem"
@@ -2670,6 +2813,7 @@ func (c *Command) NoWriteComments() *Command {
 // JSON file containing the video information (created with the "--write-info-json"
 // option)
 //
+// Additional information:
 //   - See [Command.UnsetLoadInfoJSON], for unsetting the flag.
 //   - LoadInfoJSON maps to cli flags: --load-info-json/--load-info=FILE.
 //   - From option group: "Filesystem"
@@ -2691,6 +2835,7 @@ func (c *Command) UnsetLoadInfoJSON() *Command {
 
 // Netscape formatted file to read cookies from and dump cookie jar in
 //
+// Additional information:
 //   - See [Command.UnsetCookies], for unsetting the flag.
 //   - Cookies maps to cli flags: --cookies=FILE.
 //   - From option group: "Filesystem"
@@ -2713,6 +2858,7 @@ func (c *Command) UnsetCookies() *Command {
 
 // Do not read/dump cookies from/to file (default)
 //
+// Additional information:
 //   - See [Command.UnsetCookies], for unsetting the flag.
 //   - NoCookies maps to cli flags: --no-cookies=FILE.
 //   - From option group: "Filesystem"
@@ -2733,6 +2879,7 @@ func (c *Command) NoCookies() *Command {
 // containers of the most recently accessed profile are used. Currently supported
 // keyrings are: basictext, gnomekeyring, kwallet, kwallet5, kwallet6
 //
+// Additional information:
 //   - See [Command.UnsetCookiesFromBrowser], for unsetting the flag.
 //   - CookiesFromBrowser maps to cli flags: --cookies-from-browser=BROWSER[+KEYRING][:PROFILE][::CONTAINER].
 //   - From option group: "Filesystem"
@@ -2755,6 +2902,7 @@ func (c *Command) UnsetCookiesFromBrowser() *Command {
 
 // Do not load cookies from browser (default)
 //
+// Additional information:
 //   - See [Command.UnsetCookiesFromBrowser], for unsetting the flag.
 //   - NoCookiesFromBrowser maps to cli flags: --no-cookies-from-browser.
 //   - From option group: "Filesystem"
@@ -2771,6 +2919,7 @@ func (c *Command) NoCookiesFromBrowser() *Command {
 // (such as client ids and signatures) permanently. By default
 // ${XDG_CACHE_HOME}/yt-dlp
 //
+// Additional information:
 //   - See [Command.UnsetCacheDir], for unsetting the flag.
 //   - CacheDir maps to cli flags: --cache-dir=DIR.
 //   - From option group: "Filesystem"
@@ -2793,6 +2942,7 @@ func (c *Command) UnsetCacheDir() *Command {
 
 // Disable filesystem caching
 //
+// Additional information:
 //   - See [Command.UnsetCacheDir], for unsetting the flag.
 //   - NoCacheDir maps to cli flags: --no-cache-dir.
 //   - From option group: "Filesystem"
@@ -2807,6 +2957,7 @@ func (c *Command) NoCacheDir() *Command {
 
 // Delete all filesystem cache files
 //
+// Additional information:
 //   - See [Command.UnsetRmCacheDir], for unsetting the flag.
 //   - RmCacheDir maps to cli flags: --rm-cache-dir.
 //   - From option group: "Filesystem"
@@ -2828,6 +2979,7 @@ func (c *Command) UnsetRmCacheDir() *Command {
 
 // Write thumbnail image to disk
 //
+// Additional information:
 //   - See [Command.UnsetWriteThumbnail], for unsetting the flag.
 //   - WriteThumbnail maps to cli flags: --write-thumbnail.
 //   - From option group: "Thumbnail"
@@ -2850,6 +3002,7 @@ func (c *Command) UnsetWriteThumbnail() *Command {
 
 // Do not write thumbnail image to disk (default)
 //
+// Additional information:
 //   - See [Command.UnsetWriteThumbnail], for unsetting the flag.
 //   - NoWriteThumbnail maps to cli flags: --no-write-thumbnail.
 //   - From option group: "Thumbnail"
@@ -2864,6 +3017,7 @@ func (c *Command) NoWriteThumbnail() *Command {
 
 // Write all thumbnail image formats to disk
 //
+// Additional information:
 //   - See [Command.UnsetWriteAllThumbnails], for unsetting the flag.
 //   - WriteAllThumbnails maps to cli flags: --write-all-thumbnails.
 //   - From option group: "Thumbnail"
@@ -2885,6 +3039,7 @@ func (c *Command) UnsetWriteAllThumbnails() *Command {
 
 // List available thumbnails of each video. Simulate unless --no-simulate is used
 //
+// Additional information:
 //   - See [Command.UnsetListThumbnails], for unsetting the flag.
 //   - ListThumbnails maps to cli flags: --list-thumbnails.
 //   - From option group: "Thumbnail"
@@ -2907,6 +3062,7 @@ func (c *Command) UnsetListThumbnails() *Command {
 // Write an internet shortcut file, depending on the current platform (.url,
 // .webloc or .desktop). The URL may be cached by the OS
 //
+// Additional information:
 //   - See [Command.UnsetWriteLink], for unsetting the flag.
 //   - WriteLink maps to cli flags: --write-link.
 //   - From option group: "Internet Shortcut"
@@ -2929,6 +3085,7 @@ func (c *Command) UnsetWriteLink() *Command {
 // Write a .url Windows internet shortcut. The OS caches the URL based on the file
 // path
 //
+// Additional information:
 //   - See [Command.UnsetWriteURLLink], for unsetting the flag.
 //   - WriteURLLink maps to cli flags: --write-url-link.
 //   - From option group: "Internet Shortcut"
@@ -2950,6 +3107,7 @@ func (c *Command) UnsetWriteURLLink() *Command {
 
 // Write a .webloc macOS internet shortcut
 //
+// Additional information:
 //   - See [Command.UnsetWriteWeblocLink], for unsetting the flag.
 //   - WriteWeblocLink maps to cli flags: --write-webloc-link.
 //   - From option group: "Internet Shortcut"
@@ -2971,6 +3129,7 @@ func (c *Command) UnsetWriteWeblocLink() *Command {
 
 // Write a .desktop Linux internet shortcut
 //
+// Additional information:
 //   - See [Command.UnsetWriteDesktopLink], for unsetting the flag.
 //   - WriteDesktopLink maps to cli flags: --write-desktop-link.
 //   - From option group: "Internet Shortcut"
@@ -2992,6 +3151,7 @@ func (c *Command) UnsetWriteDesktopLink() *Command {
 
 // Activate quiet mode. If used with --verbose, print the log to stderr
 //
+// Additional information:
 //   - See [Command.UnsetQuiet], for unsetting the flag.
 //   - Quiet maps to cli flags: -q/--quiet.
 //   - From option group: "Verbosity Simulation"
@@ -3014,6 +3174,7 @@ func (c *Command) UnsetQuiet() *Command {
 
 // Deactivate quiet mode. (Default)
 //
+// Additional information:
 //   - See [Command.UnsetQuiet], for unsetting the flag.
 //   - NoQuiet maps to cli flags: --no-quiet.
 //   - From option group: "Verbosity Simulation"
@@ -3028,6 +3189,7 @@ func (c *Command) NoQuiet() *Command {
 
 // Ignore warnings
 //
+// Additional information:
 //   - See [Command.UnsetWarnings], for unsetting the flag.
 //   - NoWarnings maps to cli flags: --no-warnings.
 //   - From option group: "Verbosity Simulation"
@@ -3049,6 +3211,7 @@ func (c *Command) UnsetWarnings() *Command {
 
 // Do not download the video and do not write anything to disk
 //
+// Additional information:
 //   - See [Command.UnsetSimulate], for unsetting the flag.
 //   - Simulate maps to cli flags: -s/--simulate.
 //   - From option group: "Verbosity Simulation"
@@ -3071,6 +3234,7 @@ func (c *Command) UnsetSimulate() *Command {
 
 // Download the video even if printing/listing options are used
 //
+// Additional information:
 //   - See [Command.UnsetSimulate], for unsetting the flag.
 //   - NoSimulate maps to cli flags: --no-simulate.
 //   - From option group: "Verbosity Simulation"
@@ -3086,6 +3250,7 @@ func (c *Command) NoSimulate() *Command {
 // Ignore "No video formats" error. Useful for extracting metadata even if the
 // videos are not actually available for download (experimental)
 //
+// Additional information:
 //   - See [Command.UnsetIgnoreNoFormatsError], for unsetting the flag.
 //   - IgnoreNoFormatsError maps to cli flags: --ignore-no-formats-error.
 //   - From option group: "Verbosity Simulation"
@@ -3108,6 +3273,7 @@ func (c *Command) UnsetIgnoreNoFormatsError() *Command {
 
 // Throw error when no downloadable video formats are found (default)
 //
+// Additional information:
 //   - See [Command.UnsetIgnoreNoFormatsError], for unsetting the flag.
 //   - NoIgnoreNoFormatsError maps to cli flags: --no-ignore-no-formats-error.
 //   - From option group: "Verbosity Simulation"
@@ -3122,6 +3288,7 @@ func (c *Command) NoIgnoreNoFormatsError() *Command {
 
 // Do not download the video but write all related files
 //
+// Additional information:
 //   - See [Command.UnsetSkipDownload], for unsetting the flag.
 //   - SkipDownload maps to cli flags: --skip-download/--no-download.
 //   - From option group: "Verbosity Simulation"
@@ -3147,6 +3314,7 @@ func (c *Command) UnsetSkipDownload() *Command {
 // unless --no-simulate or later stages of WHEN are used. This option can be used
 // multiple times
 //
+// Additional information:
 //   - See [Command.UnsetPrint], for unsetting the flag.
 //   - Print maps to cli flags: -O/--print=[WHEN:]TEMPLATE.
 //   - From option group: "Verbosity Simulation"
@@ -3170,6 +3338,7 @@ func (c *Command) UnsetPrint() *Command {
 // that of --print. FILE uses the same syntax as the output template. This option
 // can be used multiple times
 //
+// Additional information:
 //   - See [Command.UnsetPrintToFile], for unsetting the flag.
 //   - PrintToFile maps to cli flags: --print-to-file=[WHEN:]TEMPLATE FILE.
 //   - From option group: "Verbosity Simulation"
@@ -3191,6 +3360,7 @@ func (c *Command) UnsetPrintToFile() *Command {
 
 // GetURL sets the "get-url" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGetURL], for unsetting the flag.
 //   - GetURL maps to cli flags: -g/--get-url (hidden).
 //   - From option group: "Verbosity Simulation"
@@ -3212,6 +3382,7 @@ func (c *Command) UnsetGetURL() *Command {
 
 // GetTitle sets the "get-title" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGetTitle], for unsetting the flag.
 //   - GetTitle maps to cli flags: -e/--get-title (hidden).
 //   - From option group: "Verbosity Simulation"
@@ -3233,6 +3404,7 @@ func (c *Command) UnsetGetTitle() *Command {
 
 // GetID sets the "get-id" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGetID], for unsetting the flag.
 //   - GetID maps to cli flags: --get-id (hidden).
 //   - From option group: "Verbosity Simulation"
@@ -3254,6 +3426,7 @@ func (c *Command) UnsetGetID() *Command {
 
 // GetThumbnail sets the "get-thumbnail" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGetThumbnail], for unsetting the flag.
 //   - GetThumbnail maps to cli flags: --get-thumbnail (hidden).
 //   - From option group: "Verbosity Simulation"
@@ -3275,6 +3448,7 @@ func (c *Command) UnsetGetThumbnail() *Command {
 
 // GetDescription sets the "get-description" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGetDescription], for unsetting the flag.
 //   - GetDescription maps to cli flags: --get-description (hidden).
 //   - From option group: "Verbosity Simulation"
@@ -3296,6 +3470,7 @@ func (c *Command) UnsetGetDescription() *Command {
 
 // GetDuration sets the "get-duration" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGetDuration], for unsetting the flag.
 //   - GetDuration maps to cli flags: --get-duration (hidden).
 //   - From option group: "Verbosity Simulation"
@@ -3317,6 +3492,7 @@ func (c *Command) UnsetGetDuration() *Command {
 
 // GetFilename sets the "get-filename" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGetFilename], for unsetting the flag.
 //   - GetFilename maps to cli flags: --get-filename (hidden).
 //   - From option group: "Verbosity Simulation"
@@ -3338,6 +3514,7 @@ func (c *Command) UnsetGetFilename() *Command {
 
 // GetFormat sets the "get-format" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetGetFormat], for unsetting the flag.
 //   - GetFormat maps to cli flags: --get-format (hidden).
 //   - From option group: "Verbosity Simulation"
@@ -3360,6 +3537,10 @@ func (c *Command) UnsetGetFormat() *Command {
 // Quiet, but print JSON information for each video. Simulate unless --no-simulate
 // is used. See "OUTPUT TEMPLATE" for a description of available keys
 //
+// References:
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#output-template
+//
+// Additional information:
 //   - See [Command.UnsetDumpJSON], for unsetting the flag.
 //   - DumpJSON maps to cli flags: -j/--dump-json.
 //   - From option group: "Verbosity Simulation"
@@ -3383,6 +3564,7 @@ func (c *Command) UnsetDumpJSON() *Command {
 // unless --no-simulate is used. If the URL refers to a playlist, the whole
 // playlist information is dumped in a single line
 //
+// Additional information:
 //   - See [Command.UnsetDumpSingleJSON], for unsetting the flag.
 //   - DumpSingleJSON maps to cli flags: -J/--dump-single-json.
 //   - From option group: "Verbosity Simulation"
@@ -3404,6 +3586,7 @@ func (c *Command) UnsetDumpSingleJSON() *Command {
 
 // PrintJSON sets the "print-json" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetPrintJSON], for unsetting the flag.
 //   - PrintJSON maps to cli flags: --print-json (hidden).
 //   - From option group: "Verbosity Simulation"
@@ -3426,6 +3609,7 @@ func (c *Command) UnsetPrintJSON() *Command {
 // Force download archive entries to be written as far as no errors occur, even if
 // -s or another simulation option is used
 //
+// Additional information:
 //   - See [Command.UnsetForceWriteArchive], for unsetting the flag.
 //   - ForceWriteArchive maps to cli flags: --force-write-archive/--force-write-download-archive/--force-download-archive.
 //   - From option group: "Verbosity Simulation"
@@ -3447,6 +3631,7 @@ func (c *Command) UnsetForceWriteArchive() *Command {
 
 // Output progress bar as new lines
 //
+// Additional information:
 //   - See [Command.UnsetNewline], for unsetting the flag.
 //   - Newline maps to cli flags: --newline.
 //   - From option group: "Verbosity Simulation"
@@ -3468,6 +3653,7 @@ func (c *Command) UnsetNewline() *Command {
 
 // Do not print progress bar
 //
+// Additional information:
 //   - See [Command.UnsetProgress], for unsetting the flag.
 //   - NoProgress maps to cli flags: --no-progress.
 //   - From option group: "Verbosity Simulation"
@@ -3490,6 +3676,7 @@ func (c *Command) UnsetProgress() *Command {
 
 // Show progress bar, even if in quiet mode
 //
+// Additional information:
 //   - See [Command.UnsetProgress], for unsetting the flag.
 //   - Progress maps to cli flags: --progress.
 //   - From option group: "Verbosity Simulation"
@@ -3504,6 +3691,7 @@ func (c *Command) Progress() *Command {
 
 // Display progress in console titlebar
 //
+// Additional information:
 //   - See [Command.UnsetConsoleTitle], for unsetting the flag.
 //   - ConsoleTitle maps to cli flags: --console-title.
 //   - From option group: "Verbosity Simulation"
@@ -3530,6 +3718,7 @@ func (c *Command) UnsetConsoleTitle() *Command {
 // --console-title --progress-template
 // "download-title:%(info.id)s-%(progress.eta)s"
 //
+// Additional information:
 //   - See [Command.UnsetProgressTemplate], for unsetting the flag.
 //   - ProgressTemplate maps to cli flags: --progress-template=[TYPES:]TEMPLATE.
 //   - From option group: "Verbosity Simulation"
@@ -3551,6 +3740,7 @@ func (c *Command) UnsetProgressTemplate() *Command {
 
 // Print various debugging information
 //
+// Additional information:
 //   - See [Command.UnsetVerbose], for unsetting the flag.
 //   - Verbose maps to cli flags: -v/--verbose.
 //   - From option group: "Verbosity Simulation"
@@ -3572,6 +3762,7 @@ func (c *Command) UnsetVerbose() *Command {
 
 // Print downloaded pages encoded using base64 to debug problems (very verbose)
 //
+// Additional information:
 //   - See [Command.UnsetDumpPages], for unsetting the flag.
 //   - DumpPages maps to cli flags: --dump-pages/--dump-intermediate-pages.
 //   - From option group: "Verbosity Simulation"
@@ -3594,6 +3785,7 @@ func (c *Command) UnsetDumpPages() *Command {
 // Write downloaded intermediary pages to files in the current directory to debug
 // problems
 //
+// Additional information:
 //   - See [Command.UnsetWritePages], for unsetting the flag.
 //   - WritePages maps to cli flags: --write-pages.
 //   - From option group: "Verbosity Simulation"
@@ -3615,6 +3807,7 @@ func (c *Command) UnsetWritePages() *Command {
 
 // Display sent and read HTTP traffic
 //
+// Additional information:
 //   - See [Command.UnsetPrintTraffic], for unsetting the flag.
 //   - PrintTraffic maps to cli flags: --print-traffic/--dump-headers.
 //   - From option group: "Verbosity Simulation"
@@ -3636,6 +3829,7 @@ func (c *Command) UnsetPrintTraffic() *Command {
 
 // CallHome sets the "call-home" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetCallHome], for unsetting the flag.
 //   - CallHome maps to cli flags: -C/--call-home (hidden).
 //   - From option group: "Verbosity Simulation"
@@ -3662,6 +3856,7 @@ func (c *Command) UnsetCallHome() *Command {
 
 // NoCallHome sets the "no-call-home" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetCallHome], for unsetting the flag.
 //   - NoCallHome maps to cli flags: --no-call-home (hidden).
 //   - From option group: "Verbosity Simulation"
@@ -3678,6 +3873,7 @@ func (c *Command) NoCallHome() *Command {
 
 // Force the specified encoding (experimental)
 //
+// Additional information:
 //   - See [Command.UnsetEncoding], for unsetting the flag.
 //   - Encoding maps to cli flags: --encoding=ENCODING.
 //   - From option group: "Workarounds"
@@ -3700,6 +3896,7 @@ func (c *Command) UnsetEncoding() *Command {
 // Explicitly allow HTTPS connection to servers that do not support RFC 5746 secure
 // renegotiation
 //
+// Additional information:
 //   - See [Command.UnsetLegacyServerConnect], for unsetting the flag.
 //   - LegacyServerConnect maps to cli flags: --legacy-server-connect.
 //   - From option group: "Workarounds"
@@ -3721,6 +3918,7 @@ func (c *Command) UnsetLegacyServerConnect() *Command {
 
 // Suppress HTTPS certificate validation
 //
+// Additional information:
 //   - See [Command.UnsetCheckCertificates], for unsetting the flag.
 //   - NoCheckCertificates maps to cli flags: --no-check-certificates.
 //   - From option group: "Workarounds"
@@ -3743,6 +3941,7 @@ func (c *Command) UnsetCheckCertificates() *Command {
 // Use an unencrypted connection to retrieve information about the video (Currently
 // supported only for YouTube)
 //
+// Additional information:
 //   - See [Command.UnsetPreferInsecure], for unsetting the flag.
 //   - PreferInsecure maps to cli flags: --prefer-insecure/--prefer-unsecure.
 //   - From option group: "Workarounds"
@@ -3764,6 +3963,7 @@ func (c *Command) UnsetPreferInsecure() *Command {
 
 // UserAgent sets the "user-agent" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetUserAgent], for unsetting the flag.
 //   - UserAgent maps to cli flags: --user-agent=UA (hidden).
 //   - From option group: "Workarounds"
@@ -3785,6 +3985,7 @@ func (c *Command) UnsetUserAgent() *Command {
 
 // Referer sets the "referer" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetReferer], for unsetting the flag.
 //   - Referer maps to cli flags: --referer=URL (hidden).
 //   - From option group: "Workarounds"
@@ -3807,6 +4008,7 @@ func (c *Command) UnsetReferer() *Command {
 // Specify a custom HTTP header and its value, separated by a colon ":". You can
 // use this option multiple times
 //
+// Additional information:
 //   - See [Command.UnsetAddHeaders], for unsetting the flag.
 //   - AddHeaders maps to cli flags: --add-headers=FIELD:VALUE.
 //   - From option group: "Workarounds"
@@ -3829,6 +4031,7 @@ func (c *Command) UnsetAddHeaders() *Command {
 // Work around terminals that lack bidirectional text support. Requires bidiv or
 // fribidi executable in PATH
 //
+// Additional information:
 //   - See [Command.UnsetBidiWorkaround], for unsetting the flag.
 //   - BidiWorkaround maps to cli flags: --bidi-workaround.
 //   - From option group: "Workarounds"
@@ -3850,6 +4053,7 @@ func (c *Command) UnsetBidiWorkaround() *Command {
 
 // Number of seconds to sleep between requests during data extraction
 //
+// Additional information:
 //   - See [Command.UnsetSleepRequests], for unsetting the flag.
 //   - SleepRequests maps to cli flags: --sleep-requests=SECONDS.
 //   - From option group: "Workarounds"
@@ -3874,6 +4078,7 @@ func (c *Command) UnsetSleepRequests() *Command {
 // Number of seconds to sleep before each download. This is the minimum time to
 // sleep when used along with --max-sleep-interval
 //
+// Additional information:
 //   - See [Command.UnsetSleepInterval], for unsetting the flag.
 //   - SleepInterval maps to cli flags: --sleep-interval/--min-sleep-interval=SECONDS.
 //   - From option group: "Workarounds"
@@ -3898,6 +4103,7 @@ func (c *Command) UnsetSleepInterval() *Command {
 // Maximum number of seconds to sleep. Can only be used along with
 // --min-sleep-interval
 //
+// Additional information:
 //   - See [Command.UnsetMaxSleepInterval], for unsetting the flag.
 //   - MaxSleepInterval maps to cli flags: --max-sleep-interval=SECONDS.
 //   - From option group: "Workarounds"
@@ -3921,6 +4127,7 @@ func (c *Command) UnsetMaxSleepInterval() *Command {
 
 // Number of seconds to sleep before each subtitle download
 //
+// Additional information:
 //   - See [Command.UnsetSleepSubtitles], for unsetting the flag.
 //   - SleepSubtitles maps to cli flags: --sleep-subtitles=SECONDS.
 //   - From option group: "Workarounds"
@@ -3944,6 +4151,12 @@ func (c *Command) UnsetSleepSubtitles() *Command {
 
 // Video format code, see "FORMAT SELECTION" for more details
 //
+// References:
+//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#format-selection
+//   - Filter Formatting: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#filtering-formats
+//   - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#format-selection-examples
+//
+// Additional information:
 //   - See [Command.UnsetFormat], for unsetting the flag.
 //   - Format maps to cli flags: -f/--format=FORMAT.
 //   - From option group: "Video Format"
@@ -3965,6 +4178,11 @@ func (c *Command) UnsetFormat() *Command {
 
 // Sort the formats by the fields given, see "Sorting Formats" for more details
 //
+// References:
+//   - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#sorting-formats
+//   - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#format-selection-examples
+//
+// Additional information:
 //   - See [Command.UnsetFormatSort], for unsetting the flag.
 //   - FormatSort maps to cli flags: -S/--format-sort=SORTORDER.
 //   - From option group: "Video Format"
@@ -3987,6 +4205,10 @@ func (c *Command) UnsetFormatSort() *Command {
 // Force user specified sort order to have precedence over all fields, see "Sorting
 // Formats" for more details
 //
+// References:
+//   - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#sorting-formats
+//
+// Additional information:
 //   - See [Command.UnsetFormatSortForce], for unsetting the flag.
 //   - FormatSortForce maps to cli flags: --format-sort-force/--S-force=FORMAT.
 //   - From option group: "Video Format"
@@ -4009,6 +4231,7 @@ func (c *Command) UnsetFormatSortForce() *Command {
 
 // Some fields have precedence over the user specified sort order (default)
 //
+// Additional information:
 //   - See [Command.UnsetFormatSortForce], for unsetting the flag.
 //   - NoFormatSortForce maps to cli flags: --no-format-sort-force=FORMAT.
 //   - From option group: "Video Format"
@@ -4023,6 +4246,10 @@ func (c *Command) NoFormatSortForce() *Command {
 
 // Allow multiple video streams to be merged into a single file
 //
+// References:
+//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#format-selection
+//
+// Additional information:
 //   - See [Command.UnsetVideoMultistreams], for unsetting the flag.
 //   - VideoMultistreams maps to cli flags: --video-multistreams.
 //   - From option group: "Video Format"
@@ -4045,6 +4272,7 @@ func (c *Command) UnsetVideoMultistreams() *Command {
 
 // Only one video stream is downloaded for each output file (default)
 //
+// Additional information:
 //   - See [Command.UnsetVideoMultistreams], for unsetting the flag.
 //   - NoVideoMultistreams maps to cli flags: --no-video-multistreams.
 //   - From option group: "Video Format"
@@ -4059,6 +4287,10 @@ func (c *Command) NoVideoMultistreams() *Command {
 
 // Allow multiple audio streams to be merged into a single file
 //
+// References:
+//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#format-selection
+//
+// Additional information:
 //   - See [Command.UnsetAudioMultistreams], for unsetting the flag.
 //   - AudioMultistreams maps to cli flags: --audio-multistreams.
 //   - From option group: "Video Format"
@@ -4081,6 +4313,7 @@ func (c *Command) UnsetAudioMultistreams() *Command {
 
 // Only one audio stream is downloaded for each output file (default)
 //
+// Additional information:
 //   - See [Command.UnsetAudioMultistreams], for unsetting the flag.
 //   - NoAudioMultistreams maps to cli flags: --no-audio-multistreams.
 //   - From option group: "Video Format"
@@ -4095,6 +4328,7 @@ func (c *Command) NoAudioMultistreams() *Command {
 
 // AllFormats sets the "all-formats" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetAllFormats], for unsetting the flag.
 //   - AllFormats maps to cli flags: --all-formats (hidden).
 //   - From option group: "Video Format"
@@ -4117,6 +4351,7 @@ func (c *Command) UnsetAllFormats() *Command {
 // Prefer video formats with free containers over non-free ones of same quality.
 // Use with "-S ext" to strictly prefer free containers irrespective of quality
 //
+// Additional information:
 //   - See [Command.UnsetPreferFreeFormats], for unsetting the flag.
 //   - PreferFreeFormats maps to cli flags: --prefer-free-formats.
 //   - From option group: "Video Format"
@@ -4139,6 +4374,7 @@ func (c *Command) UnsetPreferFreeFormats() *Command {
 
 // Don't give any special preference to free containers (default)
 //
+// Additional information:
 //   - See [Command.UnsetPreferFreeFormats], for unsetting the flag.
 //   - NoPreferFreeFormats maps to cli flags: --no-prefer-free-formats.
 //   - From option group: "Video Format"
@@ -4153,6 +4389,7 @@ func (c *Command) NoPreferFreeFormats() *Command {
 
 // Make sure formats are selected only from those that are actually downloadable
 //
+// Additional information:
 //   - See [Command.UnsetCheckFormats], for unsetting the flag.
 //   - CheckFormats maps to cli flags: --check-formats.
 //   - From option group: "Video Format"
@@ -4175,6 +4412,7 @@ func (c *Command) UnsetCheckFormats() *Command {
 
 // Check all formats for whether they are actually downloadable
 //
+// Additional information:
 //   - See [Command.UnsetCheckAllFormats], for unsetting the flag.
 //   - CheckAllFormats maps to cli flags: --check-all-formats.
 //   - From option group: "Video Format"
@@ -4196,6 +4434,7 @@ func (c *Command) UnsetCheckAllFormats() *Command {
 
 // Do not check that the formats are actually downloadable
 //
+// Additional information:
 //   - See [Command.UnsetCheckFormats], for unsetting the flag.
 //   - NoCheckFormats maps to cli flags: --no-check-formats.
 //   - From option group: "Video Format"
@@ -4210,6 +4449,7 @@ func (c *Command) NoCheckFormats() *Command {
 
 // List available formats of each video. Simulate unless --no-simulate is used
 //
+// Additional information:
 //   - See [Command.UnsetListFormats], for unsetting the flag.
 //   - ListFormats maps to cli flags: -F/--list-formats.
 //   - From option group: "Video Format"
@@ -4231,6 +4471,7 @@ func (c *Command) UnsetListFormats() *Command {
 
 // ListFormatsAsTable sets the "list-formats-as-table" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetListFormatsAsTable], for unsetting the flag.
 //   - ListFormatsAsTable maps to cli flags: --list-formats-as-table (hidden).
 //   - From option group: "Video Format"
@@ -4252,6 +4493,7 @@ func (c *Command) UnsetListFormatsAsTable() *Command {
 
 // ListFormatsOld sets the "list-formats-old" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetListFormatsOld], for unsetting the flag.
 //   - ListFormatsOld maps to cli flags: --list-formats-old/--no-list-formats-as-table (hidden).
 //   - From option group: "Video Format"
@@ -4275,6 +4517,7 @@ func (c *Command) UnsetListFormatsOld() *Command {
 // "mp4/mkv". Ignored if no merge is required. (currently supported: avi, flv, mkv,
 // mov, mp4, webm)
 //
+// Additional information:
 //   - See [Command.UnsetMergeOutputFormat], for unsetting the flag.
 //   - MergeOutputFormat maps to cli flags: --merge-output-format=FORMAT.
 //   - From option group: "Video Format"
@@ -4296,6 +4539,7 @@ func (c *Command) UnsetMergeOutputFormat() *Command {
 
 // Write subtitle file
 //
+// Additional information:
 //   - See [Command.UnsetWriteSubs], for unsetting the flag.
 //   - WriteSubs maps to cli flags: --write-subs/--write-srt.
 //   - From option group: "Subtitle"
@@ -4318,6 +4562,7 @@ func (c *Command) UnsetWriteSubs() *Command {
 
 // Do not write subtitle file (default)
 //
+// Additional information:
 //   - See [Command.UnsetWriteSubs], for unsetting the flag.
 //   - NoWriteSubs maps to cli flags: --no-write-subs/--no-write-srt.
 //   - From option group: "Subtitle"
@@ -4332,6 +4577,7 @@ func (c *Command) NoWriteSubs() *Command {
 
 // Write automatically generated subtitle file
 //
+// Additional information:
 //   - See [Command.UnsetWriteAutoSubs], for unsetting the flag.
 //   - WriteAutoSubs maps to cli flags: --write-auto-subs/--write-automatic-subs.
 //   - From option group: "Subtitle"
@@ -4354,6 +4600,7 @@ func (c *Command) UnsetWriteAutoSubs() *Command {
 
 // Do not write auto-generated subtitles (default)
 //
+// Additional information:
 //   - See [Command.UnsetWriteAutoSubs], for unsetting the flag.
 //   - NoWriteAutoSubs maps to cli flags: --no-write-auto-subs/--no-write-automatic-subs.
 //   - From option group: "Subtitle"
@@ -4368,6 +4615,7 @@ func (c *Command) NoWriteAutoSubs() *Command {
 
 // AllSubs sets the "all-subs" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetAllSubs], for unsetting the flag.
 //   - AllSubs maps to cli flags: --all-subs (hidden).
 //   - From option group: "Subtitle"
@@ -4389,6 +4637,7 @@ func (c *Command) UnsetAllSubs() *Command {
 
 // List available subtitles of each video. Simulate unless --no-simulate is used
 //
+// Additional information:
 //   - See [Command.UnsetListSubs], for unsetting the flag.
 //   - ListSubs maps to cli flags: --list-subs.
 //   - From option group: "Subtitle"
@@ -4410,6 +4659,7 @@ func (c *Command) UnsetListSubs() *Command {
 
 // Subtitle format; accepts formats preference, e.g. "srt" or "ass/srt/best"
 //
+// Additional information:
 //   - See [Command.UnsetSubFormat], for unsetting the flag.
 //   - SubFormat maps to cli flags: --sub-format=FORMAT.
 //   - From option group: "Subtitle"
@@ -4434,6 +4684,7 @@ func (c *Command) UnsetSubFormat() *Command {
 // to exclude it from the requested languages, e.g. --sub-langs all,-live_chat. Use
 // --list-subs for a list of available language tags
 //
+// Additional information:
 //   - See [Command.UnsetSubLangs], for unsetting the flag.
 //   - SubLangs maps to cli flags: --sub-langs/--srt-langs=LANGS.
 //   - From option group: "Subtitle"
@@ -4455,6 +4706,7 @@ func (c *Command) UnsetSubLangs() *Command {
 
 // Login with this account ID
 //
+// Additional information:
 //   - See [Command.UnsetUsername], for unsetting the flag.
 //   - Username maps to cli flags: -u/--username=USERNAME.
 //   - From option group: "Authentication"
@@ -4476,6 +4728,7 @@ func (c *Command) UnsetUsername() *Command {
 
 // Account password. If this option is left out, yt-dlp will ask interactively
 //
+// Additional information:
 //   - See [Command.UnsetPassword], for unsetting the flag.
 //   - Password maps to cli flags: -p/--password=PASSWORD.
 //   - From option group: "Authentication"
@@ -4497,6 +4750,7 @@ func (c *Command) UnsetPassword() *Command {
 
 // Two-factor authentication code
 //
+// Additional information:
 //   - See [Command.UnsetTwoFactor], for unsetting the flag.
 //   - TwoFactor maps to cli flags: -2/--twofactor=TWOFACTOR.
 //   - From option group: "Authentication"
@@ -4518,6 +4772,7 @@ func (c *Command) UnsetTwoFactor() *Command {
 
 // Use .netrc authentication data
 //
+// Additional information:
 //   - See [Command.UnsetNetrc], for unsetting the flag.
 //   - Netrc maps to cli flags: -n/--netrc.
 //   - From option group: "Authentication"
@@ -4540,6 +4795,7 @@ func (c *Command) UnsetNetrc() *Command {
 // Location of .netrc authentication data; either the path or its containing
 // directory. Defaults to ~/.netrc
 //
+// Additional information:
 //   - See [Command.UnsetNetrcLocation], for unsetting the flag.
 //   - NetrcLocation maps to cli flags: --netrc-location=PATH.
 //   - From option group: "Authentication"
@@ -4561,6 +4817,7 @@ func (c *Command) UnsetNetrcLocation() *Command {
 
 // Command to execute to get the credentials for an extractor.
 //
+// Additional information:
 //   - See [Command.UnsetNetrcCmd], for unsetting the flag.
 //   - NetrcCmd maps to cli flags: --netrc-cmd=NETRC_CMD.
 //   - From option group: "Authentication"
@@ -4582,6 +4839,7 @@ func (c *Command) UnsetNetrcCmd() *Command {
 
 // Video password (vimeo, youku)
 //
+// Additional information:
 //   - See [Command.UnsetVideoPassword], for unsetting the flag.
 //   - VideoPassword maps to cli flags: --video-password=PASSWORD.
 //   - From option group: "Authentication"
@@ -4604,6 +4862,7 @@ func (c *Command) UnsetVideoPassword() *Command {
 // Adobe Pass multiple-system operator (TV provider) identifier, use --ap-list-mso
 // for a list of available MSOs
 //
+// Additional information:
 //   - See [Command.UnsetApMSO], for unsetting the flag.
 //   - ApMSO maps to cli flags: --ap-mso=MSO.
 //   - From option group: "Authentication"
@@ -4625,6 +4884,7 @@ func (c *Command) UnsetApMSO() *Command {
 
 // Multiple-system operator account login
 //
+// Additional information:
 //   - See [Command.UnsetApUsername], for unsetting the flag.
 //   - ApUsername maps to cli flags: --ap-username=USERNAME.
 //   - From option group: "Authentication"
@@ -4647,6 +4907,7 @@ func (c *Command) UnsetApUsername() *Command {
 // Multiple-system operator account password. If this option is left out, yt-dlp
 // will ask interactively
 //
+// Additional information:
 //   - See [Command.UnsetApPassword], for unsetting the flag.
 //   - ApPassword maps to cli flags: --ap-password=PASSWORD.
 //   - From option group: "Authentication"
@@ -4668,6 +4929,7 @@ func (c *Command) UnsetApPassword() *Command {
 
 // List all supported multiple-system operators
 //
+// Additional information:
 //   - See [Command.UnsetApListMSO], for unsetting the flag.
 //   - ApListMSO maps to cli flags: --ap-list-mso.
 //   - From option group: "Authentication"
@@ -4689,6 +4951,7 @@ func (c *Command) UnsetApListMSO() *Command {
 
 // Path to client certificate file in PEM format. May include the private key
 //
+// Additional information:
 //   - See [Command.UnsetClientCertificate], for unsetting the flag.
 //   - ClientCertificate maps to cli flags: --client-certificate=CERTFILE.
 //   - From option group: "Authentication"
@@ -4710,6 +4973,7 @@ func (c *Command) UnsetClientCertificate() *Command {
 
 // Path to private key file for client certificate
 //
+// Additional information:
 //   - See [Command.UnsetClientCertificateKey], for unsetting the flag.
 //   - ClientCertificateKey maps to cli flags: --client-certificate-key=KEYFILE.
 //   - From option group: "Authentication"
@@ -4732,6 +4996,7 @@ func (c *Command) UnsetClientCertificateKey() *Command {
 // Password for client certificate private key, if encrypted. If not provided, and
 // the key is encrypted, yt-dlp will ask interactively
 //
+// Additional information:
 //   - See [Command.UnsetClientCertificatePassword], for unsetting the flag.
 //   - ClientCertificatePassword maps to cli flags: --client-certificate-password=PASSWORD.
 //   - From option group: "Authentication"
@@ -4753,6 +5018,7 @@ func (c *Command) UnsetClientCertificatePassword() *Command {
 
 // Convert video files to audio-only files (requires ffmpeg and ffprobe)
 //
+// Additional information:
 //   - See [Command.UnsetExtractAudio], for unsetting the flag.
 //   - ExtractAudio maps to cli flags: -x/--extract-audio.
 //   - From option group: "Post-Processing"
@@ -4776,6 +5042,7 @@ func (c *Command) UnsetExtractAudio() *Command {
 // (default), aac, alac, flac, m4a, mp3, opus, vorbis, wav). You can specify
 // multiple rules using similar syntax as --remux-video
 //
+// Additional information:
 //   - See [Command.UnsetAudioFormat], for unsetting the flag.
 //   - AudioFormat maps to cli flags: --audio-format=FORMAT.
 //   - From option group: "Post-Processing"
@@ -4799,6 +5066,7 @@ func (c *Command) UnsetAudioFormat() *Command {
 // value between 0 (best) and 10 (worst) for VBR or a specific bitrate like 128K
 // (default 5)
 //
+// Additional information:
 //   - See [Command.UnsetAudioQuality], for unsetting the flag.
 //   - AudioQuality maps to cli flags: --audio-quality=QUALITY.
 //   - From option group: "Post-Processing"
@@ -4824,6 +5092,7 @@ func (c *Command) UnsetAudioQuality() *Command {
 // remuxing will fail. You can specify multiple rules; e.g. "aac>m4a/mov>mp4/mkv"
 // will remux aac to m4a, mov to mp4 and anything else to mkv
 //
+// Additional information:
 //   - See [Command.UnsetRemuxVideo], for unsetting the flag.
 //   - RemuxVideo maps to cli flags: --remux-video=FORMAT.
 //   - From option group: "Post-Processing"
@@ -4846,6 +5115,7 @@ func (c *Command) UnsetRemuxVideo() *Command {
 // Re-encode the video into another format if necessary. The syntax and supported
 // formats are the same as --remux-video
 //
+// Additional information:
 //   - See [Command.UnsetRecodeVideo], for unsetting the flag.
 //   - RecodeVideo maps to cli flags: --recode-video=FORMAT.
 //   - From option group: "Post-Processing"
@@ -4879,6 +5149,7 @@ func (c *Command) UnsetRecodeVideo() *Command {
 // "Merger+ffmpeg_i1:-v quiet". You can use this option multiple times to give
 // different arguments to different postprocessors.
 //
+// Additional information:
 //   - See [Command.UnsetPostProcessorArgs], for unsetting the flag.
 //   - PostProcessorArgs maps to cli flags: --postprocessor-args/--ppa=NAME:ARGS.
 //   - From option group: "Post-Processing"
@@ -4900,6 +5171,7 @@ func (c *Command) UnsetPostProcessorArgs() *Command {
 
 // Keep the intermediate video file on disk after post-processing
 //
+// Additional information:
 //   - See [Command.UnsetKeepVideo], for unsetting the flag.
 //   - KeepVideo maps to cli flags: -k/--keep-video.
 //   - From option group: "Post-Processing"
@@ -4922,6 +5194,7 @@ func (c *Command) UnsetKeepVideo() *Command {
 
 // Delete the intermediate video file after post-processing (default)
 //
+// Additional information:
 //   - See [Command.UnsetKeepVideo], for unsetting the flag.
 //   - NoKeepVideo maps to cli flags: --no-keep-video.
 //   - From option group: "Post-Processing"
@@ -4936,6 +5209,7 @@ func (c *Command) NoKeepVideo() *Command {
 
 // Overwrite post-processed files (default)
 //
+// Additional information:
 //   - See [Command.UnsetPostOverwrites], for unsetting the flag.
 //   - PostOverwrites maps to cli flags: --post-overwrites.
 //   - From option group: "Post-Processing"
@@ -4958,6 +5232,7 @@ func (c *Command) UnsetPostOverwrites() *Command {
 
 // Do not overwrite post-processed files
 //
+// Additional information:
 //   - See [Command.UnsetPostOverwrites], for unsetting the flag.
 //   - NoPostOverwrites maps to cli flags: --no-post-overwrites.
 //   - From option group: "Post-Processing"
@@ -4972,6 +5247,7 @@ func (c *Command) NoPostOverwrites() *Command {
 
 // Embed subtitles in the video (only for mp4, webm and mkv videos)
 //
+// Additional information:
 //   - See [Command.UnsetEmbedSubs], for unsetting the flag.
 //   - EmbedSubs maps to cli flags: --embed-subs.
 //   - From option group: "Post-Processing"
@@ -4994,6 +5270,7 @@ func (c *Command) UnsetEmbedSubs() *Command {
 
 // Do not embed subtitles (default)
 //
+// Additional information:
 //   - See [Command.UnsetEmbedSubs], for unsetting the flag.
 //   - NoEmbedSubs maps to cli flags: --no-embed-subs.
 //   - From option group: "Post-Processing"
@@ -5008,6 +5285,7 @@ func (c *Command) NoEmbedSubs() *Command {
 
 // Embed thumbnail in the video as cover art
 //
+// Additional information:
 //   - See [Command.UnsetEmbedThumbnail], for unsetting the flag.
 //   - EmbedThumbnail maps to cli flags: --embed-thumbnail.
 //   - From option group: "Post-Processing"
@@ -5030,6 +5308,7 @@ func (c *Command) UnsetEmbedThumbnail() *Command {
 
 // Do not embed thumbnail (default)
 //
+// Additional information:
 //   - See [Command.UnsetEmbedThumbnail], for unsetting the flag.
 //   - NoEmbedThumbnail maps to cli flags: --no-embed-thumbnail.
 //   - From option group: "Post-Processing"
@@ -5045,6 +5324,7 @@ func (c *Command) NoEmbedThumbnail() *Command {
 // Embed metadata to the video file. Also embeds chapters/infojson if present
 // unless --no-embed-chapters/--no-embed-info-json are used
 //
+// Additional information:
 //   - See [Command.UnsetEmbedMetadata], for unsetting the flag.
 //   - EmbedMetadata maps to cli flags: --embed-metadata/--add-metadata.
 //   - From option group: "Post-Processing"
@@ -5067,6 +5347,7 @@ func (c *Command) UnsetEmbedMetadata() *Command {
 
 // Do not add metadata to file (default)
 //
+// Additional information:
 //   - See [Command.UnsetEmbedMetadata], for unsetting the flag.
 //   - NoEmbedMetadata maps to cli flags: --no-embed-metadata/--no-add-metadata.
 //   - From option group: "Post-Processing"
@@ -5081,6 +5362,7 @@ func (c *Command) NoEmbedMetadata() *Command {
 
 // Add chapter markers to the video file
 //
+// Additional information:
 //   - See [Command.UnsetEmbedChapters], for unsetting the flag.
 //   - EmbedChapters maps to cli flags: --embed-chapters/--add-chapters.
 //   - From option group: "Post-Processing"
@@ -5103,6 +5385,7 @@ func (c *Command) UnsetEmbedChapters() *Command {
 
 // Do not add chapter markers (default)
 //
+// Additional information:
 //   - See [Command.UnsetEmbedChapters], for unsetting the flag.
 //   - NoEmbedChapters maps to cli flags: --no-embed-chapters/--no-add-chapters.
 //   - From option group: "Post-Processing"
@@ -5117,6 +5400,7 @@ func (c *Command) NoEmbedChapters() *Command {
 
 // Embed the infojson as an attachment to mkv/mka video files
 //
+// Additional information:
 //   - See [Command.UnsetEmbedInfoJSON], for unsetting the flag.
 //   - EmbedInfoJSON maps to cli flags: --embed-info-json.
 //   - From option group: "Post-Processing"
@@ -5139,6 +5423,7 @@ func (c *Command) UnsetEmbedInfoJSON() *Command {
 
 // Do not embed the infojson as an attachment to the video file
 //
+// Additional information:
 //   - See [Command.UnsetEmbedInfoJSON], for unsetting the flag.
 //   - NoEmbedInfoJSON maps to cli flags: --no-embed-info-json.
 //   - From option group: "Post-Processing"
@@ -5153,6 +5438,7 @@ func (c *Command) NoEmbedInfoJSON() *Command {
 
 // MetadataFromTitle sets the "metadata-from-title" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetMetadataFromTitle], for unsetting the flag.
 //   - MetadataFromTitle maps to cli flags: --metadata-from-title=FORMAT (hidden).
 //   - From option group: "Post-Processing"
@@ -5176,6 +5462,11 @@ func (c *Command) UnsetMetadataFromTitle() *Command {
 // METADATA" for details. Supported values of "WHEN" are the same as that of
 // --use-postprocessor (default: pre_process)
 //
+// References:
+//   - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#modifying-metadata
+//   - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#modifying-metadata-examples
+//
+// Additional information:
 //   - See [Command.UnsetParseMetadata], for unsetting the flag.
 //   - ParseMetadata maps to cli flags: --parse-metadata=[WHEN:]FROM:TO.
 //   - From option group: "Post-Processing"
@@ -5199,6 +5490,11 @@ func (c *Command) UnsetParseMetadata() *Command {
 // multiple times. Supported values of "WHEN" are the same as that of
 // --use-postprocessor (default: pre_process)
 //
+// References:
+//   - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#modifying-metadata
+//   - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#modifying-metadata-examples
+//
+// Additional information:
 //   - See [Command.UnsetReplaceInMetadata], for unsetting the flag.
 //   - ReplaceInMetadata maps to cli flags: --replace-in-metadata=[WHEN:]FIELDS REGEX REPLACE.
 //   - From option group: "Post-Processing"
@@ -5220,6 +5516,7 @@ func (c *Command) UnsetReplaceInMetadata() *Command {
 
 // Write metadata to the video file's xattrs (using dublin core and xdg standards)
 //
+// Additional information:
 //   - See [Command.UnsetXattrs], for unsetting the flag.
 //   - Xattrs maps to cli flags: --xattrs/--xattr.
 //   - From option group: "Post-Processing"
@@ -5254,6 +5551,10 @@ var (
 // can be used with "--paths" and "--output" to set the output filename for the
 // concatenated files. See "OUTPUT TEMPLATE" for details
 //
+// References:
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#output-template
+//
+// Additional information:
 //   - See [Command.UnsetConcatPlaylist], for unsetting the flag.
 //   - ConcatPlaylist maps to cli flags: --concat-playlist=POLICY.
 //   - From option group: "Post-Processing"
@@ -5288,6 +5589,7 @@ var (
 // (only emit a warning), detect_or_warn (the default; fix file if we can, warn
 // otherwise), force (try fixing even if file already exists)
 //
+// Additional information:
 //   - See [Command.UnsetFixup], for unsetting the flag.
 //   - Fixup maps to cli flags: --fixup=POLICY.
 //   - From option group: "Post-Processing"
@@ -5309,6 +5611,7 @@ func (c *Command) UnsetFixup() *Command {
 
 // PreferAVConv sets the "prefer-avconv" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetPreferAVConv], for unsetting the flag.
 //   - PreferAVConv maps to cli flags: --prefer-avconv/--no-prefer-ffmpeg (hidden).
 //   - From option group: "Post-Processing"
@@ -5334,6 +5637,7 @@ func (c *Command) UnsetPreferAVConv() *Command {
 
 // PreferFFmpeg sets the "prefer-ffmpeg" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetPreferFFmpeg], for unsetting the flag.
 //   - PreferFFmpeg maps to cli flags: --prefer-ffmpeg/--no-prefer-avconv (hidden).
 //   - From option group: "Post-Processing"
@@ -5360,6 +5664,7 @@ func (c *Command) UnsetPreferFFmpeg() *Command {
 // Location of the ffmpeg binary; either the path to the binary or its containing
 // directory
 //
+// Additional information:
 //   - See [Command.UnsetFFmpegLocation], for unsetting the flag.
 //   - FFmpegLocation maps to cli flags: --ffmpeg-location/--avconv-location=PATH.
 //   - From option group: "Post-Processing"
@@ -5386,6 +5691,7 @@ func (c *Command) UnsetFFmpegLocation() *Command {
 // %(filepath,_filename|)q is appended to the end of the command. This option can
 // be used multiple times
 //
+// Additional information:
 //   - See [Command.UnsetExec], for unsetting the flag.
 //   - Exec maps to cli flags: --exec=[WHEN:]CMD.
 //   - From option group: "Post-Processing"
@@ -5408,6 +5714,7 @@ func (c *Command) UnsetExec() *Command {
 
 // Remove any previously defined --exec
 //
+// Additional information:
 //   - See [Command.UnsetExec], for unsetting the flag.
 //   - NoExec maps to cli flags: --no-exec.
 //   - From option group: "Post-Processing"
@@ -5422,6 +5729,7 @@ func (c *Command) NoExec() *Command {
 
 // ExecBeforeDownload sets the "exec-before-download" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetExecBeforeDownload], for unsetting the flag.
 //   - ExecBeforeDownload maps to cli flags: --exec-before-download=CMD (hidden).
 //   - From option group: "Post-Processing"
@@ -5444,6 +5752,7 @@ func (c *Command) UnsetExecBeforeDownload() *Command {
 
 // NoExecBeforeDownload sets the "no-exec-before-download" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetExecBeforeDownload], for unsetting the flag.
 //   - NoExecBeforeDownload maps to cli flags: --no-exec-before-download (hidden).
 //   - From option group: "Post-Processing"
@@ -5459,6 +5768,7 @@ func (c *Command) NoExecBeforeDownload() *Command {
 // Convert the subtitles to another format (currently supported: ass, lrc, srt,
 // vtt)
 //
+// Additional information:
 //   - See [Command.UnsetConvertSubs], for unsetting the flag.
 //   - ConvertSubs maps to cli flags: --convert-subs/--convert-sub/--convert-subtitles=FORMAT.
 //   - From option group: "Post-Processing"
@@ -5481,6 +5791,7 @@ func (c *Command) UnsetConvertSubs() *Command {
 // Convert the thumbnails to another format (currently supported: jpg, png, webp).
 // You can specify multiple rules using similar syntax as --remux-video
 //
+// Additional information:
 //   - See [Command.UnsetConvertThumbnails], for unsetting the flag.
 //   - ConvertThumbnails maps to cli flags: --convert-thumbnails=FORMAT.
 //   - From option group: "Post-Processing"
@@ -5504,6 +5815,10 @@ func (c *Command) UnsetConvertThumbnails() *Command {
 // prefix can be used with "--paths" and "--output" to set the output filename for
 // the split files. See "OUTPUT TEMPLATE" for details
 //
+// References:
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#output-template
+//
+// Additional information:
 //   - See [Command.UnsetSplitChapters], for unsetting the flag.
 //   - SplitChapters maps to cli flags: --split-chapters/--split-tracks.
 //   - From option group: "Post-Processing"
@@ -5526,6 +5841,7 @@ func (c *Command) UnsetSplitChapters() *Command {
 
 // Do not split video based on chapters (default)
 //
+// Additional information:
 //   - See [Command.UnsetSplitChapters], for unsetting the flag.
 //   - NoSplitChapters maps to cli flags: --no-split-chapters/--no-split-tracks.
 //   - From option group: "Post-Processing"
@@ -5541,6 +5857,7 @@ func (c *Command) NoSplitChapters() *Command {
 // Remove chapters whose title matches the given regular expression. The syntax is
 // the same as --download-sections. This option can be used multiple times
 //
+// Additional information:
 //   - See [Command.UnsetRemoveChapters], for unsetting the flag.
 //   - RemoveChapters maps to cli flags: --remove-chapters=REGEX.
 //   - From option group: "Post-Processing"
@@ -5563,6 +5880,7 @@ func (c *Command) UnsetRemoveChapters() *Command {
 
 // Do not remove any chapters from the file (default)
 //
+// Additional information:
 //   - See [Command.UnsetRemoveChapters], for unsetting the flag.
 //   - NoRemoveChapters maps to cli flags: --no-remove-chapters.
 //   - From option group: "Post-Processing"
@@ -5579,6 +5897,7 @@ func (c *Command) NoRemoveChapters() *Command {
 // slow due to needing a re-encode, but the resulting video may have fewer
 // artifacts around the cuts
 //
+// Additional information:
 //   - See [Command.UnsetForceKeyframesAtCuts], for unsetting the flag.
 //   - ForceKeyframesAtCuts maps to cli flags: --force-keyframes-at-cuts.
 //   - From option group: "Post-Processing"
@@ -5601,6 +5920,7 @@ func (c *Command) UnsetForceKeyframesAtCuts() *Command {
 
 // Do not force keyframes around the chapters when cutting/splitting (default)
 //
+// Additional information:
 //   - See [Command.UnsetForceKeyframesAtCuts], for unsetting the flag.
 //   - NoForceKeyframesAtCuts maps to cli flags: --no-force-keyframes-at-cuts.
 //   - From option group: "Post-Processing"
@@ -5624,6 +5944,7 @@ func (c *Command) NoForceKeyframesAtCuts() *Command {
 // processing all formats of a video), or "playlist" (at end of playlist). This
 // option can be used multiple times to add different postprocessors
 //
+// Additional information:
 //   - See [Command.UnsetUsePostProcessor], for unsetting the flag.
 //   - UsePostProcessor maps to cli flags: --use-postprocessor=NAME[:ARGS].
 //   - From option group: "Post-Processing"
@@ -5650,6 +5971,7 @@ func (c *Command) UnsetUsePostProcessor() *Command {
 // categories. E.g. --sponsorblock-mark all,-preview [1]
 // https://wiki.sponsor.ajay.app/w/Segment_Categories
 //
+// Additional information:
 //   - See [Command.UnsetSponsorblockMark], for unsetting the flag.
 //   - SponsorblockMark maps to cli flags: --sponsorblock-mark=CATS.
 //   - From option group: "SponsorBlock"
@@ -5675,6 +5997,7 @@ func (c *Command) UnsetSponsorblockMark() *Command {
 // that "default" refers to "all,-filler" and poi_highlight, chapter are not
 // available
 //
+// Additional information:
 //   - See [Command.UnsetSponsorblockRemove], for unsetting the flag.
 //   - SponsorblockRemove maps to cli flags: --sponsorblock-remove=CATS.
 //   - From option group: "SponsorBlock"
@@ -5699,6 +6022,7 @@ func (c *Command) UnsetSponsorblockRemove() *Command {
 // category, categories, name, category_names. Defaults to "[SponsorBlock]:
 // %(category_names)l"
 //
+// Additional information:
 //   - See [Command.UnsetSponsorblockChapterTitle], for unsetting the flag.
 //   - SponsorblockChapterTitle maps to cli flags: --sponsorblock-chapter-title=TEMPLATE.
 //   - From option group: "SponsorBlock"
@@ -5720,6 +6044,7 @@ func (c *Command) UnsetSponsorblockChapterTitle() *Command {
 
 // Disable both --sponsorblock-mark and --sponsorblock-remove
 //
+// Additional information:
 //   - See [Command.UnsetSponsorblock], for unsetting the flag.
 //   - NoSponsorblock maps to cli flags: --no-sponsorblock.
 //   - From option group: "SponsorBlock"
@@ -5741,6 +6066,7 @@ func (c *Command) UnsetSponsorblock() *Command {
 
 // SponsorBlock API location, defaults to https://sponsor.ajay.app
 //
+// Additional information:
 //   - See [Command.UnsetSponsorblockAPI], for unsetting the flag.
 //   - SponsorblockAPI maps to cli flags: --sponsorblock-api=URL.
 //   - From option group: "SponsorBlock"
@@ -5762,6 +6088,7 @@ func (c *Command) UnsetSponsorblockAPI() *Command {
 
 // Sponskrub sets the "sponskrub" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetSponskrub], for unsetting the flag.
 //   - Sponskrub maps to cli flags: --sponskrub (hidden).
 //   - From option group: "SponsorBlock"
@@ -5788,6 +6115,7 @@ func (c *Command) UnsetSponskrub() *Command {
 
 // NoSponskrub sets the "no-sponskrub" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetSponskrub], for unsetting the flag.
 //   - NoSponskrub maps to cli flags: --no-sponskrub (hidden).
 //   - From option group: "SponsorBlock"
@@ -5804,6 +6132,7 @@ func (c *Command) NoSponskrub() *Command {
 
 // SponskrubCut sets the "sponskrub-cut" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetSponskrubCut], for unsetting the flag.
 //   - SponskrubCut maps to cli flags: --sponskrub-cut (hidden).
 //   - From option group: "SponsorBlock"
@@ -5830,6 +6159,7 @@ func (c *Command) UnsetSponskrubCut() *Command {
 
 // NoSponskrubCut sets the "no-sponskrub-cut" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetSponskrubCut], for unsetting the flag.
 //   - NoSponskrubCut maps to cli flags: --no-sponskrub-cut (hidden).
 //   - From option group: "SponsorBlock"
@@ -5846,6 +6176,7 @@ func (c *Command) NoSponskrubCut() *Command {
 
 // SponskrubForce sets the "sponskrub-force" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetSponskrubForce], for unsetting the flag.
 //   - SponskrubForce maps to cli flags: --sponskrub-force (hidden).
 //   - From option group: "SponsorBlock"
@@ -5872,6 +6203,7 @@ func (c *Command) UnsetSponskrubForce() *Command {
 
 // NoSponskrubForce sets the "no-sponskrub-force" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetSponskrubForce], for unsetting the flag.
 //   - NoSponskrubForce maps to cli flags: --no-sponskrub-force (hidden).
 //   - From option group: "SponsorBlock"
@@ -5888,6 +6220,7 @@ func (c *Command) NoSponskrubForce() *Command {
 
 // SponskrubLocation sets the "sponskrub-location" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetSponskrubLocation], for unsetting the flag.
 //   - SponskrubLocation maps to cli flags: --sponskrub-location=PATH (hidden).
 //   - From option group: "SponsorBlock"
@@ -5913,6 +6246,7 @@ func (c *Command) UnsetSponskrubLocation() *Command {
 
 // SponskrubArgs sets the "sponskrub-args" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetSponskrubArgs], for unsetting the flag.
 //   - SponskrubArgs maps to cli flags: --sponskrub-args=ARGS (hidden).
 //   - From option group: "SponsorBlock"
@@ -5938,6 +6272,7 @@ func (c *Command) UnsetSponskrubArgs() *Command {
 
 // Number of retries for known extractor errors (default is 3), or "infinite"
 //
+// Additional information:
 //   - See [Command.UnsetExtractorRetries], for unsetting the flag.
 //   - ExtractorRetries maps to cli flags: --extractor-retries=RETRIES.
 //   - From option group: "Extractor"
@@ -5959,6 +6294,7 @@ func (c *Command) UnsetExtractorRetries() *Command {
 
 // Process dynamic DASH manifests (default)
 //
+// Additional information:
 //   - See [Command.UnsetAllowDynamicMPD], for unsetting the flag.
 //   - AllowDynamicMPD maps to cli flags: --allow-dynamic-mpd/--no-ignore-dynamic-mpd.
 //   - From option group: "Extractor"
@@ -5980,6 +6316,7 @@ func (c *Command) UnsetAllowDynamicMPD() *Command {
 
 // Do not process dynamic DASH manifests
 //
+// Additional information:
 //   - See [Command.UnsetIgnoreDynamicMPD], for unsetting the flag.
 //   - IgnoreDynamicMPD maps to cli flags: --ignore-dynamic-mpd/--no-allow-dynamic-mpd.
 //   - From option group: "Extractor"
@@ -6001,6 +6338,7 @@ func (c *Command) UnsetIgnoreDynamicMPD() *Command {
 
 // Split HLS playlists to different formats at discontinuities such as ad breaks
 //
+// Additional information:
 //   - See [Command.UnsetHLSSplitDiscontinuity], for unsetting the flag.
 //   - HLSSplitDiscontinuity maps to cli flags: --hls-split-discontinuity.
 //   - From option group: "Extractor"
@@ -6024,6 +6362,7 @@ func (c *Command) UnsetHLSSplitDiscontinuity() *Command {
 // Do not split HLS playlists to different formats at discontinuities such as ad
 // breaks (default)
 //
+// Additional information:
 //   - See [Command.UnsetHLSSplitDiscontinuity], for unsetting the flag.
 //   - NoHLSSplitDiscontinuity maps to cli flags: --no-hls-split-discontinuity.
 //   - From option group: "Extractor"
@@ -6040,6 +6379,10 @@ func (c *Command) NoHLSSplitDiscontinuity() *Command {
 // details. You can use this option multiple times to give arguments for different
 // extractors
 //
+// References:
+//   - Extractor Arguments: https://github.com/yt-dlp/yt-dlp/blob/2023.07.06/README.md#extractor-arguments
+//
+// Additional information:
 //   - See [Command.UnsetExtractorArgs], for unsetting the flag.
 //   - ExtractorArgs maps to cli flags: --extractor-args=IE_KEY:ARGS.
 //   - From option group: "Extractor"
@@ -6061,6 +6404,7 @@ func (c *Command) UnsetExtractorArgs() *Command {
 
 // YoutubeIncludeDashManifest sets the "youtube-include-dash-manifest" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetYoutubeIncludeDashManifest], for unsetting the flag.
 //   - YoutubeIncludeDashManifest maps to cli flags: --youtube-include-dash-manifest/--no-youtube-skip-dash-manifest (hidden).
 //   - From option group: "Extractor"
@@ -6082,6 +6426,7 @@ func (c *Command) UnsetYoutubeIncludeDashManifest() *Command {
 
 // YoutubeSkipDashManifest sets the "youtube-skip-dash-manifest" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetYoutubeSkipDashManifest], for unsetting the flag.
 //   - YoutubeSkipDashManifest maps to cli flags: --youtube-skip-dash-manifest/--no-youtube-include-dash-manifest (hidden).
 //   - From option group: "Extractor"
@@ -6103,6 +6448,7 @@ func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
 
 // YoutubeIncludeHLSManifest sets the "youtube-include-hls-manifest" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetYoutubeIncludeHLSManifest], for unsetting the flag.
 //   - YoutubeIncludeHLSManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest (hidden).
 //   - From option group: "Extractor"
@@ -6124,6 +6470,7 @@ func (c *Command) UnsetYoutubeIncludeHLSManifest() *Command {
 
 // YoutubeSkipHLSManifest sets the "youtube-skip-hls-manifest" flag (no description specified).
 //
+// Additional information:
 //   - See [Command.UnsetYoutubeSkipHLSManifest], for unsetting the flag.
 //   - YoutubeSkipHLSManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest (hidden).
 //   - From option group: "Extractor"

@@ -8,7 +8,15 @@
 {{- else }}
 // {{ $option.Name | to_camel }} sets the {{ $option.Name | quote }} flag (no description specified).
 {{- end }}{{/* end if help */}}
+{{- if $option.URLs }}
 //
+// References:
+{{- range $url := $option.URLs }}
+//  - {{ $url.Name }}: {{ $url.URL }}
+{{- end }}{{/* end range urls */}}
+{{- end }}{{/* end if urls */}}
+//
+// Additional information:
 {{- if not $option.Executable }}
 //  - See [Command.Unset{{ $option.Name | to_camel | trimPrefix "No" | trimPrefix "Yes" }}], for unsetting the flag.
 {{- end }}{{/* end if executable */}}
