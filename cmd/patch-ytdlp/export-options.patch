@@ -7,13 +7,13 @@ index 163809706..160c887f9 100644
  import string
  import sys
 +import json
- 
+
  from .compat import compat_expanduser
  from .cookies import SUPPORTED_BROWSERS, SUPPORTED_KEYRINGS
 @@ -264,6 +265,67 @@ def _dict_from_options_callback(
              out_dict[key] = out_dict.get(key, []) + [val] if append else val
          setattr(parser.values, option.dest, out_dict)
- 
+
 +    def _export_options_callback(option, opt_str, value, parser: _YoutubeDLOptionParser):
 +        data = {
 +            'option_groups': [],
@@ -23,7 +23,7 @@ index 163809706..160c887f9 100644
 +
 +        for group in parser.option_groups:
 +            group_data = {
-+                'title': group.title,
++                'name': group.title,
 +                'description': group.description,
 +                'options': []
 +            }
@@ -43,18 +43,18 @@ index 163809706..160c887f9 100644
 +                        default = None
 +
 +                option_data = {
++                    'id': option.dest,
 +                    'action': str(option.action),
 +                    'choices': list(option.choices) if option.choices else None,
-+                    'default': default,
-+                    'dest': option.dest,
 +                    'help': option.help if option.help != optparse.SUPPRESS_HELP else None,
 +                    'hidden': option.help == optparse.SUPPRESS_HELP,
-+                    'metavar': option.metavar,
++                    'meta_args': option.metavar,
 +                    'type': str(option.type) if option.type else None,
-+                    'long': option._long_opts,
-+                    'short': option._short_opts,
-+                    'const': option.const,
++                    'long_flags': option._long_opts,
++                    'short_flags': option._short_opts,
 +                    'nargs': option.nargs or 0,
++                    'default_value': default,
++                    'const_value': option.const,
 +                }
 +
 +                if not option_data['type']:
@@ -67,7 +67,7 @@ index 163809706..160c887f9 100644
 +
 +                # if help output contains %default, replace it with the actual default value.
 +                if option_data['help'] and '%default' in option_data['help']:
-+                    option_data['help'] = option_data['help'].replace('%default', str(option_data['default']))
++                    option_data['help'] = option_data['help'].replace('%default', str(option_data['default_value']))
 +
 +                group_data['options'].append(option_data)
 +            data['option_groups'].append(group_data)
@@ -86,6 +86,6 @@ index 163809706..160c887f9 100644
 +        '--export-options',
 +        action='callback', default=False, callback=_export_options_callback,
 +        help=optparse.SUPPRESS_HELP)
- 
+
      network = optparse.OptionGroup(parser, 'Network Options')
      network.add_option(

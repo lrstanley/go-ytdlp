@@ -9,7 +9,7 @@ package ytdlp
 {{- $imports := list }}
 {{- range $group := .OptionGroups }}
 {{- range $option := $group.Options }}
-{{- if $option.IsExecutable }}{{ $imports = mustAppend $imports "context" }}{{- end }}{{/* end if executable */}}
+{{- if $option.Executable }}{{ $imports = mustAppend $imports "context" }}{{- end }}{{/* end if executable */}}
 {{- if or (eq $option.Type "int") (eq $option.Type "float64") }}{{ $imports = mustAppend $imports "strconv" }}{{- end }}{{/* end if requires type conversion */}}
 {{- end }}{{/* end range for options */}}
 {{- end }}{{/* end range for option groups */}}
@@ -38,11 +38,11 @@ var (
 )
 {{- end }}{{/* end if choices */}}
 
-{{- if $option.IsExecutable }}
+{{- if $option.Executable }}
 {{ template "builder-help" $option }}
 func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template "builder-meta-args" $option }}) (*Result, error) {
     c.addFlag(&Flag{
-        ID: {{ $option.Dest | quote }},
+        ID: {{ $option.ID | quote }},
         Flag: {{ $option.Flag | quote }},
         Args: {{ template "builder-slice-meta-args" $option }},
     })
@@ -53,7 +53,7 @@ func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template
 {{ template "builder-help" $option }}
 func (c *Command) {{ $option.Name | to_camel }}({{ template "builder-meta-args" $option }}) *Command {
     c.addFlag(&Flag{
-        ID: {{ $option.Dest | quote }},
+        ID: {{ $option.ID | quote }},
         Flag: {{ $option.Flag | quote }},
         Args: {{ template "builder-slice-meta-args" $option }},
     })
@@ -66,7 +66,7 @@ func (c *Command) {{ $option.Name | to_camel }}({{ template "builder-meta-args" 
 
 // Unset{{ $unsetID }} unsets any flags that were previously set by one of:
 {{- range $coption := $group.Options }}
-{{- if $coption.IsExecutable }}{{ continue }}{{- end }}
+{{- if $coption.Executable }}{{ continue }}{{- end }}
 {{- if eq $unsetID ($coption.Name | to_camel | trimPrefix "No" | trimPrefix "Yes") }}
 //   - [Command.{{ $coption.Name | to_camel }}]
 {{- end }}{{/* end if has suffix */}}
@@ -76,7 +76,7 @@ func (c *Command) {{ $option.Name | to_camel }}({{ template "builder-meta-args" 
 // Deprecated: {{ $option.Deprecated }}
 {{- end }}{{/* end if deprecated */}}
 func (c *Command) Unset{{ $unsetID }}() *Command {
-    c.removeFlagByID({{ $option.Dest | quote }})
+    c.removeFlagByID({{ $option.ID | quote }})
     return c
 }
 {{- end }}{{/* end if in $unsets */}}

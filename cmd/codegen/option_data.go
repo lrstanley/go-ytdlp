@@ -97,13 +97,13 @@ var disallowedNames = []string{
 	"none",
 }
 
-type CommandData struct {
+type OptionData struct {
 	Channel      string        `json:"channel"`
 	Version      string        `json:"version"`
 	OptionGroups []OptionGroup `json:"option_groups"`
 }
 
-func (c *CommandData) Generate() {
+func (c *OptionData) Generate() {
 	for i := range c.OptionGroups {
 		c.OptionGroups[i].Generate(c)
 	}
@@ -111,18 +111,18 @@ func (c *CommandData) Generate() {
 
 type OptionGroup struct {
 	// Generated fields.
-	Parent *CommandData `json:"-"` // Reference to parent.
-	Name   string       `json:"-"`
+	Parent *OptionData `json:"-"` // Reference to parent.
+	Name   string      `json:"-"`
 
 	// Command data fields.
-	OriginalTitle string   `json:"title"`
-	Description   string   `json:"description"`
-	Options       []Option `json:"options"`
+	OriginalName string   `json:"name"`
+	Description  string   `json:"description"`
+	Options      []Option `json:"options"`
 }
 
-func (o *OptionGroup) Generate(parent *CommandData) {
+func (o *OptionGroup) Generate(parent *OptionData) {
 	o.Parent = parent
-	o.Name = optionGroupReplacer.Replace(o.OriginalTitle)
+	o.Name = optionGroupReplacer.Replace(o.OriginalName)
 
 	for i := range o.Options {
 		o.Options[i].Generate(o)
@@ -136,52 +136,52 @@ func (o *OptionGroup) Generate(parent *CommandData) {
 
 type Option struct {
 	// Generated fields.
-	Parent          *OptionGroup `json:"-"` // Reference to parent.
-	Name            string       `json:"-"` // simplified name, based off the first found flags.
-	Flag            string       `json:"-"` // first flag (priority on long flags).
-	AllFlags        []string     `json:"-"` // all flags, short + long.
-	MetaVarFuncArgs []string     `json:"-"` // MetaVar converted to function arguments.
-	IsExecutable    bool         `json:"-"` // if the option means yt-dlp doesn't accept arguments, and some callback is done.
-	Deprecated      string       `json:"-"` // if the option is deprecated, this will be the deprecation description.
+	Parent     *OptionGroup `json:"-"` // Reference to parent.
+	Name       string       `json:"-"` // simplified name, based off the first found flags.
+	Flag       string       `json:"-"` // first flag (priority on long flags).
+	AllFlags   []string     `json:"-"` // all flags, short + long.
+	ArgNames   []string     `json:"-"` // MetaArgs converted to function arguments.
+	Executable bool         `json:"-"` // if the option means yt-dlp doesn't accept arguments, and some callback is done.
+	Deprecated string       `json:"-"` // if the option is deprecated, this will be the deprecation description.
 
 	// Command data fields.
-	Action  string   `json:"action"`
-	Choices []string `json:"choices"`
-	Default any      `json:"default"`
-	Dest    string   `json:"dest"`
-	Help    string   `json:"help"`
-	Hidden  bool     `json:"hidden"`
-	MetaVar string   `json:"metavar"`
-	Type    string   `json:"type"`
-	Long    []string `json:"long"`
-	Short   []string `json:"short"`
-	Const   any      `json:"const"`
-	NArgs   int      `json:"nargs"`
+	ID           string   `json:"id"`
+	Action       string   `json:"action"`
+	Choices      []string `json:"choices"`
+	Help         string   `json:"help"`
+	Hidden       bool     `json:"hidden"`
+	MetaArgs     string   `json:"meta_args"`
+	Type         string   `json:"type"`
+	LongFlags    []string `json:"long_flags"`
+	ShortFlags   []string `json:"short_flags"`
+	NArgs        int      `json:"nargs"`
+	DefaultValue any      `json:"default_value"`
+	Const        any      `json:"const_value"`
 }
 
 var (
-	reMetaVarStrip = regexp.MustCompile(`\[.*\]`)
-	reRemoveAlias  = regexp.MustCompile(`\s+\(Alias:.*\)`)
+	reMetaArgsStrip = regexp.MustCompile(`\[.*\]`)
+	reRemoveAlias   = regexp.MustCompile(`\s+\(Alias:.*\)`)
 )
 
 func (o *Option) Generate(parent *OptionGroup) {
 	o.Parent = parent
-	o.AllFlags = append(o.Short, o.Long...) //nolint:gocritic
+	o.AllFlags = append(o.ShortFlags, o.LongFlags...) //nolint:gocritic
 
-	if len(o.Long) > 0 {
-		o.Name = strings.TrimPrefix(o.Long[0], "--")
-		o.Flag = o.Long[0]
-	} else if len(o.Short) > 0 {
-		o.Name = strings.TrimPrefix(o.Short[0], "-")
-		o.Flag = o.Short[0]
+	if len(o.LongFlags) > 0 {
+		o.Name = strings.TrimPrefix(o.LongFlags[0], "--")
+		o.Flag = o.LongFlags[0]
+	} else if len(o.ShortFlags) > 0 {
+		o.Name = strings.TrimPrefix(o.ShortFlags[0], "-")
+		o.Flag = o.ShortFlags[0]
 	}
 
-	if slices.Contains(knownExecutable, o.Dest) || slices.Contains(knownExecutable, o.Flag) {
-		o.IsExecutable = true
+	if slices.Contains(knownExecutable, o.ID) || slices.Contains(knownExecutable, o.Flag) {
+		o.Executable = true
 	}
 
 	for _, d := range deprecatedFlags {
-		if strings.EqualFold(d[0], o.Dest) || strings.EqualFold(d[0], o.Flag) {
+		if strings.EqualFold(d[0], o.ID) || strings.EqualFold(d[0], o.Flag) {
 			o.Deprecated = d[1]
 		}
 	}
@@ -202,15 +202,15 @@ func (o *Option) Generate(parent *OptionGroup) {
 	// Clean up help text.
 	o.Help = reRemoveAlias.ReplaceAllString(o.Help, "")
 
-	// Clean up [prefix:] syntax from MetaVar, since we don't care about the optional prefix type.
-	meta := reMetaVarStrip.ReplaceAllString(o.MetaVar, "")
+	// Clean up [prefix:] syntax from MetaArgs, since we don't care about the optional prefix type.
+	meta := reMetaArgsStrip.ReplaceAllString(o.MetaArgs, "")
 
 	if slices.Contains(disallowedNames, meta) {
 		meta = "value"
 	}
 
-	// Convert MetaVar to function arguments.
+	// Convert MetaArgs to function arguments.
 	for _, v := range strings.Split(meta, " ") {
-		o.MetaVarFuncArgs = append(o.MetaVarFuncArgs, strcase.ToLowerCamel(strings.ToLower(v)))
+		o.ArgNames = append(o.ArgNames, strcase.ToLowerCamel(strings.ToLower(v)))
 	}
 }

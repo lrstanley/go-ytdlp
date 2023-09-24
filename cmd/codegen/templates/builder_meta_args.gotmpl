@@ -4,7 +4,7 @@
 {{- define "builder-meta-args" -}}
 {{- $option := . -}}
 {{- if and (ne $option.Type "bool") (gt $option.NArgs 0) }}
-{{- $option.MetaVarFuncArgs | join ", " }} {{ if $option.Choices }}{{ $option.Name | to_camel }}Option{{ else }}{{ $option.Type }}{{ end }}
+{{- $option.ArgNames | join ", " }} {{ if $option.Choices }}{{ $option.Name | to_camel }}Option{{ else }}{{ $option.Type }}{{ end }}
 {{- end }}{{/* end if type */}}
 {{- end -}}{{/* end define builder-meta-args */}}
 
@@ -17,7 +17,7 @@
 nil
 {{- else }}
 []string{
-    {{- range $index, $arg := .MetaVarFuncArgs }}
+    {{- range $index, $arg := .ArgNames }}
     {{- if $option.Choices }}{{/* if choices, type cast back to the original type when we pass in. */}}
     {{- $arg = printf "%s(%s)" $option.Type $arg }}
     {{- end }}{{/* end if choices */}}

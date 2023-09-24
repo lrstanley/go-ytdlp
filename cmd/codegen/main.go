@@ -53,6 +53,12 @@ var (
 			ParseGlob("./templates/builder*.gotmpl"),
 	)
 
+	optionDataTmpl = template.Must(
+		template.New("optiondata.gotmpl").
+			Funcs(funcMap).
+			ParseGlob("./templates/optiondata*.gotmpl"),
+	)
+
 	optionGroupReplacer = strings.NewReplacer(
 		" Options", "",
 		" and ", " ",
@@ -147,21 +153,22 @@ func main() {
 		panic("usage: codegen <command_data.json> <output_dir>")
 	}
 
-	var data CommandData
+	var data OptionData
 
-	commandDataFile, err := os.Open(os.Args[1])
+	optionDataFile, err := os.Open(os.Args[1])
 	if err != nil {
 		panic(err)
 	}
-	defer commandDataFile.Close()
+	defer optionDataFile.Close()
 
-	err = json.NewDecoder(commandDataFile).Decode(&data)
+	err = json.NewDecoder(optionDataFile).Decode(&data)
 	if err != nil {
 		panic(err)
 	}
 
 	data.Generate()
 
+	createTemplateFile(os.Args[2], "optiondata/optiondata.gen.go", optionDataTmpl, data)
 	createTemplateFile(os.Args[2], "constants.gen.go", constantsTmpl, data)
 	createTemplateFile(os.Args[2], "builder.gen.go", builderTmpl, data)
 	createTemplateFile(os.Args[2], "builder.gen_test.go", builderTestTmpl, data)
