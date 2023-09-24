@@ -21,9 +21,9 @@ type Option struct {
 	// ID is the identifier for the option, if one exists (may not for executables).
 	// Note that this ID is not unique, as multiple options can have the same ID
 	// (e.g. --something and --no-something).
-	ID string `json:"id"`
+	ID string `json:"id,omitempty"`
 	// Name is the simplified name, based off the first found flags.
-	Name string `json:"-"`
+	Name string `json:"name"`
 	// NameCamelCase is the same as [Option.Name], but in camelCase.
 	NameCamelCase string `json:"name_camel_case"`
 	// NamePascalCase is the same as [Option.Name], but in PascalCase.
