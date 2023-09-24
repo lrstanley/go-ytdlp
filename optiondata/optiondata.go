@@ -28,8 +28,8 @@ type Option struct {
 	NameCamelCase string `json:"name_camel_case"`
 	// NamePascalCase is the same as [Option.Name], but in PascalCase.
 	NamePascalCase string `json:"name_pascal_case"`
-	// Link is an optional link to the documentation for the option.
-	Link string `json:"link,omitempty"`
+	// Links are optional links to the documentation for the option.
+	URLs []*OptionURL `json:"urls,omitempty"`
 	// DefaultFlag is the first flag (priority on long flags).
 	DefaultFlag string `json:"default_flag"`
 	// ArgNames are the argument names, if any -- length should match [Option.NArgs].
@@ -56,4 +56,11 @@ type Option struct {
 	ShortFlags []string `json:"short_flags"`
 	// NArgs is the number of arguments the option accepts.
 	NArgs int `json:"nargs"`
+}
+
+type OptionURL struct {
+	// Name is the name of the option link.
+	Name string `json:"name"`
+	// URL is the link to the documentation for the option.
+	URL string `json:"url"`
 }

@@ -50,6 +50,16 @@ var (
                 Name: {{ $option.Name | quote }},
                 NameCamelCase: {{ $option.Name | to_lower_camel | quote }},
                 NamePascalCase: {{ $option.Name | to_camel | quote }},
+                {{- if $option.URLs }}
+                URLs: []*OptionURL{
+                    {{- range $url := $option.URLs }}
+                        {
+                            Name: {{ $url.Name | quote }},
+                            URL: {{ $url.URL | quote }},
+                        },
+                    {{- end }}
+                },
+                {{- end }}
                 DefaultFlag: {{ $option.Flag | quote }},
                 {{- if and (gt $option.NArgs 0) ($option.ArgNames) }}
                 ArgNames: []string{ {{- range $arg := $option.ArgNames }}{{ $arg | quote }},{{- end }} },

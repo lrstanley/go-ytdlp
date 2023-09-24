@@ -69,6 +69,42 @@ var deprecatedFlags = [][]string{
 	{"--yes-overwrites", "Use [Command.ForceOverwrites] instead."},
 }
 
+type OptionURL struct {
+	Name string
+	URL  string
+}
+
+var linkableFlags = map[string][]OptionURL{
+	"--audio-multistreams": {{Name: "Format Selection", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#format-selection"}},
+	"--compat-options":     {{Name: "Compatibility Options", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#differences-in-default-behavior"}},
+	"--concat-playlist":    {{Name: "Output Template", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#output-template"}},
+	"--dump-json":          {{Name: "Output Template", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#output-template"}},
+	"--extractor-args":     {{Name: "Extractor Arguments", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#extractor-arguments"}},
+	"--format-sort-force":  {{Name: "Sorting Formats", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#sorting-formats"}},
+	"--format-sort": {
+		{Name: "Sorting Formats", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#sorting-formats"},
+		{Name: "Format Selection Examples", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#format-selection-examples"},
+	},
+	"--format": {
+		{Name: "Format Selection", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#format-selection"},
+		{Name: "Filter Formatting", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#filtering-formats"},
+		{Name: "Format Selection Examples", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#format-selection-examples"},
+	},
+	"--output": {{Name: "Output Template", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#output-template"}},
+	"--parse-metadata": {
+		{Name: "Modifying Metadata", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#modifying-metadata"},
+		{Name: "Modifying Metadata Examples", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#modifying-metadata-examples"},
+	},
+	"--replace-in-metadata": {
+		{Name: "Modifying Metadata", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#modifying-metadata"},
+		{Name: "Modifying Metadata Examples", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#modifying-metadata-examples"},
+	},
+	"--split-chapters":     {{Name: "Output Template", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#output-template"}},
+	"--update-to":          {{Name: "Update Notes", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#update"}},
+	"--update":             {{Name: "Update Notes", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#update"}},
+	"--video-multistreams": {{Name: "Format Selection", URL: "https://github.com/yt-dlp/yt-dlp/blob/{version}/README.md#format-selection"}},
+}
+
 // knownExecutable are dest or flag names that are executable (override the default url input).
 var knownExecutable = []string{
 	"--update-to",
@@ -143,6 +179,7 @@ type Option struct {
 	ArgNames   []string     `json:"-"` // MetaArgs converted to function arguments.
 	Executable bool         `json:"-"` // if the option means yt-dlp doesn't accept arguments, and some callback is done.
 	Deprecated string       `json:"-"` // if the option is deprecated, this will be the deprecation description.
+	URLs       []OptionURL  `json:"-"` // if the option has any links to the documentation.
 
 	// Command data fields.
 	ID           string   `json:"id"`
@@ -212,5 +249,15 @@ func (o *Option) Generate(parent *OptionGroup) {
 	// Convert MetaArgs to function arguments.
 	for _, v := range strings.Split(meta, " ") {
 		o.ArgNames = append(o.ArgNames, strcase.ToLowerCamel(strings.ToLower(v)))
+	}
+
+	// URLs.
+	if urls, ok := linkableFlags[o.Flag]; ok {
+		for _, u := range urls {
+			o.URLs = append(o.URLs, OptionURL{
+				Name: u.Name,
+				URL:  strings.ReplaceAll(u.URL, "{version}", parent.Parent.Version),
+			})
+		}
 	}
 }
