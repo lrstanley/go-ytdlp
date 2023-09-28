@@ -331,13 +331,13 @@ func Install(ctx context.Context, opts *InstallOptions) (*ResolvedInstall, error
 }
 
 // MustInstall is the same as [Install], but will panic if an error occurs (essentially
-// ensuring yt-dlp is installed, before continuing).
-func MustInstall(ctx context.Context, opts *InstallOptions) *ResolvedInstall {
-	r, err := Install(ctx, opts)
+// ensuring yt-dlp is installed, before continuing), and doesn't return any results.
+func MustInstall(ctx context.Context, opts *InstallOptions) {
+	_, err := Install(ctx, opts)
 	if err != nil {
 		panic(err)
 	}
-	return r
+	return
 }
 
 // resolveExecutable will attempt to resolve the yt-dlp executable, either from

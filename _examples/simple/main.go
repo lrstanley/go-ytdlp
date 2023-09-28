@@ -15,7 +15,7 @@ import (
 
 func main() {
 	// If yt-dlp isn't installed yet, download and cache it for further use.
-	_ = ytdlp.MustInstall(context.TODO(), nil)
+	ytdlp.MustInstall(context.TODO(), nil)
 
 	dl := ytdlp.New().
 		PrintJSON().

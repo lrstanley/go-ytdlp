@@ -41,7 +41,7 @@ func validateFlagRemoved(t *testing.T, builder *Command, dest, flag string) {
 }
 
 func TestBuilder_General_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("NoUpdate", func(t *testing.T) {
 		builder := New().NoUpdate()
 		validateFlagAdded(t, builder, "update_self", "--no-update", 0)
@@ -171,7 +171,7 @@ func TestBuilder_General_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Network_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("Proxy", func(t *testing.T) {
 		builder := New().Proxy("test")
 		validateFlagAdded(t, builder, "proxy", "--proxy", 1)
@@ -211,7 +211,7 @@ func TestBuilder_Network_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_GeoRestriction_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("GeoVerificationProxy", func(t *testing.T) {
 		builder := New().GeoVerificationProxy("test")
 		validateFlagAdded(t, builder, "geo_verification_proxy", "--geo-verification-proxy", 1)
@@ -257,7 +257,7 @@ func TestBuilder_GeoRestriction_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_VideoSelection_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("PlaylistStart", func(t *testing.T) {
 		builder := New().PlaylistStart(1)
 		validateFlagAdded(t, builder, "playliststart", "--playlist-start", 1)
@@ -435,7 +435,7 @@ func TestBuilder_VideoSelection_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Download_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("ConcurrentFragments", func(t *testing.T) {
 		builder := New().ConcurrentFragments(1)
 		validateFlagAdded(t, builder, "concurrent_fragment_downloads", "--concurrent-fragments", 1)
@@ -607,7 +607,7 @@ func TestBuilder_Download_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Filesystem_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("BatchFile", func(t *testing.T) {
 		builder := New().BatchFile("test")
 		validateFlagAdded(t, builder, "batchfile", "--batch-file", 1)
@@ -863,7 +863,7 @@ func TestBuilder_Filesystem_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Thumbnail_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("WriteThumbnail", func(t *testing.T) {
 		builder := New().WriteThumbnail("test")
 		validateFlagAdded(t, builder, "writethumbnail", "--write-thumbnail", 1)
@@ -891,7 +891,7 @@ func TestBuilder_Thumbnail_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_InternetShortcut_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("WriteLink", func(t *testing.T) {
 		builder := New().WriteLink()
 		validateFlagAdded(t, builder, "writelink", "--write-link", 0)
@@ -919,7 +919,7 @@ func TestBuilder_InternetShortcut_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_VerbositySimulation_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("Quiet", func(t *testing.T) {
 		builder := New().Quiet()
 		validateFlagAdded(t, builder, "quiet", "--quiet", 0)
@@ -1121,7 +1121,7 @@ func TestBuilder_VerbositySimulation_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Workaround_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("Encoding", func(t *testing.T) {
 		builder := New().Encoding("test")
 		validateFlagAdded(t, builder, "encoding", "--encoding", 1)
@@ -1197,7 +1197,7 @@ func TestBuilder_Workaround_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_VideoFormat_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("Format", func(t *testing.T) {
 		builder := New().Format("test")
 		validateFlagAdded(t, builder, "format", "--format", 1)
@@ -1309,7 +1309,7 @@ func TestBuilder_VideoFormat_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Subtitle_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("WriteSubs", func(t *testing.T) {
 		builder := New().WriteSubs()
 		validateFlagAdded(t, builder, "writesubtitles", "--write-subs", 0)
@@ -1361,7 +1361,7 @@ func TestBuilder_Subtitle_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Authentication_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("Username", func(t *testing.T) {
 		builder := New().Username("test")
 		validateFlagAdded(t, builder, "username", "--username", 1)
@@ -1449,7 +1449,7 @@ func TestBuilder_Authentication_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_PostProcessing_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("ExtractAudio", func(t *testing.T) {
 		builder := New().ExtractAudio()
 		validateFlagAdded(t, builder, "extractaudio", "--extract-audio", 0)
@@ -1705,7 +1705,7 @@ func TestBuilder_PostProcessing_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_SponsorBlock_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("SponsorblockMark", func(t *testing.T) {
 		builder := New().SponsorblockMark("test")
 		validateFlagAdded(t, builder, "sponsorblock_mark", "--sponsorblock-mark", 1)
@@ -1787,7 +1787,7 @@ func TestBuilder_SponsorBlock_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Extractor_NonExecutable(t *testing.T) {
-	_ = MustInstall(context.Background(), nil)
+	MustInstall(context.Background(), nil)
 	t.Run("ExtractorRetries", func(t *testing.T) {
 		builder := New().ExtractorRetries("test")
 		validateFlagAdded(t, builder, "extractor_retries", "--extractor-retries", 1)
