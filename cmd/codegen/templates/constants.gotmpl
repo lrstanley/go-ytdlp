@@ -13,3 +13,29 @@ const (
     // Version of yt-dlp that go-ytdlp was generated with.
     Version = {{ .Version | quote }}
 )
+
+// Extractor contains information about a specific yt-dlp extractor. Extractors are
+// used to extract information from a specific URL, and subsequently download the
+// video/audio.
+type Extractor struct {
+    // Name of the extractor.
+    Name string `json:"name"`
+
+    // Description of the extractor.
+    Description string `json:"description,omitempty"`
+
+    // AgeLimit of the extractor.
+    AgeLimit int `json:"age_limit,omitempty"`
+}
+
+var SupportedExtractors = []*Extractor{
+    {{- range .Extractors }}
+    {
+        {{- "" -}}
+        Name: {{ .Name | quote }},
+        {{- if and (.Description) (ne .Description .Name) }}Description: {{ .Description | trimPrefix (printf "%s: " .Name) | trim | quote }},{{- end }}
+        {{- if .AgeLimit }}AgeLimit: {{ .AgeLimit }},{{- end }}
+        {{- "" -}}
+    },
+    {{- end }}
+}

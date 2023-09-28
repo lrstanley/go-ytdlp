@@ -12,6 +12,12 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
+type Extractor struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	AgeLimit    int    `json:"age_limit"`
+}
+
 type OptionURL struct {
 	Name string
 	URL  string
@@ -21,6 +27,7 @@ type OptionData struct {
 	Channel      string        `json:"channel"`
 	Version      string        `json:"version"`
 	OptionGroups []OptionGroup `json:"option_groups"`
+	Extractors   []Extractor   `json:"extractors"`
 }
 
 func (c *OptionData) Generate() {

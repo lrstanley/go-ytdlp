@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func TestConstant_Validate(t *testing.T) {
+func TestConstant_ValidateMain(t *testing.T) {
 	if Channel == "" {
 		t.Fatal("Channel is empty")
 	}
@@ -22,5 +22,35 @@ func TestConstant_Validate(t *testing.T) {
 	_, err := time.Parse("2006.01.02", Version)
 	if err != nil {
 		t.Fatalf("failed to parse version: %v", err)
+	}
+}
+
+func TestConstant_ValidateExtractors(t *testing.T) {
+	if len(SupportedExtractors) == 0 {
+		t.Fatal("SupportedExtractors is empty")
+	}
+
+	withDescriptions := 0
+	withAgeLimit := 0
+	for _, e := range SupportedExtractors {
+		if e.Name == "" {
+			t.Fatal("extractor has no name")
+		}
+
+		if e.Description != "" {
+			withDescriptions++
+		}
+
+		if e.AgeLimit != 0 {
+			withAgeLimit++
+		}
+	}
+
+	if withDescriptions == 0 {
+		t.Fatal("no extractors have descriptions")
+	}
+
+	if withAgeLimit == 0 {
+		t.Fatal("no extractors have age limits")
 	}
 }
