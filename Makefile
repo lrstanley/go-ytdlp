@@ -1,12 +1,15 @@
 .DEFAULT_GOAL := generate
 
-export YTDLP_VERSION := 2023.07.06
+export YTDLP_VERSION := 2023.09.24
 
 license:
 	curl -sL https://liam.sh/-/gh/g/license-header.sh | bash -s
 
 up: go-upgrade-deps
 	@echo
+
+clean:
+	rm -rf ./cmd/patch-ytdlp/tmp/${YTDLP_VERSION} ./cmd/patch-ytdlp/export-${YTDLP_VERSION}.json
 
 go-fetch:
 	cd ./cmd/codegen && go mod download && go mod tidy
@@ -25,6 +28,9 @@ commit: generate
 		*.gen.go *.gen_test.go \
 		optiondata/*.gen.go optiondata/*.gen_test.go
 	git commit -m "chore(codegen): generate updated cli bindings"
+
+edit-patch: clean patch
+	cd ./cmd/patch-ytdlp/tmp/${YTDLP_VERSION} && ${EDITOR} yt_dlp/options.py && git diff > ../../export-options.patch
 
 patch:
 	./cmd/patch-ytdlp/run.sh ${YTDLP_VERSION}

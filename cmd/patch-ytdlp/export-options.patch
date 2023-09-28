@@ -1,5 +1,5 @@
 diff --git a/yt_dlp/options.py b/yt_dlp/options.py
-index 1638097..c1da263 100644
+index 1638097..dd8407a 100644
 --- a/yt_dlp/options.py
 +++ b/yt_dlp/options.py
 @@ -7,6 +7,7 @@
@@ -10,7 +10,7 @@ index 1638097..c1da263 100644
  
  from .compat import compat_expanduser
  from .cookies import SUPPORTED_BROWSERS, SUPPORTED_KEYRINGS
-@@ -264,6 +265,82 @@ def _dict_from_options_callback(
+@@ -264,6 +265,81 @@ def _dict_from_options_callback(
              out_dict[key] = out_dict.get(key, []) + [val] if append else val
          setattr(parser.values, option.dest, out_dict)
  
@@ -19,12 +19,11 @@ index 1638097..c1da263 100644
 +        from .extractor.generic import GenericIE # Importing GenericIE is currently slow since it imports YoutubeIE
 +
 +        extractors = []
-+        _SEARCHES = ('cute kittens', 'slithering pythons', 'falling cat', 'angry poodle', 'purple fish', 'running tortoise', 'sleeping bunny', 'burping cow')
 +
 +        for ie in list_extractor_classes():
 +            extractors.append({
 +                "name": ie.IE_NAME,
-+                "description": ie.description(markdown=False, search_examples=_SEARCHES),
++                "description": ie.description(markdown=False),
 +                "broken": not ie.working(),
 +                "age_limit": ie.age_limit or None,
 +            })
@@ -93,7 +92,7 @@ index 1638097..c1da263 100644
      def when_prefix(default):
          return {
              'default': {},
-@@ -493,6 +570,10 @@ def _alias_callback(option, opt_str, value, parser, opts, nargs):
+@@ -493,6 +569,10 @@ def _alias_callback(option, opt_str, value, parser, opts, nargs):
              'Alias options can trigger more aliases; so be careful to avoid defining recursive options. '
              f'As a safety measure, each alias may be triggered a maximum of {_YoutubeDLOptionParser.ALIAS_TRIGGER_LIMIT} times. '
              'This option can be used multiple times'))
