@@ -20,6 +20,8 @@ func wrapError(r *Result, err error) (*Result, error) {
 		return nil, &ErrUnknown{wrapped: err}
 	}
 
+	err = r.decorateError(err)
+
 	if errors.Is(err, exec.ErrDot) || errors.Is(err, exec.ErrNotFound) {
 		return r, &ErrMisconfig{wrapped: err, result: r}
 	}

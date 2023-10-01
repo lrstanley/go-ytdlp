@@ -41,16 +41,38 @@ type Result struct {
 	OutputLogs []*ResultLog `json:"output_logs"`
 }
 
-func (r *Result) String() string {
+func (r *Result) asString(stdout, stderr, timestamps, maskJSON, exitCode bool) string {
 	var out []string
 
 	for _, l := range r.OutputLogs {
-		out = append(out, l.String())
+		if l.Pipe == "stdout" && !stdout {
+			continue
+		}
+
+		if l.Pipe == "stderr" && !stderr {
+			continue
+		}
+
+		out = append(out, l.asString(timestamps, maskJSON))
 	}
 
-	out = append(out, fmt.Sprintf("exit code: %d", r.ExitCode))
+	if exitCode {
+		out = append(out, fmt.Sprintf("exit code: %d", r.ExitCode))
+	}
 
 	return strings.Join(out, "\n")
+}
+
+func (r *Result) String() string {
+	return r.asString(true, true, true, true, true)
+}
+
+func (r *Result) decorateError(err error) error {
+	if err == nil {
+		return nil
+	}
+
+	return fmt.Errorf("%s\n\n%s", err.Error(), r.asString(false, true, false, true, false))
 }
 
 // GetExtractedInfo returns the extracted info from the yt-dlp output logs. Note that
@@ -86,14 +108,22 @@ type ResultLog struct {
 	Pipe      string           `json:"pipe"`           // stdout or stderr.
 }
 
-func (r *ResultLog) String() string {
+func (r *ResultLog) asString(timestamps, maskJSON bool) string {
 	line := r.Line
 
-	if r.JSON != nil {
+	if maskJSON && r.JSON != nil {
 		line = "<json-data>"
 	}
 
-	return fmt.Sprintf("[%s::%s] %s", r.Timestamp.Format(time.DateTime), r.Pipe, line)
+	if timestamps {
+		return fmt.Sprintf("[%s::%s] %s", r.Timestamp.Format(time.DateTime), r.Pipe, line)
+	}
+
+	return line
+}
+
+func (r *ResultLog) String() string {
+	return r.asString(true, true)
 }
 
 type timestampWriter struct {
