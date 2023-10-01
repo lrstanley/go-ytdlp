@@ -7,9 +7,11 @@ package ytdlp
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"reflect"
 	"slices"
 	"sort"
+	"strings"
 	"time"
 	"unicode"
 )
@@ -37,6 +39,18 @@ type Result struct {
 	// OutputLogs are the stdout/stderr logs, sorted by timestamp, and any JSON
 	// parsed (if configured with [Command.PrintJson]).
 	OutputLogs []*ResultLog `json:"output_logs"`
+}
+
+func (r *Result) String() string {
+	var out []string
+
+	for _, l := range r.OutputLogs {
+		out = append(out, l.String())
+	}
+
+	out = append(out, fmt.Sprintf("exit code: %d", r.ExitCode))
+
+	return strings.Join(out, "\n")
 }
 
 // GetExtractedInfo returns the extracted info from the yt-dlp output logs. Note that
@@ -70,6 +84,16 @@ type ResultLog struct {
 	Line      string           `json:"line"`
 	JSON      *json.RawMessage `json:"json,omitempty"` // May be nil if the log line wasn't valid JSON.
 	Pipe      string           `json:"pipe"`           // stdout or stderr.
+}
+
+func (r *ResultLog) String() string {
+	line := r.Line
+
+	if r.JSON != nil {
+		line = "<json-data>"
+	}
+
+	return fmt.Sprintf("[%s::%s] %s", r.Timestamp.Format(time.DateTime), r.Pipe, line)
 }
 
 type timestampWriter struct {
