@@ -253,28 +253,3 @@ func (f *Flag) Raw() (args []string) {
 
 	return args
 }
-
-// Result contains the yt-dlp execution results, including stdout/stderr, exit code,
-// and any output logs. Note that output logs should already be pre-processed via
-// [Result.OutputLogs], which will be sorted by timestamp, and any JSON parsed
-// (if configured with [Command.PrintJson]).
-type Result struct {
-	// Executable is the path to the yt-dlp executable that was invoked.
-	Executable string `json:"executable"`
-
-	// Args are the arguments that were passed to yt-dlp, excluding the executable.
-	Args []string `json:"args"`
-
-	// ExitCode is the exit code of the yt-dlp process.
-	ExitCode int `json:"exit_code"`
-
-	// Stdout is the stdout of the yt-dlp process, with trailing newlines removed.
-	Stdout string `json:"stdout"`
-
-	// Stderr is the stderr of the yt-dlp process, with trailing newlines removed.
-	Stderr string `json:"stderr"`
-
-	// OutputLogs are the stdout/stderr logs, sorted by timestamp, and any JSON
-	// parsed (if configured with [Command.PrintJson]).
-	OutputLogs []*ResultLog `json:"output_logs"`
-}

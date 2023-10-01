@@ -337,7 +337,6 @@ func MustInstall(ctx context.Context, opts *InstallOptions) {
 	if err != nil {
 		panic(err)
 	}
-	return
 }
 
 // resolveExecutable will attempt to resolve the yt-dlp executable, either from
