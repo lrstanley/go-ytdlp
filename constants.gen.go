@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2023.09.24"
+	Version = "2023.10.07"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -454,6 +454,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "eplus:inbound", Description: "e+ (イープラス) overseas"},
 	{Name: "Epoch"},
 	{Name: "Eporner", AgeLimit: 18},
+	{Name: "Erocast", AgeLimit: 18},
 	{Name: "EroProfile", Description: "[eroprofile]", AgeLimit: 18},
 	{Name: "EroProfile:album"},
 	{Name: "ertflix", Description: "ERTFLIX videos", AgeLimit: 8},
@@ -735,6 +736,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "LastFMUser"},
 	{Name: "lbry"},
 	{Name: "lbry:channel"},
+	{Name: "lbry:playlist"},
 	{Name: "LCI"},
 	{Name: "Lcp"},
 	{Name: "LcpPlay"},
@@ -1516,8 +1518,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "ThePlatformFeed"},
 	{Name: "TheStar"},
 	{Name: "TheSun"},
-	{Name: "ThetaStream"},
-	{Name: "ThetaVideo"},
 	{Name: "TheWeatherChannel"},
 	{Name: "ThisAmericanLife"},
 	{Name: "ThisAV"},
