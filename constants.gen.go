@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2023.10.13"
+	Version = "2023.10.07"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -693,8 +693,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Joj"},
 	{Name: "Jove"},
 	{Name: "JStream"},
-	{Name: "JTBC", Description: "jtbc.co.kr", AgeLimit: 15},
-	{Name: "JTBC:program"},
 	{Name: "JWPlatform"},
 	{Name: "Kakao"},
 	{Name: "Kaltura"},
@@ -805,7 +803,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "massengeschmack.tv"},
 	{Name: "Masters"},
 	{Name: "MatchTV"},
-	{Name: "MBN", Description: "mbn.co.kr (매일방송)"},
 	{Name: "MDR", Description: "MDR.DE and KiKA"},
 	{Name: "MedalTV"},
 	{Name: "media.ccc.de"},
@@ -1512,7 +1509,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Tempo"},
 	{Name: "TennisTV", Description: "[tennistv]"},
 	{Name: "TenPlay", Description: "[10play]", AgeLimit: 15},
-	{Name: "TenPlaySeason"},
 	{Name: "TestURL", Description: "[HIDDEN]"},
 	{Name: "TF1"},
 	{Name: "TFO"},
