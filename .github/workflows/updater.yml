@@ -1,0 +1,43 @@
+name: updater
+
+on:
+  schedule:
+    - cron: "0 12 * * 5" # every Friday at noon
+  workflow_dispatch: {}
+
+jobs:
+  yt-dlp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lrstanley/.github/composite/go-versions@master
+        id: goversion
+      - name: install-go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "${{ steps.goversion.outputs.version }}"
+          cache: false
+      - id: release
+        uses: lrstanley/.github/composite/get-release-version@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repo: yt-dlp/yt-dlp
+      - id: version
+        run: |
+          echo "previous_version=$(sed -rn 's/export YTDLP_VERSION := (.+)/\1/p' Makefile)" >> "$GITHUB_OUTPUT"
+          sed -ri 's/YTDLP_VERSION := .+/YTDLP_VERSION := '${{ steps.release.outputs.version }}'/g' Makefile
+
+          make generate
+      - uses: lrstanley/.github/composite/pr-version-updater@master
+        with:
+          token: ${{ secrets.USER_PAT }}
+          tool: yt-dlp
+          chore: deps
+          version: ${{ steps.release.outputs.version }}
+          previous_version: ${{ steps.version.outputs.previous_version }}
+          paths: |
+            Makefile
+            *.gen.go
+            *.gen_test.go
+            optiondata/*.gen.go
+          repo: ${{ steps.release.outputs.repo }}
