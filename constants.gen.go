@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2023.10.13"
+	Version = "2023.11.16"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -446,6 +446,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "EllenTubeVideo"},
 	{Name: "Elonet"},
 	{Name: "ElPais", Description: "El País"},
+	{Name: "ElTreceTV", Description: "El Trece TV (Argentina)"},
 	{Name: "Embedly"},
 	{Name: "EMPFlix", AgeLimit: 18},
 	{Name: "Engadget"},
@@ -690,6 +691,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Jamendo"},
 	{Name: "JamendoAlbum"},
 	{Name: "JeuxVideo"},
+	{Name: "JioSaavnAlbum"},
+	{Name: "JioSaavnSong"},
 	{Name: "Joj"},
 	{Name: "Jove"},
 	{Name: "JStream"},
@@ -736,6 +739,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "LastFM"},
 	{Name: "LastFMPlaylist"},
 	{Name: "LastFMUser"},
+	{Name: "LaXarxaMes", Description: "[laxarxames]"},
 	{Name: "lbry"},
 	{Name: "lbry:channel"},
 	{Name: "lbry:playlist"},
@@ -1013,7 +1017,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Nitter"},
 	{Name: "njoy", Description: "N-JOY"},
 	{Name: "njoy:embed"},
-	{Name: "NJPWWorld", Description: "[njpwworld] 新日本プロレスワールド"},
 	{Name: "NobelPrize"},
 	{Name: "NoicePodcast"},
 	{Name: "NonkTube", AgeLimit: 18},
@@ -1063,7 +1066,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "OlympicsReplay"},
 	{Name: "on24", Description: "ON24"},
 	{Name: "OnDemandChinaEpisode"},
-	{Name: "OnDemandKorea"},
+	{Name: "OnDemandKorea", AgeLimit: 18},
+	{Name: "OnDemandKoreaProgram"},
 	{Name: "OneFootball"},
 	{Name: "OnePlacePodcast"},
 	{Name: "onet.pl"},
@@ -1081,6 +1085,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "OraTV"},
 	{Name: "orf:fm4:story", Description: "fm4.orf.at stories"},
 	{Name: "orf:iptv", Description: "iptv.ORF.at"},
+	{Name: "orf:podcast"},
 	{Name: "orf:radio"},
 	{Name: "orf:tvthek", Description: "ORF TVthek"},
 	{Name: "OsnatelTV", Description: "[osnateltv]"},
@@ -1219,6 +1224,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "radiobremen"},
 	{Name: "radiocanada"},
 	{Name: "radiocanada:audiovideo"},
+	{Name: "RadioComercial"},
+	{Name: "RadioComercialPlaylist"},
 	{Name: "radiofrance"},
 	{Name: "RadioFranceLive"},
 	{Name: "RadioFrancePodcast"},
@@ -1347,6 +1354,9 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Sapo", Description: "SAPO Vídeos"},
 	{Name: "savefrom.net"},
 	{Name: "SBS", Description: "sbs.com.au"},
+	{Name: "sbs.co.kr", AgeLimit: 15},
+	{Name: "sbs.co.kr:allvod_program"},
+	{Name: "sbs.co.kr:programs_vod"},
 	{Name: "schooltv"},
 	{Name: "ScienceChannel"},
 	{Name: "screen.yahoo:search", Description: "Yahoo screen search; \"yvsearch:\" prefix"},
@@ -1516,6 +1526,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "TestURL", Description: "[HIDDEN]"},
 	{Name: "TF1"},
 	{Name: "TFO"},
+	{Name: "theatercomplextown:ppv", Description: "[theatercomplextown]"},
+	{Name: "theatercomplextown:vod", Description: "[theatercomplextown]"},
 	{Name: "TheHoleTv"},
 	{Name: "TheIntercept"},
 	{Name: "ThePlatform"},
@@ -1524,8 +1536,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "TheSun"},
 	{Name: "TheWeatherChannel"},
 	{Name: "ThisAmericanLife"},
-	{Name: "ThisAV"},
-	{Name: "ThisOldHouse"},
+	{Name: "ThisOldHouse", Description: "[thisoldhouse]"},
 	{Name: "ThisVid", AgeLimit: 18},
 	{Name: "ThisVidMember"},
 	{Name: "ThisVidPlaylist", AgeLimit: 18},
