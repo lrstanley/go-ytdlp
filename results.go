@@ -329,6 +329,14 @@ type ExtractedInfo struct {
 	// URL is the final video URL.
 	URL *string `json:"url,omitempty"`
 
+	// Filename is the video filename. This is not set when simulation is requested/
+	// enabled.
+	Filename *string `json:"filename,omitempty"`
+
+	// AltFilename is an alternative filename for the video. This maps to "_filename".
+	// See [ExtractedInfo.Filename] for more info.
+	AltFilename *string `json:"_filename,omitempty"`
+
 	// Extension is the video filename extension.
 	Extension string `json:"ext"`
 
