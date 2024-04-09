@@ -66,6 +66,8 @@ var (
 			optionProxy,
 			optionSocketTimeout,
 			optionSourceAddress,
+			optionImpersonate,
+			optionListImpersonateTargets,
 			optionForceIPv4,
 			optionForceIPv6,
 			optionEnableFileURLs,
@@ -109,6 +111,7 @@ var (
 			optionNoDownloadArchive,
 			optionMaxDownloads,
 			optionBreakOnExisting,
+			optionNoBreakOnExisting,
 			optionBreakOnReject,
 			optionBreakPerInput,
 			optionNoBreakPerInput,
@@ -245,6 +248,7 @@ var (
 			optionProgress,
 			optionConsoleTitle,
 			optionProgressTemplate,
+			optionProgressDelta,
 			optionVerbose,
 			optionDumpPages,
 			optionWritePages,
@@ -440,6 +444,8 @@ var Options = []*Option{
 	optionProxy,
 	optionSocketTimeout,
 	optionSourceAddress,
+	optionImpersonate,
+	optionListImpersonateTargets,
 	optionForceIPv4,
 	optionForceIPv6,
 	optionEnableFileURLs,
@@ -473,6 +479,7 @@ var Options = []*Option{
 	optionNoDownloadArchive,
 	optionMaxDownloads,
 	optionBreakOnExisting,
+	optionNoBreakOnExisting,
 	optionBreakOnReject,
 	optionBreakPerInput,
 	optionNoBreakPerInput,
@@ -584,6 +591,7 @@ var Options = []*Option{
 	optionProgress,
 	optionConsoleTitle,
 	optionProgressTemplate,
+	optionProgressDelta,
 	optionVerbose,
 	optionDumpPages,
 	optionWritePages,
@@ -729,7 +737,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#update",
 			},
 		},
 		DefaultFlag: "--update",
@@ -758,7 +766,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#update",
 			},
 		},
 		DefaultFlag: "--update-to",
@@ -1036,7 +1044,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Compatibility Options",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#differences-in-default-behavior",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#differences-in-default-behavior",
 			},
 		},
 		DefaultFlag: "--compat-options",
@@ -1089,6 +1097,31 @@ var (
 		Type:           "string",
 		LongFlags:      []string{"--source-address"},
 		NArgs:          1,
+	}
+	optionImpersonate = &Option{
+		ID:             "impersonate",
+		Name:           "impersonate",
+		NameCamelCase:  "impersonate",
+		NamePascalCase: "Impersonate",
+		DefaultFlag:    "--impersonate",
+		ArgNames:       []string{"client"},
+		Executable:     false,
+		Help:           "Client to impersonate for requests. E.g. chrome, chrome-110, chrome:windows-10. Pass --impersonate=\"\" to impersonate any client.",
+		MetaArgs:       "CLIENT[:OS]",
+		Type:           "string",
+		LongFlags:      []string{"--impersonate"},
+		NArgs:          1,
+	}
+	optionListImpersonateTargets = &Option{
+		ID:             "list_impersonate_targets",
+		Name:           "list-impersonate-targets",
+		NameCamelCase:  "listImpersonateTargets",
+		NamePascalCase: "ListImpersonateTargets",
+		DefaultFlag:    "--list-impersonate-targets",
+		Executable:     false,
+		Help:           "List available clients to impersonate.",
+		Type:           "bool",
+		LongFlags:      []string{"--list-impersonate-targets"},
 	}
 	optionForceIPv4 = &Option{
 		ID:             "source_address",
@@ -1522,6 +1555,17 @@ var (
 		Help:           "Stop the download process when encountering a file that is in the archive",
 		Type:           "bool",
 		LongFlags:      []string{"--break-on-existing"},
+	}
+	optionNoBreakOnExisting = &Option{
+		ID:             "break_on_existing",
+		Name:           "no-break-on-existing",
+		NameCamelCase:  "noBreakOnExisting",
+		NamePascalCase: "NoBreakOnExisting",
+		DefaultFlag:    "--no-break-on-existing",
+		Executable:     false,
+		Help:           "Do not stop the download process when encountering a file that is in the archive (default)",
+		Type:           "bool",
+		LongFlags:      []string{"--no-break-on-existing"},
 	}
 	optionBreakOnReject = &Option{
 		ID:             "break_on_reject",
@@ -2001,7 +2045,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--output",
@@ -2757,7 +2801,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--dump-json",
@@ -2857,6 +2901,20 @@ var (
 		MetaArgs:       "[TYPES:]TEMPLATE",
 		Type:           "string",
 		LongFlags:      []string{"--progress-template"},
+		NArgs:          1,
+	}
+	optionProgressDelta = &Option{
+		ID:             "progress_delta",
+		Name:           "progress-delta",
+		NameCamelCase:  "progressDelta",
+		NamePascalCase: "ProgressDelta",
+		DefaultFlag:    "--progress-delta",
+		ArgNames:       []string{"seconds"},
+		Executable:     false,
+		Help:           "Time between progress output (default: 0)",
+		MetaArgs:       "SECONDS",
+		Type:           "float64",
+		LongFlags:      []string{"--progress-delta"},
 		NArgs:          1,
 	}
 	optionVerbose = &Option{
@@ -3093,15 +3151,15 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#format-selection",
 			},
 			{
 				Name: "Filter Formatting",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#filtering-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#filtering-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format",
@@ -3122,11 +3180,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#sorting-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format-sort",
@@ -3147,7 +3205,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#sorting-formats",
 			},
 		},
 		DefaultFlag: "--format-sort-force",
@@ -3177,7 +3235,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--video-multistreams",
@@ -3205,7 +3263,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--audio-multistreams",
@@ -3886,11 +3944,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--parse-metadata",
@@ -3910,11 +3968,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--replace-in-metadata",
@@ -3945,7 +4003,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--concat-playlist",
@@ -4097,7 +4155,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--split-chapters",
@@ -4413,7 +4471,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Extractor Arguments",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.03.10/README.md#extractor-arguments",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.04.09/README.md#extractor-arguments",
 			},
 		},
 		DefaultFlag: "--extractor-args",

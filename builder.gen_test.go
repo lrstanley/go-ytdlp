@@ -190,6 +190,18 @@ func TestBuilder_Network_NonExecutable(t *testing.T) {
 		_ = builder.UnsetSourceAddress()
 		validateFlagRemoved(t, builder, "source_address", "--source-address")
 	})
+	t.Run("Impersonate", func(t *testing.T) {
+		builder := New().Impersonate("test")
+		validateFlagAdded(t, builder, "impersonate", "--impersonate", 1)
+		_ = builder.UnsetImpersonate()
+		validateFlagRemoved(t, builder, "impersonate", "--impersonate")
+	})
+	t.Run("ListImpersonateTargets", func(t *testing.T) {
+		builder := New().ListImpersonateTargets()
+		validateFlagAdded(t, builder, "list_impersonate_targets", "--list-impersonate-targets", 0)
+		_ = builder.UnsetListImpersonateTargets()
+		validateFlagRemoved(t, builder, "list_impersonate_targets", "--list-impersonate-targets")
+	})
 	t.Run("ForceIPv4", func(t *testing.T) {
 		builder := New().ForceIPv4()
 		validateFlagAdded(t, builder, "source_address", "--force-ipv4", 0)
@@ -395,6 +407,12 @@ func TestBuilder_VideoSelection_NonExecutable(t *testing.T) {
 		validateFlagAdded(t, builder, "break_on_existing", "--break-on-existing", 0)
 		_ = builder.UnsetBreakOnExisting()
 		validateFlagRemoved(t, builder, "break_on_existing", "--break-on-existing")
+	})
+	t.Run("NoBreakOnExisting", func(t *testing.T) {
+		builder := New().NoBreakOnExisting()
+		validateFlagAdded(t, builder, "break_on_existing", "--no-break-on-existing", 0)
+		_ = builder.UnsetBreakOnExisting()
+		validateFlagRemoved(t, builder, "break_on_existing", "--no-break-on-existing")
 	})
 	t.Run("BreakOnReject", func(t *testing.T) {
 		builder := New().BreakOnReject()
@@ -1081,6 +1099,12 @@ func TestBuilder_VerbositySimulation_NonExecutable(t *testing.T) {
 		validateFlagAdded(t, builder, "progress_template", "--progress-template", 1)
 		_ = builder.UnsetProgressTemplate()
 		validateFlagRemoved(t, builder, "progress_template", "--progress-template")
+	})
+	t.Run("ProgressDelta", func(t *testing.T) {
+		builder := New().ProgressDelta(1.0)
+		validateFlagAdded(t, builder, "progress_delta", "--progress-delta", 1)
+		_ = builder.UnsetProgressDelta()
+		validateFlagRemoved(t, builder, "progress_delta", "--progress-delta")
 	})
 	t.Run("Verbose", func(t *testing.T) {
 		builder := New().Verbose()

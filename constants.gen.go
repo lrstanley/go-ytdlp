@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2024.03.10"
+	Version = "2024.04.09"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -77,7 +77,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "aenetworks:show"},
 	{Name: "AeonCo"},
 	{Name: "afreecatv", Description: "[afreecatv] afreecatv.com"},
-	{Name: "afreecatv:live", Description: "[afreecatv] afreecatv.com"},
+	{Name: "afreecatv:live", Description: "[afreecatv] afreecatv.com livestreams"},
 	{Name: "afreecatv:user"},
 	{Name: "AirTV"},
 	{Name: "AitubeKZVideo"},
@@ -135,6 +135,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "ArteTVPlaylist"},
 	{Name: "asobichannel", Description: "ASOBI CHANNEL"},
 	{Name: "asobichannel:tag", Description: "ASOBI CHANNEL"},
+	{Name: "AsobiStage", Description: "ASOBISTAGE (アソビステージ)"},
 	{Name: "AtresPlayer", Description: "[atresplayer]"},
 	{Name: "AtScaleConfEvent"},
 	{Name: "ATVAt"},
@@ -469,6 +470,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "FacebookRedirectURL", Description: "[HIDDEN]"},
 	{Name: "fancode:live", Description: "[fancode] (Currently broken)"},
 	{Name: "fancode:vod", Description: "[fancode] (Currently broken)"},
+	{Name: "Fathom"},
 	{Name: "faz.net"},
 	{Name: "fc2", Description: "[fc2]"},
 	{Name: "fc2:embed"},
@@ -669,8 +671,9 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Jamendo"},
 	{Name: "JamendoAlbum"},
 	{Name: "JeuxVideo", Description: "(Currently broken)"},
-	{Name: "JioSaavnAlbum"},
-	{Name: "JioSaavnSong"},
+	{Name: "jiosaavn:album"},
+	{Name: "jiosaavn:playlist"},
+	{Name: "jiosaavn:song"},
 	{Name: "Joj"},
 	{Name: "JoqrAg", Description: "超!A&G+ 文化放送 (f.k.a. AGQR) Nippon Cultural Broadcasting, Inc. (JOQR)"},
 	{Name: "Jove"},
@@ -753,6 +756,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Lnk"},
 	{Name: "LnkGo", AgeLimit: 18},
 	{Name: "loc", Description: "Library of Congress"},
+	{Name: "loom"},
+	{Name: "loom:folder"},
 	{Name: "LoveHomePorn", AgeLimit: 18},
 	{Name: "LRTStream"},
 	{Name: "LRTVOD"},
@@ -1175,6 +1180,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Radiko"},
 	{Name: "RadikoRadio"},
 	{Name: "radio.de", Description: "(Currently broken)"},
+	{Name: "Radio1Be"},
 	{Name: "radiocanada"},
 	{Name: "radiocanada:audiovideo"},
 	{Name: "RadioComercial"},
@@ -1329,6 +1335,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "SeznamZpravyArticle"},
 	{Name: "Shahid", Description: "[shahid]"},
 	{Name: "ShahidShow"},
+	{Name: "SharePoint"},
 	{Name: "ShareVideosEmbed"},
 	{Name: "ShemarooMe"},
 	{Name: "ShowRoomLive"},
