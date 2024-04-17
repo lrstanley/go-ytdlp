@@ -7,7 +7,9 @@ package ytdlp
 import (
 	"context"
 	"os/exec"
+	"runtime"
 	"sync"
+	"syscall"
 )
 
 // New is the recommended way to return a new yt-dlp command builder. Once all
@@ -204,6 +206,9 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 
 	cmd.Stdout = stdout
 	cmd.Stderr = stderr
+	if runtime.GOOS == "windows" {
+		cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: 0x08000000}
+	}
 
 	c.applySyscall(cmd)
 	err := cmd.Run()
