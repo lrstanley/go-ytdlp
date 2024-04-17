@@ -8,6 +8,7 @@ import (
 	"context"
 	"os/exec"
 	"sync"
+	"syscall"
 )
 
 // New is the recommended way to return a new yt-dlp command builder. Once all
@@ -204,6 +205,7 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 
 	cmd.Stdout = stdout
 	cmd.Stderr = stderr
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 
 	err := cmd.Run()
 
