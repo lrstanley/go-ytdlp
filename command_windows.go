@@ -13,7 +13,8 @@ import (
 
 // applySyscall applies any OS-specific syscall attributes to the command.
 func (c *Command) applySyscall(cmd *exec.Cmd) {
-	// On windows, invoking a command with HideWindow set to true will hide the
-	// window which shows the command invocation and output.
-	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		CreationFlags: 0x08000000, // CREATE_NO_WINDOW.
+		HideWindow:    true,
+	}
 }
