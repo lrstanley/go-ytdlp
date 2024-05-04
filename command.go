@@ -205,6 +205,7 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 	cmd.Stdout = stdout
 	cmd.Stderr = stderr
 
+	c.applySyscall(cmd)
 	err := cmd.Run()
 
 	result := &Result{
