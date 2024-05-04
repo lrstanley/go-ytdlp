@@ -42,5 +42,5 @@ generate: license go-fetch patch
 		optiondata/*.gen.go
 	cd ./cmd/codegen && go run . ../patch-ytdlp/export-${YTDLP_VERSION}.json ../../
 	gofmt -e -s -w .
-	go vet *.go
+	go vet .
 	go test -v ./...
