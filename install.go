@@ -44,7 +44,7 @@ var (
 		"darwin_amd64":  {"yt-dlp_macos", []string{"yt-dlp-" + Version, "yt-dlp"}},
 		"darwin_arm64":  {"yt-dlp_macos", []string{"yt-dlp-" + Version, "yt-dlp"}},
 		"linux_amd64":   {"yt-dlp_linux", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"linux_arm64":   {"yt-dlp_linux_armv7l", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"linux_arm64":   {"yt-dlp_linux_aarch64", []string{"yt-dlp-" + Version, "yt-dlp"}},
 		"linux_armv7l":  {"yt-dlp_linux_armv7l", []string{"yt-dlp-" + Version, "yt-dlp"}},
 		"linux_unknown": {"yt-dlp", []string{"yt-dlp-" + Version, "yt-dlp"}},
 		"windows_amd64": {"yt-dlp.exe", []string{"yt-dlp-" + Version + ".exe", "yt-dlp.exe"}},
