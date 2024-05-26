@@ -228,9 +228,12 @@ func (c *Command) Run(ctx context.Context, args ...string) (*Result, error) {
 	return c.runWithResult(cmd)
 }
 
+// Download initiates the download process for the specified URL and monitors its progress.
+// Returns:
+// - An error if the download process fails; otherwise, returns nil if the download succeeds.
 func (c *Command) Download(ctx context.Context, url string, progressFunc DownloadProgressFunc) error {
+	// Suppress all output.
 	c.Quiet()
-
 	c.NoCallHome()
 
 	// Ensure we're not printing JSON.
@@ -238,15 +241,13 @@ func (c *Command) Download(ctx context.Context, url string, progressFunc Downloa
 	c.UnsetDumpJSON()
 	c.UnsetDumpSingleJSON()
 
+	// Enable progress output.
 	c.Progress()
+	// Progress output format for easier parsing.
 	c.ProgressTemplate("dl:%(progress.filename)s:%(progress.status)s:%(progress.total_bytes)s,%(progress.total_bytes_estimate)s,%(progress.downloaded_bytes)s,%(progress.speed)s,%(progress._percent_str)s")
 
-	// Set the progress delta to 1 if it's not already set.
-	if len(c.getFlagsByID("progress_delta")) == 0 {
-		c.ProgressDelta(1)
-	}
-
-	// Newline is needed to ensure the progress is printed correctly.
+	// We scan the output line by line so we need to ensure ytdlp doesn't update the progress in
+	// place (which would cause us to miss it).
 	c.Newline()
 
 	cmd := c.buildCommand(ctx, url)

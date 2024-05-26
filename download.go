@@ -9,15 +9,22 @@ import (
 	"strconv"
 )
 
+// DownloadStatus represents the status of a download.
 type DownloadStatus string
 
 const (
+	// StatusDownloading represents the download status when the download is in progress.
 	StatusDownloading DownloadStatus = "downloading"
-	StatusMerging     DownloadStatus = "merging"
-	StatusFinished    DownloadStatus = "finished"
+	// StatusMerging represents the download status when the download is finished and the files are
+	// being merged.
+	StatusMerging DownloadStatus = "merging"
+	// StatusFinished represents the download status when the download is finished.
+	StatusFinished DownloadStatus = "finished"
 )
 
+// DownloadProgress represents the progress of a download.
 type DownloadProgress struct {
+	Filename   string
 	Total      int64
 	Downloaded int64
 	Speed      int64
@@ -25,8 +32,10 @@ type DownloadProgress struct {
 	Status     DownloadStatus
 }
 
+// DownloadProgressFunc is a callback function that is called whenever there is a progress update.
 type DownloadProgressFunc = func(DownloadProgress)
 
+// RunDownload runs the command and downloads the video. It returns the download result if successful.
 func (c *Command) runDownload(cmd *exec.Cmd, progressFunc DownloadProgressFunc) error {
 	if cmd.Err != nil {
 		return cmd.Err
@@ -56,15 +65,14 @@ func (c *Command) runDownload(cmd *exec.Cmd, progressFunc DownloadProgressFunc) 
 		scanner := bufio.NewScanner(stdout)
 		for scanner.Scan() {
 			line := scanner.Text()
-			fmt.Println("stdout:", line)
-			handleProgressLine(line, &progress, progressFunc)
+			handleProgressUpdate(line, &progress, progressFunc)
 		}
 	}()
 
 	go func() {
 		defer close(doneStderr)
 		if _, err := stderrBuf.ReadFrom(stderr); err != nil {
-			fmt.Println("stderr err:", err)
+			stderrBuf.WriteString(fmt.Sprintf("failed to read from stderr: %v", err))
 		}
 	}()
 
@@ -77,14 +85,15 @@ func (c *Command) runDownload(cmd *exec.Cmd, progressFunc DownloadProgressFunc) 
 		return fmt.Errorf("%w: %s", err, stderrBuf.String())
 	}
 
-	// Command finished successfully, so we can mark the progress as complete.
+	// Command finished successfully, so we can mark the progress as finished.
 	progress.Status = StatusFinished
 	progressFunc(progress)
 
 	return nil
 }
 
-func handleProgressLine(line string, progress *DownloadProgress, progressFunc DownloadProgressFunc) {
+// handleProgressLine parses the progress line and updates the progress struct.
+func handleProgressUpdate(line string, progress *DownloadProgress, progressFunc DownloadProgressFunc) {
 	if progress.Status == StatusMerging {
 		return
 	}
@@ -111,8 +120,10 @@ func handleProgressLine(line string, progress *DownloadProgress, progressFunc Do
 	if err != nil {
 		return
 	}
+	filename := matches[1]
 	status := matches[2]
 
+	progress.Filename = filename
 	progress.Total = int64(total)
 	progress.Downloaded = int64(downloaded)
 	progress.Speed = int64(speed)
@@ -127,6 +138,7 @@ func handleProgressLine(line string, progress *DownloadProgress, progressFunc Do
 	progressFunc(*progress)
 }
 
+// safeParse returns the primary value if it's not "NA", otherwise it returns the fallback value.
 func safeParse(primary, fallback string) string {
 	if primary != "NA" {
 		return primary
