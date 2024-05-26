@@ -228,6 +228,31 @@ func (c *Command) Run(ctx context.Context, args ...string) (*Result, error) {
 	return c.runWithResult(cmd)
 }
 
+func (c *Command) Download(ctx context.Context, url string, progressFunc DownloadProgressFunc) error {
+	c.Quiet()
+
+	c.NoCallHome()
+
+	// Ensure we're not printing JSON.
+	c.UnsetPrintJSON()
+	c.UnsetDumpJSON()
+	c.UnsetDumpSingleJSON()
+
+	c.Progress()
+	c.ProgressTemplate("dl:%(progress.filename)s:%(progress.status)s:%(progress.total_bytes)s,%(progress.total_bytes_estimate)s,%(progress.downloaded_bytes)s,%(progress.speed)s,%(progress._percent_str)s")
+
+	// Set the progress delta to 1 if it's not already set.
+	if len(c.getFlagsByID("progress_delta")) == 0 {
+		c.ProgressDelta(1)
+	}
+
+	// Newline is needed to ensure the progress is printed correctly.
+	c.Newline()
+
+	cmd := c.buildCommand(ctx, url)
+	return c.runDownload(cmd, progressFunc)
+}
+
 type Flag struct {
 	ID   string   `json:"id"`   // Unique ID to ensure boolean flags are not duplicated.
 	Flag string   `json:"flag"` // Actual flag, e.g. "--version".
