@@ -22,11 +22,12 @@ func New() *Command {
 }
 
 type Command struct {
-	mu         sync.RWMutex
-	executable string
-	directory  string
-	env        map[string]string
-	flags      []*Flag
+	mu           sync.RWMutex
+	executable   string
+	directory    string
+	env          map[string]string
+	flags        []*Flag
+	progressFunc DownloadProgressFunc
 }
 
 // Clone returns a copy of the command, with all flags, env vars, executable, and
@@ -141,6 +142,12 @@ func (c *Command) hasJSONFlag() bool {
 		c.getFlagsByID("dumpjson") != nil
 }
 
+// SetProgressFn sets the progress function to be called on each progress event.
+func (c *Command) SetProgressFn(progressFunc DownloadProgressFunc) *Command {
+	c.progressFunc = progressFunc
+	return c
+}
+
 // buildCommand builds the command to be executed. args passed here are any additional
 // arguments to be passed to yt-dlp (commonly URLs or similar).
 func (c *Command) buildCommand(ctx context.Context, args ...string) *exec.Cmd {
@@ -194,7 +201,11 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 		return wrapError(nil, cmd.Err)
 	}
 
-	stdout := &timestampWriter{pipe: "stdout"}
+	stdout := &timestampWriter{
+		pipe:         "stdout",
+		downloads:    make(map[string]*DownloadProgress),
+		progressFunc: c.progressFunc,
+	}
 	stderr := &timestampWriter{pipe: "stderr"}
 
 	if c.hasJSONFlag() {
@@ -215,6 +226,7 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 		Stdout:     stdout.String(),
 		Stderr:     stderr.String(),
 		OutputLogs: stdout.mergeResults(stderr),
+		Downloads:  stdout.GetDownloads(),
 	}
 
 	return wrapError(result, err)
@@ -224,34 +236,20 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 // and returns the results (stdout/stderr, exit code, etc). args should be the
 // URLs that would normally be passed in to yt-dlp.
 func (c *Command) Run(ctx context.Context, args ...string) (*Result, error) {
+	if c.progressFunc != nil {
+		c.Progress()
+		c.ProgressTemplate("dl:{\"id\":\"%(info.id)s\",\"playlist_id\":\"%(info.playlist_id)s\",\"title\":\"%(info.title)s\",\"status\":\"%(progress.status)s\",\"total_bytes\":\"%(progress.total_bytes)s\",\"total_bytes_estimate\":\"%(progress.total_bytes_estimate)s\",\"downloaded_bytes\":\"%(progress.downloaded_bytes)s\",\"speed\":\"%(progress.speed)s\",\"percent_str\":\"%(progress._percent_str)s\",\"playlist_count\":\"%(info.playlist_count)s\",\"playlist_index\":\"%(info.playlist_index)s\"}\n")
+		c.Newline()
+
+		// c.Print("pre_process:dl:{\"id\":\"%(id)s\",\"playlist_id\":\"%(playlist_id)s\",\"title\":\"%(title)s\",\"status\":\"pre_processing\"}")
+		c.Print("before_dl:dl:{\"id\":\"%(id)s\",\"playlist_id\":\"%(playlist_id)s\",\"title\":\"%(title)s\",\"status\":\"starting\"}")
+		c.Print("post_process:dl:{\"id\":\"%(id)s\",\"playlist_id\":\"%(playlist_id)s\",\"status\":\"post_processing\"}")
+		c.Print("after_video:dl:{\"id\":\"%(id)s\",\"playlist_id\":\"%(playlist_id)s\",\"status\":\"video_downloaded\"}")
+		// c.Print("playlist:dl:{\"id\":\"%(id)s\",\"status\":\"playlist_downloaded\"}")
+	}
+
 	cmd := c.buildCommand(ctx, args...)
 	return c.runWithResult(cmd)
-}
-
-// Download initiates the download process for the specified URL and monitors its progress.
-// Returns:
-// - An error if the download process fails; otherwise, returns nil if the download succeeds.
-func (c *Command) Download(ctx context.Context, url string, progressFunc DownloadProgressFunc) error {
-	// Suppress all output.
-	c.Quiet()
-	c.NoCallHome()
-
-	// Ensure we're not printing JSON.
-	c.UnsetPrintJSON()
-	c.UnsetDumpJSON()
-	c.UnsetDumpSingleJSON()
-
-	// Enable progress output.
-	c.Progress()
-	// Progress output format for easier parsing.
-	c.ProgressTemplate("dl:%(progress.filename)s:%(progress.status)s:%(progress.total_bytes)s,%(progress.total_bytes_estimate)s,%(progress.downloaded_bytes)s,%(progress.speed)s,%(progress._percent_str)s")
-
-	// We scan the output line by line so we need to ensure ytdlp doesn't update the progress in
-	// place (which would cause us to miss it).
-	c.Newline()
-
-	cmd := c.buildCommand(ctx, url)
-	return c.runDownload(cmd, progressFunc)
 }
 
 type Flag struct {

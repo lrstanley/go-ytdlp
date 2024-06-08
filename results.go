@@ -39,6 +39,9 @@ type Result struct {
 	// OutputLogs are the stdout/stderr logs, sorted by timestamp, and any JSON
 	// parsed (if configured with [Command.PrintJson]).
 	OutputLogs []*ResultLog `json:"output_logs"`
+
+	// Downloads are the list of downloads that were processed
+	Downloads []*DownloadProgress `json:"downloads"`
 }
 
 func (r *Result) asString(stdout, stderr, timestamps, maskJSON, exitCode bool) string {
@@ -133,6 +136,10 @@ type timestampWriter struct {
 	buf            bytes.Buffer
 	lastWriteStart time.Time
 	results        []*ResultLog
+	downloads      map[string]*DownloadProgress
+
+	progress     DownloadProgress
+	progressFunc DownloadProgressFunc
 }
 
 func (w *timestampWriter) Write(p []byte) (n int, err error) {
@@ -158,23 +165,74 @@ func (w *timestampWriter) flush() {
 
 	line := bytes.TrimRightFunc(w.buf.Bytes(), unicode.IsSpace)
 
-	result := &ResultLog{
-		Timestamp: w.lastWriteStart,
-		Line:      string(line),
-		Pipe:      w.pipe,
-	}
-
-	if w.checkJSON && len(line) > 0 { // Try to parse the line as JSON.
-		var raw json.RawMessage
-
-		if err := json.Unmarshal(line, &raw); err == nil {
-			result.JSON = &raw
+	// On progress updates, we won't write the line to the results
+	if w.progressFunc != nil && bytes.HasPrefix(line, []byte("dl:")) {
+		line = bytes.TrimPrefix(line, []byte("dl:"))
+		w.handleProgressUpdate(line)
+	} else {
+		result := &ResultLog{
+			Timestamp: w.lastWriteStart,
+			Line:      string(line),
+			Pipe:      w.pipe,
 		}
+
+		if w.checkJSON && len(line) > 0 { // Try to parse the line as JSON.
+			var raw json.RawMessage
+
+			if err := json.Unmarshal(line, &raw); err == nil {
+				result.JSON = &raw
+			}
+		}
+
+		w.results = append(w.results, result)
+		w.lastWriteStart = time.Time{}
+	}
+	w.buf.Reset()
+}
+
+// handleProgressUpdate handles the progress update line and updates the progressFunc.
+func (w *timestampWriter) handleProgressUpdate(line []byte) {
+	var event progressEvent
+	if err := json.Unmarshal(line, &event); err != nil {
+		return
 	}
 
-	w.results = append(w.results, result)
-	w.lastWriteStart = time.Time{}
-	w.buf.Reset()
+	progress, ok := w.downloads[event.ID]
+	if !ok {
+		progress = &DownloadProgress{}
+		w.downloads[event.ID] = progress
+	}
+
+	switch event.Status {
+	case progressStarting:
+		progress.ID = event.ID
+		progress.PlaylistID = event.PlaylistID
+		progress.Title = event.Title
+		progress.Status = StatusStarting
+	case progressDownloading:
+		// After finishing the download of the video file, yt-dlp may proceed to download
+		// additional components such as audio tracks, subtitles, etc., if required.
+		// In this situation, it is necessary to ignore any further progress updates with
+		// the status of `downloading` once the progress has been marked as `downloadStatusPostProcessing`.
+		// This ensures that the progress is not overwritten by subsequent
+		// download updates of additional files.
+		if progress.Status == StatusPostProcessing {
+			return
+		}
+
+		if err := json.Unmarshal(line, progress); err != nil {
+			return
+		}
+	case progressFinished, progressPostProcessing:
+		progress.Status = StatusPostProcessing
+	case progressVideoDownloaded:
+		progress.Status = StatusFinished
+	default:
+		// Prevent triggering the progressFunc if the status is unknown.
+		return
+	}
+
+	w.progressFunc(*progress)
 }
 
 // mergeResults merges the results from this writer with the results from another writer
@@ -194,6 +252,14 @@ func (w *timestampWriter) mergeResults(otherWriters ...*timestampWriter) []*Resu
 	})
 
 	return results
+}
+
+func (w *timestampWriter) GetDownloads() []*DownloadProgress {
+	downloads := make([]*DownloadProgress, 0, len(w.downloads))
+	for _, d := range w.downloads {
+		downloads = append(downloads, d)
+	}
+	return downloads
 }
 
 // String returns the contents of all log lines written to this writer.
