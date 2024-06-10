@@ -6,6 +6,7 @@ package ytdlp
 
 import (
 	"context"
+	"fmt"
 	"os/exec"
 	"sync"
 )
@@ -137,7 +138,7 @@ func (c *Command) removeFlagByID(id string) {
 func (c *Command) hasJSONFlag() bool {
 	pf := c.getFlagsByID("forceprint")
 
-	return (len(pf) > 0 && len(pf[0].Args) > 0 && pf[0].Args[0] == "%()j") ||
+	return (len(pf) > 0 && len(pf[0].Args) > 0 && pf[0].Args[0] == "%()s") ||
 		c.getFlagsByID("print_json") != nil ||
 		c.getFlagsByID("dumpjson") != nil
 }
@@ -238,14 +239,47 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 func (c *Command) Run(ctx context.Context, args ...string) (*Result, error) {
 	if c.progressFunc != nil {
 		c.Progress()
-		c.ProgressTemplate("dl:{\"id\":\"%(info.id)s\",\"playlist_id\":\"%(info.playlist_id)s\",\"title\":\"%(info.title)s\",\"status\":\"%(progress.status)s\",\"total_bytes\":\"%(progress.total_bytes)s\",\"total_bytes_estimate\":\"%(progress.total_bytes_estimate)s\",\"downloaded_bytes\":\"%(progress.downloaded_bytes)s\",\"speed\":\"%(progress.speed)s\",\"percent_str\":\"%(progress._percent_str)s\",\"playlist_count\":\"%(info.playlist_count)s\",\"playlist_index\":\"%(info.playlist_index)s\"}\n")
+
+		progressTempl, err := GetDownloadProgressTemplate()
+		if err != nil {
+			return nil, fmt.Errorf("failed to make download progress template: %w", err)
+		}
+		c.ProgressTemplate(progressTempl)
+
+		// Enables yt-dlp to print progress updates in a new line,
+		// instead of using carriage return to overwrite the previous line. This ensures
+		// the progress updates can be processed line by line and we won't miss any updates.
 		c.Newline()
 
-		// c.Print("pre_process:dl:{\"id\":\"%(id)s\",\"playlist_id\":\"%(playlist_id)s\",\"title\":\"%(title)s\",\"status\":\"pre_processing\"}")
-		c.Print("before_dl:dl:{\"id\":\"%(id)s\",\"playlist_id\":\"%(playlist_id)s\",\"title\":\"%(title)s\",\"status\":\"starting\"}")
-		c.Print("post_process:dl:{\"id\":\"%(id)s\",\"playlist_id\":\"%(playlist_id)s\",\"status\":\"post_processing\"}")
-		c.Print("after_video:dl:{\"id\":\"%(id)s\",\"playlist_id\":\"%(playlist_id)s\",\"status\":\"video_downloaded\"}")
-		// c.Print("playlist:dl:{\"id\":\"%(id)s\",\"status\":\"playlist_downloaded\"}")
+		// preProcessTempl, err := GetProgressPreProcessTemplate()
+		// if err != nil {
+		// 	return nil, fmt.Errorf("failed to make pre-process template: %w", err)
+		// }
+		// c.Print(preProcessTempl)
+
+		beforeDownloadTempl, err := GetProgressBeforeDownloadTemplate()
+		if err != nil {
+			return nil, fmt.Errorf("failed to make before-download template: %w", err)
+		}
+		c.Print(beforeDownloadTempl)
+
+		postProcessTempl, err := GetProgressPostProcessTemplate()
+		if err != nil {
+			return nil, fmt.Errorf("failed to make post-process template: %w", err)
+		}
+		c.Print(postProcessTempl)
+
+		videoDownloadedTempl, err := GetProgressVideoDownloadedTemplate()
+		if err != nil {
+			return nil, fmt.Errorf("failed to make after-video template: %w", err)
+		}
+		c.Print(videoDownloadedTempl)
+
+		// playListDownloadedTempl, err := GetProgressPlaylistDownloadedTemplate()
+		// if err != nil {
+		// 	return nil, fmt.Errorf("failed to make playlist template: %w", err)
+		// }
+		// c.Print(playListDownloadedTempl)
 	}
 
 	cmd := c.buildCommand(ctx, args...)

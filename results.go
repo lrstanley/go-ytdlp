@@ -14,6 +14,8 @@ import (
 	"strings"
 	"time"
 	"unicode"
+
+	"github.com/lrstanley/go-ytdlp/template"
 )
 
 // Result contains the yt-dlp execution results, including stdout/stderr, exit code,
@@ -138,7 +140,6 @@ type timestampWriter struct {
 	results        []*ResultLog
 	downloads      map[string]*DownloadProgress
 
-	progress     DownloadProgress
 	progressFunc DownloadProgressFunc
 }
 
@@ -166,8 +167,7 @@ func (w *timestampWriter) flush() {
 	line := bytes.TrimRightFunc(w.buf.Bytes(), unicode.IsSpace)
 
 	// On progress updates, we won't write the line to the results
-	if w.progressFunc != nil && bytes.HasPrefix(line, []byte("dl:")) {
-		line = bytes.TrimPrefix(line, []byte("dl:"))
+	if w.progressFunc != nil && bytes.HasPrefix(line, []byte(progressLinePrefix)) {
 		w.handleProgressUpdate(line)
 	} else {
 		result := &ResultLog{
@@ -192,8 +192,11 @@ func (w *timestampWriter) flush() {
 
 // handleProgressUpdate handles the progress update line and updates the progressFunc.
 func (w *timestampWriter) handleProgressUpdate(line []byte) {
+	// Remove the prefix to get the actual progress line.
+	line = bytes.TrimPrefix(line, []byte(progressLinePrefix))
+
 	var event progressEvent
-	if err := json.Unmarshal(line, &event); err != nil {
+	if err := template.Unmarshal(line, &event); err != nil {
 		return
 	}
 
@@ -220,7 +223,7 @@ func (w *timestampWriter) handleProgressUpdate(line []byte) {
 			return
 		}
 
-		if err := json.Unmarshal(line, progress); err != nil {
+		if err := template.Unmarshal(line, progress); err != nil {
 			return
 		}
 	case progressFinished, progressPostProcessing:
