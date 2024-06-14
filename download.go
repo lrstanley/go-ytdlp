@@ -6,6 +6,8 @@ import (
 	"github.com/lrstanley/go-ytdlp/template"
 )
 
+// progressLinePrefix is used to prefix the progress line, making it easier to identify during
+// output parsing.
 const progressLinePrefix = "dl:"
 
 // DownloadProgressFunc is a callback function that is called whenever there is a progress update.
@@ -52,6 +54,13 @@ type DownloadProgress struct {
 	PlaylistIndex int `ytdlp:"info.playlist_index"`
 }
 
+// IsPlaylist returns true if the download is part of a playlist.
+func (p *DownloadProgress) IsPlaylist() bool {
+	return p.PlaylistCount > 0
+}
+
+// GetDownloadProgressTemplate returns the template for the ytdlp's download progress event.
+// The template will be used by ytdlp to send a progress event during the download.
 func GetDownloadProgressTemplate() (string, error) {
 	var downloadProgress DownloadProgress
 	templ, err := template.MarshalTemplate(downloadProgress)
@@ -62,11 +71,7 @@ func GetDownloadProgressTemplate() (string, error) {
 	return progressLinePrefix + string(templ), nil
 }
 
-func (p *DownloadProgress) IsPlaylist() bool {
-	return p.PlaylistCount > 0
-}
-
-// progressStatus represents the status of a progress event.
+// progressStatus represents the status of a ytdlp download progress event.
 type progressStatus string
 
 const (
@@ -87,6 +92,7 @@ type progressEvent struct {
 	Status     progressStatus
 }
 
+// GetProgressPreProcessTemplate returns the template for the ytdlp's pre_process event.
 func GetProgressPreProcessTemplate() (string, error) {
 	event := progressEvent{Status: progressPreProcessing}
 	templ, err := template.MarshalTemplate(event)
@@ -97,6 +103,8 @@ func GetProgressPreProcessTemplate() (string, error) {
 	return fmt.Sprintf("pre_process:%s%s", progressLinePrefix, string(templ)), nil
 }
 
+// GetProgressBeforeDownloadTemplate returns the template for the ytdlp's before_dl event.
+// The template will be used by ytdlp to send a progress event before starting the download.
 func GetProgressBeforeDownloadTemplate() (string, error) {
 	event := progressEvent{Status: progressStarting}
 	templ, err := template.MarshalTemplate(event)
@@ -107,6 +115,8 @@ func GetProgressBeforeDownloadTemplate() (string, error) {
 	return fmt.Sprintf("before_dl:%s%s", progressLinePrefix, string(templ)), nil
 }
 
+// GetProgressPostProcessTemplate returns the template for the ytdlp's post_process event.
+// The template will be used by ytdlp to send a progress event when the video is post-processing.
 func GetProgressPostProcessTemplate() (string, error) {
 	event := struct {
 		ID         string `ytdlp:"id"`
@@ -121,6 +131,8 @@ func GetProgressPostProcessTemplate() (string, error) {
 	return fmt.Sprintf("post_process:%s%s", progressLinePrefix, string(templ)), nil
 }
 
+// GetProgressVideoDownloadedTemplate returns the template for the ytdlp's after_video event.
+// The template will be used by ytdlp to send a progress event when the video is being downloaded.
 func GetProgressVideoDownloadedTemplate() (string, error) {
 	event := struct {
 		ID         string `ytdlp:"id"`
@@ -135,6 +147,8 @@ func GetProgressVideoDownloadedTemplate() (string, error) {
 	return fmt.Sprintf("after_video:%s%s", progressLinePrefix, string(templ)), nil
 }
 
+// GetProgressPlaylistDownloadedTemplate returns the template for the ytdlp's playlist event.
+// The template will be used by ytdlp to send a progress event when the playlist is being downloaded.
 func GetProgressPlaylistDownloadedTemplate() (string, error) {
 	event := struct {
 		ID     string `ytdlp:"id"`

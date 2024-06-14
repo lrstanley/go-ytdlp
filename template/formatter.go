@@ -7,7 +7,7 @@ type TemplateFormatter struct {
 
 // NewTemplateFormatter returns a new TemplateFormatter with the default formatters.
 // The default formatters are:
-// - percent: Converts a percentage string to a float64.
+// - percentToNumber: converts a string with a percent to a number.
 func NewTemplateFormatter() *TemplateFormatter {
 	formatters := make(map[string]func(string) string)
 	formatters["percentToNumber"] = func(s string) string {

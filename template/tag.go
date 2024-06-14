@@ -6,10 +6,8 @@ type TagParser struct {
 	tag   string
 	value string
 
-	// formatters is a list of formatters in the tag.
+	// formatters is a comma-separated list of formatter strings specified in the tag.
 	// e.g. formatter=formatter1,formatter2
-	// The formatters are separated by commas.
-	// we chose a map to avoid duplicates and for faster lookups.
 	formatters map[string]struct{}
 }
 
