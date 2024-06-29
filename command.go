@@ -6,6 +6,7 @@ package ytdlp
 
 import (
 	"context"
+	"fmt"
 	"os/exec"
 	"sync"
 )
@@ -22,11 +23,12 @@ func New() *Command {
 }
 
 type Command struct {
-	mu         sync.RWMutex
-	executable string
-	directory  string
-	env        map[string]string
-	flags      []*Flag
+	mu           sync.RWMutex
+	executable   string
+	directory    string
+	env          map[string]string
+	flags        []*Flag
+	progressFunc DownloadProgressFunc
 }
 
 // Clone returns a copy of the command, with all flags, env vars, executable, and
@@ -136,9 +138,15 @@ func (c *Command) removeFlagByID(id string) {
 func (c *Command) hasJSONFlag() bool {
 	pf := c.getFlagsByID("forceprint")
 
-	return (len(pf) > 0 && len(pf[0].Args) > 0 && pf[0].Args[0] == "%()j") ||
+	return (len(pf) > 0 && len(pf[0].Args) > 0 && pf[0].Args[0] == "%()s") ||
 		c.getFlagsByID("print_json") != nil ||
 		c.getFlagsByID("dumpjson") != nil
+}
+
+// SetProgressFn sets the progress function to be called on each progress event.
+func (c *Command) SetProgressFn(progressFunc DownloadProgressFunc) *Command {
+	c.progressFunc = progressFunc
+	return c
 }
 
 // buildCommand builds the command to be executed. args passed here are any additional
@@ -194,7 +202,11 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 		return wrapError(nil, cmd.Err)
 	}
 
-	stdout := &timestampWriter{pipe: "stdout"}
+	stdout := &timestampWriter{
+		pipe:         "stdout",
+		downloads:    make(map[string]*DownloadProgress),
+		progressFunc: c.progressFunc,
+	}
 	stderr := &timestampWriter{pipe: "stderr"}
 
 	if c.hasJSONFlag() {
@@ -215,6 +227,7 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 		Stdout:     stdout.String(),
 		Stderr:     stderr.String(),
 		OutputLogs: stdout.mergeResults(stderr),
+		Downloads:  stdout.GetDownloads(),
 	}
 
 	return wrapError(result, err)
@@ -224,6 +237,51 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 // and returns the results (stdout/stderr, exit code, etc). args should be the
 // URLs that would normally be passed in to yt-dlp.
 func (c *Command) Run(ctx context.Context, args ...string) (*Result, error) {
+	if c.progressFunc != nil {
+		c.Progress()
+
+		progressTempl, err := GetDownloadProgressTemplate()
+		if err != nil {
+			return nil, fmt.Errorf("failed to make download progress template: %w", err)
+		}
+		c.ProgressTemplate(progressTempl)
+
+		// Enables yt-dlp to print progress updates in a new line,
+		// instead of using carriage return to overwrite the previous line. This ensures
+		// the progress updates can be processed line by line and we won't miss any updates.
+		c.Newline()
+
+		// preProcessTempl, err := GetProgressPreProcessTemplate()
+		// if err != nil {
+		// 	return nil, fmt.Errorf("failed to make pre-process template: %w", err)
+		// }
+		// c.Print(preProcessTempl)
+
+		beforeDownloadTempl, err := GetProgressBeforeDownloadTemplate()
+		if err != nil {
+			return nil, fmt.Errorf("failed to make before-download template: %w", err)
+		}
+		c.Print(beforeDownloadTempl)
+
+		postProcessTempl, err := GetProgressPostProcessTemplate()
+		if err != nil {
+			return nil, fmt.Errorf("failed to make post-process template: %w", err)
+		}
+		c.Print(postProcessTempl)
+
+		videoDownloadedTempl, err := GetProgressVideoDownloadedTemplate()
+		if err != nil {
+			return nil, fmt.Errorf("failed to make after-video template: %w", err)
+		}
+		c.Print(videoDownloadedTempl)
+
+		// playListDownloadedTempl, err := GetProgressPlaylistDownloadedTemplate()
+		// if err != nil {
+		// 	return nil, fmt.Errorf("failed to make playlist template: %w", err)
+		// }
+		// c.Print(playListDownloadedTempl)
+	}
+
 	cmd := c.buildCommand(ctx, args...)
 	return c.runWithResult(cmd)
 }
