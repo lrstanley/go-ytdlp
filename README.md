@@ -21,6 +21,8 @@
     <img title="GitHub Workflow Status (test @ master)" src="https://img.shields.io/github/actions/workflow/status/lrstanley/go-ytdlp/test.yml?branch=master&label=test&style=flat-square">
   </a>
 
+
+
   <a href="https://codecov.io/gh/lrstanley/go-ytdlp">
     <img title="Code Coverage" src="https://img.shields.io/codecov/c/github/lrstanley/go-ytdlp/master?style=flat-square">
   </a>
@@ -158,7 +160,7 @@ func main() {
 ```
 MIT License
 
-Copyright (c) 2023 Liam Stanley <me@liamstanley.io>
+Copyright (c) 2023 Liam Stanley <liam@liam.sh>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
