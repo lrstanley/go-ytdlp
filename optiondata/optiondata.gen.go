@@ -737,7 +737,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#update",
 			},
 		},
 		DefaultFlag: "--update",
@@ -766,7 +766,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#update",
 			},
 		},
 		DefaultFlag: "--update-to",
@@ -1044,7 +1044,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Compatibility Options",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#differences-in-default-behavior",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#differences-in-default-behavior",
 			},
 		},
 		DefaultFlag: "--compat-options",
@@ -1428,7 +1428,7 @@ var (
 		DefaultFlag:    "--match-filters",
 		ArgNames:       []string{"filter"},
 		Executable:     false,
-		Help:           "Generic video filter. Any \"OUTPUT TEMPLATE\" field can be compared with a number or a string using the operators defined in \"Filtering Formats\". You can also simply specify a field to match if the field is present, use \"!field\" to check if the field is not present, and \"&\" to check multiple conditions. Use a \"\\\" to escape \"&\" or quotes if needed. If used multiple times, the filter matches if atleast one of the conditions are met. E.g. --match-filter !is_live --match-filter \"like_count>?100 & description~='(?i)\\bcats \\& dogs\\b'\" matches only videos that are not live OR those that have a like count more than 100 (or the like field is not available) and also has a description that contains the phrase \"cats & dogs\" (caseless). Use \"--match-filter -\" to interactively ask whether to download each video",
+		Help:           "Generic video filter. Any \"OUTPUT TEMPLATE\" field can be compared with a number or a string using the operators defined in \"Filtering Formats\". You can also simply specify a field to match if the field is present, use \"!field\" to check if the field is not present, and \"&\" to check multiple conditions. Use a \"\\\" to escape \"&\" or quotes if needed. If used multiple times, the filter matches if at least one of the conditions is met. E.g. --match-filter !is_live --match-filter \"like_count>?100 & description~='(?i)\\bcats \\& dogs\\b'\" matches only videos that are not live OR those that have a like count more than 100 (or the like field is not available) and also has a description that contains the phrase \"cats & dogs\" (caseless). Use \"--match-filter -\" to interactively ask whether to download each video",
 		MetaArgs:       "FILTER",
 		Type:           "string",
 		LongFlags:      []string{"--match-filters"},
@@ -2045,7 +2045,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--output",
@@ -2441,7 +2441,7 @@ var (
 		DefaultFlag:    "--cookies-from-browser",
 		ArgNames:       []string{"browser"},
 		Executable:     false,
-		Help:           "The name of the browser to load cookies from. Currently supported browsers are: brave, chrome, chromium, edge, firefox, opera, safari, vivaldi, whale. Optionally, the KEYRING used for decrypting Chromium cookies on Linux, the name/path of the PROFILE to load cookies from, and the CONTAINER name (if Firefox) (\"none\" for no container) can be given with their respective seperators. By default, all containers of the most recently accessed profile are used. Currently supported keyrings are: basictext, gnomekeyring, kwallet, kwallet5, kwallet6",
+		Help:           "The name of the browser to load cookies from. Currently supported browsers are: brave, chrome, chromium, edge, firefox, opera, safari, vivaldi, whale. Optionally, the KEYRING used for decrypting Chromium cookies on Linux, the name/path of the PROFILE to load cookies from, and the CONTAINER name (if Firefox) (\"none\" for no container) can be given with their respective separators. By default, all containers of the most recently accessed profile are used. Currently supported keyrings are: basictext, gnomekeyring, kwallet, kwallet5, kwallet6",
 		MetaArgs:       "BROWSER[+KEYRING][:PROFILE][::CONTAINER]",
 		Type:           "string",
 		LongFlags:      []string{"--cookies-from-browser"},
@@ -2801,7 +2801,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--dump-json",
@@ -3151,15 +3151,15 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#format-selection",
 			},
 			{
 				Name: "Filter Formatting",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#filtering-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#filtering-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format",
@@ -3180,11 +3180,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#sorting-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format-sort",
@@ -3205,7 +3205,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#sorting-formats",
 			},
 		},
 		DefaultFlag: "--format-sort-force",
@@ -3235,7 +3235,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--video-multistreams",
@@ -3263,7 +3263,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--audio-multistreams",
@@ -3944,11 +3944,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--parse-metadata",
@@ -3968,11 +3968,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--replace-in-metadata",
@@ -4003,7 +4003,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--concat-playlist",
@@ -4155,7 +4155,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--split-chapters",
@@ -4230,7 +4230,7 @@ var (
 		DefaultFlag:    "--use-postprocessor",
 		ArgNames:       []string{"name"},
 		Executable:     false,
-		Help:           "The (case sensitive) name of plugin postprocessors to be enabled, and (optionally) arguments to be passed to it, separated by a colon \":\". ARGS are a semicolon \";\" delimited list of NAME=VALUE. The \"when\" argument determines when the postprocessor is invoked. It can be one of \"pre_process\" (after video extraction), \"after_filter\" (after video passes filter), \"video\" (after --format; before --print/--output), \"before_dl\" (before each video download), \"post_process\" (after each video download; default), \"after_move\" (after moving video file to it's final locations), \"after_video\" (after downloading and processing all formats of a video), or \"playlist\" (at end of playlist). This option can be used multiple times to add different postprocessors",
+		Help:           "The (case sensitive) name of plugin postprocessors to be enabled, and (optionally) arguments to be passed to it, separated by a colon \":\". ARGS are a semicolon \";\" delimited list of NAME=VALUE. The \"when\" argument determines when the postprocessor is invoked. It can be one of \"pre_process\" (after video extraction), \"after_filter\" (after video passes filter), \"video\" (after --format; before --print/--output), \"before_dl\" (before each video download), \"post_process\" (after each video download; default), \"after_move\" (after moving video file to its final locations), \"after_video\" (after downloading and processing all formats of a video), or \"playlist\" (at end of playlist). This option can be used multiple times to add different postprocessors",
 		MetaArgs:       "NAME[:ARGS]",
 		Type:           "string",
 		LongFlags:      []string{"--use-postprocessor"},
@@ -4471,7 +4471,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Extractor Arguments",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.05.27/README.md#extractor-arguments",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.02/README.md#extractor-arguments",
 			},
 		},
 		DefaultFlag: "--extractor-args",
