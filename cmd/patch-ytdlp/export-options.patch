@@ -1,17 +1,16 @@
 diff --git a/yt_dlp/options.py b/yt_dlp/options.py
-index 1638097..dd8407a 100644
+index 76db06c..25a121b 100644
 --- a/yt_dlp/options.py
 +++ b/yt_dlp/options.py
-@@ -7,6 +7,7 @@
- import shutil
- import string
- import sys
+@@ -1,5 +1,6 @@
+ import collections
+ import contextlib
 +import json
- 
- from .compat import compat_expanduser
- from .cookies import SUPPORTED_BROWSERS, SUPPORTED_KEYRINGS
-@@ -264,6 +265,81 @@ def _dict_from_options_callback(
-             out_dict[key] = out_dict.get(key, []) + [val] if append else val
+ import optparse
+ import os.path
+ import re
+@@ -267,6 +268,81 @@ def _dict_from_options_callback(
+             out_dict[key] = [*out_dict.get(key, []), val] if append else val
          setattr(parser.values, option.dest, out_dict)
  
 +    def _export_options_callback(option, opt_str, value, parser: _YoutubeDLOptionParser):
@@ -92,14 +91,14 @@ index 1638097..dd8407a 100644
      def when_prefix(default):
          return {
              'default': {},
-@@ -493,6 +569,10 @@ def _alias_callback(option, opt_str, value, parser, opts, nargs):
-             'Alias options can trigger more aliases; so be careful to avoid defining recursive options. '
-             f'As a safety measure, each alias may be triggered a maximum of {_YoutubeDLOptionParser.ALIAS_TRIGGER_LIMIT} times. '
-             'This option can be used multiple times'))
+@@ -318,6 +394,10 @@ def _alias_callback(option, opt_str, value, parser, opts, nargs):
+             opts if value is None else opts.format(*map(shlex.quote, value)))
+ 
+     general = optparse.OptionGroup(parser, 'General Options')
 +    general.add_option(
 +        '--export-options',
 +        action='callback', default=False, callback=_export_options_callback,
 +        help=optparse.SUPPRESS_HELP)
- 
-     network = optparse.OptionGroup(parser, 'Network Options')
-     network.add_option(
+     general.add_option(
+         '-h', '--help', dest='print_help', action='store_true',
+         help='Print this help text and exit')
