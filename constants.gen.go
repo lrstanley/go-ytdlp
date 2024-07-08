@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2024.07.02"
+	Version = "2024.07.08"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -1663,6 +1663,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "VidLii"},
 	{Name: "Vidly"},
 	{Name: "vids.io"},
+	{Name: "Vidyard"},
 	{Name: "viewlift", AgeLimit: 17},
 	{Name: "viewlift:embed"},
 	{Name: "ViewSource", Description: "[HIDDEN]"},
@@ -1711,6 +1712,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "VRT", Description: "VRT NWS, Flanders News, Flandern Info and Sporza"},
 	{Name: "VrtNU", Description: "[vrtnu] VRT MAX", AgeLimit: 12},
 	{Name: "VTM", Description: "(Currently broken)"},
+	{Name: "VTV"},
+	{Name: "VTVGo"},
 	{Name: "VTXTV", Description: "[vtxtv]"},
 	{Name: "VTXTVLive", Description: "[vtxtv]"},
 	{Name: "VTXTVRecordings", Description: "[vtxtv]"},
