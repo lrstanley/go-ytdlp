@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2024.07.09"
+	Version = "2024.07.16"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -386,7 +386,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "DigitallySpeaking"},
 	{Name: "Digiteka"},
 	{Name: "DiscogsReleasePlaylist"},
-	{Name: "Discovery"},
 	{Name: "DiscoveryLife"},
 	{Name: "DiscoveryNetworksDe"},
 	{Name: "DiscoveryPlus"},
@@ -395,7 +394,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "DiscoveryPlusItaly"},
 	{Name: "DiscoveryPlusItalyShow"},
 	{Name: "Disney"},
-	{Name: "DIYNetwork"},
 	{Name: "dlf"},
 	{Name: "dlf:corpus", Description: "DLF Multi-feed Archives"},
 	{Name: "dlive:stream"},
@@ -551,7 +549,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "GlattvisionTVLive", Description: "[glattvisiontv]"},
 	{Name: "GlattvisionTVRecordings", Description: "[glattvisiontv]"},
 	{Name: "Glide", Description: "Glide mobile video messages (glide.me)"},
-	{Name: "GlobalCyclingNetworkPlus"},
 	{Name: "GlobalPlayerAudio"},
 	{Name: "GlobalPlayerAudioEpisode"},
 	{Name: "GlobalPlayerLive"},
@@ -859,8 +856,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "MotherlessGroup"},
 	{Name: "MotherlessUploader"},
 	{Name: "Motorsport", Description: "motorsport.com (Currently broken)"},
-	{Name: "MotorTrend"},
-	{Name: "MotorTrendOnDemand"},
 	{Name: "MovieFap", AgeLimit: 18},
 	{Name: "Moviepilot"},
 	{Name: "MoviewPlay"},
