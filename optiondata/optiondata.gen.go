@@ -2500,12 +2500,10 @@ var (
 		NameCamelCase:  "writeThumbnail",
 		NamePascalCase: "WriteThumbnail",
 		DefaultFlag:    "--write-thumbnail",
-		ArgNames:       []string{"value"},
 		Executable:     false,
 		Help:           "Write thumbnail image to disk",
 		Type:           "string",
 		LongFlags:      []string{"--write-thumbnail"},
-		NArgs:          1,
 	}
 	optionNoWriteThumbnail = &Option{
 		ID:             "writethumbnail",

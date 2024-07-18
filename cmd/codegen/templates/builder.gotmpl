@@ -49,7 +49,7 @@ func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template
 
     return c.runWithResult(c.buildCommand(ctx))
 }
-{{- else if or (gt $option.NArgs 0) (eq $option.Type "bool") }}
+{{- else }}
 {{ template "builder-help" $option }}
 func (c *Command) {{ $option.Name | to_camel }}({{ template "builder-meta-args" $option }}) *Command {
     c.addFlag(&Flag{

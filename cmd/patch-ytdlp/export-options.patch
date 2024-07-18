@@ -1,5 +1,5 @@
 diff --git a/yt_dlp/options.py b/yt_dlp/options.py
-index 76db06c..25a121b 100644
+index ffe2463..e1f2422 100644
 --- a/yt_dlp/options.py
 +++ b/yt_dlp/options.py
 @@ -1,5 +1,6 @@
@@ -65,7 +65,7 @@ index 76db06c..25a121b 100644
 +                    'type': str(option.type) if option.type else None,
 +                    'long_flags': option._long_opts,
 +                    'short_flags': option._short_opts,
-+                    'nargs': option.nargs or 0,
++                    'nargs': option.nargs if option.nargs and option.nargs > 0 and option.takes_value() else 0,
 +                    'default_value': default,
 +                    'const_value': option.const,
 +                }

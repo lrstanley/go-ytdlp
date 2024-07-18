@@ -44,4 +44,4 @@ if ! grep -q -- "--export-options" "yt_dlp/__main__.py"; then
 	)
 fi
 
-python3 yt_dlp/__main__.py --export-options > "$EXPORT_FILE"
+python3 -m yt_dlp --export-options > "$EXPORT_FILE"

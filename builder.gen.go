@@ -3048,11 +3048,11 @@ func (c *Command) UnsetRmCacheDir() *Command {
 //   - See [Command.UnsetWriteThumbnail], for unsetting the flag.
 //   - WriteThumbnail maps to cli flags: --write-thumbnail.
 //   - From option group: "Thumbnail"
-func (c *Command) WriteThumbnail(value string) *Command {
+func (c *Command) WriteThumbnail() *Command {
 	c.addFlag(&Flag{
 		ID:   "writethumbnail",
 		Flag: "--write-thumbnail",
-		Args: []string{value},
+		Args: nil,
 	})
 	return c
 }
