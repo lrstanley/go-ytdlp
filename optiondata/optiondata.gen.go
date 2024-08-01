@@ -737,7 +737,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#update",
 			},
 		},
 		DefaultFlag: "--update",
@@ -766,7 +766,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#update",
 			},
 		},
 		DefaultFlag: "--update-to",
@@ -1044,7 +1044,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Compatibility Options",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#differences-in-default-behavior",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#differences-in-default-behavior",
 			},
 		},
 		DefaultFlag: "--compat-options",
@@ -2045,7 +2045,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--output",
@@ -2799,7 +2799,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--dump-json",
@@ -3149,15 +3149,15 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#format-selection",
 			},
 			{
 				Name: "Filter Formatting",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#filtering-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#filtering-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format",
@@ -3178,11 +3178,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#sorting-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format-sort",
@@ -3203,7 +3203,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#sorting-formats",
 			},
 		},
 		DefaultFlag: "--format-sort-force",
@@ -3233,7 +3233,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--video-multistreams",
@@ -3261,7 +3261,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--audio-multistreams",
@@ -3942,11 +3942,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--parse-metadata",
@@ -3966,11 +3966,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--replace-in-metadata",
@@ -4001,7 +4001,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--concat-playlist",
@@ -4153,7 +4153,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--split-chapters",
@@ -4469,7 +4469,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Extractor Arguments",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.07.25/README.md#extractor-arguments",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.08.01/README.md#extractor-arguments",
 			},
 		},
 		DefaultFlag: "--extractor-args",
