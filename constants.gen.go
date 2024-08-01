@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2024.07.25"
+	Version = "2024.08.01"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -692,10 +692,11 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Ketnet"},
 	{Name: "khanacademy"},
 	{Name: "khanacademy:unit"},
-	{Name: "Kick"},
+	{Name: "kick:clips", AgeLimit: 18},
+	{Name: "kick:live", AgeLimit: 18},
+	{Name: "kick:vod"},
 	{Name: "Kicker"},
 	{Name: "KickStarter"},
-	{Name: "KickVOD"},
 	{Name: "kinja:embed"},
 	{Name: "KinoPoisk", AgeLimit: 12},
 	{Name: "Kommunetv"},
@@ -727,6 +728,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Lcp"},
 	{Name: "LcpPlay"},
 	{Name: "Le", Description: "乐视网"},
+	{Name: "LearningOnScreen"},
 	{Name: "Lecture2Go", Description: "(Currently broken)"},
 	{Name: "Lecturio", Description: "[lecturio]"},
 	{Name: "LecturioCourse", Description: "[lecturio]"},
@@ -1180,7 +1182,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "QuantumTV", Description: "[quantumtv]"},
 	{Name: "QuantumTVLive", Description: "[quantumtv]"},
 	{Name: "QuantumTVRecordings", Description: "[quantumtv]"},
-	{Name: "Qub"},
 	{Name: "R7", Description: "(Currently broken)"},
 	{Name: "R7Article", Description: "(Currently broken)"},
 	{Name: "Radiko"},
@@ -1561,9 +1562,9 @@ var SupportedExtractors = []*Extractor{
 	{Name: "tv5unis", AgeLimit: 8},
 	{Name: "tv5unis:video"},
 	{Name: "tv8.it"},
-	{Name: "TVA"},
 	{Name: "TVANouvelles"},
 	{Name: "TVANouvellesArticle"},
+	{Name: "tvaplus", Description: "TVA+"},
 	{Name: "TVC"},
 	{Name: "TVCArticle"},
 	{Name: "TVer"},
