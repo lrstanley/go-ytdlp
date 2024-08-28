@@ -27,6 +27,8 @@ type Command struct {
 	directory  string
 	env        map[string]string
 	flags      []*Flag
+
+	progress *progressHandler
 }
 
 // Clone returns a copy of the command, with all flags, env vars, executable, and
@@ -194,7 +196,7 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 		return wrapError(nil, cmd.Err)
 	}
 
-	stdout := &timestampWriter{pipe: "stdout"}
+	stdout := &timestampWriter{pipe: "stdout", progress: c.progress}
 	stderr := &timestampWriter{pipe: "stderr"}
 
 	if c.hasJSONFlag() {

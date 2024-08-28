@@ -133,6 +133,8 @@ type timestampWriter struct {
 	buf            bytes.Buffer
 	lastWriteStart time.Time
 	results        []*ResultLog
+
+	progress *progressHandler
 }
 
 func (w *timestampWriter) Write(p []byte) (n int, err error) {
@@ -164,6 +166,11 @@ func (w *timestampWriter) flush() {
 		Pipe:      w.pipe,
 	}
 
+	if v, ok := strings.CutPrefix(result.Line, progressPrefix); ok && w.progress != nil {
+		w.progress.parse(v)
+		goto reset
+	}
+
 	if w.checkJSON && len(line) > 0 { // Try to parse the line as JSON.
 		var raw json.RawMessage
 
@@ -173,6 +180,7 @@ func (w *timestampWriter) flush() {
 	}
 
 	w.results = append(w.results, result)
+reset:
 	w.lastWriteStart = time.Time{}
 	w.buf.Reset()
 }

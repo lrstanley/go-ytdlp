@@ -7,8 +7,10 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/lrstanley/go-ytdlp"
 )
@@ -25,6 +27,15 @@ func main() {
 		NoPlaylist().
 		NoOverwrites().
 		Continue().
+		ProgressFunc(100*time.Millisecond, func(prog ytdlp.ProgressUpdate) {
+			fmt.Printf( //nolint:forbidigo
+				"%s @ %.2f%% [eta: %s] :: %s\n",
+				prog.Status,
+				prog.Percent(),
+				prog.ETA(),
+				prog.Filename,
+			)
+		}).
 		Output("%(extractor)s - %(title)s.%(ext)s")
 
 	r, err := dl.Run(context.TODO(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
