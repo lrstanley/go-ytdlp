@@ -41,8 +41,17 @@ func TestCommand_Simple(t *testing.T) {
 		urls = append(urls, f.url)
 	}
 
+	progressUpdates := map[string]ProgressUpdate{}
+
 	res, err := New().
-		Verbose().PrintJSON().NoProgress().NoOverwrites().Output(filepath.Join(dir, "%(extractor)s - %(title)s.%(ext)s")).
+		Verbose().
+		PrintJSON().
+		NoProgress().
+		NoOverwrites().
+		Output(filepath.Join(dir, "%(extractor)s - %(title)s.%(ext)s")).
+		ProgressFunc(100*time.Millisecond, func(prog ProgressUpdate) {
+			progressUpdates[prog.Filename] = prog
+		}).
 		Run(context.Background(), urls...)
 	if err != nil {
 		t.Fatal(err)
@@ -76,13 +85,39 @@ func TestCommand_Simple(t *testing.T) {
 		t.Run(f.name, func(t *testing.T) {
 			var stat fs.FileInfo
 
-			stat, err = os.Stat(filepath.Join(dir, fmt.Sprintf("%s - %s.%s", f.extractor, f.name, f.ext)))
+			fn := filepath.Join(dir, fmt.Sprintf("%s - %s.%s", f.extractor, f.name, f.ext))
+
+			stat, err = os.Stat(fn)
 			if err != nil {
 				t.Fatal(err)
 			}
 
 			if stat.Size() == 0 {
 				t.Fatal("file is empty")
+			}
+
+			prog, ok := progressUpdates[fn]
+			if !ok {
+				t.Fatalf("expected progress updates for %s", fn)
+			}
+
+			if prog.Finished.IsZero() || prog.Started.IsZero() {
+				t.Fatal("expected progress start and finish times to be set")
+			}
+
+			if prog.TotalBytes == 0 {
+				t.Fatal("expected progress total bytes to be set")
+			}
+			if prog.DownloadedBytes == 0 {
+				t.Fatal("expected progress downloaded bytes to be set")
+			}
+
+			if prog.Percent() < 100.0 {
+				t.Fatalf("expected progress to be 100%%, got %.2f%%", prog.Percent())
+			}
+
+			if prog.Info.URL == nil {
+				t.Fatal("expected progress info URL to be set")
 			}
 		})
 	}
