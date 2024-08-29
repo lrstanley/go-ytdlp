@@ -5,6 +5,7 @@
 package ytdlp
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"sync"
@@ -13,13 +14,12 @@ import (
 
 const (
 	progressPrefix     = "dl:"
-	progressSplitChars = ","
+	progressSplitChars = "###"
 )
 
 var progressTemplateFields = []string{
 	"%(progress.status)s",
-	"%(progress.total_bytes)s",
-	"%(progress.total_bytes_estimate)s",
+	"%(progress.total_bytes,progress.total_bytes_estimate)s",
 	"%(progress.downloaded_bytes)s",
 	"%(progress.fragment_index)s",
 	"%(progress.fragment_count)s",
@@ -27,7 +27,8 @@ var progressTemplateFields = []string{
 	"%(info.playlist_id)s",
 	"%(info.playlist_index)s",
 	"%(info.playlist_count)s",
-	"%(progress.filename)s",
+	"%(info.url,info.webpage_url)s",
+	"%(progress.filename,progress.tmpfilename,info.filename)s",
 }
 
 func strFloatToInt(s string) int {
@@ -70,13 +71,14 @@ func (h *progressHandler) parse(input string) {
 	update := ProgressUpdate{
 		Status:          ProgressStatus(raw[0]),
 		TotalBytes:      strFloatToInt(raw[1]), // Total bytes, if available.
-		DownloadedBytes: strFloatToInt(raw[3]),
-		FragmentIndex:   strFloatToInt(raw[4]),
-		FragmentCount:   strFloatToInt(raw[5]),
-		ID:              raw[6],
-		PlaylistID:      raw[7],
-		PlaylistIndex:   strFloatToInt(raw[8]),
-		PlaylistCount:   strFloatToInt(raw[9]),
+		DownloadedBytes: strFloatToInt(raw[2]),
+		FragmentIndex:   strFloatToInt(raw[3]),
+		FragmentCount:   strFloatToInt(raw[4]),
+		ID:              raw[5],
+		PlaylistID:      raw[6],
+		PlaylistIndex:   strFloatToInt(raw[7]),
+		PlaylistCount:   strFloatToInt(raw[8]),
+		URL:             raw[9],
 		Filename:        raw[10],
 	}
 
@@ -97,10 +99,6 @@ func (h *progressHandler) parse(input string) {
 		h.finished[uuid] = update.Finished
 	}
 	h.mu.Unlock()
-
-	if update.TotalBytes == 0 {
-		update.TotalBytes = strFloatToInt(raw[2]) // Estimated bytes, if available.
-	}
 
 	h.fn(update)
 }
@@ -146,6 +144,8 @@ type ProgressUpdate struct {
 	PlaylistIndex int
 	// PlaylistCount is the total number of videos in the playlist, if available.
 	PlaylistCount int
+	// URL is the URL of the video being downloaded.
+	URL string
 	// Filename is the filename of the video being downloaded, if available. Note that
 	// this is not necessarily the same as the destination file, as post-processing
 	// may merge multiple files into one.
@@ -187,7 +187,7 @@ func (p *ProgressUpdate) ETA() time.Duration {
 }
 
 // Percent returns the percentage of the download that has been completed. If yt-dlp
-// is unable to determine the total bytes, it will return 0%.
+// is unable to determine the total bytes, it will return 0.
 func (p *ProgressUpdate) Percent() float64 {
 	if p.Status.IsCompletedType() {
 		return 100
@@ -196,6 +196,11 @@ func (p *ProgressUpdate) Percent() float64 {
 		return 0
 	}
 	return float64(p.DownloadedBytes) / float64(p.TotalBytes) * 100
+}
+
+// PercentString is like Percent, but returns a string representation of the percentage.
+func (p *ProgressUpdate) PercentString() string {
+	return fmt.Sprintf("%.2f%%", p.Percent())
 }
 
 // ProgressFunc can be used to register a callback function that will be called when

@@ -49,7 +49,7 @@ func TestCommand_Simple(t *testing.T) {
 		NoProgress().
 		NoOverwrites().
 		Output(filepath.Join(dir, "%(extractor)s - %(title)s.%(ext)s")).
-		ProgressFunc(50*time.Millisecond, func(prog ProgressUpdate) {
+		ProgressFunc(100*time.Millisecond, func(prog ProgressUpdate) {
 			progressUpdates[prog.Filename] = prog
 		}).
 		Run(context.Background(), urls...)
@@ -102,14 +102,14 @@ func TestCommand_Simple(t *testing.T) {
 			}
 
 			if prog.Finished.IsZero() || prog.Started.IsZero() {
-				t.Fatalf("expected progress start and finish times to be set")
+				t.Fatal("expected progress start and finish times to be set")
 			}
 
 			if prog.TotalBytes == 0 {
-				t.Fatalf("expected progress total bytes to be set")
+				t.Fatal("expected progress total bytes to be set")
 			}
 			if prog.DownloadedBytes == 0 {
-				t.Fatalf("expected progress downloaded bytes to be set")
+				t.Fatal("expected progress downloaded bytes to be set")
 			}
 
 			if prog.Percent() < 100.0 {
