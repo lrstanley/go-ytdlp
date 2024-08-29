@@ -115,6 +115,10 @@ func TestCommand_Simple(t *testing.T) {
 			if prog.Percent() < 100.0 {
 				t.Fatalf("expected progress to be 100%%, got %.2f%%", prog.Percent())
 			}
+
+			if prog.Info.URL == nil {
+				t.Fatal("expected progress info URL to be set")
+			}
 		})
 	}
 }

@@ -29,9 +29,9 @@ func main() {
 		Continue().
 		ProgressFunc(100*time.Millisecond, func(prog ytdlp.ProgressUpdate) {
 			fmt.Printf( //nolint:forbidigo
-				"%s @ %.2f%% [eta: %s] :: %s\n",
+				"%s @ %s [eta: %s] :: %s\n",
 				prog.Status,
-				prog.Percent(),
+				prog.PercentString(),
 				prog.ETA(),
 				prog.Filename,
 			)

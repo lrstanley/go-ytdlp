@@ -166,8 +166,12 @@ func (w *timestampWriter) flush() {
 		Pipe:      w.pipe,
 	}
 
-	if v, ok := strings.CutPrefix(result.Line, progressPrefix); ok && w.progress != nil {
-		w.progress.parse(v)
+	if v, ok := bytes.CutPrefix(line, progressPrefix); ok && w.progress != nil {
+		var raw json.RawMessage
+
+		if err := json.Unmarshal(v, &raw); err == nil {
+			w.progress.parse(raw)
+		}
 		goto reset
 	}
 
@@ -236,14 +240,14 @@ func ParseExtractedInfo(msg *json.RawMessage) (info *ExtractedInfo, err error) {
 		return nil, err
 	}
 
-	cleanExtractedStruct(info)
+	cleanJSON(info)
 	return info, nil
 }
 
-// cleanExtractedStruct uses reflect to loop through all input fields, and if the
-// field is a string or pointer to a string, and the value is "none" or empty, set
-// the value to empty/nil.
-func cleanExtractedStruct(input any) {
+// cleanJSON uses reflect to loop through all input fields, and if the field is a
+// string or pointer to a string, and the value is "none" or empty, set the value
+// to empty/nil.
+func cleanJSON(input any) {
 	v := reflect.ValueOf(input)
 	if v.Kind() == reflect.Ptr {
 		v = v.Elem()
@@ -273,14 +277,14 @@ func cleanExtractedStruct(input any) {
 
 		// If field is a struct, or a pointer to a struct, recurse.
 		if field.Kind() == reflect.Struct || (field.Kind() == reflect.Ptr && field.Elem().Kind() == reflect.Struct) {
-			cleanExtractedStruct(field.Addr().Interface())
+			cleanJSON(field.Addr().Interface())
 			continue
 		}
 
 		// If field is a slice, loop through each element and recurse.
 		if field.Kind() == reflect.Slice {
 			for j := 0; j < field.Len(); j++ {
-				cleanExtractedStruct(field.Index(j).Addr().Interface())
+				cleanJSON(field.Index(j).Addr().Interface())
 			}
 			continue
 		}

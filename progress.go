@@ -5,6 +5,7 @@
 package ytdlp
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -12,28 +13,25 @@ import (
 	"time"
 )
 
-const (
-	progressPrefix     = "dl:"
-	progressSplitChars = "###"
-)
+var progressPrefix = []byte("progress:")
 
-var progressTemplateFields = []string{
-	"%(progress.status)s",
-	"%(progress.total_bytes,progress.total_bytes_estimate)s",
-	"%(progress.downloaded_bytes)s",
-	"%(progress.fragment_index)s",
-	"%(progress.fragment_count)s",
-	"%(info.id)s",
-	"%(info.playlist_id)s",
-	"%(info.playlist_index)s",
-	"%(info.playlist_count)s",
-	"%(info.url,info.webpage_url)s",
-	"%(progress.filename,progress.tmpfilename,info.filename)s",
-}
+const progressFormat = "%()j"
 
-func strFloatToInt(s string) int {
-	f, _ := strconv.ParseFloat(s, 64)
-	return int(f)
+type progressData struct {
+	Info     *ExtractedInfo `json:"info"`
+	Progress struct {
+		Status             ProgressStatus `json:"status"`
+		TotalBytes         int            `json:"total_bytes,omitempty"`
+		TotalBytesEstimate float64        `json:"total_bytes_estimate,omitempty"`
+		DownloadedBytes    int            `json:"downloaded_bytes"`
+		Filename           string         `json:"filename,omitempty"`
+		TmpFilename        string         `json:"tmpfilename,omitempty"`
+		FragmentIndex      int            `json:"fragment_index,omitempty"`
+		FragmentCount      int            `json:"fragment_count,omitempty"`
+		// There are technically other fields, but these are the important ones.
+	} `json:"progress"`
+	AutoNumber      int `json:"autonumber,omitempty"`
+	VideoAutoNumber int `json:"video_autonumber,omitempty"`
 }
 
 type progressHandler struct {
@@ -53,33 +51,36 @@ func newProgressHandler(fn ProgressCallbackFunc) *progressHandler {
 	return h
 }
 
-func (h *progressHandler) parse(input string) {
-	raw := strings.SplitN(input, progressSplitChars, len(progressTemplateFields))
+func (h *progressHandler) parse(raw json.RawMessage) {
+	data := &progressData{}
 
-	if len(raw) != len(progressTemplateFields) {
+	err := json.Unmarshal(raw, data)
+	if err != nil {
 		return
 	}
 
-	// Clean up the raw data.
-	for i := range raw {
-		raw[i] = strings.TrimSpace(raw[i])
-		if raw[i] == "NA" {
-			raw[i] = ""
-		}
-	}
+	cleanJSON(data)
 
 	update := ProgressUpdate{
-		Status:          ProgressStatus(raw[0]),
-		TotalBytes:      strFloatToInt(raw[1]), // Total bytes, if available.
-		DownloadedBytes: strFloatToInt(raw[2]),
-		FragmentIndex:   strFloatToInt(raw[3]),
-		FragmentCount:   strFloatToInt(raw[4]),
-		ID:              raw[5],
-		PlaylistID:      raw[6],
-		PlaylistIndex:   strFloatToInt(raw[7]),
-		PlaylistCount:   strFloatToInt(raw[8]),
-		URL:             raw[9],
-		Filename:        raw[10],
+		Info:            data.Info,
+		Status:          data.Progress.Status,
+		TotalBytes:      data.Progress.TotalBytes,
+		DownloadedBytes: data.Progress.DownloadedBytes,
+		FragmentIndex:   data.Progress.FragmentIndex,
+		FragmentCount:   data.Progress.FragmentCount,
+		Filename:        data.Progress.Filename,
+	}
+
+	if update.TotalBytes == 0 {
+		update.TotalBytes = int(data.Progress.TotalBytesEstimate)
+	}
+
+	if update.Filename == "" {
+		if data.Progress.TmpFilename != "" {
+			update.Filename = data.Progress.TmpFilename
+		} else if data.Info.Filename != nil && *data.Info.Filename != "" {
+			update.Filename = *data.Info.Filename
+		}
 	}
 
 	uuid := update.uuid()
@@ -124,47 +125,47 @@ type ProgressCallbackFunc func(update ProgressUpdate)
 
 // ProgressUpdate is a point-in-time snapshot of the download progress.
 type ProgressUpdate struct {
+	Info *ExtractedInfo `json:"info"`
+
 	// Status is the current status of the download.
-	Status ProgressStatus
+	Status ProgressStatus `json:"status"`
 	// TotalBytes is the total number of bytes in the download. If yt-dlp is unable
 	// to determine the total bytes, this will be 0.
-	TotalBytes int
+	TotalBytes int `json:"total_bytes"`
 	// DownloadedBytes is the number of bytes that have been downloaded so far.
-	DownloadedBytes int
+	DownloadedBytes int `json:"downloaded_bytes"`
 	// FragmentIndex is the index of the current fragment being downloaded.
-	FragmentIndex int
+	FragmentIndex int `json:"fragment_index,omitempty"`
 	// FragmentCount is the total number of fragments in the download.
-	FragmentCount int
+	FragmentCount int `json:"fragment_count,omitempty"`
 
-	// ID is the ID of the video being downloaded if available.
-	ID string
-	// PlaylistID is the ID of the playlist the video is in, if available.
-	PlaylistID string
-	// PlaylistIndex is the index of the video in the playlist, if available.
-	PlaylistIndex int
-	// PlaylistCount is the total number of videos in the playlist, if available.
-	PlaylistCount int
-	// URL is the URL of the video being downloaded.
-	URL string
 	// Filename is the filename of the video being downloaded, if available. Note that
 	// this is not necessarily the same as the destination file, as post-processing
 	// may merge multiple files into one.
-	Filename string
+	Filename string `json:"filename"`
 
 	// Started is the time the download started.
-	Started time.Time
+	Started time.Time `json:"started"`
 	// Finished is the time the download finished. If the download is still in progress,
 	// this will be zero. You can validate with IsZero().
-	Finished time.Time
+	Finished time.Time `json:"finished,omitempty"`
 }
 
 func (p *ProgressUpdate) uuid() string {
-	return strings.Join([]string{
-		p.ID,
-		p.PlaylistID,
-		strconv.Itoa(p.PlaylistIndex),
+	unique := []string{
 		p.Filename,
-	}, ":")
+		p.Info.ID,
+	}
+
+	if p.Info.PlaylistID != nil {
+		unique = append(unique, *p.Info.PlaylistID)
+	}
+
+	if p.Info.PlaylistIndex != nil {
+		unique = append(unique, strconv.Itoa(*p.Info.PlaylistIndex))
+	}
+
+	return strings.Join(unique, ":")
 }
 
 // Duration returns the duration of the download. If the download is still in progress,
@@ -215,7 +216,7 @@ func (c *Command) ProgressFunc(frequency time.Duration, fn ProgressCallbackFunc)
 
 	c.Progress().
 		ProgressDelta(frequency.Seconds()).
-		ProgressTemplate(progressPrefix + strings.Join(progressTemplateFields, progressSplitChars)).
+		ProgressTemplate(string(progressPrefix) + progressFormat).
 		Newline()
 
 	c.mu.Lock()
