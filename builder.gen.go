@@ -30,7 +30,7 @@ func (c *Command) Version(ctx context.Context) (*Result, error) {
 // Use git to pull the latest changes
 //
 // References:
-//   - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#update
+//   - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#update
 //
 // Additional information:
 //   - Update maps to cli flags: -U/--update.
@@ -72,7 +72,7 @@ func (c *Command) UnsetUpdate() *Command {
 // "UPDATE" for details. Supported channels: stable, nightly, master
 //
 // References:
-//   - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#update
+//   - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#update
 //
 // Additional information:
 //   - UpdateTo maps to cli flags: --update-to=[CHANNEL]@[TAG].
@@ -540,7 +540,7 @@ func (c *Command) UnsetColor() *Command {
 // in default behavior" for details
 //
 // References:
-//   - Compatibility Options: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#differences-in-default-behavior
+//   - Compatibility Options: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#differences-in-default-behavior
 //
 // Additional information:
 //   - See [Command.UnsetCompatOptions], for unsetting the flag.
@@ -1185,12 +1185,12 @@ func (c *Command) UnsetMaxViews() *Command {
 // simply specify a field to match if the field is present, use "!field" to check
 // if the field is not present, and "&" to check multiple conditions. Use a "\" to
 // escape "&" or quotes if needed. If used multiple times, the filter matches if at
-// least one of the conditions is met. E.g. --match-filter !is_live --match-filter
-// "like_count>?100 & description~='(?i)\bcats \& dogs\b'" matches only videos that
-// are not live OR those that have a like count more than 100 (or the like field is
-// not available) and also has a description that contains the phrase "cats & dogs"
-// (caseless). Use "--match-filter -" to interactively ask whether to download each
-// video
+// least one of the conditions is met. E.g. --match-filters !is_live
+// --match-filters "like_count>?100 & description~='(?i)\bcats \& dogs\b'" matches
+// only videos that are not live OR those that have a like count more than 100 (or
+// the like field is not available) and also has a description that contains the
+// phrase "cats & dogs" (caseless). Use "--match-filters -" to interactively ask
+// whether to download each video
 //
 // Additional information:
 //   - See [Command.UnsetMatchFilters], for unsetting the flag.
@@ -1213,7 +1213,7 @@ func (c *Command) UnsetMatchFilters() *Command {
 	return c
 }
 
-// Do not use any --match-filter (default)
+// Do not use any --match-filters (default)
 //
 // Additional information:
 //   - See [Command.UnsetMatchFilters], for unsetting the flag.
@@ -1453,7 +1453,7 @@ func (c *Command) UnsetBreakOnReject() *Command {
 	return c
 }
 
-// Alters --max-downloads, --break-on-existing, --break-match-filter, and
+// Alters --max-downloads, --break-on-existing, --break-match-filters, and
 // autonumber to reset per input URL
 //
 // Additional information:
@@ -2267,7 +2267,7 @@ func (c *Command) UnsetPaths() *Command {
 // Output filename template; see "OUTPUT TEMPLATE" for details
 //
 // References:
-//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#output-template
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#output-template
 //
 // Additional information:
 //   - See [Command.UnsetOutput], for unsetting the flag.
@@ -3603,7 +3603,7 @@ func (c *Command) UnsetGetFormat() *Command {
 // is used. See "OUTPUT TEMPLATE" for a description of available keys
 //
 // References:
-//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#output-template
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#output-template
 //
 // Additional information:
 //   - See [Command.UnsetDumpJSON], for unsetting the flag.
@@ -4241,9 +4241,9 @@ func (c *Command) UnsetSleepSubtitles() *Command {
 // Video format code, see "FORMAT SELECTION" for more details
 //
 // References:
-//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#format-selection
-//   - Filter Formatting: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#filtering-formats
-//   - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#format-selection-examples
+//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#format-selection
+//   - Filter Formatting: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#filtering-formats
+//   - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#format-selection-examples
 //
 // Additional information:
 //   - See [Command.UnsetFormat], for unsetting the flag.
@@ -4268,8 +4268,8 @@ func (c *Command) UnsetFormat() *Command {
 // Sort the formats by the fields given, see "Sorting Formats" for more details
 //
 // References:
-//   - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#sorting-formats
-//   - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#format-selection-examples
+//   - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#sorting-formats
+//   - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#format-selection-examples
 //
 // Additional information:
 //   - See [Command.UnsetFormatSort], for unsetting the flag.
@@ -4295,7 +4295,7 @@ func (c *Command) UnsetFormatSort() *Command {
 // Formats" for more details
 //
 // References:
-//   - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#sorting-formats
+//   - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#sorting-formats
 //
 // Additional information:
 //   - See [Command.UnsetFormatSortForce], for unsetting the flag.
@@ -4336,7 +4336,7 @@ func (c *Command) NoFormatSortForce() *Command {
 // Allow multiple video streams to be merged into a single file
 //
 // References:
-//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#format-selection
+//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#format-selection
 //
 // Additional information:
 //   - See [Command.UnsetVideoMultistreams], for unsetting the flag.
@@ -4377,7 +4377,7 @@ func (c *Command) NoVideoMultistreams() *Command {
 // Allow multiple audio streams to be merged into a single file
 //
 // References:
-//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#format-selection
+//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#format-selection
 //
 // Additional information:
 //   - See [Command.UnsetAudioMultistreams], for unsetting the flag.
@@ -5552,8 +5552,8 @@ func (c *Command) UnsetMetadataFromTitle() *Command {
 // --use-postprocessor (default: pre_process)
 //
 // References:
-//   - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#modifying-metadata
-//   - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#modifying-metadata-examples
+//   - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#modifying-metadata
+//   - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#modifying-metadata-examples
 //
 // Additional information:
 //   - See [Command.UnsetParseMetadata], for unsetting the flag.
@@ -5580,8 +5580,8 @@ func (c *Command) UnsetParseMetadata() *Command {
 // --use-postprocessor (default: pre_process)
 //
 // References:
-//   - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#modifying-metadata
-//   - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#modifying-metadata-examples
+//   - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#modifying-metadata
+//   - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#modifying-metadata-examples
 //
 // Additional information:
 //   - See [Command.UnsetReplaceInMetadata], for unsetting the flag.
@@ -5641,7 +5641,7 @@ var (
 // concatenated files. See "OUTPUT TEMPLATE" for details
 //
 // References:
-//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#output-template
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#output-template
 //
 // Additional information:
 //   - See [Command.UnsetConcatPlaylist], for unsetting the flag.
@@ -5855,7 +5855,7 @@ func (c *Command) NoExecBeforeDownload() *Command {
 }
 
 // Convert the subtitles to another format (currently supported: ass, lrc, srt,
-// vtt)
+// vtt). Use "--convert-subs none" to disable conversion (default)
 //
 // Additional information:
 //   - See [Command.UnsetConvertSubs], for unsetting the flag.
@@ -5878,7 +5878,8 @@ func (c *Command) UnsetConvertSubs() *Command {
 }
 
 // Convert the thumbnails to another format (currently supported: jpg, png, webp).
-// You can specify multiple rules using similar syntax as --remux-video
+// You can specify multiple rules using similar syntax as "--remux-video". Use
+// "--convert-thumbnails none" to disable conversion (default)
 //
 // Additional information:
 //   - See [Command.UnsetConvertThumbnails], for unsetting the flag.
@@ -5905,7 +5906,7 @@ func (c *Command) UnsetConvertThumbnails() *Command {
 // the split files. See "OUTPUT TEMPLATE" for details
 //
 // References:
-//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#output-template
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#output-template
 //
 // Additional information:
 //   - See [Command.UnsetSplitChapters], for unsetting the flag.
@@ -6469,7 +6470,7 @@ func (c *Command) NoHLSSplitDiscontinuity() *Command {
 // extractors
 //
 // References:
-//   - Extractor Arguments: https://github.com/yt-dlp/yt-dlp/blob/2024.08.06/README.md#extractor-arguments
+//   - Extractor Arguments: https://github.com/yt-dlp/yt-dlp/blob/2024.09.27/README.md#extractor-arguments
 //
 // Additional information:
 //   - See [Command.UnsetExtractorArgs], for unsetting the flag.
