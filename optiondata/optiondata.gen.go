@@ -47,6 +47,7 @@ var (
 			optionIgnoreConfig,
 			optionNoConfigLocations,
 			optionConfigLocations,
+			optionPluginDirs,
 			optionFlatPlaylist,
 			optionNoFlatPlaylist,
 			optionLiveFromStart,
@@ -430,6 +431,7 @@ var Options = []*Option{
 	optionIgnoreConfig,
 	optionNoConfigLocations,
 	optionConfigLocations,
+	optionPluginDirs,
 	optionFlatPlaylist,
 	optionNoFlatPlaylist,
 	optionLiveFromStart,
@@ -737,7 +739,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#update",
 			},
 		},
 		DefaultFlag: "--update",
@@ -766,7 +768,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#update",
 			},
 		},
 		DefaultFlag: "--update-to",
@@ -920,6 +922,20 @@ var (
 		LongFlags:      []string{"--config-locations"},
 		NArgs:          1,
 	}
+	optionPluginDirs = &Option{
+		ID:             "plugin_dirs",
+		Name:           "plugin-dirs",
+		NameCamelCase:  "pluginDirs",
+		NamePascalCase: "PluginDirs",
+		DefaultFlag:    "--plugin-dirs",
+		ArgNames:       []string{"path"},
+		Executable:     false,
+		Help:           "Path to an additional directory to search for plugins. This option can be used multiple times to add multiple directories. Note that this currently only works for extractor plugins; postprocessor plugins can only be loaded from the default plugin directories",
+		MetaArgs:       "PATH",
+		Type:           "string",
+		LongFlags:      []string{"--plugin-dirs"},
+		NArgs:          1,
+	}
 	optionFlatPlaylist = &Option{
 		ID:             "extract_flat",
 		Name:           "flat-playlist",
@@ -1044,7 +1060,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Compatibility Options",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#differences-in-default-behavior",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#differences-in-default-behavior",
 			},
 		},
 		DefaultFlag: "--compat-options",
@@ -1372,7 +1388,7 @@ var (
 		DefaultFlag:    "--datebefore",
 		ArgNames:       []string{"date"},
 		Executable:     false,
-		Help:           "Download only videos uploaded on or before this date. The date formats accepted is the same as --date",
+		Help:           "Download only videos uploaded on or before this date. The date formats accepted are the same as --date",
 		MetaArgs:       "DATE",
 		Type:           "string",
 		LongFlags:      []string{"--datebefore"},
@@ -1386,7 +1402,7 @@ var (
 		DefaultFlag:    "--dateafter",
 		ArgNames:       []string{"date"},
 		Executable:     false,
-		Help:           "Download only videos uploaded on or after this date. The date formats accepted is the same as --date",
+		Help:           "Download only videos uploaded on or after this date. The date formats accepted are the same as --date",
 		MetaArgs:       "DATE",
 		Type:           "string",
 		LongFlags:      []string{"--dateafter"},
@@ -2045,7 +2061,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--output",
@@ -2695,7 +2711,7 @@ var (
 		DefaultFlag:    "--print-to-file",
 		ArgNames:       []string{"template", "file"},
 		Executable:     false,
-		Help:           "Append given template to the file. The values of WHEN and TEMPLATE are same as that of --print. FILE uses the same syntax as the output template. This option can be used multiple times",
+		Help:           "Append given template to the file. The values of WHEN and TEMPLATE are the same as that of --print. FILE uses the same syntax as the output template. This option can be used multiple times",
 		MetaArgs:       "[WHEN:]TEMPLATE FILE",
 		Type:           "string",
 		LongFlags:      []string{"--print-to-file"},
@@ -2799,7 +2815,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--dump-json",
@@ -2816,7 +2832,7 @@ var (
 		NamePascalCase: "DumpSingleJSON",
 		DefaultFlag:    "--dump-single-json",
 		Executable:     false,
-		Help:           "Quiet, but print JSON information for each url or infojson passed. Simulate unless --no-simulate is used. If the URL refers to a playlist, the whole playlist information is dumped in a single line",
+		Help:           "Quiet, but print JSON information for each URL or infojson passed. Simulate unless --no-simulate is used. If the URL refers to a playlist, the whole playlist information is dumped in a single line",
 		Type:           "bool",
 		LongFlags:      []string{"--dump-single-json"},
 		ShortFlags:     []string{"-J"},
@@ -3149,15 +3165,15 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#format-selection",
 			},
 			{
 				Name: "Filter Formatting",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#filtering-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#filtering-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format",
@@ -3178,11 +3194,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#sorting-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format-sort",
@@ -3203,7 +3219,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#sorting-formats",
 			},
 		},
 		DefaultFlag: "--format-sort-force",
@@ -3233,7 +3249,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--video-multistreams",
@@ -3261,7 +3277,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--audio-multistreams",
@@ -3299,7 +3315,7 @@ var (
 		NamePascalCase: "PreferFreeFormats",
 		DefaultFlag:    "--prefer-free-formats",
 		Executable:     false,
-		Help:           "Prefer video formats with free containers over non-free ones of same quality. Use with \"-S ext\" to strictly prefer free containers irrespective of quality",
+		Help:           "Prefer video formats with free containers over non-free ones of the same quality. Use with \"-S ext\" to strictly prefer free containers irrespective of quality",
 		Type:           "bool",
 		LongFlags:      []string{"--prefer-free-formats"},
 	}
@@ -3469,7 +3485,7 @@ var (
 		DefaultFlag:    "--sub-format",
 		ArgNames:       []string{"format"},
 		Executable:     false,
-		Help:           "Subtitle format; accepts formats preference, e.g. \"srt\" or \"ass/srt/best\"",
+		Help:           "Subtitle format; accepts formats preference separated by \"/\", e.g. \"srt\" or \"ass/srt/best\"",
 		MetaArgs:       "FORMAT",
 		Type:           "string",
 		LongFlags:      []string{"--sub-format"},
@@ -3483,7 +3499,7 @@ var (
 		DefaultFlag:    "--sub-langs",
 		ArgNames:       []string{"langs"},
 		Executable:     false,
-		Help:           "Languages of the subtitles to download (can be regex) or \"all\" separated by commas, e.g. --sub-langs \"en.*,ja\". You can prefix the language code with a \"-\" to exclude it from the requested languages, e.g. --sub-langs all,-live_chat. Use --list-subs for a list of available language tags",
+		Help:           "Languages of the subtitles to download (can be regex) or \"all\" separated by commas, e.g. --sub-langs \"en.*,ja\" (where \"en.*\" is a regex pattern that matches \"en\" followed by 0 or more of any character). You can prefix the language code with a \"-\" to exclude it from the requested languages, e.g. --sub-langs all,-live_chat. Use --list-subs for a list of available language tags",
 		MetaArgs:       "LANGS",
 		Type:           "string",
 		LongFlags:      []string{"--sub-langs", "--srt-langs"},
@@ -3731,7 +3747,7 @@ var (
 		DefaultFlag:    "--remux-video",
 		ArgNames:       []string{"format"},
 		Executable:     false,
-		Help:           "Remux the video into another container if necessary (currently supported: avi, flv, gif, mkv, mov, mp4, webm, aac, aiff, alac, flac, m4a, mka, mp3, ogg, opus, vorbis, wav). If target container does not support the video/audio codec, remuxing will fail. You can specify multiple rules; e.g. \"aac>m4a/mov>mp4/mkv\" will remux aac to m4a, mov to mp4 and anything else to mkv",
+		Help:           "Remux the video into another container if necessary (currently supported: avi, flv, gif, mkv, mov, mp4, webm, aac, aiff, alac, flac, m4a, mka, mp3, ogg, opus, vorbis, wav). If the target container does not support the video/audio codec, remuxing will fail. You can specify multiple rules; e.g. \"aac>m4a/mov>mp4/mkv\" will remux aac to m4a, mov to mp4 and anything else to mkv",
 		MetaArgs:       "FORMAT",
 		Type:           "string",
 		LongFlags:      []string{"--remux-video"},
@@ -3942,11 +3958,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--parse-metadata",
@@ -3966,11 +3982,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--replace-in-metadata",
@@ -3989,7 +4005,7 @@ var (
 		NamePascalCase: "Xattrs",
 		DefaultFlag:    "--xattrs",
 		Executable:     false,
-		Help:           "Write metadata to the video file's xattrs (using dublin core and xdg standards)",
+		Help:           "Write metadata to the video file's xattrs (using Dublin Core and XDG standards)",
 		Type:           "bool",
 		LongFlags:      []string{"--xattrs", "--xattr"},
 	}
@@ -4001,14 +4017,14 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--concat-playlist",
 		ArgNames:    []string{"policy"},
 		Executable:  false,
 		Choices:     []string{"never", "always", "multi_video"},
-		Help:        "Concatenate videos in a playlist. One of \"never\", \"always\", or \"multi_video\" (default; only when the videos form a single show). All the video files must have same codecs and number of streams to be concatable. The \"pl_video:\" prefix can be used with \"--paths\" and \"--output\" to set the output filename for the concatenated files. See \"OUTPUT TEMPLATE\" for details",
+		Help:        "Concatenate videos in a playlist. One of \"never\", \"always\", or \"multi_video\" (default; only when the videos form a single show). All the video files must have the same codecs and number of streams to be concatenable. The \"pl_video:\" prefix can be used with \"--paths\" and \"--output\" to set the output filename for the concatenated files. See \"OUTPUT TEMPLATE\" for details",
 		MetaArgs:    "POLICY",
 		Type:        "string",
 		LongFlags:   []string{"--concat-playlist"},
@@ -4023,7 +4039,7 @@ var (
 		ArgNames:       []string{"policy"},
 		Executable:     false,
 		Choices:        []string{"never", "ignore", "warn", "detect_or_warn", "force"},
-		Help:           "Automatically correct known faults of the file. One of never (do nothing), warn (only emit a warning), detect_or_warn (the default; fix file if we can, warn otherwise), force (try fixing even if file already exists)",
+		Help:           "Automatically correct known faults of the file. One of never (do nothing), warn (only emit a warning), detect_or_warn (the default; fix the file if we can, warn otherwise), force (try fixing even if the file already exists)",
 		MetaArgs:       "POLICY",
 		Type:           "string",
 		LongFlags:      []string{"--fixup"},
@@ -4075,7 +4091,7 @@ var (
 		DefaultFlag:    "--exec",
 		ArgNames:       []string{"cmd"},
 		Executable:     false,
-		Help:           "Execute a command, optionally prefixed with when to execute it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: after_move). Same syntax as the output template can be used to pass any field as arguments to the command. If no fields are passed, %(filepath,_filename|)q is appended to the end of the command. This option can be used multiple times",
+		Help:           "Execute a command, optionally prefixed with when to execute it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: after_move). The same syntax as the output template can be used to pass any field as arguments to the command. If no fields are passed, %(filepath,_filename|)q is appended to the end of the command. This option can be used multiple times",
 		MetaArgs:       "[WHEN:]CMD",
 		Type:           "string",
 		LongFlags:      []string{"--exec"},
@@ -4153,7 +4169,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--split-chapters",
@@ -4228,7 +4244,7 @@ var (
 		DefaultFlag:    "--use-postprocessor",
 		ArgNames:       []string{"name"},
 		Executable:     false,
-		Help:           "The (case sensitive) name of plugin postprocessors to be enabled, and (optionally) arguments to be passed to it, separated by a colon \":\". ARGS are a semicolon \";\" delimited list of NAME=VALUE. The \"when\" argument determines when the postprocessor is invoked. It can be one of \"pre_process\" (after video extraction), \"after_filter\" (after video passes filter), \"video\" (after --format; before --print/--output), \"before_dl\" (before each video download), \"post_process\" (after each video download; default), \"after_move\" (after moving video file to its final locations), \"after_video\" (after downloading and processing all formats of a video), or \"playlist\" (at end of playlist). This option can be used multiple times to add different postprocessors",
+		Help:           "The (case-sensitive) name of plugin postprocessors to be enabled, and (optionally) arguments to be passed to it, separated by a colon \":\". ARGS are a semicolon \";\" delimited list of NAME=VALUE. The \"when\" argument determines when the postprocessor is invoked. It can be one of \"pre_process\" (after video extraction), \"after_filter\" (after video passes filter), \"video\" (after --format; before --print/--output), \"before_dl\" (before each video download), \"post_process\" (after each video download; default), \"after_move\" (after moving the video file to its final location), \"after_video\" (after downloading and processing all formats of a video), or \"playlist\" (at end of playlist). This option can be used multiple times to add different postprocessors",
 		MetaArgs:       "NAME[:ARGS]",
 		Type:           "string",
 		LongFlags:      []string{"--use-postprocessor"},
@@ -4242,7 +4258,7 @@ var (
 		DefaultFlag:    "--sponsorblock-mark",
 		ArgNames:       []string{"cats"},
 		Executable:     false,
-		Help:           "SponsorBlock categories to create chapters for, separated by commas. Available categories are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, poi_highlight, chapter, all and default (=all). You can prefix the category with a \"-\" to exclude it. See [1] for description of the categories. E.g. --sponsorblock-mark all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories",
+		Help:           "SponsorBlock categories to create chapters for, separated by commas. Available categories are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, poi_highlight, chapter, all and default (=all). You can prefix the category with a \"-\" to exclude it. See [1] for descriptions of the categories. E.g. --sponsorblock-mark all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories",
 		MetaArgs:       "CATS",
 		Type:           "string",
 		LongFlags:      []string{"--sponsorblock-mark"},
@@ -4457,7 +4473,7 @@ var (
 		NamePascalCase: "NoHLSSplitDiscontinuity",
 		DefaultFlag:    "--no-hls-split-discontinuity",
 		Executable:     false,
-		Help:           "Do not split HLS playlists to different formats at discontinuities such as ad breaks (default)",
+		Help:           "Do not split HLS playlists into different formats at discontinuities such as ad breaks (default)",
 		Type:           "bool",
 		LongFlags:      []string{"--no-hls-split-discontinuity"},
 	}
@@ -4469,7 +4485,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Extractor Arguments",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#extractor-arguments",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#extractor-arguments",
 			},
 		},
 		DefaultFlag: "--extractor-args",
