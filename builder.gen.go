@@ -30,7 +30,7 @@ func (c *Command) Version(ctx context.Context) (*Result, error) {
 // Use git to pull the latest changes
 //
 // References:
-//   - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#update
+//   - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#update
 //
 // Additional information:
 //   - Update maps to cli flags: -U/--update.
@@ -72,7 +72,7 @@ func (c *Command) UnsetUpdate() *Command {
 // "UPDATE" for details. Supported channels: stable, nightly, master
 //
 // References:
-//   - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#update
+//   - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#update
 //
 // Additional information:
 //   - UpdateTo maps to cli flags: --update-to=[CHANNEL]@[TAG].
@@ -333,6 +333,31 @@ func (c *Command) ConfigLocations(path string) *Command {
 	return c
 }
 
+// Path to an additional directory to search for plugins. This option can be used
+// multiple times to add multiple directories. Note that this currently only works
+// for extractor plugins; postprocessor plugins can only be loaded from the default
+// plugin directories
+//
+// Additional information:
+//   - See [Command.UnsetPluginDirs], for unsetting the flag.
+//   - PluginDirs maps to cli flags: --plugin-dirs=PATH.
+//   - From option group: "General"
+func (c *Command) PluginDirs(path string) *Command {
+	c.addFlag(&Flag{
+		ID:   "plugin_dirs",
+		Flag: "--plugin-dirs",
+		Args: []string{path},
+	})
+	return c
+}
+
+// UnsetPluginDirs unsets any flags that were previously set by one of:
+//   - [Command.PluginDirs]
+func (c *Command) UnsetPluginDirs() *Command {
+	c.removeFlagByID("plugin_dirs")
+	return c
+}
+
 // Do not extract the videos of a playlist, only list them
 //
 // Additional information:
@@ -540,7 +565,7 @@ func (c *Command) UnsetColor() *Command {
 // in default behavior" for details
 //
 // References:
-//   - Compatibility Options: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#differences-in-default-behavior
+//   - Compatibility Options: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#differences-in-default-behavior
 //
 // Additional information:
 //   - See [Command.UnsetCompatOptions], for unsetting the flag.
@@ -1087,7 +1112,7 @@ func (c *Command) UnsetDate() *Command {
 }
 
 // Download only videos uploaded on or before this date. The date formats accepted
-// is the same as --date
+// are the same as --date
 //
 // Additional information:
 //   - See [Command.UnsetDateBefore], for unsetting the flag.
@@ -1110,7 +1135,7 @@ func (c *Command) UnsetDateBefore() *Command {
 }
 
 // Download only videos uploaded on or after this date. The date formats accepted
-// is the same as --date
+// are the same as --date
 //
 // Additional information:
 //   - See [Command.UnsetDateAfter], for unsetting the flag.
@@ -2267,7 +2292,7 @@ func (c *Command) UnsetPaths() *Command {
 // Output filename template; see "OUTPUT TEMPLATE" for details
 //
 // References:
-//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#output-template
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#output-template
 //
 // Additional information:
 //   - See [Command.UnsetOutput], for unsetting the flag.
@@ -3399,9 +3424,9 @@ func (c *Command) UnsetPrint() *Command {
 	return c
 }
 
-// Append given template to the file. The values of WHEN and TEMPLATE are same as
-// that of --print. FILE uses the same syntax as the output template. This option
-// can be used multiple times
+// Append given template to the file. The values of WHEN and TEMPLATE are the same
+// as that of --print. FILE uses the same syntax as the output template. This
+// option can be used multiple times
 //
 // Additional information:
 //   - See [Command.UnsetPrintToFile], for unsetting the flag.
@@ -3603,7 +3628,7 @@ func (c *Command) UnsetGetFormat() *Command {
 // is used. See "OUTPUT TEMPLATE" for a description of available keys
 //
 // References:
-//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#output-template
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#output-template
 //
 // Additional information:
 //   - See [Command.UnsetDumpJSON], for unsetting the flag.
@@ -3625,7 +3650,7 @@ func (c *Command) UnsetDumpJSON() *Command {
 	return c
 }
 
-// Quiet, but print JSON information for each url or infojson passed. Simulate
+// Quiet, but print JSON information for each URL or infojson passed. Simulate
 // unless --no-simulate is used. If the URL refers to a playlist, the whole
 // playlist information is dumped in a single line
 //
@@ -4241,9 +4266,9 @@ func (c *Command) UnsetSleepSubtitles() *Command {
 // Video format code, see "FORMAT SELECTION" for more details
 //
 // References:
-//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#format-selection
-//   - Filter Formatting: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#filtering-formats
-//   - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#format-selection-examples
+//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#format-selection
+//   - Filter Formatting: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#filtering-formats
+//   - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#format-selection-examples
 //
 // Additional information:
 //   - See [Command.UnsetFormat], for unsetting the flag.
@@ -4268,8 +4293,8 @@ func (c *Command) UnsetFormat() *Command {
 // Sort the formats by the fields given, see "Sorting Formats" for more details
 //
 // References:
-//   - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#sorting-formats
-//   - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#format-selection-examples
+//   - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#sorting-formats
+//   - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#format-selection-examples
 //
 // Additional information:
 //   - See [Command.UnsetFormatSort], for unsetting the flag.
@@ -4295,7 +4320,7 @@ func (c *Command) UnsetFormatSort() *Command {
 // Formats" for more details
 //
 // References:
-//   - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#sorting-formats
+//   - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#sorting-formats
 //
 // Additional information:
 //   - See [Command.UnsetFormatSortForce], for unsetting the flag.
@@ -4336,7 +4361,7 @@ func (c *Command) NoFormatSortForce() *Command {
 // Allow multiple video streams to be merged into a single file
 //
 // References:
-//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#format-selection
+//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#format-selection
 //
 // Additional information:
 //   - See [Command.UnsetVideoMultistreams], for unsetting the flag.
@@ -4377,7 +4402,7 @@ func (c *Command) NoVideoMultistreams() *Command {
 // Allow multiple audio streams to be merged into a single file
 //
 // References:
-//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#format-selection
+//   - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#format-selection
 //
 // Additional information:
 //   - See [Command.UnsetAudioMultistreams], for unsetting the flag.
@@ -4437,8 +4462,9 @@ func (c *Command) UnsetAllFormats() *Command {
 	return c
 }
 
-// Prefer video formats with free containers over non-free ones of same quality.
-// Use with "-S ext" to strictly prefer free containers irrespective of quality
+// Prefer video formats with free containers over non-free ones of the same
+// quality. Use with "-S ext" to strictly prefer free containers irrespective of
+// quality
 //
 // Additional information:
 //   - See [Command.UnsetPreferFreeFormats], for unsetting the flag.
@@ -4746,7 +4772,8 @@ func (c *Command) UnsetListSubs() *Command {
 	return c
 }
 
-// Subtitle format; accepts formats preference, e.g. "srt" or "ass/srt/best"
+// Subtitle format; accepts formats preference separated by "/", e.g. "srt" or
+// "ass/srt/best"
 //
 // Additional information:
 //   - See [Command.UnsetSubFormat], for unsetting the flag.
@@ -4769,9 +4796,10 @@ func (c *Command) UnsetSubFormat() *Command {
 }
 
 // Languages of the subtitles to download (can be regex) or "all" separated by
-// commas, e.g. --sub-langs "en.*,ja". You can prefix the language code with a "-"
-// to exclude it from the requested languages, e.g. --sub-langs all,-live_chat. Use
-// --list-subs for a list of available language tags
+// commas, e.g. --sub-langs "en.*,ja" (where "en.*" is a regex pattern that matches
+// "en" followed by 0 or more of any character). You can prefix the language code
+// with a "-" to exclude it from the requested languages, e.g. --sub-langs
+// all,-live_chat. Use --list-subs for a list of available language tags
 //
 // Additional information:
 //   - See [Command.UnsetSubLangs], for unsetting the flag.
@@ -5177,7 +5205,7 @@ func (c *Command) UnsetAudioQuality() *Command {
 
 // Remux the video into another container if necessary (currently supported: avi,
 // flv, gif, mkv, mov, mp4, webm, aac, aiff, alac, flac, m4a, mka, mp3, ogg, opus,
-// vorbis, wav). If target container does not support the video/audio codec,
+// vorbis, wav). If the target container does not support the video/audio codec,
 // remuxing will fail. You can specify multiple rules; e.g. "aac>m4a/mov>mp4/mkv"
 // will remux aac to m4a, mov to mp4 and anything else to mkv
 //
@@ -5552,8 +5580,8 @@ func (c *Command) UnsetMetadataFromTitle() *Command {
 // --use-postprocessor (default: pre_process)
 //
 // References:
-//   - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#modifying-metadata
-//   - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#modifying-metadata-examples
+//   - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#modifying-metadata
+//   - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#modifying-metadata-examples
 //
 // Additional information:
 //   - See [Command.UnsetParseMetadata], for unsetting the flag.
@@ -5580,8 +5608,8 @@ func (c *Command) UnsetParseMetadata() *Command {
 // --use-postprocessor (default: pre_process)
 //
 // References:
-//   - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#modifying-metadata
-//   - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#modifying-metadata-examples
+//   - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#modifying-metadata
+//   - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#modifying-metadata-examples
 //
 // Additional information:
 //   - See [Command.UnsetReplaceInMetadata], for unsetting the flag.
@@ -5603,7 +5631,7 @@ func (c *Command) UnsetReplaceInMetadata() *Command {
 	return c
 }
 
-// Write metadata to the video file's xattrs (using dublin core and xdg standards)
+// Write metadata to the video file's xattrs (using Dublin Core and XDG standards)
 //
 // Additional information:
 //   - See [Command.UnsetXattrs], for unsetting the flag.
@@ -5636,12 +5664,12 @@ var (
 
 // Concatenate videos in a playlist. One of "never", "always", or "multi_video"
 // (default; only when the videos form a single show). All the video files must
-// have same codecs and number of streams to be concatable. The "pl_video:" prefix
-// can be used with "--paths" and "--output" to set the output filename for the
-// concatenated files. See "OUTPUT TEMPLATE" for details
+// have the same codecs and number of streams to be concatenable. The "pl_video:"
+// prefix can be used with "--paths" and "--output" to set the output filename for
+// the concatenated files. See "OUTPUT TEMPLATE" for details
 //
 // References:
-//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#output-template
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#output-template
 //
 // Additional information:
 //   - See [Command.UnsetConcatPlaylist], for unsetting the flag.
@@ -5675,8 +5703,8 @@ var (
 )
 
 // Automatically correct known faults of the file. One of never (do nothing), warn
-// (only emit a warning), detect_or_warn (the default; fix file if we can, warn
-// otherwise), force (try fixing even if file already exists)
+// (only emit a warning), detect_or_warn (the default; fix the file if we can, warn
+// otherwise), force (try fixing even if the file already exists)
 //
 // Additional information:
 //   - See [Command.UnsetFixup], for unsetting the flag.
@@ -5775,8 +5803,8 @@ func (c *Command) UnsetFFmpegLocation() *Command {
 
 // Execute a command, optionally prefixed with when to execute it, separated by a
 // ":". Supported values of "WHEN" are the same as that of --use-postprocessor
-// (default: after_move). Same syntax as the output template can be used to pass
-// any field as arguments to the command. If no fields are passed,
+// (default: after_move). The same syntax as the output template can be used to
+// pass any field as arguments to the command. If no fields are passed,
 // %(filepath,_filename|)q is appended to the end of the command. This option can
 // be used multiple times
 //
@@ -5906,7 +5934,7 @@ func (c *Command) UnsetConvertThumbnails() *Command {
 // the split files. See "OUTPUT TEMPLATE" for details
 //
 // References:
-//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#output-template
+//   - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#output-template
 //
 // Additional information:
 //   - See [Command.UnsetSplitChapters], for unsetting the flag.
@@ -6023,14 +6051,14 @@ func (c *Command) NoForceKeyframesAtCuts() *Command {
 	return c
 }
 
-// The (case sensitive) name of plugin postprocessors to be enabled, and
+// The (case-sensitive) name of plugin postprocessors to be enabled, and
 // (optionally) arguments to be passed to it, separated by a colon ":". ARGS are a
 // semicolon ";" delimited list of NAME=VALUE. The "when" argument determines when
 // the postprocessor is invoked. It can be one of "pre_process" (after video
 // extraction), "after_filter" (after video passes filter), "video" (after
 // --format; before --print/--output), "before_dl" (before each video download),
 // "post_process" (after each video download; default), "after_move" (after moving
-// video file to its final locations), "after_video" (after downloading and
+// the video file to its final location), "after_video" (after downloading and
 // processing all formats of a video), or "playlist" (at end of playlist). This
 // option can be used multiple times to add different postprocessors
 //
@@ -6057,7 +6085,7 @@ func (c *Command) UnsetUsePostProcessor() *Command {
 // SponsorBlock categories to create chapters for, separated by commas. Available
 // categories are sponsor, intro, outro, selfpromo, preview, filler, interaction,
 // music_offtopic, poi_highlight, chapter, all and default (=all). You can prefix
-// the category with a "-" to exclude it. See [1] for description of the
+// the category with a "-" to exclude it. See [1] for descriptions of the
 // categories. E.g. --sponsorblock-mark all,-preview [1]
 // https://wiki.sponsor.ajay.app/w/Segment_Categories
 //
@@ -6449,7 +6477,7 @@ func (c *Command) UnsetHLSSplitDiscontinuity() *Command {
 	return c
 }
 
-// Do not split HLS playlists to different formats at discontinuities such as ad
+// Do not split HLS playlists into different formats at discontinuities such as ad
 // breaks (default)
 //
 // Additional information:
@@ -6470,7 +6498,7 @@ func (c *Command) NoHLSSplitDiscontinuity() *Command {
 // extractors
 //
 // References:
-//   - Extractor Arguments: https://github.com/yt-dlp/yt-dlp/blob/2024.10.07/README.md#extractor-arguments
+//   - Extractor Arguments: https://github.com/yt-dlp/yt-dlp/blob/2024.10.22/README.md#extractor-arguments
 //
 // Additional information:
 //   - See [Command.UnsetExtractorArgs], for unsetting the flag.
