@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2024.10.22"
+	Version = "2024.11.04"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -221,6 +221,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Blob", Description: "[HIDDEN]"},
 	{Name: "blogger.com"},
 	{Name: "Bloomberg"},
+	{Name: "Bluesky", AgeLimit: 18},
 	{Name: "BokeCC"},
 	{Name: "BongaCams", AgeLimit: 18},
 	{Name: "Boosty"},
@@ -278,7 +279,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "cbsnews:livevideo", Description: "CBS News Live Videos"},
 	{Name: "cbssports", Description: "(Currently broken)"},
 	{Name: "cbssports:embed", Description: "(Currently broken)"},
-	{Name: "CCMA", AgeLimit: 16},
+	{Name: "CCMA", Description: "3Cat, TV3 and Catalunya Ràdio", AgeLimit: 13},
 	{Name: "CCTV", Description: "央视网"},
 	{Name: "CDA", Description: "[cdapl]", AgeLimit: 18},
 	{Name: "CDAFolder"},
@@ -311,8 +312,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "cmt.com", Description: "(Currently broken)"},
 	{Name: "CNBCVideo"},
 	{Name: "CNN"},
-	{Name: "CNNArticle"},
-	{Name: "CNNBlogs"},
 	{Name: "CNNIndonesia"},
 	{Name: "ComedyCentral"},
 	{Name: "ComedyCentralTV"},
@@ -722,9 +721,9 @@ var SupportedExtractors = []*Extractor{
 	{Name: "LastFMPlaylist"},
 	{Name: "LastFMUser"},
 	{Name: "LaXarxaMes", Description: "[laxarxames]"},
-	{Name: "lbry"},
-	{Name: "lbry:channel"},
-	{Name: "lbry:playlist"},
+	{Name: "lbry", Description: "odysee.com"},
+	{Name: "lbry:channel", Description: "odysee.com channels"},
+	{Name: "lbry:playlist", Description: "odysee.com playlists"},
 	{Name: "LCI"},
 	{Name: "Lcp"},
 	{Name: "LcpPlay"},
@@ -1488,7 +1487,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "TeleQuebecSquat"},
 	{Name: "TeleQuebecVideo"},
 	{Name: "TeleTask", Description: "(Currently broken)"},
-	{Name: "Telewebion"},
+	{Name: "Telewebion", Description: "(Currently broken)"},
 	{Name: "Tempo"},
 	{Name: "TennisTV", Description: "[tennistv]"},
 	{Name: "TenPlay", Description: "[10play]", AgeLimit: 15},
@@ -1553,7 +1552,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "TubeTuGrazSeries", Description: "[tubetugraz]"},
 	{Name: "tubitv", Description: "[tubitv]"},
 	{Name: "tubitv:series"},
-	{Name: "Tumblr", Description: "[tumblr]", AgeLimit: 18},
+	{Name: "Tumblr", Description: "[tumblr]"},
 	{Name: "tunein:shortener", Description: "[HIDDEN]"},
 	{Name: "TuneInPodcast"},
 	{Name: "TuneInPodcastEpisode"},
