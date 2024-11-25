@@ -2,7 +2,7 @@ module github.com/lrstanley/go-ytdlp
 
 go 1.21
 
-require github.com/ProtonMail/go-crypto v1.0.0
+require github.com/ProtonMail/go-crypto v1.1.3
 
 require (
 	github.com/cloudflare/circl v1.3.7 // indirect
