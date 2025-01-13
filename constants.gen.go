@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2024.12.23"
+	Version = "2025.01.12"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -407,6 +407,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Dropbox"},
 	{Name: "Dropout", Description: "[dropout]"},
 	{Name: "DropoutSeason"},
+	{Name: "DrTalks"},
 	{Name: "DrTuber", AgeLimit: 18},
 	{Name: "drtv"},
 	{Name: "drtv:live"},
@@ -1126,6 +1127,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "pluralsight", Description: "[pluralsight]"},
 	{Name: "pluralsight:course"},
 	{Name: "PlutoTV", Description: "(Currently broken)"},
+	{Name: "PlVideo", Description: "Платформа"},
 	{Name: "PodbayFM"},
 	{Name: "PodbayFMChannel"},
 	{Name: "Podchaser"},
@@ -1687,8 +1689,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Vimm:stream"},
 	{Name: "ViMP"},
 	{Name: "ViMP:Playlist"},
-	{Name: "Vine"},
-	{Name: "vine:user"},
 	{Name: "Viously"},
 	{Name: "Viqeo", Description: "(Currently broken)"},
 	{Name: "Viu"},
