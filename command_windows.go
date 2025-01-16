@@ -17,4 +17,7 @@ func (c *Command) applySyscall(cmd *exec.Cmd) {
 		CreationFlags: 0x08000000, // CREATE_NO_WINDOW.
 		HideWindow:    true,
 	}
+	if c.separateProcessGroup {
+		cmd.SysProcAttr.CreationFlags |= syscall.CREATE_NEW_PROCESS_GROUP
+	}
 }
