@@ -90,6 +90,7 @@ func (c *Command) SetEnvVar(key, value string) *Command {
 
 // SetSeparateProcessGroup sets whether the command should be run in a separate
 // process group. This is useful to avoid propagating signals from the app process.
+// NOTE: This is only supported on Windows and Unix-like systems.
 func (c *Command) SetSeparateProcessGroup(value bool) *Command {
 	c.mu.Lock()
 	c.separateProcessGroup = value
