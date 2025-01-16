@@ -22,11 +22,12 @@ func New() *Command {
 }
 
 type Command struct {
-	mu         sync.RWMutex
-	executable string
-	directory  string
-	env        map[string]string
-	flags      []*Flag
+	mu                   sync.RWMutex
+	executable           string
+	directory            string
+	env                  map[string]string
+	flags                []*Flag
+	separateProcessGroup bool
 
 	progress *progressHandler
 }
@@ -82,6 +83,16 @@ func (c *Command) SetEnvVar(key, value string) *Command {
 	} else {
 		c.env[key] = value
 	}
+	c.mu.Unlock()
+
+	return c
+}
+
+// SetSeparateProcessGroup sets whether the command should be run in a separate
+// process group. This is useful to avoid propagating signals from the app process.
+func (c *Command) SetSeparateProcessGroup(value bool) *Command {
+	c.mu.Lock()
+	c.separateProcessGroup = value
 	c.mu.Unlock()
 
 	return c
