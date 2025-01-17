@@ -44,4 +44,8 @@ if ! grep -q -- "--export-options" "yt_dlp/__main__.py"; then
 	)
 fi
 
-python3 -m yt_dlp --export-options > "$EXPORT_FILE"
+if which uv > /dev/null; then
+	uv -q run --python 3.10 --no-project python -m yt_dlp --export-options > "$EXPORT_FILE"
+else
+	python3 -m yt_dlp --export-options > "$EXPORT_FILE"
+fi
