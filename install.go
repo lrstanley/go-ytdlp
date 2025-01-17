@@ -10,6 +10,8 @@ import (
 	"context"
 	"crypto/sha256"
 	_ "embed"
+	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -113,7 +115,7 @@ func downloadFile(ctx context.Context, url, dest string, perms os.FileMode) erro
 		return fmt.Errorf("unable to download go-ytdlp dependent file %q: request creation: %w", dest, err)
 	}
 
-	req.Header.Set("User-Agent", fmt.Sprintf("github.com/lrstanley/go-ytdlp; version/%s", Version))
+	req.Header.Set("User-Agent", "github.com/lrstanley/go-ytdlp; version/"+Version)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -192,7 +194,7 @@ func verifyFileChecksum(checksumPath, signaturePath, targetPath, checkAgainst st
 		return err
 	}
 
-	sum := fmt.Sprintf("%x", hash.Sum(nil))
+	sum := hex.EncodeToString(hash.Sum(nil))
 
 	_, err = checksumFile.Seek(0, 0)
 	if err != nil {
@@ -262,7 +264,7 @@ func Install(ctx context.Context, opts *InstallOptions) (*ResolvedInstall, error
 	}
 
 	if opts.DisableDownload {
-		return nil, fmt.Errorf("yt-dlp executable not found, and downloading is disabled")
+		return nil, errors.New("yt-dlp executable not found, and downloading is disabled")
 	}
 
 	src, dest, err := getDownloadBinary()

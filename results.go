@@ -268,7 +268,7 @@ func cleanJSON(input any) {
 		return
 	}
 
-	for i := 0; i < v.NumField(); i++ {
+	for i := range v.NumField() {
 		field := v.Field(i)
 
 		if !v.IsValid() {
@@ -283,7 +283,7 @@ func cleanJSON(input any) {
 
 		// If field is a slice, loop through each element and recurse.
 		if field.Kind() == reflect.Slice {
-			for j := 0; j < field.Len(); j++ {
+			for j := range field.Len() {
 				cleanJSON(field.Index(j).Addr().Interface())
 			}
 			continue
