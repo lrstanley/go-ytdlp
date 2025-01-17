@@ -16,6 +16,11 @@ import (
 	"time"
 )
 
+func TestMain(m *testing.M) {
+	MustInstall(context.Background(), nil)
+	os.Exit(m.Run())
+}
+
 type testSampleFile struct {
 	url       string
 	name      string
@@ -31,8 +36,6 @@ var sampleFiles = []testSampleFile{
 }
 
 func TestCommand_Simple(t *testing.T) {
-	MustInstall(context.Background(), nil)
-
 	dir := t.TempDir()
 
 	var urls []string

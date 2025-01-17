@@ -7,7 +7,6 @@
 package ytdlp
 
 import (
-    "context"
     "testing"
 )
 
@@ -42,8 +41,6 @@ func validateFlagRemoved(t *testing.T, builder *Command, dest, flag string) {
 
 {{ range $group := .OptionGroups }}
 func TestBuilder_{{ $group.Name | to_camel | trimSuffix "s" }}_NonExecutable(t *testing.T) {
-    MustInstall(context.Background(), nil)
-
 {{- range $i, $option := .Options }}
 {{- $id := ($option.Name | to_camel) -}}
 {{- if $option.Executable }}{{ continue }}{{ end }}
