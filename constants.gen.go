@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2025.01.15"
+	Version = "2025.01.26"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -201,6 +201,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "BilibiliCheese"},
 	{Name: "BilibiliCheeseSeason"},
 	{Name: "BilibiliCollectionList"},
+	{Name: "BiliBiliDynamic"},
 	{Name: "BilibiliFavoritesList"},
 	{Name: "BiliBiliPlayer"},
 	{Name: "BilibiliPlaylist"},
@@ -335,10 +336,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "CrowdBunker"},
 	{Name: "CrowdBunkerChannel"},
 	{Name: "Crtvg"},
-	{Name: "crunchyroll", Description: "[crunchyroll]", AgeLimit: 14},
-	{Name: "crunchyroll:artist", Description: "[crunchyroll]"},
-	{Name: "crunchyroll:music", Description: "[crunchyroll]"},
-	{Name: "crunchyroll:playlist", Description: "[crunchyroll]", AgeLimit: 14},
 	{Name: "CSpan", Description: "C-SPAN"},
 	{Name: "CSpanCongress"},
 	{Name: "CtsNews", Description: "華視新聞"},
@@ -426,6 +423,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Ebay"},
 	{Name: "egghead:course", Description: "egghead.io course"},
 	{Name: "egghead:lesson", Description: "egghead.io lesson"},
+	{Name: "eggs:artist"},
+	{Name: "eggs:single"},
 	{Name: "EinsUndEinsTV", Description: "[1und1tv]"},
 	{Name: "EinsUndEinsTVLive", Description: "[1und1tv]"},
 	{Name: "EinsUndEinsTVRecordings", Description: "[1und1tv]"},
@@ -511,9 +510,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "FrontendMastersCourse", Description: "[frontendmasters]"},
 	{Name: "FrontendMastersLesson", Description: "[frontendmasters]"},
 	{Name: "FujiTVFODPlus7"},
-	{Name: "Funimation", Description: "[funimation]"},
-	{Name: "funimation:page", Description: "[funimation]"},
-	{Name: "funimation:show", Description: "[funimation]"},
 	{Name: "Funk"},
 	{Name: "Funker530"},
 	{Name: "Fux", AgeLimit: 18},
@@ -567,7 +563,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "GodTube", Description: "(Currently broken)"},
 	{Name: "Gofile"},
 	{Name: "Golem"},
-	{Name: "goodgame:stream"},
+	{Name: "goodgame:stream", AgeLimit: 18},
 	{Name: "google:podcasts"},
 	{Name: "google:podcasts:feed"},
 	{Name: "GoogleDrive"},
@@ -931,6 +927,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "nebula:video", Description: "[watchnebula]"},
 	{Name: "NekoHacker"},
 	{Name: "NerdCubedFeed"},
+	{Name: "Nest"},
+	{Name: "NestClip"},
 	{Name: "netease:album", Description: "网易云音乐 - 专辑"},
 	{Name: "netease:djradio", Description: "网易云音乐 - 电台"},
 	{Name: "netease:mv", Description: "网易云音乐 - MV"},
@@ -1111,6 +1109,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Pinterest"},
 	{Name: "PinterestCollection"},
 	{Name: "Piracy", Description: "[HIDDEN]"},
+	{Name: "PiramideTV"},
+	{Name: "PiramideTVChannel"},
 	{Name: "pixiv:sketch", AgeLimit: 18},
 	{Name: "pixiv:sketch:user"},
 	{Name: "Pladform"},
@@ -1438,6 +1438,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "StretchInternet"},
 	{Name: "Stripchat", AgeLimit: 18},
 	{Name: "stv:player"},
+	{Name: "Subsplash"},
+	{Name: "subsplash:playlist"},
 	{Name: "Substack"},
 	{Name: "SunPorno", AgeLimit: 18},
 	{Name: "sverigesradio:episode"},
