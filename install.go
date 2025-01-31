@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha256"
+	"debug/pe"
 	_ "embed"
 	"encoding/hex"
 	"errors"
@@ -368,7 +369,7 @@ func resolveExecutable(fromCache, calleeIsDownloader bool) (r *ResolvedInstall, 
 				continue
 			}
 
-			if !stat.IsDir() && (stat.Mode().Perm()&0o100 != 0 || stat.Mode().Perm()&0o010 != 0 || stat.Mode().Perm()&0o001 != 0) {
+			if !stat.IsDir() && (isUnixExecutable(stat) || isWindowsExecutable(bin)) {
 				r = &ResolvedInstall{
 					Executable: bin,
 					FromCache:  true,
@@ -408,6 +409,27 @@ func resolveExecutable(fromCache, calleeIsDownloader bool) (r *ResolvedInstall, 
 
 	// Will pick the last error, which is likely without the version suffix, what we want.
 	return nil, fmt.Errorf("unable to resolve yt-dlp executable: %w", err)
+}
+
+func isUnixExecutable(stat os.FileInfo) bool {
+	// On Unix systems, check executable bit
+	// Check if any execute bit is set (user, group, or others)
+	return stat.Mode().Perm()&0o111 != 0
+}
+
+func isWindowsExecutable(path string) bool {
+	if runtime.GOOS == "windows" {
+		file, err := os.Open(path)
+		if err != nil {
+			return false
+		}
+		defer file.Close()
+
+		// Try to parse as PE (Portable Executable) format
+		_, err = pe.NewFile(file)
+		return err == nil
+	}
+	return false
 }
 
 // ResolvedInstall is the found yt-dlp executable.
