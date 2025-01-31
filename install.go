@@ -368,7 +368,7 @@ func resolveExecutable(fromCache, calleeIsDownloader bool) (r *ResolvedInstall, 
 				continue
 			}
 
-			if !stat.IsDir() && (stat.Mode().Perm()&0o100 != 0 || stat.Mode().Perm()&0o010 != 0 || stat.Mode().Perm()&0o001 != 0) {
+			if !stat.IsDir() && isExecutable(bin, stat) {
 				r = &ResolvedInstall{
 					Executable: bin,
 					FromCache:  true,

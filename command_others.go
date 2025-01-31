@@ -7,10 +7,15 @@
 package ytdlp
 
 import (
+	"os"
 	"os/exec"
 )
 
 // applySyscall applies any OS-specific syscall attributes to the command.
 func (c *Command) applySyscall(_ *exec.Cmd) {
 	// No-op by default.
+}
+
+func isExecutable(_ string, stat os.FileInfo) bool {
+	return true // no-op.
 }

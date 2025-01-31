@@ -7,6 +7,8 @@
 package ytdlp
 
 import (
+	"debug/pe"
+	"os"
 	"os/exec"
 	"syscall"
 )
@@ -20,4 +22,14 @@ func (c *Command) applySyscall(cmd *exec.Cmd) {
 	if c.separateProcessGroup {
 		cmd.SysProcAttr.CreationFlags |= syscall.CREATE_NEW_PROCESS_GROUP
 	}
+}
+
+func isExecutable(path string, _ os.FileInfo) bool {
+	// Try to parse as PE (Portable Executable) format.
+	f, err := pe.Open(path)
+	if err != nil {
+		return false
+	}
+	f.Close()
+	return true
 }

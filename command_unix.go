@@ -7,6 +7,7 @@
 package ytdlp
 
 import (
+	"os"
 	"os/exec"
 	"syscall"
 )
@@ -16,4 +17,9 @@ func (c *Command) applySyscall(cmd *exec.Cmd) {
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Setpgid: c.separateProcessGroup,
 	}
+}
+
+func isExecutable(_ string, stat os.FileInfo) bool {
+	// On Unix systems, check if executable bit is set (user, group, or others).
+	return stat.Mode().Perm()&0o100 != 0 || stat.Mode().Perm()&0o010 != 0 || stat.Mode().Perm()&0o001 != 0
 }
