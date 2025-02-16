@@ -225,6 +225,8 @@ func (c *Command) UnsetUseExtractors() *Command {
 //   - See [Command.UnsetForceGenericExtractor], for unsetting the flag.
 //   - ForceGenericExtractor maps to cli flags: --force-generic-extractor (hidden).
 //   - From option group: "General"
+//
+// Deprecated: Use [Command.UseExtractors] with `generic,default` as an argument.
 func (c *Command) ForceGenericExtractor() *Command {
 	c.addFlag(&Flag{
 		ID:   "force_generic_extractor",
@@ -236,6 +238,8 @@ func (c *Command) ForceGenericExtractor() *Command {
 
 // UnsetForceGenericExtractor unsets any flags that were previously set by one of:
 //   - [Command.ForceGenericExtractor]
+//
+// Deprecated: Use [Command.UseExtractors] with `generic,default` as an argument.
 func (c *Command) UnsetForceGenericExtractor() *Command {
 	c.removeFlagByID("force_generic_extractor")
 	return c
@@ -519,6 +523,8 @@ func (c *Command) NoMarkWatched() *Command {
 //   - See [Command.UnsetColors], for unsetting the flag.
 //   - NoColors maps to cli flags: --no-colors/--no-colours (hidden).
 //   - From option group: "General"
+//
+// Deprecated: Use [Command.Color] with `no_color` as an argument.
 func (c *Command) NoColors() *Command {
 	c.addFlag(&Flag{
 		ID:   "color",
@@ -530,6 +536,8 @@ func (c *Command) NoColors() *Command {
 
 // UnsetColors unsets any flags that were previously set by one of:
 //   - [Command.NoColors]
+//
+// Deprecated: Use [Command.Color] with `no_color` as an argument.
 func (c *Command) UnsetColors() *Command {
 	c.removeFlagByID("color")
 	return c
@@ -850,6 +858,8 @@ func (c *Command) UnsetXFF() *Command {
 //   - See [Command.UnsetGeoBypass], for unsetting the flag.
 //   - GeoBypass maps to cli flags: --geo-bypass (hidden).
 //   - From option group: "Geo-restriction"
+//
+// Deprecated: Use [Command.XFF] with `default` as an argument.
 func (c *Command) GeoBypass() *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -862,6 +872,8 @@ func (c *Command) GeoBypass() *Command {
 // UnsetGeoBypass unsets any flags that were previously set by one of:
 //   - [Command.GeoBypass]
 //   - [Command.NoGeoBypass]
+//
+// Deprecated: Use [Command.XFF] with `default` as an argument.
 func (c *Command) UnsetGeoBypass() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
@@ -873,6 +885,8 @@ func (c *Command) UnsetGeoBypass() *Command {
 //   - See [Command.UnsetGeoBypass], for unsetting the flag.
 //   - NoGeoBypass maps to cli flags: --no-geo-bypass (hidden).
 //   - From option group: "Geo-restriction"
+//
+// Deprecated: Use [Command.XFF] with `never` as an argument.
 func (c *Command) NoGeoBypass() *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -888,6 +902,8 @@ func (c *Command) NoGeoBypass() *Command {
 //   - See [Command.UnsetGeoBypassCountry], for unsetting the flag.
 //   - GeoBypassCountry maps to cli flags: --geo-bypass-country=CODE (hidden).
 //   - From option group: "Geo-restriction"
+//
+// Deprecated: Use [Command.XFF] with `CODE` as an argument.
 func (c *Command) GeoBypassCountry(code string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -899,6 +915,8 @@ func (c *Command) GeoBypassCountry(code string) *Command {
 
 // UnsetGeoBypassCountry unsets any flags that were previously set by one of:
 //   - [Command.GeoBypassCountry]
+//
+// Deprecated: Use [Command.XFF] with `CODE` as an argument.
 func (c *Command) UnsetGeoBypassCountry() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
@@ -910,6 +928,8 @@ func (c *Command) UnsetGeoBypassCountry() *Command {
 //   - See [Command.UnsetGeoBypassIPBlock], for unsetting the flag.
 //   - GeoBypassIPBlock maps to cli flags: --geo-bypass-ip-block=IP_BLOCK (hidden).
 //   - From option group: "Geo-restriction"
+//
+// Deprecated: Use [Command.XFF] with `IP_BLOCK` as an argument.
 func (c *Command) GeoBypassIPBlock(ipBlock string) *Command {
 	c.addFlag(&Flag{
 		ID:   "geo_bypass",
@@ -921,6 +941,8 @@ func (c *Command) GeoBypassIPBlock(ipBlock string) *Command {
 
 // UnsetGeoBypassIPBlock unsets any flags that were previously set by one of:
 //   - [Command.GeoBypassIPBlock]
+//
+// Deprecated: Use [Command.XFF] with `IP_BLOCK` as an argument.
 func (c *Command) UnsetGeoBypassIPBlock() *Command {
 	c.removeFlagByID("geo_bypass")
 	return c
@@ -932,6 +954,8 @@ func (c *Command) UnsetGeoBypassIPBlock() *Command {
 //   - See [Command.UnsetPlaylistStart], for unsetting the flag.
 //   - PlaylistStart maps to cli flags: --playlist-start=NUMBER (hidden).
 //   - From option group: "Video Selection"
+//
+// Deprecated: Use [Command.PlaylistItems] with `<your-number>:` as an argument.
 func (c *Command) PlaylistStart(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "playliststart",
@@ -945,6 +969,8 @@ func (c *Command) PlaylistStart(number int) *Command {
 
 // UnsetPlaylistStart unsets any flags that were previously set by one of:
 //   - [Command.PlaylistStart]
+//
+// Deprecated: Use [Command.PlaylistItems] with `<your-number>:` as an argument.
 func (c *Command) UnsetPlaylistStart() *Command {
 	c.removeFlagByID("playliststart")
 	return c
@@ -956,6 +982,8 @@ func (c *Command) UnsetPlaylistStart() *Command {
 //   - See [Command.UnsetPlaylistEnd], for unsetting the flag.
 //   - PlaylistEnd maps to cli flags: --playlist-end=NUMBER (hidden).
 //   - From option group: "Video Selection"
+//
+// Deprecated: Use [Command.PlaylistItems] with `:<your-number>` as an argument.
 func (c *Command) PlaylistEnd(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "playlistend",
@@ -969,6 +997,8 @@ func (c *Command) PlaylistEnd(number int) *Command {
 
 // UnsetPlaylistEnd unsets any flags that were previously set by one of:
 //   - [Command.PlaylistEnd]
+//
+// Deprecated: Use [Command.PlaylistItems] with `:<your-number>` as an argument.
 func (c *Command) UnsetPlaylistEnd() *Command {
 	c.removeFlagByID("playlistend")
 	return c
@@ -1006,6 +1036,8 @@ func (c *Command) UnsetPlaylistItems() *Command {
 //   - See [Command.UnsetMatchTitle], for unsetting the flag.
 //   - MatchTitle maps to cli flags: --match-title=REGEX (hidden).
 //   - From option group: "Video Selection"
+//
+// Deprecated: Use [Command.MatchFilters] instead (e.g. `title ~= (?i)REGEX`).
 func (c *Command) MatchTitle(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "matchtitle",
@@ -1017,6 +1049,8 @@ func (c *Command) MatchTitle(regex string) *Command {
 
 // UnsetMatchTitle unsets any flags that were previously set by one of:
 //   - [Command.MatchTitle]
+//
+// Deprecated: Use [Command.MatchFilters] instead (e.g. `title ~= (?i)REGEX`).
 func (c *Command) UnsetMatchTitle() *Command {
 	c.removeFlagByID("matchtitle")
 	return c
@@ -1028,6 +1062,8 @@ func (c *Command) UnsetMatchTitle() *Command {
 //   - See [Command.UnsetRejectTitle], for unsetting the flag.
 //   - RejectTitle maps to cli flags: --reject-title=REGEX (hidden).
 //   - From option group: "Video Selection"
+//
+// Deprecated: Use [Command.MatchFilters] instead (e.g. `title !~= (?i)REGEX`).
 func (c *Command) RejectTitle(regex string) *Command {
 	c.addFlag(&Flag{
 		ID:   "rejecttitle",
@@ -1039,6 +1075,8 @@ func (c *Command) RejectTitle(regex string) *Command {
 
 // UnsetRejectTitle unsets any flags that were previously set by one of:
 //   - [Command.RejectTitle]
+//
+// Deprecated: Use [Command.MatchFilters] instead (e.g. `title !~= (?i)REGEX`).
 func (c *Command) UnsetRejectTitle() *Command {
 	c.removeFlagByID("rejecttitle")
 	return c
@@ -1164,6 +1202,8 @@ func (c *Command) UnsetDateAfter() *Command {
 //   - See [Command.UnsetMinViews], for unsetting the flag.
 //   - MinViews maps to cli flags: --min-views=COUNT (hidden).
 //   - From option group: "Video Selection"
+//
+// Deprecated: Use [Command.MatchFilters] instead (e.g. `view_count >=? COUNT`).
 func (c *Command) MinViews(count int) *Command {
 	c.addFlag(&Flag{
 		ID:   "min_views",
@@ -1177,6 +1217,8 @@ func (c *Command) MinViews(count int) *Command {
 
 // UnsetMinViews unsets any flags that were previously set by one of:
 //   - [Command.MinViews]
+//
+// Deprecated: Use [Command.MatchFilters] instead (e.g. `view_count >=? COUNT`).
 func (c *Command) UnsetMinViews() *Command {
 	c.removeFlagByID("min_views")
 	return c
@@ -1188,6 +1230,8 @@ func (c *Command) UnsetMinViews() *Command {
 //   - See [Command.UnsetMaxViews], for unsetting the flag.
 //   - MaxViews maps to cli flags: --max-views=COUNT (hidden).
 //   - From option group: "Video Selection"
+//
+// Deprecated: Use [Command.MatchFilters] instead (e.g. `view_count <=? COUNT`).
 func (c *Command) MaxViews(count int) *Command {
 	c.addFlag(&Flag{
 		ID:   "max_views",
@@ -1201,6 +1245,8 @@ func (c *Command) MaxViews(count int) *Command {
 
 // UnsetMaxViews unsets any flags that were previously set by one of:
 //   - [Command.MaxViews]
+//
+// Deprecated: Use [Command.MatchFilters] instead (e.g. `view_count <=? COUNT`).
 func (c *Command) UnsetMaxViews() *Command {
 	c.removeFlagByID("max_views")
 	return c
@@ -1464,6 +1510,8 @@ func (c *Command) NoBreakOnExisting() *Command {
 //   - See [Command.UnsetBreakOnReject], for unsetting the flag.
 //   - BreakOnReject maps to cli flags: --break-on-reject (hidden).
 //   - From option group: "Video Selection"
+//
+// Deprecated: Use [Command.BreakMatchFilters] instead.
 func (c *Command) BreakOnReject() *Command {
 	c.addFlag(&Flag{
 		ID:   "break_on_reject",
@@ -1475,6 +1523,8 @@ func (c *Command) BreakOnReject() *Command {
 
 // UnsetBreakOnReject unsets any flags that were previously set by one of:
 //   - [Command.BreakOnReject]
+//
+// Deprecated: Use [Command.BreakMatchFilters] instead.
 func (c *Command) UnsetBreakOnReject() *Command {
 	c.removeFlagByID("break_on_reject")
 	return c
@@ -1923,6 +1973,8 @@ func (c *Command) UnsetHTTPChunkSize() *Command {
 //   - See [Command.UnsetPlaylistReverse], for unsetting the flag.
 //   - PlaylistReverse maps to cli flags: --playlist-reverse (hidden).
 //   - From option group: "Download"
+//
+// Deprecated: Use [Command.PlaylistItems] with `::-1` as an argument.
 func (c *Command) PlaylistReverse() *Command {
 	c.addFlag(&Flag{
 		ID:   "playlist_reverse",
@@ -1935,6 +1987,8 @@ func (c *Command) PlaylistReverse() *Command {
 // UnsetPlaylistReverse unsets any flags that were previously set by one of:
 //   - [Command.PlaylistReverse]
 //   - [Command.NoPlaylistReverse]
+//
+// Deprecated: Use [Command.PlaylistItems] with `::-1` as an argument.
 func (c *Command) UnsetPlaylistReverse() *Command {
 	c.removeFlagByID("playlist_reverse")
 	return c
@@ -1946,6 +2000,8 @@ func (c *Command) UnsetPlaylistReverse() *Command {
 //   - See [Command.UnsetPlaylistReverse], for unsetting the flag.
 //   - NoPlaylistReverse maps to cli flags: --no-playlist-reverse (hidden).
 //   - From option group: "Download"
+//
+// Deprecated: It is now the default behavior.
 func (c *Command) NoPlaylistReverse() *Command {
 	c.addFlag(&Flag{
 		ID:   "playlist_reverse",
@@ -2045,6 +2101,8 @@ func (c *Command) UnsetXattrSetFileSize() *Command {
 //   - See [Command.UnsetHLSPreferNative], for unsetting the flag.
 //   - HLSPreferNative maps to cli flags: --hls-prefer-native (hidden).
 //   - From option group: "Download"
+//
+// Deprecated: Use [Command.Downloader] with `m3u8:native` as an argument.
 func (c *Command) HLSPreferNative() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_prefer_native",
@@ -2056,6 +2114,8 @@ func (c *Command) HLSPreferNative() *Command {
 
 // UnsetHLSPreferNative unsets any flags that were previously set by one of:
 //   - [Command.HLSPreferNative]
+//
+// Deprecated: Use [Command.Downloader] with `m3u8:native` as an argument.
 func (c *Command) UnsetHLSPreferNative() *Command {
 	c.removeFlagByID("hls_prefer_native")
 	return c
@@ -2067,6 +2127,8 @@ func (c *Command) UnsetHLSPreferNative() *Command {
 //   - See [Command.UnsetHLSPreferFFmpeg], for unsetting the flag.
 //   - HLSPreferFFmpeg maps to cli flags: --hls-prefer-ffmpeg (hidden).
 //   - From option group: "Download"
+//
+// Deprecated: Use [Command.Downloader] with `m3u8:ffmpeg` as an argument.
 func (c *Command) HLSPreferFFmpeg() *Command {
 	c.addFlag(&Flag{
 		ID:   "hls_prefer_native",
@@ -2078,6 +2140,8 @@ func (c *Command) HLSPreferFFmpeg() *Command {
 
 // UnsetHLSPreferFFmpeg unsets any flags that were previously set by one of:
 //   - [Command.HLSPreferFFmpeg]
+//
+// Deprecated: Use [Command.Downloader] with `m3u8:ffmpeg` as an argument.
 func (c *Command) UnsetHLSPreferFFmpeg() *Command {
 	c.removeFlagByID("hls_prefer_native")
 	return c
@@ -2248,6 +2312,8 @@ func (c *Command) NoBatchFile() *Command {
 //   - See [Command.UnsetID], for unsetting the flag.
 //   - ID maps to cli flags: --id (hidden).
 //   - From option group: "Filesystem"
+//
+// Deprecated: Use [Command.Output] with `%(id)s.%(ext)s` as an argument.
 func (c *Command) ID() *Command {
 	c.addFlag(&Flag{
 		ID:   "useid",
@@ -2259,6 +2325,8 @@ func (c *Command) ID() *Command {
 
 // UnsetID unsets any flags that were previously set by one of:
 //   - [Command.ID]
+//
+// Deprecated: Use [Command.Output] with `%(id)s.%(ext)s` as an argument.
 func (c *Command) UnsetID() *Command {
 	c.removeFlagByID("useid")
 	return c
@@ -2344,6 +2412,8 @@ func (c *Command) UnsetOutputNaPlaceholder() *Command {
 //   - See [Command.UnsetAutoNumberSize], for unsetting the flag.
 //   - AutoNumberSize maps to cli flags: --autonumber-size=NUMBER (hidden).
 //   - From option group: "Filesystem"
+//
+// Deprecated: Use string formatting, e.g. `%(autonumber)03d`.
 func (c *Command) AutoNumberSize(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "autonumber_size",
@@ -2357,6 +2427,8 @@ func (c *Command) AutoNumberSize(number int) *Command {
 
 // UnsetAutoNumberSize unsets any flags that were previously set by one of:
 //   - [Command.AutoNumberSize]
+//
+// Deprecated: Use string formatting, e.g. `%(autonumber)03d`.
 func (c *Command) UnsetAutoNumberSize() *Command {
 	c.removeFlagByID("autonumber_size")
 	return c
@@ -2368,6 +2440,8 @@ func (c *Command) UnsetAutoNumberSize() *Command {
 //   - See [Command.UnsetAutoNumberStart], for unsetting the flag.
 //   - AutoNumberStart maps to cli flags: --autonumber-start=NUMBER (hidden).
 //   - From option group: "Filesystem"
+//
+// Deprecated: Use internal field formatting like `%(autonumber+NUMBER)s`.
 func (c *Command) AutoNumberStart(number int) *Command {
 	c.addFlag(&Flag{
 		ID:   "autonumber_start",
@@ -2381,6 +2455,8 @@ func (c *Command) AutoNumberStart(number int) *Command {
 
 // UnsetAutoNumberStart unsets any flags that were previously set by one of:
 //   - [Command.AutoNumberStart]
+//
+// Deprecated: Use internal field formatting like `%(autonumber+NUMBER)s`.
 func (c *Command) UnsetAutoNumberStart() *Command {
 	c.removeFlagByID("autonumber_start")
 	return c
@@ -3135,6 +3211,8 @@ func (c *Command) UnsetWriteAllThumbnails() *Command {
 //   - See [Command.UnsetListThumbnails], for unsetting the flag.
 //   - ListThumbnails maps to cli flags: --list-thumbnails.
 //   - From option group: "Thumbnail"
+//
+// Deprecated: Call [Command.Print] twice, once with `thumbnails_table` as an argument, then with `playlist:thumbnails_table` as an argument.
 func (c *Command) ListThumbnails() *Command {
 	c.addFlag(&Flag{
 		ID:   "list_thumbnails",
@@ -3146,6 +3224,8 @@ func (c *Command) ListThumbnails() *Command {
 
 // UnsetListThumbnails unsets any flags that were previously set by one of:
 //   - [Command.ListThumbnails]
+//
+// Deprecated: Call [Command.Print] twice, once with `thumbnails_table` as an argument, then with `playlist:thumbnails_table` as an argument.
 func (c *Command) UnsetListThumbnails() *Command {
 	c.removeFlagByID("list_thumbnails")
 	return c
@@ -3456,6 +3536,8 @@ func (c *Command) UnsetPrintToFile() *Command {
 //   - See [Command.UnsetGetURL], for unsetting the flag.
 //   - GetURL maps to cli flags: -g/--get-url (hidden).
 //   - From option group: "Verbosity Simulation"
+//
+// Deprecated: Use [Command.Print] with `urls` as an argument.
 func (c *Command) GetURL() *Command {
 	c.addFlag(&Flag{
 		ID:   "geturl",
@@ -3467,6 +3549,8 @@ func (c *Command) GetURL() *Command {
 
 // UnsetGetURL unsets any flags that were previously set by one of:
 //   - [Command.GetURL]
+//
+// Deprecated: Use [Command.Print] with `urls` as an argument.
 func (c *Command) UnsetGetURL() *Command {
 	c.removeFlagByID("geturl")
 	return c
@@ -3478,6 +3562,8 @@ func (c *Command) UnsetGetURL() *Command {
 //   - See [Command.UnsetGetTitle], for unsetting the flag.
 //   - GetTitle maps to cli flags: -e/--get-title (hidden).
 //   - From option group: "Verbosity Simulation"
+//
+// Deprecated: Use [Command.Print] with `title` as an argument.
 func (c *Command) GetTitle() *Command {
 	c.addFlag(&Flag{
 		ID:   "gettitle",
@@ -3489,6 +3575,8 @@ func (c *Command) GetTitle() *Command {
 
 // UnsetGetTitle unsets any flags that were previously set by one of:
 //   - [Command.GetTitle]
+//
+// Deprecated: Use [Command.Print] with `title` as an argument.
 func (c *Command) UnsetGetTitle() *Command {
 	c.removeFlagByID("gettitle")
 	return c
@@ -3500,6 +3588,8 @@ func (c *Command) UnsetGetTitle() *Command {
 //   - See [Command.UnsetGetID], for unsetting the flag.
 //   - GetID maps to cli flags: --get-id (hidden).
 //   - From option group: "Verbosity Simulation"
+//
+// Deprecated: Use [Command.Print] with `id` as an argument.
 func (c *Command) GetID() *Command {
 	c.addFlag(&Flag{
 		ID:   "getid",
@@ -3511,6 +3601,8 @@ func (c *Command) GetID() *Command {
 
 // UnsetGetID unsets any flags that were previously set by one of:
 //   - [Command.GetID]
+//
+// Deprecated: Use [Command.Print] with `id` as an argument.
 func (c *Command) UnsetGetID() *Command {
 	c.removeFlagByID("getid")
 	return c
@@ -3522,6 +3614,8 @@ func (c *Command) UnsetGetID() *Command {
 //   - See [Command.UnsetGetThumbnail], for unsetting the flag.
 //   - GetThumbnail maps to cli flags: --get-thumbnail (hidden).
 //   - From option group: "Verbosity Simulation"
+//
+// Deprecated: Use [Command.Print] with `thumbnail` as an argument.
 func (c *Command) GetThumbnail() *Command {
 	c.addFlag(&Flag{
 		ID:   "getthumbnail",
@@ -3533,6 +3627,8 @@ func (c *Command) GetThumbnail() *Command {
 
 // UnsetGetThumbnail unsets any flags that were previously set by one of:
 //   - [Command.GetThumbnail]
+//
+// Deprecated: Use [Command.Print] with `thumbnail` as an argument.
 func (c *Command) UnsetGetThumbnail() *Command {
 	c.removeFlagByID("getthumbnail")
 	return c
@@ -3544,6 +3640,8 @@ func (c *Command) UnsetGetThumbnail() *Command {
 //   - See [Command.UnsetGetDescription], for unsetting the flag.
 //   - GetDescription maps to cli flags: --get-description (hidden).
 //   - From option group: "Verbosity Simulation"
+//
+// Deprecated: Use [Command.Print] with `description` as an argument.
 func (c *Command) GetDescription() *Command {
 	c.addFlag(&Flag{
 		ID:   "getdescription",
@@ -3555,6 +3653,8 @@ func (c *Command) GetDescription() *Command {
 
 // UnsetGetDescription unsets any flags that were previously set by one of:
 //   - [Command.GetDescription]
+//
+// Deprecated: Use [Command.Print] with `description` as an argument.
 func (c *Command) UnsetGetDescription() *Command {
 	c.removeFlagByID("getdescription")
 	return c
@@ -3566,6 +3666,8 @@ func (c *Command) UnsetGetDescription() *Command {
 //   - See [Command.UnsetGetDuration], for unsetting the flag.
 //   - GetDuration maps to cli flags: --get-duration (hidden).
 //   - From option group: "Verbosity Simulation"
+//
+// Deprecated: Use [Command.Print] with `duration_string` as an argument.
 func (c *Command) GetDuration() *Command {
 	c.addFlag(&Flag{
 		ID:   "getduration",
@@ -3577,6 +3679,8 @@ func (c *Command) GetDuration() *Command {
 
 // UnsetGetDuration unsets any flags that were previously set by one of:
 //   - [Command.GetDuration]
+//
+// Deprecated: Use [Command.Print] with `duration_string` as an argument.
 func (c *Command) UnsetGetDuration() *Command {
 	c.removeFlagByID("getduration")
 	return c
@@ -3588,6 +3692,8 @@ func (c *Command) UnsetGetDuration() *Command {
 //   - See [Command.UnsetGetFilename], for unsetting the flag.
 //   - GetFilename maps to cli flags: --get-filename (hidden).
 //   - From option group: "Verbosity Simulation"
+//
+// Deprecated: Use [Command.Print] with `filename` as an argument.
 func (c *Command) GetFilename() *Command {
 	c.addFlag(&Flag{
 		ID:   "getfilename",
@@ -3599,6 +3705,8 @@ func (c *Command) GetFilename() *Command {
 
 // UnsetGetFilename unsets any flags that were previously set by one of:
 //   - [Command.GetFilename]
+//
+// Deprecated: Use [Command.Print] with `filename` as an argument.
 func (c *Command) UnsetGetFilename() *Command {
 	c.removeFlagByID("getfilename")
 	return c
@@ -3610,6 +3718,8 @@ func (c *Command) UnsetGetFilename() *Command {
 //   - See [Command.UnsetGetFormat], for unsetting the flag.
 //   - GetFormat maps to cli flags: --get-format (hidden).
 //   - From option group: "Verbosity Simulation"
+//
+// Deprecated: Use [Command.Print] with `format` as an argument.
 func (c *Command) GetFormat() *Command {
 	c.addFlag(&Flag{
 		ID:   "getformat",
@@ -3621,6 +3731,8 @@ func (c *Command) GetFormat() *Command {
 
 // UnsetGetFormat unsets any flags that were previously set by one of:
 //   - [Command.GetFormat]
+//
+// Deprecated: Use [Command.Print] with `format` as an argument.
 func (c *Command) UnsetGetFormat() *Command {
 	c.removeFlagByID("getformat")
 	return c
@@ -4083,6 +4195,8 @@ func (c *Command) UnsetPreferInsecure() *Command {
 //   - See [Command.UnsetUserAgent], for unsetting the flag.
 //   - UserAgent maps to cli flags: --user-agent=UA (hidden).
 //   - From option group: "Workarounds"
+//
+// Deprecated: Use [Command.AddHeaders] instead (e.g. `User-Agent:UA`).
 func (c *Command) UserAgent(ua string) *Command {
 	c.addFlag(&Flag{
 		ID:   "user_agent",
@@ -4094,6 +4208,8 @@ func (c *Command) UserAgent(ua string) *Command {
 
 // UnsetUserAgent unsets any flags that were previously set by one of:
 //   - [Command.UserAgent]
+//
+// Deprecated: Use [Command.AddHeaders] instead (e.g. `User-Agent:UA`).
 func (c *Command) UnsetUserAgent() *Command {
 	c.removeFlagByID("user_agent")
 	return c
@@ -4105,6 +4221,8 @@ func (c *Command) UnsetUserAgent() *Command {
 //   - See [Command.UnsetReferer], for unsetting the flag.
 //   - Referer maps to cli flags: --referer=URL (hidden).
 //   - From option group: "Workarounds"
+//
+// Deprecated: Use [Command.AddHeaders] instead (e.g. `Referer:URL`).
 func (c *Command) Referer(url string) *Command {
 	c.addFlag(&Flag{
 		ID:   "referer",
@@ -4116,6 +4234,8 @@ func (c *Command) Referer(url string) *Command {
 
 // UnsetReferer unsets any flags that were previously set by one of:
 //   - [Command.Referer]
+//
+// Deprecated: Use [Command.AddHeaders] instead (e.g. `Referer:URL`).
 func (c *Command) UnsetReferer() *Command {
 	c.removeFlagByID("referer")
 	return c
@@ -4448,6 +4568,8 @@ func (c *Command) NoAudioMultistreams() *Command {
 //   - See [Command.UnsetAllFormats], for unsetting the flag.
 //   - AllFormats maps to cli flags: --all-formats (hidden).
 //   - From option group: "Video Format"
+//
+// Deprecated: Use [Command.Format] with `all` as an argument.
 func (c *Command) AllFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "format",
@@ -4459,6 +4581,8 @@ func (c *Command) AllFormats() *Command {
 
 // UnsetAllFormats unsets any flags that were previously set by one of:
 //   - [Command.AllFormats]
+//
+// Deprecated: Use [Command.Format] with `all` as an argument.
 func (c *Command) UnsetAllFormats() *Command {
 	c.removeFlagByID("format")
 	return c
@@ -4570,6 +4694,8 @@ func (c *Command) NoCheckFormats() *Command {
 //   - See [Command.UnsetListFormats], for unsetting the flag.
 //   - ListFormats maps to cli flags: -F/--list-formats.
 //   - From option group: "Video Format"
+//
+// Deprecated: Use [Command.Print] with `formats_table` as an argument.
 func (c *Command) ListFormats() *Command {
 	c.addFlag(&Flag{
 		ID:   "listformats",
@@ -4581,6 +4707,8 @@ func (c *Command) ListFormats() *Command {
 
 // UnsetListFormats unsets any flags that were previously set by one of:
 //   - [Command.ListFormats]
+//
+// Deprecated: Use [Command.Print] with `formats_table` as an argument.
 func (c *Command) UnsetListFormats() *Command {
 	c.removeFlagByID("listformats")
 	return c
@@ -4592,6 +4720,8 @@ func (c *Command) UnsetListFormats() *Command {
 //   - See [Command.UnsetListFormatsAsTable], for unsetting the flag.
 //   - ListFormatsAsTable maps to cli flags: --list-formats-as-table (hidden).
 //   - From option group: "Video Format"
+//
+// Deprecated: Use [Command.ListFormatsAsTable] or [Command.CompatOptions] with `-list-formats` as an argument.
 func (c *Command) ListFormatsAsTable() *Command {
 	c.addFlag(&Flag{
 		ID:   "listformats_table",
@@ -4603,6 +4733,8 @@ func (c *Command) ListFormatsAsTable() *Command {
 
 // UnsetListFormatsAsTable unsets any flags that were previously set by one of:
 //   - [Command.ListFormatsAsTable]
+//
+// Deprecated: Use [Command.ListFormatsAsTable] or [Command.CompatOptions] with `-list-formats` as an argument.
 func (c *Command) UnsetListFormatsAsTable() *Command {
 	c.removeFlagByID("listformats_table")
 	return c
@@ -4614,6 +4746,8 @@ func (c *Command) UnsetListFormatsAsTable() *Command {
 //   - See [Command.UnsetListFormatsOld], for unsetting the flag.
 //   - ListFormatsOld maps to cli flags: --list-formats-old/--no-list-formats-as-table (hidden).
 //   - From option group: "Video Format"
+//
+// Deprecated: Use [Command.CompatOptions] with `list-formats` as an argument.
 func (c *Command) ListFormatsOld() *Command {
 	c.addFlag(&Flag{
 		ID:   "listformats_table",
@@ -4625,6 +4759,8 @@ func (c *Command) ListFormatsOld() *Command {
 
 // UnsetListFormatsOld unsets any flags that were previously set by one of:
 //   - [Command.ListFormatsOld]
+//
+// Deprecated: Use [Command.CompatOptions] with `list-formats` as an argument.
 func (c *Command) UnsetListFormatsOld() *Command {
 	c.removeFlagByID("listformats_table")
 	return c
@@ -4736,6 +4872,8 @@ func (c *Command) NoWriteAutoSubs() *Command {
 //   - See [Command.UnsetAllSubs], for unsetting the flag.
 //   - AllSubs maps to cli flags: --all-subs (hidden).
 //   - From option group: "Subtitle"
+//
+// Deprecated: Use [Command.SubLangs] with `all` as an argument, in addition to [Command.WriteSubs].
 func (c *Command) AllSubs() *Command {
 	c.addFlag(&Flag{
 		ID:   "allsubtitles",
@@ -4747,6 +4885,8 @@ func (c *Command) AllSubs() *Command {
 
 // UnsetAllSubs unsets any flags that were previously set by one of:
 //   - [Command.AllSubs]
+//
+// Deprecated: Use [Command.SubLangs] with `all` as an argument, in addition to [Command.WriteSubs].
 func (c *Command) UnsetAllSubs() *Command {
 	c.removeFlagByID("allsubtitles")
 	return c
@@ -5561,6 +5701,8 @@ func (c *Command) NoEmbedInfoJSON() *Command {
 //   - See [Command.UnsetMetadataFromTitle], for unsetting the flag.
 //   - MetadataFromTitle maps to cli flags: --metadata-from-title=FORMAT (hidden).
 //   - From option group: "Post-Processing"
+//
+// Deprecated: Use [Command.ParseMetadata] with `%(title)s:FORMAT` as an argument.
 func (c *Command) MetadataFromTitle(format string) *Command {
 	c.addFlag(&Flag{
 		ID:   "metafromtitle",
@@ -5572,6 +5714,8 @@ func (c *Command) MetadataFromTitle(format string) *Command {
 
 // UnsetMetadataFromTitle unsets any flags that were previously set by one of:
 //   - [Command.MetadataFromTitle]
+//
+// Deprecated: Use [Command.ParseMetadata] with `%(title)s:FORMAT` as an argument.
 func (c *Command) UnsetMetadataFromTitle() *Command {
 	c.removeFlagByID("metafromtitle")
 	return c
@@ -5852,6 +5996,8 @@ func (c *Command) NoExec() *Command {
 //   - See [Command.UnsetExecBeforeDownload], for unsetting the flag.
 //   - ExecBeforeDownload maps to cli flags: --exec-before-download=CMD (hidden).
 //   - From option group: "Post-Processing"
+//
+// Deprecated: Use [Command.Exec] with `before_dl:CMD` as an argument.
 func (c *Command) ExecBeforeDownload(cmd string) *Command {
 	c.addFlag(&Flag{
 		ID:   "exec_before_dl_cmd",
@@ -5864,6 +6010,8 @@ func (c *Command) ExecBeforeDownload(cmd string) *Command {
 // UnsetExecBeforeDownload unsets any flags that were previously set by one of:
 //   - [Command.ExecBeforeDownload]
 //   - [Command.NoExecBeforeDownload]
+//
+// Deprecated: Use [Command.Exec] with `before_dl:CMD` as an argument.
 func (c *Command) UnsetExecBeforeDownload() *Command {
 	c.removeFlagByID("exec_before_dl_cmd")
 	return c
@@ -5875,6 +6023,8 @@ func (c *Command) UnsetExecBeforeDownload() *Command {
 //   - See [Command.UnsetExecBeforeDownload], for unsetting the flag.
 //   - NoExecBeforeDownload maps to cli flags: --no-exec-before-download (hidden).
 //   - From option group: "Post-Processing"
+//
+// Deprecated: Use [Command.NoExec] instead.
 func (c *Command) NoExecBeforeDownload() *Command {
 	c.addFlag(&Flag{
 		ID:   "exec_before_dl_cmd",
@@ -6213,7 +6363,7 @@ func (c *Command) UnsetSponsorblockAPI() *Command {
 //   - Sponskrub maps to cli flags: --sponskrub (hidden).
 //   - From option group: "SponsorBlock"
 //
-// Deprecated: Use [Command.SponsorblockMark] with "all" as an argument.
+// Deprecated: Use [Command.SponsorblockMark] with `all` as an argument.
 func (c *Command) Sponskrub() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub",
@@ -6227,7 +6377,7 @@ func (c *Command) Sponskrub() *Command {
 //   - [Command.Sponskrub]
 //   - [Command.NoSponskrub]
 //
-// Deprecated: Use [Command.SponsorblockMark] with "all" as an argument.
+// Deprecated: Use [Command.SponsorblockMark] with `all` as an argument.
 func (c *Command) UnsetSponskrub() *Command {
 	c.removeFlagByID("sponskrub")
 	return c
@@ -6257,7 +6407,7 @@ func (c *Command) NoSponskrub() *Command {
 //   - SponskrubCut maps to cli flags: --sponskrub-cut (hidden).
 //   - From option group: "SponsorBlock"
 //
-// Deprecated: Use [Command.SponsorblockRemove] with "all" as an argument.
+// Deprecated: Use [Command.SponsorblockRemove] with `all` as an argument.
 func (c *Command) SponskrubCut() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
@@ -6271,7 +6421,7 @@ func (c *Command) SponskrubCut() *Command {
 //   - [Command.SponskrubCut]
 //   - [Command.NoSponskrubCut]
 //
-// Deprecated: Use [Command.SponsorblockRemove] with "all" as an argument.
+// Deprecated: Use [Command.SponsorblockRemove] with `all` as an argument.
 func (c *Command) UnsetSponskrubCut() *Command {
 	c.removeFlagByID("sponskrub_cut")
 	return c
@@ -6284,7 +6434,7 @@ func (c *Command) UnsetSponskrubCut() *Command {
 //   - NoSponskrubCut maps to cli flags: --no-sponskrub-cut (hidden).
 //   - From option group: "SponsorBlock"
 //
-// Deprecated: Use [Command.SponsorblockRemove] with "-all" as an argument.
+// Deprecated: Use [Command.SponsorblockRemove] with `-all` as an argument.
 func (c *Command) NoSponskrubCut() *Command {
 	c.addFlag(&Flag{
 		ID:   "sponskrub_cut",
@@ -6528,6 +6678,8 @@ func (c *Command) UnsetExtractorArgs() *Command {
 //   - See [Command.UnsetYoutubeIncludeDashManifest], for unsetting the flag.
 //   - YoutubeIncludeDashManifest maps to cli flags: --youtube-include-dash-manifest/--no-youtube-skip-dash-manifest (hidden).
 //   - From option group: "Extractor"
+//
+// Deprecated: Use [Command.YoutubeIncludeDashManifest] instead.
 func (c *Command) YoutubeIncludeDashManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_dash_manifest",
@@ -6539,6 +6691,8 @@ func (c *Command) YoutubeIncludeDashManifest() *Command {
 
 // UnsetYoutubeIncludeDashManifest unsets any flags that were previously set by one of:
 //   - [Command.YoutubeIncludeDashManifest]
+//
+// Deprecated: Use [Command.YoutubeIncludeDashManifest] instead.
 func (c *Command) UnsetYoutubeIncludeDashManifest() *Command {
 	c.removeFlagByID("youtube_include_dash_manifest")
 	return c
@@ -6550,6 +6704,8 @@ func (c *Command) UnsetYoutubeIncludeDashManifest() *Command {
 //   - See [Command.UnsetYoutubeSkipDashManifest], for unsetting the flag.
 //   - YoutubeSkipDashManifest maps to cli flags: --youtube-skip-dash-manifest/--no-youtube-include-dash-manifest (hidden).
 //   - From option group: "Extractor"
+//
+// Deprecated: Use [Command.ExtractorArgs] with `youtube:skip=dash` as an argument.
 func (c *Command) YoutubeSkipDashManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_dash_manifest",
@@ -6561,6 +6717,8 @@ func (c *Command) YoutubeSkipDashManifest() *Command {
 
 // UnsetYoutubeSkipDashManifest unsets any flags that were previously set by one of:
 //   - [Command.YoutubeSkipDashManifest]
+//
+// Deprecated: Use [Command.ExtractorArgs] with `youtube:skip=dash` as an argument.
 func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
 	c.removeFlagByID("youtube_include_dash_manifest")
 	return c
@@ -6572,6 +6730,8 @@ func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
 //   - See [Command.UnsetYoutubeIncludeHLSManifest], for unsetting the flag.
 //   - YoutubeIncludeHLSManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest (hidden).
 //   - From option group: "Extractor"
+//
+// Deprecated: Use [Command.YoutubeIncludeHLSManifest] instead.
 func (c *Command) YoutubeIncludeHLSManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",
@@ -6583,6 +6743,8 @@ func (c *Command) YoutubeIncludeHLSManifest() *Command {
 
 // UnsetYoutubeIncludeHLSManifest unsets any flags that were previously set by one of:
 //   - [Command.YoutubeIncludeHLSManifest]
+//
+// Deprecated: Use [Command.YoutubeIncludeHLSManifest] instead.
 func (c *Command) UnsetYoutubeIncludeHLSManifest() *Command {
 	c.removeFlagByID("youtube_include_hls_manifest")
 	return c
@@ -6594,6 +6756,8 @@ func (c *Command) UnsetYoutubeIncludeHLSManifest() *Command {
 //   - See [Command.UnsetYoutubeSkipHLSManifest], for unsetting the flag.
 //   - YoutubeSkipHLSManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest (hidden).
 //   - From option group: "Extractor"
+//
+// Deprecated: Use [Command.ExtractorArgs] with `youtube:skip=hls` as an argument.
 func (c *Command) YoutubeSkipHLSManifest() *Command {
 	c.addFlag(&Flag{
 		ID:   "youtube_include_hls_manifest",
@@ -6605,6 +6769,8 @@ func (c *Command) YoutubeSkipHLSManifest() *Command {
 
 // UnsetYoutubeSkipHLSManifest unsets any flags that were previously set by one of:
 //   - [Command.YoutubeSkipHLSManifest]
+//
+// Deprecated: Use [Command.ExtractorArgs] with `youtube:skip=hls` as an argument.
 func (c *Command) UnsetYoutubeSkipHLSManifest() *Command {
 	c.removeFlagByID("youtube_include_hls_manifest")
 	return c
