@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2025.01.26"
+	Version = "2025.02.19"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -346,7 +346,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "curiositystream", Description: "[curiositystream]"},
 	{Name: "curiositystream:collections", Description: "[curiositystream]"},
 	{Name: "curiositystream:series", Description: "[curiositystream]"},
-	{Name: "CWTV", AgeLimit: 14},
+	{Name: "cwtv", AgeLimit: 14},
+	{Name: "cwtv:movie", AgeLimit: 16},
 	{Name: "Cybrary", Description: "[cybrary]"},
 	{Name: "CybraryCourse", Description: "[cybrary]"},
 	{Name: "DacastPlaylist"},
@@ -381,6 +382,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "DigitalConcertHall", Description: "[digitalconcerthall] DigitalConcertHall extractor"},
 	{Name: "DigitallySpeaking"},
 	{Name: "Digiteka"},
+	{Name: "Digiview"},
 	{Name: "DiscogsReleasePlaylist"},
 	{Name: "DiscoveryLife"},
 	{Name: "DiscoveryNetworksDe"},
@@ -499,9 +501,9 @@ var SupportedExtractors = []*Extractor{
 	{Name: "fptplay", Description: "fptplay.vn"},
 	{Name: "FranceCulture"},
 	{Name: "FranceInter"},
-	{Name: "FranceTV"},
+	{Name: "francetv"},
+	{Name: "francetv:site"},
 	{Name: "francetvinfo.fr"},
-	{Name: "FranceTVSite"},
 	{Name: "Freesound"},
 	{Name: "freespeech.org"},
 	{Name: "freetv:series"},
@@ -531,9 +533,9 @@ var SupportedExtractors = []*Extractor{
 	{Name: "GBNews", Description: "GB News clips, features and live streams"},
 	{Name: "GDCVault", Description: "[gdcvault] (Currently broken)"},
 	{Name: "GediDigital"},
-	{Name: "gem.cbc.ca", Description: "[cbcgem]"},
+	{Name: "gem.cbc.ca", Description: "[cbcgem]", AgeLimit: 14},
 	{Name: "gem.cbc.ca:live"},
-	{Name: "gem.cbc.ca:playlist"},
+	{Name: "gem.cbc.ca:playlist", Description: "[cbcgem]"},
 	{Name: "generic:quoted-html", Description: "[HIDDEN]"},
 	{Name: "Genius"},
 	{Name: "GeniusLyrics"},
