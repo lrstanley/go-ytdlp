@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2025.02.19"
+	Version = "2025.03.21"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -249,6 +249,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "bt:vestlendingen", Description: "Bergens Tidende - Vestlendingen"},
 	{Name: "Bundesliga"},
 	{Name: "Bundestag"},
+	{Name: "BunnyCdn"},
 	{Name: "BusinessInsider"},
 	{Name: "BuzzFeed"},
 	{Name: "BYUtv", Description: "(Currently broken)"},
@@ -267,6 +268,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "CanalAlpha"},
 	{Name: "canalc2.tv"},
 	{Name: "Canalplus", Description: "mycanal.fr and piwiplus.fr"},
+	{Name: "Canalsurmas"},
 	{Name: "CaracolTvPlay", Description: "[caracoltv-play]"},
 	{Name: "CartoonNetwork"},
 	{Name: "cbc.ca"},
@@ -640,10 +642,10 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Inc"},
 	{Name: "IndavideoEmbed"},
 	{Name: "InfoQ"},
-	{Name: "Instagram", Description: "[instagram]"},
-	{Name: "instagram:story", Description: "[instagram]"},
-	{Name: "instagram:tag", Description: "[instagram] Instagram hashtag search URLs"},
-	{Name: "instagram:user", Description: "[instagram] Instagram user profile (Currently broken)"},
+	{Name: "Instagram"},
+	{Name: "instagram:story"},
+	{Name: "instagram:tag", Description: "Instagram hashtag search URLs"},
+	{Name: "instagram:user", Description: "Instagram user profile (Currently broken)"},
 	{Name: "InstagramIOS", Description: "IOS instagram:// URL"},
 	{Name: "Internazionale"},
 	{Name: "InternetVideoArchive"},
@@ -692,7 +694,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "KelbyOne", Description: "(Currently broken)"},
 	{Name: "Kenh14Playlist"},
 	{Name: "Kenh14Video"},
-	{Name: "Ketnet"},
 	{Name: "khanacademy"},
 	{Name: "khanacademy:unit"},
 	{Name: "kick:clips", AgeLimit: 18},
@@ -765,6 +766,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Livestreamfails"},
 	{Name: "Lnk"},
 	{Name: "loc", Description: "Library of Congress"},
+	{Name: "Loco"},
 	{Name: "loom"},
 	{Name: "loom:folder"},
 	{Name: "LoveHomePorn", AgeLimit: 18},
@@ -864,7 +866,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "MoviewPlay"},
 	{Name: "Moviezine"},
 	{Name: "MovingImage"},
-	{Name: "MSN", Description: "(Currently broken)"},
+	{Name: "MSN"},
 	{Name: "mtg", Description: "MTG services"},
 	{Name: "mtv"},
 	{Name: "mtv.de", Description: "(Currently broken)"},
@@ -1378,6 +1380,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Smotrim"},
 	{Name: "SnapchatSpotlight"},
 	{Name: "Snotr"},
+	{Name: "SoftWhiteUnderbelly", Description: "[softwhiteunderbelly]"},
 	{Name: "Sohu"},
 	{Name: "SohuV"},
 	{Name: "SonyLIV", Description: "[sonyliv]"},
@@ -1574,6 +1577,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "tv5unis", AgeLimit: 8},
 	{Name: "tv5unis:video"},
 	{Name: "tv8.it"},
+	{Name: "tv8.it:live", Description: "TV8 Live"},
+	{Name: "tv8.it:playlist", Description: "TV8 Playlist"},
 	{Name: "TVANouvelles"},
 	{Name: "TVANouvellesArticle"},
 	{Name: "tvaplus", Description: "TVA+"},
@@ -1594,6 +1599,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "tvp:vod:series", AgeLimit: 12},
 	{Name: "TVPlayer"},
 	{Name: "TVPlayHome"},
+	{Name: "Tvw"},
 	{Name: "Tweakers"},
 	{Name: "TwitCasting"},
 	{Name: "TwitCastingLive"},
@@ -1717,7 +1723,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "vqq:series"},
 	{Name: "vqq:video"},
 	{Name: "VRT", Description: "VRT NWS, Flanders News, Flandern Info and Sporza"},
-	{Name: "VrtNU", Description: "[vrtnu] VRT MAX", AgeLimit: 12},
+	{Name: "vrtmax", Description: "[vrtnu] VRT MAX (formerly VRT NU)"},
 	{Name: "VTM", Description: "(Currently broken)"},
 	{Name: "VTV"},
 	{Name: "VTVGo"},
