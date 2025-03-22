@@ -106,6 +106,12 @@ func TestBuilder_General_NonExecutable(t *testing.T) {
 		_ = builder.UnsetPluginDirs()
 		validateFlagRemoved(t, builder, "plugin_dirs", "--plugin-dirs")
 	})
+	t.Run("NoPluginDirs", func(t *testing.T) {
+		builder := New().NoPluginDirs()
+		validateFlagAdded(t, builder, "plugin_dirs", "--no-plugin-dirs", 0)
+		_ = builder.UnsetPluginDirs()
+		validateFlagRemoved(t, builder, "plugin_dirs", "--no-plugin-dirs")
+	})
 	t.Run("FlatPlaylist", func(t *testing.T) {
 		builder := New().FlatPlaylist()
 		validateFlagAdded(t, builder, "extract_flat", "--flat-playlist", 0)
