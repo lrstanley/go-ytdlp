@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2025.03.21"
+	Version = "2025.03.25"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -31,6 +31,7 @@ type Extractor struct {
 var SupportedExtractors = []*Extractor{
 	{Name: "17live"},
 	{Name: "17live:clip"},
+	{Name: "17live:vod"},
 	{Name: "1News", Description: "1news.co.nz article videos"},
 	{Name: "1tv", Description: "Первый канал"},
 	{Name: "20min"},
@@ -225,7 +226,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "blogger.com"},
 	{Name: "Bloomberg"},
 	{Name: "Bluesky", AgeLimit: 18},
-	{Name: "BokeCC"},
+	{Name: "BokeCC", Description: "CC视频"},
 	{Name: "BongaCams", AgeLimit: 18},
 	{Name: "Boosty"},
 	{Name: "BostonGlobe"},
@@ -373,8 +374,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "daystar:clip"},
 	{Name: "DBTV"},
 	{Name: "DctpTv"},
-	{Name: "DeezerAlbum"},
-	{Name: "DeezerPlaylist"},
 	{Name: "democracynow"},
 	{Name: "DestinationAmerica"},
 	{Name: "DetikEmbed"},
@@ -862,7 +861,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "MotherlessUploader"},
 	{Name: "Motorsport", Description: "motorsport.com (Currently broken)"},
 	{Name: "MovieFap", AgeLimit: 18},
-	{Name: "Moviepilot"},
+	{Name: "moviepilot", Description: "Moviepilot trailer"},
 	{Name: "MoviewPlay"},
 	{Name: "Moviezine"},
 	{Name: "MovingImage"},
@@ -1343,8 +1342,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "sejm"},
 	{Name: "Sen"},
 	{Name: "SenalColombiaLive", Description: "(Currently broken)"},
-	{Name: "SenateGov"},
-	{Name: "SenateISVP"},
+	{Name: "senate.gov"},
+	{Name: "senate.gov:isvp"},
 	{Name: "SendtoNews", Description: "(Currently broken)"},
 	{Name: "Servus"},
 	{Name: "Sexu", Description: "(Currently broken)", AgeLimit: 18},
@@ -1437,6 +1436,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "StoryFire"},
 	{Name: "StoryFireSeries"},
 	{Name: "StoryFireUser"},
+	{Name: "Streaks"},
 	{Name: "Streamable"},
 	{Name: "StreamCZ"},
 	{Name: "StreetVoice"},
@@ -1683,8 +1683,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "viewlift:embed"},
 	{Name: "ViewSource", Description: "[HIDDEN]"},
 	{Name: "Viidea"},
-	{Name: "viki", Description: "[viki]", AgeLimit: 13},
-	{Name: "viki:channel", Description: "[viki]"},
 	{Name: "vimeo", Description: "[vimeo]"},
 	{Name: "vimeo:album", Description: "[vimeo]"},
 	{Name: "vimeo:channel", Description: "[vimeo]"},
@@ -1722,6 +1720,10 @@ var SupportedExtractors = []*Extractor{
 	{Name: "vpro", Description: "npo.nl, ntr.nl, omroepwnl.nl, zapp.nl and npo3.nl"},
 	{Name: "vqq:series"},
 	{Name: "vqq:video"},
+	{Name: "vrsquare", Description: "VR SQUARE"},
+	{Name: "vrsquare:channel"},
+	{Name: "vrsquare:search"},
+	{Name: "vrsquare:section"},
 	{Name: "VRT", Description: "VRT NWS, Flanders News, Flandern Info and Sporza"},
 	{Name: "vrtmax", Description: "[vrtnu] VRT MAX (formerly VRT NU)"},
 	{Name: "VTM", Description: "(Currently broken)"},
