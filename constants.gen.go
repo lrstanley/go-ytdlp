@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2025.03.27"
+	Version = "2025.03.31"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -500,6 +500,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "FoxNewsVideo"},
 	{Name: "FoxSports"},
 	{Name: "fptplay", Description: "fptplay.vn"},
+	{Name: "FrancaisFacile"},
 	{Name: "FranceCulture"},
 	{Name: "FranceInter"},
 	{Name: "francetv"},
@@ -1286,7 +1287,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "rtve.es:infantil", Description: "RTVE infantil"},
 	{Name: "rtve.es:live", Description: "RTVE.es live streams"},
 	{Name: "rtve.es:television"},
-	{Name: "RTVS"},
 	{Name: "rtvslo.si"},
 	{Name: "rtvslo.si:show"},
 	{Name: "RudoVideo"},
@@ -1443,6 +1443,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "StretchInternet"},
 	{Name: "Stripchat", AgeLimit: 18},
 	{Name: "stv:player"},
+	{Name: "stvr", Description: "Slovak Television and Radio (formerly RTVS)"},
 	{Name: "Subsplash"},
 	{Name: "subsplash:playlist"},
 	{Name: "Substack"},
