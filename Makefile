@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := generate
 
-export YTDLP_VERSION := 2025.03.31
+export YTDLP_VERSION := 2025.04.30
 
 license:
 	curl -sL https://liam.sh/-/gh/g/license-header.sh | bash -s
@@ -34,6 +34,7 @@ edit-patch: clean patch
 	cd ./cmd/patch-ytdlp/tmp/${YTDLP_VERSION} && ${EDITOR} yt_dlp/options.py && git diff > ../../export-options.patch
 
 patch:
+	@# git diff --minimal -U1 > ../../export-options.patch
 	./cmd/patch-ytdlp/run.sh ${YTDLP_VERSION}
 
 generate: license go-fetch patch

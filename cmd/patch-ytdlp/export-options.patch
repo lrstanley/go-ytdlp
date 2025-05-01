@@ -1,17 +1,12 @@
 diff --git a/yt_dlp/options.py b/yt_dlp/options.py
-index ffe2463..e1f2422 100644
+index 76d401c..5dcfcb8 100644
 --- a/yt_dlp/options.py
 +++ b/yt_dlp/options.py
-@@ -1,5 +1,6 @@
- import collections
+@@ -2,2 +2,3 @@
  import contextlib
 +import json
  import optparse
- import os.path
- import re
-@@ -267,6 +268,81 @@ def _dict_from_options_callback(
-             out_dict[key] = [*out_dict.get(key, []), val] if append else val
-         setattr(parser.values, option.dest, out_dict)
+@@ -294,2 +295,83 @@ def _dict_from_options_callback(
  
 +    def _export_options_callback(option, opt_str, value, parser: _YoutubeDLOptionParser):
 +        from .extractor import list_extractor_classes
@@ -70,6 +65,12 @@ index ffe2463..e1f2422 100644
 +                    'const_value': option.const,
 +                }
 +
++                if not option_data['id'] or option_data['id'] == '_':
++                    if option._long_opts:
++                        option_data['id'] = option._long_opts[-1].lstrip('-')
++                    elif option.callback:
++                        option_data['id'] = option.callback.__name__.lstrip('_')
++
 +                if not option_data['type']:
 +                    if option.action == 'store_true' or option.action == 'store_false':
 +                        option_data['type'] = 'bool'
@@ -89,16 +90,10 @@ index ffe2463..e1f2422 100644
 +        sys.exit()
 +
      def when_prefix(default):
-         return {
-             'default': {},
-@@ -318,6 +394,10 @@ def _alias_callback(option, opt_str, value, parser, opts, nargs):
-             opts if value is None else opts.format(*map(shlex.quote, value)))
- 
+@@ -352,2 +434,6 @@ def _preset_alias_callback(option, opt_str, value, parser):
      general = optparse.OptionGroup(parser, 'General Options')
 +    general.add_option(
 +        '--export-options',
 +        action='callback', default=False, callback=_export_options_callback,
 +        help=optparse.SUPPRESS_HELP)
      general.add_option(
-         '-h', '--help', dest='print_help', action='store_true',
-         help='Print this help text and exit')

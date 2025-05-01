@@ -178,6 +178,12 @@ func TestBuilder_General_NonExecutable(t *testing.T) {
 		_ = builder.UnsetCompatOptions()
 		validateFlagRemoved(t, builder, "compat_opts", "--compat-options")
 	})
+	t.Run("PresetAlias", func(t *testing.T) {
+		builder := New().PresetAlias("test")
+		validateFlagAdded(t, builder, "preset-alias", "--preset-alias", 1)
+		_ = builder.UnsetPresetAlias()
+		validateFlagRemoved(t, builder, "preset-alias", "--preset-alias")
+	})
 }
 
 func TestBuilder_Network_NonExecutable(t *testing.T) {
