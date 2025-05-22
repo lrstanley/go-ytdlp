@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2025.04.30"
+	Version = "2025.05.22"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -271,7 +271,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Canalplus", Description: "mycanal.fr and piwiplus.fr"},
 	{Name: "Canalsurmas"},
 	{Name: "CaracolTvPlay", Description: "[caracoltv-play]"},
-	{Name: "CartoonNetwork"},
 	{Name: "cbc.ca"},
 	{Name: "cbc.ca:player"},
 	{Name: "cbc.ca:player:playlist"},
@@ -680,7 +679,10 @@ var SupportedExtractors = []*Extractor{
 	{Name: "jiocinema", Description: "[jiocinema]", AgeLimit: 13},
 	{Name: "jiocinema:series", Description: "[jiocinema]"},
 	{Name: "jiosaavn:album"},
+	{Name: "jiosaavn:artist"},
 	{Name: "jiosaavn:playlist"},
+	{Name: "jiosaavn:show"},
+	{Name: "jiosaavn:show:playlist"},
 	{Name: "jiosaavn:song"},
 	{Name: "Joj"},
 	{Name: "JoqrAg", Description: "超!A&G+ 文化放送 (f.k.a. AGQR) Nippon Cultural Broadcasting, Inc. (JOQR)"},
@@ -1114,8 +1116,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Photobucket"},
 	{Name: "PiaLive"},
 	{Name: "Piapro", Description: "[piapro]"},
-	{Name: "Picarto"},
-	{Name: "PicartoVod", AgeLimit: 18},
+	{Name: "picarto"},
+	{Name: "picarto:vod", AgeLimit: 18},
 	{Name: "Piksel"},
 	{Name: "Pinkbike"},
 	{Name: "Pinterest"},
@@ -1426,7 +1428,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Spreaker"},
 	{Name: "SpreakerShow"},
 	{Name: "SpringboardPlatform"},
-	{Name: "Sprout"},
 	{Name: "SproutVideo"},
 	{Name: "sr:mediathek", Description: "Saarländischer Rundfunk (Currently broken)"},
 	{Name: "SRGSSR"},
@@ -1696,6 +1697,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "vimeo", Description: "[vimeo]"},
 	{Name: "vimeo:album", Description: "[vimeo]"},
 	{Name: "vimeo:channel", Description: "[vimeo]"},
+	{Name: "vimeo:event", Description: "[vimeo]"},
 	{Name: "vimeo:group", Description: "[vimeo]"},
 	{Name: "vimeo:likes", Description: "[vimeo] Vimeo user likes"},
 	{Name: "vimeo:ondemand", Description: "[vimeo]"},
