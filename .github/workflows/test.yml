@@ -23,6 +23,4 @@ jobs:
       pull-requests: read
       security-events: write
       statuses: write
-    secrets:
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    secrets: inherit
