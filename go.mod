@@ -1,15 +1,15 @@
 module github.com/lrstanley/go-ytdlp
 
-go 1.22.0
+go 1.23.0
 
-toolchain go1.23.1
+toolchain go1.24.4
 
-require github.com/ProtonMail/go-crypto v1.1.5
+require github.com/ProtonMail/go-crypto v1.3.0
 
 require (
-	github.com/cloudflare/circl v1.6.0 // indirect
-	golang.org/x/crypto v0.33.0 // indirect
-	golang.org/x/sys v0.30.0 // indirect
+	github.com/cloudflare/circl v1.6.1 // indirect
+	golang.org/x/crypto v0.39.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
 )
 
 // Testing dependencies. Not pulled when "go get"ing.
