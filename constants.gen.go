@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2025.06.09"
+	Version = "2025.06.25"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -621,7 +621,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Hungama"},
 	{Name: "HungamaAlbumPlaylist"},
 	{Name: "HungamaSong"},
-	{Name: "huya:live", Description: "huya.com"},
+	{Name: "huya:live", Description: "虎牙直播"},
 	{Name: "huya:video", Description: "虎牙视频"},
 	{Name: "Hypem"},
 	{Name: "Hytale"},
@@ -808,6 +808,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "massengeschmack.tv"},
 	{Name: "Masters"},
 	{Name: "MatchTV"},
+	{Name: "Mave", AgeLimit: 18},
 	{Name: "MBN", Description: "mbn.co.kr (매일방송)"},
 	{Name: "MDR", Description: "MDR.DE"},
 	{Name: "MedalTV"},
@@ -865,7 +866,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Mojevideo", Description: "mojevideo.sk"},
 	{Name: "Mojvideo"},
 	{Name: "Monstercat"},
-	{Name: "MonsterSirenHypergryphMusic"},
+	{Name: "monstersiren", Description: "塞壬唱片"},
 	{Name: "Motherless", AgeLimit: 18},
 	{Name: "MotherlessGallery"},
 	{Name: "MotherlessGroup"},
