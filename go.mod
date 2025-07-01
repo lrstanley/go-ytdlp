@@ -4,7 +4,7 @@ go 1.22.0
 
 toolchain go1.23.1
 
-require github.com/ProtonMail/go-crypto v1.1.5
+require github.com/ProtonMail/go-crypto v1.3.0
 
 require (
 	github.com/cloudflare/circl v1.6.0 // indirect
