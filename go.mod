@@ -2,7 +2,7 @@ module github.com/lrstanley/go-ytdlp
 
 go 1.22.0
 
-toolchain go1.23.1
+toolchain go1.24.4
 
 require github.com/ProtonMail/go-crypto v1.1.5
 
