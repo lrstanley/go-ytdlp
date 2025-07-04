@@ -65,16 +65,14 @@
   - [Support &amp; Assistance](#raising_hand_man-support--assistance)
   - [Contributing](#handshake-contributing)
   - [License](#balance_scale-license)
+  - [Install Function & Binary Management](#package-install-function--binary-management)
 <!-- template:end:toc -->
 
 ## :sparkles: Features
 
-**!!! NOTE: go-ytdlp isn't stable yet, and as such, there may be wide-reaching _breaking_ changes,
-until 1.0.0 !!!**
-
 - CLI bindings for yt-dlp -- including all flags/commands.
-- Optional `Install` and `MustInstall` helpers to auto-download the latest supported version of
-  yt-dlp, including proper checksum validation for secure downloads.
+- Optional `Install*` helpers to auto-download the latest supported version of
+  yt-dlp, ffmpeg and ffprobe, including proper checksum validation for secure downloads (yt-dlp only).
   - Worry less about making sure yt-dlp is installed wherever **go-ytdlp** is running from!
 - Carried over help documentation for all functions/methods.
 - Flags with arguments have type mappings according to what the actual flags expect.
@@ -129,7 +127,46 @@ func main() {
 }
 ```
 
+### Fancy UI using BubbleTea
+
+This example shows how to use **go-ytdlp** and [BubbleTea](https://github.com/charmbracelet/bubbletea)
+to create a fancy, though relatively simple, UI for downloading videos.
+
+![BubbleTea demo](./_examples/bubble-dl/demo.gif)
+
+Source: [bubble-dl](./_examples/bubble-dl)
+
 ---
+
+## :package: Install Function(s) & Binary Management
+
+The `Install*` function helpers in **go-ytdlp** allow you to automatically download and cache the
+required binaries (`yt-dlp`, `ffmpeg`, and `ffprobe`) for your platform. This makes it easy to get
+started without manually installing these dependencies, and ensures the correct versions are used.
+
+> **Note:** Download/installation of `ffmpeg` and `ffprobe` is only supported on a handful of platforms.
+> It is still recommended to install them via other means if your platform is not listed below.
+
+### yt-dlp
+
+| OS/Arch         | Download Source                  |
+|-----------------|----------------------------------|
+| darwin_amd64    | https://github.com/yt-dlp/yt-dlp |
+| darwin_arm64    | https://github.com/yt-dlp/yt-dlp |
+| linux_amd64     | https://github.com/yt-dlp/yt-dlp |
+| linux_arm64     | https://github.com/yt-dlp/yt-dlp |
+| linux_armv7l    | https://github.com/yt-dlp/yt-dlp |
+| windows_amd64   | https://github.com/yt-dlp/yt-dlp |
+
+### ffmpeg & ffprobe
+
+| OS/Arch       | ffmpeg/ffprobe Download Source          |
+|---------------|-----------------------------------------|
+| darwin_amd64  | https://evermeet.cx/ffmpeg/             |
+| linux_amd64   | https://github.com/yt-dlp/FFmpeg-Builds |
+| linux_arm64   | https://github.com/yt-dlp/FFmpeg-Builds |
+| windows_amd64 | https://github.com/yt-dlp/FFmpeg-Builds |
+| windows_arm   | https://github.com/yt-dlp/FFmpeg-Builds |
 
 <!-- template:begin:support -->
 <!-- do not edit anything in this "template" block, its auto-generated -->
