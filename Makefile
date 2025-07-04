@@ -14,6 +14,7 @@ fetch:
 
 up:
 	cd ./cmd/codegen && go get -u -t ./... && go mod tidy
+	cd ./_examples && go get -u -t ./... && go mod tidy
 	go get -u -t ./... && go mod tidy
 
 commit: generate
