@@ -62,10 +62,13 @@
   - [Usage](#gear-usage)
   - [Examples](#clap-examples)
     - [Simple](#simple)
+    - [Fancy UI using BubbleTea](#fancy-ui-using-bubbletea)
+  - [Install Function(s) &amp; Binary Management](#package-install-functions--binary-management)
+    - [yt-dlp](#yt-dlp)
+    - [ffmpeg &amp; ffprobe](#ffmpeg--ffprobe)
   - [Support &amp; Assistance](#raising_hand_man-support--assistance)
   - [Contributing](#handshake-contributing)
   - [License](#balance_scale-license)
-  - [Install Function & Binary Management](#package-install-function--binary-management)
 <!-- template:end:toc -->
 
 ## :sparkles: Features
