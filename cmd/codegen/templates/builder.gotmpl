@@ -47,7 +47,7 @@ func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template
         Args: {{ template "builder-slice-meta-args" $option }},
     })
 
-    return c.runWithResult(c.buildCommand(ctx))
+    return c.runWithResult(ctx, c.buildCommand(ctx))
 }
 {{- else }}
 {{ template "builder-help" $option }}

@@ -12,7 +12,7 @@ import (
 )
 
 // applySyscall applies any OS-specific syscall attributes to the command.
-func (c *Command) applySyscall(_ *exec.Cmd) {
+func applySyscall(_ *exec.Cmd, _ bool) {
 	// No-op by default.
 }
 

@@ -13,9 +13,9 @@ import (
 )
 
 // applySyscall applies any OS-specific syscall attributes to the command.
-func (c *Command) applySyscall(cmd *exec.Cmd) {
+func applySyscall(cmd *exec.Cmd, separateProcessGroup bool) {
 	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Setpgid: c.separateProcessGroup,
+		Setpgid: separateProcessGroup,
 	}
 }
 
