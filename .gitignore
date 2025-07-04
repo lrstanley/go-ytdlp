@@ -9,3 +9,5 @@ bin/*
 !testdata/*.mp4
 cmd/patch-ytdlp/tmp/*
 cmd/patch-ytdlp/*.json
+.crush/
+.cursor/

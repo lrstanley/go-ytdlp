@@ -23,7 +23,7 @@ func (c *Command) Version(ctx context.Context) (*Result, error) {
 		Args: nil,
 	})
 
-	return c.runWithResult(c.buildCommand(ctx))
+	return c.runWithResult(ctx, c.buildCommand(ctx))
 }
 
 // Check if updates are available. You cannot update when running from source code;
@@ -42,7 +42,7 @@ func (c *Command) Update(ctx context.Context) (*Result, error) {
 		Args: nil,
 	})
 
-	return c.runWithResult(c.buildCommand(ctx))
+	return c.runWithResult(ctx, c.buildCommand(ctx))
 }
 
 // Do not check for updates (default)
@@ -84,7 +84,7 @@ func (c *Command) UpdateTo(ctx context.Context, value string) (*Result, error) {
 		Args: []string{value},
 	})
 
-	return c.runWithResult(c.buildCommand(ctx))
+	return c.runWithResult(ctx, c.buildCommand(ctx))
 }
 
 // Ignore download and postprocessing errors. The download will be considered
@@ -161,7 +161,7 @@ func (c *Command) DumpUserAgent(ctx context.Context) (*Result, error) {
 		Args: nil,
 	})
 
-	return c.runWithResult(c.buildCommand(ctx))
+	return c.runWithResult(ctx, c.buildCommand(ctx))
 }
 
 // List all supported extractors and exit
@@ -176,7 +176,7 @@ func (c *Command) ListExtractors(ctx context.Context) (*Result, error) {
 		Args: nil,
 	})
 
-	return c.runWithResult(c.buildCommand(ctx))
+	return c.runWithResult(ctx, c.buildCommand(ctx))
 }
 
 // Output descriptions of all supported extractors and exit
@@ -191,7 +191,7 @@ func (c *Command) ExtractorDescriptions(ctx context.Context) (*Result, error) {
 		Args: nil,
 	})
 
-	return c.runWithResult(c.buildCommand(ctx))
+	return c.runWithResult(ctx, c.buildCommand(ctx))
 }
 
 // Extractor names to use separated by commas. You can also use regexes, "all",

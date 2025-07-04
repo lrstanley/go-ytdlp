@@ -32,12 +32,13 @@ var defaultDownloads = []string{
 }
 
 type model struct {
-	urls     []string
-	width    int
-	height   int
-	spinner  spinner.Model
-	progress progress.Model
-	done     bool
+	urls           []string
+	width          int
+	height         int
+	spinner        spinner.Model
+	progress       progress.Model
+	done           bool
+	toolsInstalled int
 
 	lastProgress ytdlp.ProgressUpdate
 }
@@ -80,13 +81,35 @@ func newModel() model {
 	return m
 }
 
-type MsgInstalled struct{}
+type MsgInstalled struct {
+	Tool    string
+	Version string
+	Error   string
+}
 
 func (m model) Init() tea.Cmd {
 	return tea.Batch(
+		// If yt-dlp/ffmpeg/ffprobe isn't installed yet, download and cache the binaries for further use.
+		// Note that the download/installation of ffmpeg/ffprobe is only supported on a handful of platforms,
+		// and so it is still recommended to install ffmpeg/ffprobe via other means.
 		func() tea.Msg {
-			ytdlp.MustInstall(context.TODO(), nil)
-			return MsgInstalled{}
+			r, err := ytdlp.Install(context.TODO(), nil)
+			if err != nil {
+				return MsgInstalled{Tool: "yt-dlp", Error: err.Error()}
+			}
+			return MsgInstalled{Tool: "yt-dlp", Version: r.Version}
+		}, func() tea.Msg {
+			r, err := ytdlp.InstallFFmpeg(context.TODO(), nil)
+			if err != nil {
+				return MsgInstalled{Tool: "ffmpeg", Error: err.Error()}
+			}
+			return MsgInstalled{Tool: "ffmpeg", Version: r.Version}
+		}, func() tea.Msg {
+			r, err := ytdlp.InstallFFprobe(context.TODO(), nil)
+			if err != nil {
+				return MsgInstalled{Tool: "ffprobe", Error: err.Error()}
+			}
+			return MsgInstalled{Tool: "ffprobe", Version: r.Version}
 		},
 		m.spinner.Tick,
 	)
@@ -102,7 +125,28 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		}
 	case MsgInstalled:
-		return m, m.initiateDownload
+		if msg.Error != "" {
+			return m, tea.Sequence(
+				tea.Printf("%s error installing %s: %s", errorStyle, msg.Tool, msg.Error),
+				tea.Quit,
+			)
+		}
+
+		cmds := []tea.Cmd{
+			tea.Printf(
+				"%s installed/verified tool %s (version: %s)",
+				successStyle,
+				msg.Tool,
+				msg.Version,
+			),
+		}
+
+		m.toolsInstalled++
+		if m.toolsInstalled == 3 { // 3: yt-dlp, ffmpeg, ffprobe.
+			cmds = append(cmds, m.initiateDownload)
+		}
+
+		return m, tea.Sequence(cmds...)
 	case MsgProgress:
 		m.lastProgress = msg.Progress
 		cmds := []tea.Cmd{m.progress.SetPercent(msg.Progress.Percent() / 100)}

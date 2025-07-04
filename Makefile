@@ -5,23 +5,16 @@ export YTDLP_VERSION := 2025.06.25
 license:
 	curl -sL https://liam.sh/-/gh/g/license-header.sh | bash -s
 
-up: go-upgrade-deps
-	@echo
-
 clean:
 	rm -rf ./cmd/patch-ytdlp/tmp/${YTDLP_VERSION} ./cmd/patch-ytdlp/export-${YTDLP_VERSION}.json
 
-go-fetch:
-	cd ./cmd/codegen && go mod download && go mod tidy
-	go mod download && go mod tidy
+fetch:
+	cd ./cmd/codegen && go mod tidy
+	go mod tidy
 
-go-upgrade-deps:
-	cd ./cmd/codegen && go get -u ./... && go mod tidy
-	go get -u ./... && go mod tidy
-
-go-upgrade-deps-patch:
-	cd ./cmd/patch-ytdlp && go get -u=patch ./... && go mod tidy
-	go get -u=patch ./... && go mod tidy
+up:
+	cd ./cmd/codegen && go get -u -t ./... && go mod tidy
+	go get -u -t ./... && go mod tidy
 
 commit: generate
 	git add --all \
@@ -37,7 +30,7 @@ patch:
 	@# git diff --minimal -U1 > ../../export-options.patch
 	./cmd/patch-ytdlp/run.sh ${YTDLP_VERSION}
 
-generate: license go-fetch patch
+generate: license fetch patch
 	rm -rf \
 		*.gen.go *.gen_test.go \
 		optiondata/*.gen.go

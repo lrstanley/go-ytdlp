@@ -14,12 +14,12 @@ import (
 )
 
 // applySyscall applies any OS-specific syscall attributes to the command.
-func (c *Command) applySyscall(cmd *exec.Cmd) {
+func applySyscall(cmd *exec.Cmd, separateProcessGroup bool) {
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		CreationFlags: 0x08000000, // CREATE_NO_WINDOW.
 		HideWindow:    true,
 	}
-	if c.separateProcessGroup {
+	if separateProcessGroup {
 		cmd.SysProcAttr.CreationFlags |= syscall.CREATE_NEW_PROCESS_GROUP
 	}
 }

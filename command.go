@@ -6,7 +6,10 @@ package ytdlp
 
 import (
 	"context"
+	"os"
 	"os/exec"
+	"path/filepath"
+	"strings"
 	"sync"
 )
 
@@ -173,14 +176,33 @@ func (c *Command) buildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	name = c.executable
 
 	if name == "" {
-		var r *ResolvedInstall
-		r, err = resolveExecutable(true, false)
-		if err == nil {
+		r := ytdlpResolveCache.Load()
+		if r == nil {
+			_, binaries, _ := ytdlpGetDownloadBinary() // don't check error yet.
+			r, err = resolveExecutable(ctx, false, false, binaries)
+			if err == nil {
+				name = r.Executable
+			}
+		} else {
 			name = r.Executable
 		}
 	}
 
 	cmd := exec.CommandContext(ctx, name, cmdArgs...)
+
+	// Add cache directory to $PATH, which would cover ffmpeg, ffprobe, etc.
+	cacheDir, err := GetCacheDir()
+	if err == nil {
+		var paths []string
+
+		if c.env["PATH"] != "" {
+			paths = filepath.SplitList(c.env["PATH"])
+		} else {
+			paths = filepath.SplitList(os.Getenv("PATH"))
+		}
+
+		c.env["PATH"] = strings.Join(append([]string{cacheDir}, paths...), string(filepath.ListSeparator))
+	}
 
 	if err != nil {
 		cmd.Err = err // Hijack the existing command to return the error from resolveExecutable.
@@ -203,7 +225,7 @@ func (c *Command) buildCommand(ctx context.Context, args ...string) *exec.Cmd {
 
 // runWithResult runs the provided command, collects stdout/stderr, massages the
 // result into a Result struct, and returns it (with error wrapping).
-func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
+func (c *Command) runWithResult(ctx context.Context, cmd *exec.Cmd) (*Result, error) {
 	if cmd.Err != nil {
 		return wrapError(nil, cmd.Err)
 	}
@@ -219,7 +241,16 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 	cmd.Stdout = stdout
 	cmd.Stderr = stderr
 
-	c.applySyscall(cmd)
+	applySyscall(cmd, c.separateProcessGroup)
+
+	debug(
+		ctx, "running command",
+		"path", cmd.Path,
+		"args", cmd.Args,
+		"env", cmd.Env,
+		"dir", cmd.Dir,
+	)
+
 	err := cmd.Run()
 
 	result := &Result{
@@ -239,7 +270,7 @@ func (c *Command) runWithResult(cmd *exec.Cmd) (*Result, error) {
 // URLs that would normally be passed in to yt-dlp.
 func (c *Command) Run(ctx context.Context, args ...string) (*Result, error) {
 	cmd := c.buildCommand(ctx, args...)
-	return c.runWithResult(cmd)
+	return c.runWithResult(ctx, cmd)
 }
 
 type Flag struct {

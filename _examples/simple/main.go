@@ -8,7 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"os"
 	"time"
 
@@ -16,8 +16,16 @@ import (
 )
 
 func main() {
-	// If yt-dlp isn't installed yet, download and cache it for further use.
+	// Use the following env var if you want to debug the download process for yt-dlp, ffmpeg, and ffprobe,
+	// as well as print out associated yt-dlp commands.
+	// os.Setenv("YTDLP_DEBUG", "true")
+
+	// If yt-dlp/ffmpeg/ffprobe isn't installed yet, download and cache the binaries for further use.
+	// Note that the download/installation of ffmpeg/ffprobe is only supported on a handful of platforms,
+	// and so it is still recommended to install ffmpeg/ffprobe via other means.
 	ytdlp.MustInstall(context.TODO(), nil)
+	ytdlp.MustInstallFFmpeg(context.TODO(), nil)
+	ytdlp.MustInstallFFprobe(context.TODO(), nil)
 
 	dl := ytdlp.New().
 		PrintJSON().
@@ -56,5 +64,5 @@ func main() {
 		panic(err)
 	}
 
-	log.Println("wrote results to results.json")
+	slog.Info("wrote results to results.json")
 }
