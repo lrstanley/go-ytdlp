@@ -32,13 +32,12 @@ var defaultDownloads = []string{
 }
 
 type model struct {
-	urls           []string
-	width          int
-	height         int
-	spinner        spinner.Model
-	progress       progress.Model
-	done           bool
-	toolsInstalled int
+	urls     []string
+	width    int
+	height   int
+	spinner  spinner.Model
+	progress progress.Model
+	done     bool
 
 	lastProgress ytdlp.ProgressUpdate
 }
@@ -81,10 +80,9 @@ func newModel() model {
 	return m
 }
 
-type MsgInstalled struct {
-	Tool    string
-	Version string
-	Error   string
+type MsgToolsVerified struct {
+	Resolved []*ytdlp.ResolvedInstall
+	Error    error
 }
 
 func (m model) Init() tea.Cmd {
@@ -93,23 +91,11 @@ func (m model) Init() tea.Cmd {
 		// Note that the download/installation of ffmpeg/ffprobe is only supported on a handful of platforms,
 		// and so it is still recommended to install ffmpeg/ffprobe via other means.
 		func() tea.Msg {
-			r, err := ytdlp.Install(context.TODO(), nil)
+			resolved, err := ytdlp.InstallAll(context.TODO())
 			if err != nil {
-				return MsgInstalled{Tool: "yt-dlp", Error: err.Error()}
+				return MsgToolsVerified{Resolved: resolved, Error: err}
 			}
-			return MsgInstalled{Tool: "yt-dlp", Version: r.Version}
-		}, func() tea.Msg {
-			r, err := ytdlp.InstallFFmpeg(context.TODO(), nil)
-			if err != nil {
-				return MsgInstalled{Tool: "ffmpeg", Error: err.Error()}
-			}
-			return MsgInstalled{Tool: "ffmpeg", Version: r.Version}
-		}, func() tea.Msg {
-			r, err := ytdlp.InstallFFprobe(context.TODO(), nil)
-			if err != nil {
-				return MsgInstalled{Tool: "ffprobe", Error: err.Error()}
-			}
-			return MsgInstalled{Tool: "ffprobe", Version: r.Version}
+			return MsgToolsVerified{Resolved: resolved}
 		},
 		m.spinner.Tick,
 	)
@@ -124,29 +110,26 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c", "esc", "q":
 			return m, tea.Quit
 		}
-	case MsgInstalled:
-		if msg.Error != "" {
+	case MsgToolsVerified:
+		if msg.Error != nil {
 			return m, tea.Sequence(
-				tea.Printf("%s error installing %s: %s", errorStyle, msg.Tool, msg.Error),
+				tea.Printf("%s error installing/verifying tools: %s", errorStyle, msg.Error),
 				tea.Quit,
 			)
 		}
 
-		cmds := []tea.Cmd{
-			tea.Printf(
+		var cmds []tea.Cmd
+
+		for _, r := range msg.Resolved {
+			cmds = append(cmds, tea.Printf(
 				"%s installed/verified tool %s (version: %s)",
 				successStyle,
-				msg.Tool,
-				msg.Version,
-			),
+				r.Executable,
+				r.Version,
+			))
 		}
 
-		m.toolsInstalled++
-		if m.toolsInstalled == 3 { // 3: yt-dlp, ffmpeg, ffprobe.
-			cmds = append(cmds, m.initiateDownload)
-		}
-
-		return m, tea.Sequence(cmds...)
+		return m, tea.Sequence(append(cmds, m.initiateDownload)...)
 	case MsgProgress:
 		m.lastProgress = msg.Progress
 		cmds := []tea.Cmd{m.progress.SetPercent(msg.Progress.Percent() / 100)}

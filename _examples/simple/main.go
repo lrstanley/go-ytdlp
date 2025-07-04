@@ -23,9 +23,7 @@ func main() {
 	// If yt-dlp/ffmpeg/ffprobe isn't installed yet, download and cache the binaries for further use.
 	// Note that the download/installation of ffmpeg/ffprobe is only supported on a handful of platforms,
 	// and so it is still recommended to install ffmpeg/ffprobe via other means.
-	ytdlp.MustInstall(context.TODO(), nil)
-	ytdlp.MustInstallFFmpeg(context.TODO(), nil)
-	ytdlp.MustInstallFFprobe(context.TODO(), nil)
+	ytdlp.MustInstallAll(context.TODO())
 
 	dl := ytdlp.New().
 		PrintJSON().

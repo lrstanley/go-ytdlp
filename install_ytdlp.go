@@ -15,6 +15,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"sync"
 	"sync/atomic"
 )
 
@@ -23,6 +24,7 @@ var (
 	ytdlpPublicKey []byte // From: https://github.com/yt-dlp/yt-dlp/blob/master/public.key
 
 	ytdlpResolveCache = atomic.Pointer[ResolvedInstall]{} // Should only be used by [Install].
+	ytdlpInstallLock  sync.Mutex
 
 	ytdlpBinConfigs = map[string]struct {
 		src  string
@@ -118,8 +120,8 @@ func Install(ctx context.Context, opts *InstallOptions) (*ResolvedInstall, error
 	}
 
 	// Ensure only one install invocation is running at a time.
-	installLock.Lock()
-	defer installLock.Unlock()
+	ytdlpInstallLock.Lock()
+	defer ytdlpInstallLock.Unlock()
 
 	_, binaries, _ := ytdlpGetDownloadBinary() // don't check error yet.
 	resolved, err := resolveExecutable(ctx, false, opts.DisableSystem, binaries)

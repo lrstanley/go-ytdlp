@@ -14,12 +14,15 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
+	"sync"
 	"sync/atomic"
 )
 
 var (
 	ffmpegResolveCache  = atomic.Pointer[ResolvedInstall]{} // Should only be used by [InstallFFmpeg].
+	ffmpegInstallLock   sync.Mutex
 	ffprobeResolveCache = atomic.Pointer[ResolvedInstall]{} // Should only be used by [InstallFFprobe].
+	ffprobeInstallLock  sync.Mutex
 
 	ffmpegBinConfigs = map[string]ffmpegBinConfig{
 		"darwin_amd64": {
@@ -92,8 +95,8 @@ func MustInstallFFmpeg(ctx context.Context, opts *InstallFFmpegOptions) {
 // downloading of ffmpeg and ffprobe is only supported on a handful of platforms, and so
 // it is still recommended to install ffmpeg/ffprobe via other means.
 func InstallFFmpeg(ctx context.Context, opts *InstallFFmpegOptions) (*ResolvedInstall, error) {
-	installLock.Lock()
-	defer installLock.Unlock()
+	ffmpegInstallLock.Lock()
+	defer ffmpegInstallLock.Unlock()
 
 	if opts == nil {
 		opts = &InstallFFmpegOptions{}
@@ -145,8 +148,8 @@ func MustInstallFFprobe(ctx context.Context, opts *InstallFFmpegOptions) {
 // downloading of ffmpeg and ffprobe is only supported on a handful of platforms, and so
 // it is still recommended to install ffmpeg/ffprobe via other means.
 func InstallFFprobe(ctx context.Context, opts *InstallFFmpegOptions) (*ResolvedInstall, error) {
-	installLock.Lock()
-	defer installLock.Unlock()
+	ffprobeInstallLock.Lock()
+	defer ffprobeInstallLock.Unlock()
 
 	if opts == nil {
 		opts = &InstallFFmpegOptions{}

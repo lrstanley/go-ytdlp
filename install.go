@@ -11,8 +11,8 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha256"
-	_ "embed"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"mime"
@@ -32,8 +32,6 @@ const (
 	xdgCacheDir     = "go-ytdlp"       // Cache directory that will be appended to the XDG cache directory.
 	downloadTimeout = 30 * time.Second // HTTP timeout for downloading the yt-dlp binary.
 )
-
-var installLock sync.Mutex
 
 // GetCacheDir returns the cache directory for go-ytdlp. Note that it may not be created yet.
 func GetCacheDir() (string, error) {
@@ -80,6 +78,84 @@ func createCacheDir(ctx context.Context) (string, error) {
 	}
 
 	return cacheDir, nil
+}
+
+// MustInstallAll is similar to [InstallAll], but panics if there is an error.
+func MustInstallAll(ctx context.Context) []*ResolvedInstall {
+	installs, err := InstallAll(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return installs
+}
+
+// InstallAll installs all dependencies for go-ytdlp concurrently, using default options.
+// Note that this will not work on all platforms, as some dependencies are only supported on
+// certain platforms.
+func InstallAll(ctx context.Context) ([]*ResolvedInstall, error) {
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+
+	_, err := createCacheDir(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var installs []*ResolvedInstall
+	var errs []error
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		r, err := Install(ctx, nil)
+		if err != nil {
+			mu.Lock()
+			errs = append(errs, err)
+			mu.Unlock()
+			return
+		}
+		mu.Lock()
+		installs = append(installs, r)
+		mu.Unlock()
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		r, err := InstallFFmpeg(ctx, nil)
+		if err != nil {
+			mu.Lock()
+			errs = append(errs, err)
+			mu.Unlock()
+			return
+		}
+		mu.Lock()
+		installs = append(installs, r)
+		mu.Unlock()
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		r, err := InstallFFprobe(ctx, nil)
+		if err != nil {
+			mu.Lock()
+			errs = append(errs, err)
+			mu.Unlock()
+			return
+		}
+		mu.Lock()
+		installs = append(installs, r)
+		mu.Unlock()
+	}()
+
+	wg.Wait()
+
+	if len(errs) > 0 {
+		return installs, errors.Join(errs...)
+	}
+
+	return installs, nil
 }
 
 func downloadFile(ctx context.Context, url, targetDir, targetName string, perms os.FileMode) (dest string, err error) {

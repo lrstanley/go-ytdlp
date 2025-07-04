@@ -17,9 +17,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	MustInstall(context.Background(), nil)
-	MustInstallFFmpeg(context.Background(), nil)
-	MustInstallFFprobe(context.Background(), nil)
+	MustInstallAll(context.TODO())
 	os.Exit(m.Run())
 }
 
@@ -129,9 +127,7 @@ func TestCommand_Simple(t *testing.T) {
 }
 
 func TestCommand_Version(t *testing.T) {
-	MustInstall(context.Background(), nil)
-	MustInstallFFmpeg(context.Background(), nil)
-	MustInstallFFprobe(context.Background(), nil)
+	MustInstallAll(context.TODO())
 
 	res, err := New().Version(context.Background())
 	if err != nil {
@@ -153,9 +149,7 @@ func TestCommand_Version(t *testing.T) {
 }
 
 func TestCommand_Unset(t *testing.T) {
-	MustInstall(context.Background(), nil)
-	MustInstallFFmpeg(context.Background(), nil)
-	MustInstallFFprobe(context.Background(), nil)
+	MustInstallAll(context.TODO())
 
 	builder := New().Progress().NoProgress().Output("test.mp4")
 
@@ -182,9 +176,7 @@ func TestCommand_Unset(t *testing.T) {
 }
 
 func TestCommand_Clone(t *testing.T) {
-	MustInstall(context.Background(), nil)
-	MustInstallFFmpeg(context.Background(), nil)
-	MustInstallFFprobe(context.Background(), nil)
+	MustInstallAll(context.TODO())
 
 	builder1 := New().NoProgress().Output("test.mp4")
 
@@ -199,9 +191,7 @@ func TestCommand_Clone(t *testing.T) {
 }
 
 func TestCommand_SetExecutable(t *testing.T) {
-	MustInstall(context.Background(), nil)
-	MustInstallFFmpeg(context.Background(), nil)
-	MustInstallFFprobe(context.Background(), nil)
+	MustInstallAll(context.TODO())
 
 	cmd := New().SetExecutable("/usr/bin/test").buildCommand(context.Background(), sampleFiles[0].url)
 
@@ -211,9 +201,7 @@ func TestCommand_SetExecutable(t *testing.T) {
 }
 
 func TestCommand_SetWorkDir(t *testing.T) {
-	MustInstall(context.Background(), nil)
-	MustInstallFFmpeg(context.Background(), nil)
-	MustInstallFFprobe(context.Background(), nil)
+	MustInstallAll(context.TODO())
 
 	cmd := New().SetWorkDir("/tmp").buildCommand(context.Background(), sampleFiles[0].url)
 
@@ -223,9 +211,7 @@ func TestCommand_SetWorkDir(t *testing.T) {
 }
 
 func TestCommand_SetEnvVar(t *testing.T) {
-	MustInstall(context.Background(), nil)
-	MustInstallFFmpeg(context.Background(), nil)
-	MustInstallFFprobe(context.Background(), nil)
+	MustInstallAll(context.TODO())
 
 	cmd := New().SetEnvVar("TEST", "1").buildCommand(context.Background(), sampleFiles[0].url)
 
