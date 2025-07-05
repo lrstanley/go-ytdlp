@@ -9,5 +9,7 @@ bin/*
 !testdata/*.mp4
 cmd/patch-ytdlp/tmp/*
 cmd/patch-ytdlp/*.json
+_examples/bubble-dl/bubble-dl
+_examples/simple/simple
 .crush/
 .cursor/

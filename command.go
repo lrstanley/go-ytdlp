@@ -6,6 +6,7 @@ package ytdlp
 
 import (
 	"context"
+	"maps"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -35,20 +36,20 @@ type Command struct {
 	progress *progressHandler
 }
 
-// Clone returns a copy of the command, with all flags, env vars, executable, and
-// working directory copied over.
+// Clone returns a copy of the command, with all flags, env vars, executable,
+// working directory, etc copied over.
 func (c *Command) Clone() *Command {
 	c.mu.RLock()
 	cc := &Command{
-		executable: c.executable,
-		directory:  c.directory,
-		env:        make(map[string]string, len(c.env)),
-		flags:      make([]*Flag, len(c.flags)),
+		executable:           c.executable,
+		directory:            c.directory,
+		env:                  make(map[string]string, len(c.env)),
+		flags:                make([]*Flag, len(c.flags)),
+		separateProcessGroup: c.separateProcessGroup,
+		progress:             c.progress,
 	}
 
-	for k, v := range c.env {
-		cc.env[k] = v
-	}
+	maps.Copy(cc.env, c.env)
 
 	for i, f := range c.flags {
 		cc.flags[i] = f.Clone()
