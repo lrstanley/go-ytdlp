@@ -81,6 +81,9 @@ Below are a few guidelines if you would like to contribute:
 
 
 
+
+
+
 ### :penguin: Bash/Posix-shell
 
    * This project uses [shellcheck](https://github.com/koalaman/shellcheck)
@@ -90,9 +93,6 @@ Below are a few guidelines if you would like to contribute:
    * `shfmt` should be used if possible, to auto-format shell scripts. The
      flags that should generally be used are: `shfmt -s -bn -ci -sr`. This is
      available in VSCode [here](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format).
-
-
-
 
 
 
