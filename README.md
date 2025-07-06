@@ -173,7 +173,7 @@ started without manually installing these dependencies, and ensures the correct 
 | windows_amd64 | https://github.com/yt-dlp/FFmpeg-Builds |
 | windows_arm   | https://github.com/yt-dlp/FFmpeg-Builds |
 
-## FlagConfig: JSON <-> Flags Conversion & Usage
+## FlagConfig: JSON to/from Flags Conversion & Usage
 
 The `FlagConfig` type in **go-ytdlp** enables conversion between JSON and yt-dlp command-line flags.
 This is useful for scenarios such as HTTP APIs, web UIs, or persisting flag configurations in a database.
@@ -258,4 +258,4 @@ SOFTWARE.
 ```
 
 _Also located [here](LICENSE)_
-<!-- template:end:license
+<!-- template:end:license -->
