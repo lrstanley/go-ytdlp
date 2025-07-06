@@ -51,15 +51,18 @@ func validateFlagRemoved(t *testing.T, builder *Command, dest, flag string) {
 
 {{ range $group := .OptionGroups }}
 func TestBuilder_{{ $group.Name | to_camel | trimSuffix "s" }}_NonExecutable(t *testing.T) {
-{{- range $i, $option := .Options }}
-{{- $id := ($option.Name | to_camel) -}}
-{{- if $option.Executable }}{{ continue }}{{ end }}
-    t.Run({{ $id | quote }}, func(t *testing.T) {
-        builder := New().{{ $id }}({{ template "builder-test-args" $option }})
-        validateFlagAdded(t, builder, {{ $option.ID | quote }}, {{ $option.Flag | quote }}, {{ $option.NArgs }})
-        _ = builder.Unset{{ $id | trimPrefix "No" | trimPrefix "Yes" }}()
-        validateFlagRemoved(t, builder, {{ $option.ID | quote }}, {{ $option.Flag | quote }})
-    })
-{{- end }}{{/* end range for options */}}
+    t.Parallel()
+    {{- range $i, $option := .Options }}
+        {{- $id := ($option.Name | to_camel) -}}
+        {{- if $option.Executable }}{{ continue }}{{ end }}
+        t.Run({{ $id | quote }}, func(t *testing.T) {
+            t.Parallel()
+
+            builder := New().NoUpdate().{{ $id }}({{ template "builder-test-args" $option }})
+            validateFlagAdded(t, builder, {{ $option.ID | quote }}, {{ $option.Flag | quote }}, {{ $option.NArgs }})
+            _ = builder.Unset{{ $id | trimPrefix "No" | trimPrefix "Yes" }}()
+            validateFlagRemoved(t, builder, {{ $option.ID | quote }}, {{ $option.Flag | quote }})
+        })
+    {{- end }}{{/* end range for options */}}
 }
 {{ end }}{{/* end range for option groups */}}

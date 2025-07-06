@@ -37,6 +37,8 @@ var sampleFiles = []testSampleFile{
 }
 
 func TestCommand_Simple(t *testing.T) {
+	t.Parallel()
+
 	dir := t.TempDir()
 
 	var urls []string
@@ -48,6 +50,7 @@ func TestCommand_Simple(t *testing.T) {
 	progressUpdates := map[string]ProgressUpdate{}
 
 	res, err := New().
+		NoUpdate().
 		Verbose().
 		PrintJSON().
 		NoProgress().
@@ -87,6 +90,8 @@ func TestCommand_Simple(t *testing.T) {
 
 	for _, f := range sampleFiles {
 		t.Run(f.name, func(t *testing.T) {
+			t.Parallel()
+
 			var stat fs.FileInfo
 
 			fn := filepath.Join(dir, fmt.Sprintf("%s - %s.%s", f.extractor, f.name, f.ext))
@@ -128,7 +133,9 @@ func TestCommand_Simple(t *testing.T) {
 }
 
 func TestCommand_Version(t *testing.T) {
-	res, err := New().Version(context.Background())
+	t.Parallel()
+
+	res, err := New().NoUpdate().Version(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -148,7 +155,9 @@ func TestCommand_Version(t *testing.T) {
 }
 
 func TestCommand_Unset(t *testing.T) {
-	builder := New().Progress().NoProgress().Output("test.mp4")
+	t.Parallel()
+
+	builder := New().NoUpdate().Progress().NoProgress().Output("test.mp4")
 
 	cmd := builder.buildCommand(context.TODO(), sampleFiles[0].url)
 
@@ -166,14 +175,16 @@ func TestCommand_Unset(t *testing.T) {
 		t.Fatal("expected --no-progress flag to not be set")
 	}
 
-	// Progress and NoProgress should conflict, so arg length should be 4 (executable, output, output value, and url).
-	if len(cmd.Args) != 4 {
+	// Progress and NoProgress should conflict, so arg length should be 5 (no-update, executable, output, output value, and url).
+	if len(cmd.Args) != 5 {
 		t.Fatalf("expected arg length to be 4, got %d: %#v", len(cmd.Args), cmd.Args)
 	}
 }
 
 func TestCommand_Clone(t *testing.T) {
-	builder1 := New().NoProgress().Output("test.mp4")
+	t.Parallel()
+
+	builder1 := New().NoUpdate().NoProgress().Output("test.mp4")
 
 	builder2 := builder1.Clone()
 
@@ -186,7 +197,9 @@ func TestCommand_Clone(t *testing.T) {
 }
 
 func TestCommand_SetExecutable(t *testing.T) {
-	cmd := New().SetExecutable("/usr/bin/test").buildCommand(context.Background(), sampleFiles[0].url)
+	t.Parallel()
+
+	cmd := New().NoUpdate().SetExecutable("/usr/bin/test").buildCommand(context.Background(), sampleFiles[0].url)
 
 	if cmd.Path != "/usr/bin/test" {
 		t.Fatalf("expected executable to be /usr/bin/test, got %s", cmd.Path)
@@ -194,7 +207,9 @@ func TestCommand_SetExecutable(t *testing.T) {
 }
 
 func TestCommand_SetWorkDir(t *testing.T) {
-	cmd := New().SetWorkDir("/tmp").buildCommand(context.Background(), sampleFiles[0].url)
+	t.Parallel()
+
+	cmd := New().NoUpdate().SetWorkDir("/tmp").buildCommand(context.Background(), sampleFiles[0].url)
 
 	if cmd.Dir != "/tmp" {
 		t.Fatalf("expected workdir to be /tmp, got %s", cmd.Dir)
@@ -202,7 +217,9 @@ func TestCommand_SetWorkDir(t *testing.T) {
 }
 
 func TestCommand_SetEnvVar(t *testing.T) {
-	cmd := New().SetEnvVar("TEST", "1").buildCommand(context.Background(), sampleFiles[0].url)
+	t.Parallel()
+
+	cmd := New().NoUpdate().SetEnvVar("TEST", "1").buildCommand(context.Background(), sampleFiles[0].url)
 
 	if !slices.Contains(cmd.Env, "TEST=1") {
 		t.Fatalf("expected env var to be TEST=1, got %v", cmd.Env)
@@ -210,11 +227,13 @@ func TestCommand_SetEnvVar(t *testing.T) {
 }
 
 func TestCommand_SetFlagConfig_DuplicateFlags(t *testing.T) {
+	t.Parallel()
+
 	flagConfig := &FlagConfig{}
 	flagConfig.General.IgnoreErrors = ptr(true)
 	flagConfig.General.AbortOnError = ptr(true)
 
-	builder := New().SetFlagConfig(flagConfig)
+	builder := New().NoUpdate().SetFlagConfig(flagConfig)
 
 	err := builder.flagConfig.General.Validate()
 	if err == nil {
@@ -223,5 +242,25 @@ func TestCommand_SetFlagConfig_DuplicateFlags(t *testing.T) {
 
 	if _, ok := IsMultipleJSONParsingFlagsError(err); !ok {
 		t.Fatalf("expected validation error to be a multiple JSON parsing flags error, got %v", err)
+	}
+}
+
+func TestCommand_JSONClone(t *testing.T) {
+	t.Parallel()
+
+	builder := New().NoUpdate().IgnoreErrors().Output("test.mp4")
+
+	cloned := builder.GetFlagConfig().Clone()
+
+	if cloned.General.IgnoreErrors == nil {
+		t.Fatal("expected ignore errors to be set")
+	}
+
+	if v := cloned.Filesystem.Output; v == nil {
+		t.Fatal("expected output to be set")
+	}
+
+	if *cloned.Filesystem.Output != "test.mp4" {
+		t.Fatalf("expected output to be %q, got %q", "test.mp4", *cloned.Filesystem.Output)
 	}
 }

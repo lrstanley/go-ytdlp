@@ -50,146 +50,195 @@ func validateFlagRemoved(t *testing.T, builder *Command, dest, flag string) {
 }
 
 func TestBuilder_General_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("NoUpdate", func(t *testing.T) {
-		builder := New().NoUpdate()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoUpdate()
 		validateFlagAdded(t, builder, "update_self", "--no-update", 0)
 		_ = builder.UnsetUpdate()
 		validateFlagRemoved(t, builder, "update_self", "--no-update")
 	})
 	t.Run("IgnoreErrors", func(t *testing.T) {
-		builder := New().IgnoreErrors()
+		t.Parallel()
+
+		builder := New().NoUpdate().IgnoreErrors()
 		validateFlagAdded(t, builder, "ignoreerrors", "--ignore-errors", 0)
 		_ = builder.UnsetIgnoreErrors()
 		validateFlagRemoved(t, builder, "ignoreerrors", "--ignore-errors")
 	})
 	t.Run("NoAbortOnError", func(t *testing.T) {
-		builder := New().NoAbortOnError()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoAbortOnError()
 		validateFlagAdded(t, builder, "ignoreerrors", "--no-abort-on-error", 0)
 		_ = builder.UnsetAbortOnError()
 		validateFlagRemoved(t, builder, "ignoreerrors", "--no-abort-on-error")
 	})
 	t.Run("AbortOnError", func(t *testing.T) {
-		builder := New().AbortOnError()
+		t.Parallel()
+
+		builder := New().NoUpdate().AbortOnError()
 		validateFlagAdded(t, builder, "ignoreerrors", "--abort-on-error", 0)
 		_ = builder.UnsetAbortOnError()
 		validateFlagRemoved(t, builder, "ignoreerrors", "--abort-on-error")
 	})
 	t.Run("UseExtractors", func(t *testing.T) {
-		builder := New().UseExtractors("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().UseExtractors("test")
 		validateFlagAdded(t, builder, "allowed_extractors", "--use-extractors", 1)
 		_ = builder.UnsetUseExtractors()
 		validateFlagRemoved(t, builder, "allowed_extractors", "--use-extractors")
 	})
 	t.Run("ForceGenericExtractor", func(t *testing.T) {
-		builder := New().ForceGenericExtractor()
+		t.Parallel()
+
+		builder := New().NoUpdate().ForceGenericExtractor()
 		validateFlagAdded(t, builder, "force_generic_extractor", "--force-generic-extractor", 0)
 		_ = builder.UnsetForceGenericExtractor()
 		validateFlagRemoved(t, builder, "force_generic_extractor", "--force-generic-extractor")
 	})
 	t.Run("DefaultSearch", func(t *testing.T) {
-		builder := New().DefaultSearch("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().DefaultSearch("test")
 		validateFlagAdded(t, builder, "default_search", "--default-search", 1)
 		_ = builder.UnsetDefaultSearch()
 		validateFlagRemoved(t, builder, "default_search", "--default-search")
 	})
 	t.Run("IgnoreConfig", func(t *testing.T) {
-		builder := New().IgnoreConfig()
+		t.Parallel()
+
+		builder := New().NoUpdate().IgnoreConfig()
 		validateFlagAdded(t, builder, "ignoreconfig", "--ignore-config", 0)
 		_ = builder.UnsetIgnoreConfig()
 		validateFlagRemoved(t, builder, "ignoreconfig", "--ignore-config")
 	})
 	t.Run("NoConfigLocations", func(t *testing.T) {
-		builder := New().NoConfigLocations()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoConfigLocations()
 		validateFlagAdded(t, builder, "config_locations", "--no-config-locations", 0)
 		_ = builder.UnsetConfigLocations()
 		validateFlagRemoved(t, builder, "config_locations", "--no-config-locations")
 	})
 	t.Run("ConfigLocations", func(t *testing.T) {
-		builder := New().ConfigLocations("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ConfigLocations("test")
 		validateFlagAdded(t, builder, "config_locations", "--config-locations", 1)
 		_ = builder.UnsetConfigLocations()
 		validateFlagRemoved(t, builder, "config_locations", "--config-locations")
 	})
 	t.Run("PluginDirs", func(t *testing.T) {
-		builder := New().PluginDirs("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().PluginDirs("test")
 		validateFlagAdded(t, builder, "plugin_dirs", "--plugin-dirs", 1)
 		_ = builder.UnsetPluginDirs()
 		validateFlagRemoved(t, builder, "plugin_dirs", "--plugin-dirs")
 	})
 	t.Run("NoPluginDirs", func(t *testing.T) {
-		builder := New().NoPluginDirs()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoPluginDirs()
 		validateFlagAdded(t, builder, "plugin_dirs", "--no-plugin-dirs", 0)
 		_ = builder.UnsetPluginDirs()
 		validateFlagRemoved(t, builder, "plugin_dirs", "--no-plugin-dirs")
 	})
 	t.Run("FlatPlaylist", func(t *testing.T) {
-		builder := New().FlatPlaylist()
+		t.Parallel()
+
+		builder := New().NoUpdate().FlatPlaylist()
 		validateFlagAdded(t, builder, "extract_flat", "--flat-playlist", 0)
 		_ = builder.UnsetFlatPlaylist()
 		validateFlagRemoved(t, builder, "extract_flat", "--flat-playlist")
 	})
 	t.Run("NoFlatPlaylist", func(t *testing.T) {
-		builder := New().NoFlatPlaylist()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoFlatPlaylist()
 		validateFlagAdded(t, builder, "extract_flat", "--no-flat-playlist", 0)
 		_ = builder.UnsetFlatPlaylist()
 		validateFlagRemoved(t, builder, "extract_flat", "--no-flat-playlist")
 	})
 	t.Run("LiveFromStart", func(t *testing.T) {
-		builder := New().LiveFromStart()
+		t.Parallel()
+
+		builder := New().NoUpdate().LiveFromStart()
 		validateFlagAdded(t, builder, "live_from_start", "--live-from-start", 0)
 		_ = builder.UnsetLiveFromStart()
 		validateFlagRemoved(t, builder, "live_from_start", "--live-from-start")
 	})
 	t.Run("NoLiveFromStart", func(t *testing.T) {
-		builder := New().NoLiveFromStart()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoLiveFromStart()
 		validateFlagAdded(t, builder, "live_from_start", "--no-live-from-start", 0)
 		_ = builder.UnsetLiveFromStart()
 		validateFlagRemoved(t, builder, "live_from_start", "--no-live-from-start")
 	})
 	t.Run("WaitForVideo", func(t *testing.T) {
-		builder := New().WaitForVideo("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().WaitForVideo("test")
 		validateFlagAdded(t, builder, "wait_for_video", "--wait-for-video", 1)
 		_ = builder.UnsetWaitForVideo()
 		validateFlagRemoved(t, builder, "wait_for_video", "--wait-for-video")
 	})
 	t.Run("NoWaitForVideo", func(t *testing.T) {
-		builder := New().NoWaitForVideo()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoWaitForVideo()
 		validateFlagAdded(t, builder, "wait_for_video", "--no-wait-for-video", 0)
 		_ = builder.UnsetWaitForVideo()
 		validateFlagRemoved(t, builder, "wait_for_video", "--no-wait-for-video")
 	})
 	t.Run("MarkWatched", func(t *testing.T) {
-		builder := New().MarkWatched()
+		t.Parallel()
+
+		builder := New().NoUpdate().MarkWatched()
 		validateFlagAdded(t, builder, "mark_watched", "--mark-watched", 0)
 		_ = builder.UnsetMarkWatched()
 		validateFlagRemoved(t, builder, "mark_watched", "--mark-watched")
 	})
 	t.Run("NoMarkWatched", func(t *testing.T) {
-		builder := New().NoMarkWatched()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoMarkWatched()
 		validateFlagAdded(t, builder, "mark_watched", "--no-mark-watched", 0)
 		_ = builder.UnsetMarkWatched()
 		validateFlagRemoved(t, builder, "mark_watched", "--no-mark-watched")
 	})
 	t.Run("NoColors", func(t *testing.T) {
-		builder := New().NoColors()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoColors()
 		validateFlagAdded(t, builder, "color", "--no-colors", 0)
 		_ = builder.UnsetColors()
 		validateFlagRemoved(t, builder, "color", "--no-colors")
 	})
 	t.Run("Color", func(t *testing.T) {
-		builder := New().Color("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Color("test")
 		validateFlagAdded(t, builder, "color", "--color", 1)
 		_ = builder.UnsetColor()
 		validateFlagRemoved(t, builder, "color", "--color")
 	})
 	t.Run("CompatOptions", func(t *testing.T) {
-		builder := New().CompatOptions("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().CompatOptions("test")
 		validateFlagAdded(t, builder, "compat_opts", "--compat-options", 1)
 		_ = builder.UnsetCompatOptions()
 		validateFlagRemoved(t, builder, "compat_opts", "--compat-options")
 	})
 	t.Run("PresetAlias", func(t *testing.T) {
-		builder := New().PresetAlias("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().PresetAlias("test")
 		validateFlagAdded(t, builder, "preset-alias", "--preset-alias", 1)
 		_ = builder.UnsetPresetAlias()
 		validateFlagRemoved(t, builder, "preset-alias", "--preset-alias")
@@ -197,50 +246,67 @@ func TestBuilder_General_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Network_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("Proxy", func(t *testing.T) {
-		builder := New().Proxy("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Proxy("test")
 		validateFlagAdded(t, builder, "proxy", "--proxy", 1)
 		_ = builder.UnsetProxy()
 		validateFlagRemoved(t, builder, "proxy", "--proxy")
 	})
 	t.Run("SocketTimeout", func(t *testing.T) {
-		builder := New().SocketTimeout(1.0)
+		t.Parallel()
+
+		builder := New().NoUpdate().SocketTimeout(1.0)
 		validateFlagAdded(t, builder, "socket_timeout", "--socket-timeout", 1)
 		_ = builder.UnsetSocketTimeout()
 		validateFlagRemoved(t, builder, "socket_timeout", "--socket-timeout")
 	})
 	t.Run("SourceAddress", func(t *testing.T) {
-		builder := New().SourceAddress("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().SourceAddress("test")
 		validateFlagAdded(t, builder, "source_address", "--source-address", 1)
 		_ = builder.UnsetSourceAddress()
 		validateFlagRemoved(t, builder, "source_address", "--source-address")
 	})
 	t.Run("Impersonate", func(t *testing.T) {
-		builder := New().Impersonate("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Impersonate("test")
 		validateFlagAdded(t, builder, "impersonate", "--impersonate", 1)
 		_ = builder.UnsetImpersonate()
 		validateFlagRemoved(t, builder, "impersonate", "--impersonate")
 	})
 	t.Run("ListImpersonateTargets", func(t *testing.T) {
-		builder := New().ListImpersonateTargets()
+		t.Parallel()
+
+		builder := New().NoUpdate().ListImpersonateTargets()
 		validateFlagAdded(t, builder, "list_impersonate_targets", "--list-impersonate-targets", 0)
 		_ = builder.UnsetListImpersonateTargets()
 		validateFlagRemoved(t, builder, "list_impersonate_targets", "--list-impersonate-targets")
 	})
 	t.Run("ForceIPv4", func(t *testing.T) {
-		builder := New().ForceIPv4()
+		t.Parallel()
+
+		builder := New().NoUpdate().ForceIPv4()
 		validateFlagAdded(t, builder, "source_address", "--force-ipv4", 0)
 		_ = builder.UnsetForceIPv4()
 		validateFlagRemoved(t, builder, "source_address", "--force-ipv4")
 	})
 	t.Run("ForceIPv6", func(t *testing.T) {
-		builder := New().ForceIPv6()
+		t.Parallel()
+
+		builder := New().NoUpdate().ForceIPv6()
 		validateFlagAdded(t, builder, "source_address", "--force-ipv6", 0)
 		_ = builder.UnsetForceIPv6()
 		validateFlagRemoved(t, builder, "source_address", "--force-ipv6")
 	})
 	t.Run("EnableFileURLs", func(t *testing.T) {
-		builder := New().EnableFileURLs()
+		t.Parallel()
+
+		builder := New().NoUpdate().EnableFileURLs()
 		validateFlagAdded(t, builder, "enable_file_urls", "--enable-file-urls", 0)
 		_ = builder.UnsetEnableFileURLs()
 		validateFlagRemoved(t, builder, "enable_file_urls", "--enable-file-urls")
@@ -248,44 +314,59 @@ func TestBuilder_Network_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_GeoRestriction_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("GeoVerificationProxy", func(t *testing.T) {
-		builder := New().GeoVerificationProxy("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().GeoVerificationProxy("test")
 		validateFlagAdded(t, builder, "geo_verification_proxy", "--geo-verification-proxy", 1)
 		_ = builder.UnsetGeoVerificationProxy()
 		validateFlagRemoved(t, builder, "geo_verification_proxy", "--geo-verification-proxy")
 	})
 	t.Run("CNVerificationProxy", func(t *testing.T) {
-		builder := New().CNVerificationProxy("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().CNVerificationProxy("test")
 		validateFlagAdded(t, builder, "cn_verification_proxy", "--cn-verification-proxy", 1)
 		_ = builder.UnsetCNVerificationProxy()
 		validateFlagRemoved(t, builder, "cn_verification_proxy", "--cn-verification-proxy")
 	})
 	t.Run("XFF", func(t *testing.T) {
-		builder := New().XFF("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().XFF("test")
 		validateFlagAdded(t, builder, "geo_bypass", "--xff", 1)
 		_ = builder.UnsetXFF()
 		validateFlagRemoved(t, builder, "geo_bypass", "--xff")
 	})
 	t.Run("GeoBypass", func(t *testing.T) {
-		builder := New().GeoBypass()
+		t.Parallel()
+
+		builder := New().NoUpdate().GeoBypass()
 		validateFlagAdded(t, builder, "geo_bypass", "--geo-bypass", 0)
 		_ = builder.UnsetGeoBypass()
 		validateFlagRemoved(t, builder, "geo_bypass", "--geo-bypass")
 	})
 	t.Run("NoGeoBypass", func(t *testing.T) {
-		builder := New().NoGeoBypass()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoGeoBypass()
 		validateFlagAdded(t, builder, "geo_bypass", "--no-geo-bypass", 0)
 		_ = builder.UnsetGeoBypass()
 		validateFlagRemoved(t, builder, "geo_bypass", "--no-geo-bypass")
 	})
 	t.Run("GeoBypassCountry", func(t *testing.T) {
-		builder := New().GeoBypassCountry("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().GeoBypassCountry("test")
 		validateFlagAdded(t, builder, "geo_bypass", "--geo-bypass-country", 1)
 		_ = builder.UnsetGeoBypassCountry()
 		validateFlagRemoved(t, builder, "geo_bypass", "--geo-bypass-country")
 	})
 	t.Run("GeoBypassIPBlock", func(t *testing.T) {
-		builder := New().GeoBypassIPBlock("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().GeoBypassIPBlock("test")
 		validateFlagAdded(t, builder, "geo_bypass", "--geo-bypass-ip-block", 1)
 		_ = builder.UnsetGeoBypassIPBlock()
 		validateFlagRemoved(t, builder, "geo_bypass", "--geo-bypass-ip-block")
@@ -293,182 +374,243 @@ func TestBuilder_GeoRestriction_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_VideoSelection_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("PlaylistStart", func(t *testing.T) {
-		builder := New().PlaylistStart(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().PlaylistStart(1)
 		validateFlagAdded(t, builder, "playliststart", "--playlist-start", 1)
 		_ = builder.UnsetPlaylistStart()
 		validateFlagRemoved(t, builder, "playliststart", "--playlist-start")
 	})
 	t.Run("PlaylistEnd", func(t *testing.T) {
-		builder := New().PlaylistEnd(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().PlaylistEnd(1)
 		validateFlagAdded(t, builder, "playlistend", "--playlist-end", 1)
 		_ = builder.UnsetPlaylistEnd()
 		validateFlagRemoved(t, builder, "playlistend", "--playlist-end")
 	})
 	t.Run("PlaylistItems", func(t *testing.T) {
-		builder := New().PlaylistItems("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().PlaylistItems("test")
 		validateFlagAdded(t, builder, "playlist_items", "--playlist-items", 1)
 		_ = builder.UnsetPlaylistItems()
 		validateFlagRemoved(t, builder, "playlist_items", "--playlist-items")
 	})
 	t.Run("MatchTitle", func(t *testing.T) {
-		builder := New().MatchTitle("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().MatchTitle("test")
 		validateFlagAdded(t, builder, "matchtitle", "--match-title", 1)
 		_ = builder.UnsetMatchTitle()
 		validateFlagRemoved(t, builder, "matchtitle", "--match-title")
 	})
 	t.Run("RejectTitle", func(t *testing.T) {
-		builder := New().RejectTitle("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().RejectTitle("test")
 		validateFlagAdded(t, builder, "rejecttitle", "--reject-title", 1)
 		_ = builder.UnsetRejectTitle()
 		validateFlagRemoved(t, builder, "rejecttitle", "--reject-title")
 	})
 	t.Run("MinFileSize", func(t *testing.T) {
-		builder := New().MinFileSize("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().MinFileSize("test")
 		validateFlagAdded(t, builder, "min_filesize", "--min-filesize", 1)
 		_ = builder.UnsetMinFileSize()
 		validateFlagRemoved(t, builder, "min_filesize", "--min-filesize")
 	})
 	t.Run("MaxFileSize", func(t *testing.T) {
-		builder := New().MaxFileSize("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().MaxFileSize("test")
 		validateFlagAdded(t, builder, "max_filesize", "--max-filesize", 1)
 		_ = builder.UnsetMaxFileSize()
 		validateFlagRemoved(t, builder, "max_filesize", "--max-filesize")
 	})
 	t.Run("Date", func(t *testing.T) {
-		builder := New().Date("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Date("test")
 		validateFlagAdded(t, builder, "date", "--date", 1)
 		_ = builder.UnsetDate()
 		validateFlagRemoved(t, builder, "date", "--date")
 	})
 	t.Run("DateBefore", func(t *testing.T) {
-		builder := New().DateBefore("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().DateBefore("test")
 		validateFlagAdded(t, builder, "datebefore", "--datebefore", 1)
 		_ = builder.UnsetDateBefore()
 		validateFlagRemoved(t, builder, "datebefore", "--datebefore")
 	})
 	t.Run("DateAfter", func(t *testing.T) {
-		builder := New().DateAfter("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().DateAfter("test")
 		validateFlagAdded(t, builder, "dateafter", "--dateafter", 1)
 		_ = builder.UnsetDateAfter()
 		validateFlagRemoved(t, builder, "dateafter", "--dateafter")
 	})
 	t.Run("MinViews", func(t *testing.T) {
-		builder := New().MinViews(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().MinViews(1)
 		validateFlagAdded(t, builder, "min_views", "--min-views", 1)
 		_ = builder.UnsetMinViews()
 		validateFlagRemoved(t, builder, "min_views", "--min-views")
 	})
 	t.Run("MaxViews", func(t *testing.T) {
-		builder := New().MaxViews(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().MaxViews(1)
 		validateFlagAdded(t, builder, "max_views", "--max-views", 1)
 		_ = builder.UnsetMaxViews()
 		validateFlagRemoved(t, builder, "max_views", "--max-views")
 	})
 	t.Run("MatchFilters", func(t *testing.T) {
-		builder := New().MatchFilters("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().MatchFilters("test")
 		validateFlagAdded(t, builder, "match_filter", "--match-filters", 1)
 		_ = builder.UnsetMatchFilters()
 		validateFlagRemoved(t, builder, "match_filter", "--match-filters")
 	})
 	t.Run("NoMatchFilters", func(t *testing.T) {
-		builder := New().NoMatchFilters()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoMatchFilters()
 		validateFlagAdded(t, builder, "match_filter", "--no-match-filters", 0)
 		_ = builder.UnsetMatchFilters()
 		validateFlagRemoved(t, builder, "match_filter", "--no-match-filters")
 	})
 	t.Run("BreakMatchFilters", func(t *testing.T) {
-		builder := New().BreakMatchFilters("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().BreakMatchFilters("test")
 		validateFlagAdded(t, builder, "breaking_match_filter", "--break-match-filters", 1)
 		_ = builder.UnsetBreakMatchFilters()
 		validateFlagRemoved(t, builder, "breaking_match_filter", "--break-match-filters")
 	})
 	t.Run("NoBreakMatchFilters", func(t *testing.T) {
-		builder := New().NoBreakMatchFilters()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoBreakMatchFilters()
 		validateFlagAdded(t, builder, "breaking_match_filter", "--no-break-match-filters", 0)
 		_ = builder.UnsetBreakMatchFilters()
 		validateFlagRemoved(t, builder, "breaking_match_filter", "--no-break-match-filters")
 	})
 	t.Run("NoPlaylist", func(t *testing.T) {
-		builder := New().NoPlaylist()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoPlaylist()
 		validateFlagAdded(t, builder, "noplaylist", "--no-playlist", 0)
 		_ = builder.UnsetPlaylist()
 		validateFlagRemoved(t, builder, "noplaylist", "--no-playlist")
 	})
 	t.Run("YesPlaylist", func(t *testing.T) {
-		builder := New().YesPlaylist()
+		t.Parallel()
+
+		builder := New().NoUpdate().YesPlaylist()
 		validateFlagAdded(t, builder, "noplaylist", "--yes-playlist", 0)
 		_ = builder.UnsetPlaylist()
 		validateFlagRemoved(t, builder, "noplaylist", "--yes-playlist")
 	})
 	t.Run("AgeLimit", func(t *testing.T) {
-		builder := New().AgeLimit(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().AgeLimit(1)
 		validateFlagAdded(t, builder, "age_limit", "--age-limit", 1)
 		_ = builder.UnsetAgeLimit()
 		validateFlagRemoved(t, builder, "age_limit", "--age-limit")
 	})
 	t.Run("DownloadArchive", func(t *testing.T) {
-		builder := New().DownloadArchive("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().DownloadArchive("test")
 		validateFlagAdded(t, builder, "download_archive", "--download-archive", 1)
 		_ = builder.UnsetDownloadArchive()
 		validateFlagRemoved(t, builder, "download_archive", "--download-archive")
 	})
 	t.Run("NoDownloadArchive", func(t *testing.T) {
-		builder := New().NoDownloadArchive()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoDownloadArchive()
 		validateFlagAdded(t, builder, "download_archive", "--no-download-archive", 0)
 		_ = builder.UnsetDownloadArchive()
 		validateFlagRemoved(t, builder, "download_archive", "--no-download-archive")
 	})
 	t.Run("MaxDownloads", func(t *testing.T) {
-		builder := New().MaxDownloads(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().MaxDownloads(1)
 		validateFlagAdded(t, builder, "max_downloads", "--max-downloads", 1)
 		_ = builder.UnsetMaxDownloads()
 		validateFlagRemoved(t, builder, "max_downloads", "--max-downloads")
 	})
 	t.Run("BreakOnExisting", func(t *testing.T) {
-		builder := New().BreakOnExisting()
+		t.Parallel()
+
+		builder := New().NoUpdate().BreakOnExisting()
 		validateFlagAdded(t, builder, "break_on_existing", "--break-on-existing", 0)
 		_ = builder.UnsetBreakOnExisting()
 		validateFlagRemoved(t, builder, "break_on_existing", "--break-on-existing")
 	})
 	t.Run("NoBreakOnExisting", func(t *testing.T) {
-		builder := New().NoBreakOnExisting()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoBreakOnExisting()
 		validateFlagAdded(t, builder, "break_on_existing", "--no-break-on-existing", 0)
 		_ = builder.UnsetBreakOnExisting()
 		validateFlagRemoved(t, builder, "break_on_existing", "--no-break-on-existing")
 	})
 	t.Run("BreakOnReject", func(t *testing.T) {
-		builder := New().BreakOnReject()
+		t.Parallel()
+
+		builder := New().NoUpdate().BreakOnReject()
 		validateFlagAdded(t, builder, "break_on_reject", "--break-on-reject", 0)
 		_ = builder.UnsetBreakOnReject()
 		validateFlagRemoved(t, builder, "break_on_reject", "--break-on-reject")
 	})
 	t.Run("BreakPerInput", func(t *testing.T) {
-		builder := New().BreakPerInput()
+		t.Parallel()
+
+		builder := New().NoUpdate().BreakPerInput()
 		validateFlagAdded(t, builder, "break_per_url", "--break-per-input", 0)
 		_ = builder.UnsetBreakPerInput()
 		validateFlagRemoved(t, builder, "break_per_url", "--break-per-input")
 	})
 	t.Run("NoBreakPerInput", func(t *testing.T) {
-		builder := New().NoBreakPerInput()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoBreakPerInput()
 		validateFlagAdded(t, builder, "break_per_url", "--no-break-per-input", 0)
 		_ = builder.UnsetBreakPerInput()
 		validateFlagRemoved(t, builder, "break_per_url", "--no-break-per-input")
 	})
 	t.Run("SkipPlaylistAfterErrors", func(t *testing.T) {
-		builder := New().SkipPlaylistAfterErrors(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().SkipPlaylistAfterErrors(1)
 		validateFlagAdded(t, builder, "skip_playlist_after_errors", "--skip-playlist-after-errors", 1)
 		_ = builder.UnsetSkipPlaylistAfterErrors()
 		validateFlagRemoved(t, builder, "skip_playlist_after_errors", "--skip-playlist-after-errors")
 	})
 	t.Run("IncludeAds", func(t *testing.T) {
-		builder := New().IncludeAds()
+		t.Parallel()
+
+		builder := New().NoUpdate().IncludeAds()
 		validateFlagAdded(t, builder, "include_ads", "--include-ads", 0)
 		_ = builder.UnsetIncludeAds()
 		validateFlagRemoved(t, builder, "include_ads", "--include-ads")
 	})
 	t.Run("NoIncludeAds", func(t *testing.T) {
-		builder := New().NoIncludeAds()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoIncludeAds()
 		validateFlagAdded(t, builder, "include_ads", "--no-include-ads", 0)
 		_ = builder.UnsetIncludeAds()
 		validateFlagRemoved(t, builder, "include_ads", "--no-include-ads")
@@ -476,170 +618,227 @@ func TestBuilder_VideoSelection_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Download_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("ConcurrentFragments", func(t *testing.T) {
-		builder := New().ConcurrentFragments(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().ConcurrentFragments(1)
 		validateFlagAdded(t, builder, "concurrent_fragment_downloads", "--concurrent-fragments", 1)
 		_ = builder.UnsetConcurrentFragments()
 		validateFlagRemoved(t, builder, "concurrent_fragment_downloads", "--concurrent-fragments")
 	})
 	t.Run("LimitRate", func(t *testing.T) {
-		builder := New().LimitRate("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().LimitRate("test")
 		validateFlagAdded(t, builder, "ratelimit", "--limit-rate", 1)
 		_ = builder.UnsetLimitRate()
 		validateFlagRemoved(t, builder, "ratelimit", "--limit-rate")
 	})
 	t.Run("ThrottledRate", func(t *testing.T) {
-		builder := New().ThrottledRate("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ThrottledRate("test")
 		validateFlagAdded(t, builder, "throttledratelimit", "--throttled-rate", 1)
 		_ = builder.UnsetThrottledRate()
 		validateFlagRemoved(t, builder, "throttledratelimit", "--throttled-rate")
 	})
 	t.Run("Retries", func(t *testing.T) {
-		builder := New().Retries("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Retries("test")
 		validateFlagAdded(t, builder, "retries", "--retries", 1)
 		_ = builder.UnsetRetries()
 		validateFlagRemoved(t, builder, "retries", "--retries")
 	})
 	t.Run("FileAccessRetries", func(t *testing.T) {
-		builder := New().FileAccessRetries("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().FileAccessRetries("test")
 		validateFlagAdded(t, builder, "file_access_retries", "--file-access-retries", 1)
 		_ = builder.UnsetFileAccessRetries()
 		validateFlagRemoved(t, builder, "file_access_retries", "--file-access-retries")
 	})
 	t.Run("FragmentRetries", func(t *testing.T) {
-		builder := New().FragmentRetries("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().FragmentRetries("test")
 		validateFlagAdded(t, builder, "fragment_retries", "--fragment-retries", 1)
 		_ = builder.UnsetFragmentRetries()
 		validateFlagRemoved(t, builder, "fragment_retries", "--fragment-retries")
 	})
 	t.Run("RetrySleep", func(t *testing.T) {
-		builder := New().RetrySleep("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().RetrySleep("test")
 		validateFlagAdded(t, builder, "retry_sleep", "--retry-sleep", 1)
 		_ = builder.UnsetRetrySleep()
 		validateFlagRemoved(t, builder, "retry_sleep", "--retry-sleep")
 	})
 	t.Run("SkipUnavailableFragments", func(t *testing.T) {
-		builder := New().SkipUnavailableFragments()
+		t.Parallel()
+
+		builder := New().NoUpdate().SkipUnavailableFragments()
 		validateFlagAdded(t, builder, "skip_unavailable_fragments", "--skip-unavailable-fragments", 0)
 		_ = builder.UnsetSkipUnavailableFragments()
 		validateFlagRemoved(t, builder, "skip_unavailable_fragments", "--skip-unavailable-fragments")
 	})
 	t.Run("AbortOnUnavailableFragments", func(t *testing.T) {
-		builder := New().AbortOnUnavailableFragments()
+		t.Parallel()
+
+		builder := New().NoUpdate().AbortOnUnavailableFragments()
 		validateFlagAdded(t, builder, "skip_unavailable_fragments", "--abort-on-unavailable-fragments", 0)
 		_ = builder.UnsetAbortOnUnavailableFragments()
 		validateFlagRemoved(t, builder, "skip_unavailable_fragments", "--abort-on-unavailable-fragments")
 	})
 	t.Run("KeepFragments", func(t *testing.T) {
-		builder := New().KeepFragments()
+		t.Parallel()
+
+		builder := New().NoUpdate().KeepFragments()
 		validateFlagAdded(t, builder, "keep_fragments", "--keep-fragments", 0)
 		_ = builder.UnsetKeepFragments()
 		validateFlagRemoved(t, builder, "keep_fragments", "--keep-fragments")
 	})
 	t.Run("NoKeepFragments", func(t *testing.T) {
-		builder := New().NoKeepFragments()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoKeepFragments()
 		validateFlagAdded(t, builder, "keep_fragments", "--no-keep-fragments", 0)
 		_ = builder.UnsetKeepFragments()
 		validateFlagRemoved(t, builder, "keep_fragments", "--no-keep-fragments")
 	})
 	t.Run("BufferSize", func(t *testing.T) {
-		builder := New().BufferSize("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().BufferSize("test")
 		validateFlagAdded(t, builder, "buffersize", "--buffer-size", 1)
 		_ = builder.UnsetBufferSize()
 		validateFlagRemoved(t, builder, "buffersize", "--buffer-size")
 	})
 	t.Run("ResizeBuffer", func(t *testing.T) {
-		builder := New().ResizeBuffer()
+		t.Parallel()
+
+		builder := New().NoUpdate().ResizeBuffer()
 		validateFlagAdded(t, builder, "noresizebuffer", "--resize-buffer", 0)
 		_ = builder.UnsetResizeBuffer()
 		validateFlagRemoved(t, builder, "noresizebuffer", "--resize-buffer")
 	})
 	t.Run("NoResizeBuffer", func(t *testing.T) {
-		builder := New().NoResizeBuffer()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoResizeBuffer()
 		validateFlagAdded(t, builder, "noresizebuffer", "--no-resize-buffer", 0)
 		_ = builder.UnsetResizeBuffer()
 		validateFlagRemoved(t, builder, "noresizebuffer", "--no-resize-buffer")
 	})
 	t.Run("HTTPChunkSize", func(t *testing.T) {
-		builder := New().HTTPChunkSize("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().HTTPChunkSize("test")
 		validateFlagAdded(t, builder, "http_chunk_size", "--http-chunk-size", 1)
 		_ = builder.UnsetHTTPChunkSize()
 		validateFlagRemoved(t, builder, "http_chunk_size", "--http-chunk-size")
 	})
 	t.Run("PlaylistReverse", func(t *testing.T) {
-		builder := New().PlaylistReverse()
+		t.Parallel()
+
+		builder := New().NoUpdate().PlaylistReverse()
 		validateFlagAdded(t, builder, "playlist_reverse", "--playlist-reverse", 0)
 		_ = builder.UnsetPlaylistReverse()
 		validateFlagRemoved(t, builder, "playlist_reverse", "--playlist-reverse")
 	})
 	t.Run("NoPlaylistReverse", func(t *testing.T) {
-		builder := New().NoPlaylistReverse()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoPlaylistReverse()
 		validateFlagAdded(t, builder, "playlist_reverse", "--no-playlist-reverse", 0)
 		_ = builder.UnsetPlaylistReverse()
 		validateFlagRemoved(t, builder, "playlist_reverse", "--no-playlist-reverse")
 	})
 	t.Run("PlaylistRandom", func(t *testing.T) {
-		builder := New().PlaylistRandom()
+		t.Parallel()
+
+		builder := New().NoUpdate().PlaylistRandom()
 		validateFlagAdded(t, builder, "playlist_random", "--playlist-random", 0)
 		_ = builder.UnsetPlaylistRandom()
 		validateFlagRemoved(t, builder, "playlist_random", "--playlist-random")
 	})
 	t.Run("LazyPlaylist", func(t *testing.T) {
-		builder := New().LazyPlaylist()
+		t.Parallel()
+
+		builder := New().NoUpdate().LazyPlaylist()
 		validateFlagAdded(t, builder, "lazy_playlist", "--lazy-playlist", 0)
 		_ = builder.UnsetLazyPlaylist()
 		validateFlagRemoved(t, builder, "lazy_playlist", "--lazy-playlist")
 	})
 	t.Run("NoLazyPlaylist", func(t *testing.T) {
-		builder := New().NoLazyPlaylist()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoLazyPlaylist()
 		validateFlagAdded(t, builder, "lazy_playlist", "--no-lazy-playlist", 0)
 		_ = builder.UnsetLazyPlaylist()
 		validateFlagRemoved(t, builder, "lazy_playlist", "--no-lazy-playlist")
 	})
 	t.Run("XattrSetFileSize", func(t *testing.T) {
-		builder := New().XattrSetFileSize()
+		t.Parallel()
+
+		builder := New().NoUpdate().XattrSetFileSize()
 		validateFlagAdded(t, builder, "xattr_set_filesize", "--xattr-set-filesize", 0)
 		_ = builder.UnsetXattrSetFileSize()
 		validateFlagRemoved(t, builder, "xattr_set_filesize", "--xattr-set-filesize")
 	})
 	t.Run("HLSPreferNative", func(t *testing.T) {
-		builder := New().HLSPreferNative()
+		t.Parallel()
+
+		builder := New().NoUpdate().HLSPreferNative()
 		validateFlagAdded(t, builder, "hls_prefer_native", "--hls-prefer-native", 0)
 		_ = builder.UnsetHLSPreferNative()
 		validateFlagRemoved(t, builder, "hls_prefer_native", "--hls-prefer-native")
 	})
 	t.Run("HLSPreferFFmpeg", func(t *testing.T) {
-		builder := New().HLSPreferFFmpeg()
+		t.Parallel()
+
+		builder := New().NoUpdate().HLSPreferFFmpeg()
 		validateFlagAdded(t, builder, "hls_prefer_native", "--hls-prefer-ffmpeg", 0)
 		_ = builder.UnsetHLSPreferFFmpeg()
 		validateFlagRemoved(t, builder, "hls_prefer_native", "--hls-prefer-ffmpeg")
 	})
 	t.Run("HLSUseMPEGTS", func(t *testing.T) {
-		builder := New().HLSUseMPEGTS()
+		t.Parallel()
+
+		builder := New().NoUpdate().HLSUseMPEGTS()
 		validateFlagAdded(t, builder, "hls_use_mpegts", "--hls-use-mpegts", 0)
 		_ = builder.UnsetHLSUseMPEGTS()
 		validateFlagRemoved(t, builder, "hls_use_mpegts", "--hls-use-mpegts")
 	})
 	t.Run("NoHLSUseMPEGTS", func(t *testing.T) {
-		builder := New().NoHLSUseMPEGTS()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoHLSUseMPEGTS()
 		validateFlagAdded(t, builder, "hls_use_mpegts", "--no-hls-use-mpegts", 0)
 		_ = builder.UnsetHLSUseMPEGTS()
 		validateFlagRemoved(t, builder, "hls_use_mpegts", "--no-hls-use-mpegts")
 	})
 	t.Run("DownloadSections", func(t *testing.T) {
-		builder := New().DownloadSections("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().DownloadSections("test")
 		validateFlagAdded(t, builder, "download_ranges", "--download-sections", 1)
 		_ = builder.UnsetDownloadSections()
 		validateFlagRemoved(t, builder, "download_ranges", "--download-sections")
 	})
 	t.Run("Downloader", func(t *testing.T) {
-		builder := New().Downloader("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Downloader("test")
 		validateFlagAdded(t, builder, "external_downloader", "--downloader", 1)
 		_ = builder.UnsetDownloader()
 		validateFlagRemoved(t, builder, "external_downloader", "--downloader")
 	})
 	t.Run("DownloaderArgs", func(t *testing.T) {
-		builder := New().DownloaderArgs("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().DownloaderArgs("test")
 		validateFlagAdded(t, builder, "external_downloader_args", "--downloader-args", 1)
 		_ = builder.UnsetDownloaderArgs()
 		validateFlagRemoved(t, builder, "external_downloader_args", "--downloader-args")
@@ -647,254 +846,339 @@ func TestBuilder_Download_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Filesystem_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("BatchFile", func(t *testing.T) {
-		builder := New().BatchFile("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().BatchFile("test")
 		validateFlagAdded(t, builder, "batchfile", "--batch-file", 1)
 		_ = builder.UnsetBatchFile()
 		validateFlagRemoved(t, builder, "batchfile", "--batch-file")
 	})
 	t.Run("NoBatchFile", func(t *testing.T) {
-		builder := New().NoBatchFile()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoBatchFile()
 		validateFlagAdded(t, builder, "batchfile", "--no-batch-file", 0)
 		_ = builder.UnsetBatchFile()
 		validateFlagRemoved(t, builder, "batchfile", "--no-batch-file")
 	})
 	t.Run("ID", func(t *testing.T) {
-		builder := New().ID()
+		t.Parallel()
+
+		builder := New().NoUpdate().ID()
 		validateFlagAdded(t, builder, "useid", "--id", 0)
 		_ = builder.UnsetID()
 		validateFlagRemoved(t, builder, "useid", "--id")
 	})
 	t.Run("Paths", func(t *testing.T) {
-		builder := New().Paths("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Paths("test")
 		validateFlagAdded(t, builder, "paths", "--paths", 1)
 		_ = builder.UnsetPaths()
 		validateFlagRemoved(t, builder, "paths", "--paths")
 	})
 	t.Run("Output", func(t *testing.T) {
-		builder := New().Output("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Output("test")
 		validateFlagAdded(t, builder, "outtmpl", "--output", 1)
 		_ = builder.UnsetOutput()
 		validateFlagRemoved(t, builder, "outtmpl", "--output")
 	})
 	t.Run("OutputNaPlaceholder", func(t *testing.T) {
-		builder := New().OutputNaPlaceholder("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().OutputNaPlaceholder("test")
 		validateFlagAdded(t, builder, "outtmpl_na_placeholder", "--output-na-placeholder", 1)
 		_ = builder.UnsetOutputNaPlaceholder()
 		validateFlagRemoved(t, builder, "outtmpl_na_placeholder", "--output-na-placeholder")
 	})
 	t.Run("AutoNumberSize", func(t *testing.T) {
-		builder := New().AutoNumberSize(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().AutoNumberSize(1)
 		validateFlagAdded(t, builder, "autonumber_size", "--autonumber-size", 1)
 		_ = builder.UnsetAutoNumberSize()
 		validateFlagRemoved(t, builder, "autonumber_size", "--autonumber-size")
 	})
 	t.Run("AutoNumberStart", func(t *testing.T) {
-		builder := New().AutoNumberStart(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().AutoNumberStart(1)
 		validateFlagAdded(t, builder, "autonumber_start", "--autonumber-start", 1)
 		_ = builder.UnsetAutoNumberStart()
 		validateFlagRemoved(t, builder, "autonumber_start", "--autonumber-start")
 	})
 	t.Run("RestrictFilenames", func(t *testing.T) {
-		builder := New().RestrictFilenames()
+		t.Parallel()
+
+		builder := New().NoUpdate().RestrictFilenames()
 		validateFlagAdded(t, builder, "restrictfilenames", "--restrict-filenames", 0)
 		_ = builder.UnsetRestrictFilenames()
 		validateFlagRemoved(t, builder, "restrictfilenames", "--restrict-filenames")
 	})
 	t.Run("NoRestrictFilenames", func(t *testing.T) {
-		builder := New().NoRestrictFilenames()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoRestrictFilenames()
 		validateFlagAdded(t, builder, "restrictfilenames", "--no-restrict-filenames", 0)
 		_ = builder.UnsetRestrictFilenames()
 		validateFlagRemoved(t, builder, "restrictfilenames", "--no-restrict-filenames")
 	})
 	t.Run("WindowsFilenames", func(t *testing.T) {
-		builder := New().WindowsFilenames()
+		t.Parallel()
+
+		builder := New().NoUpdate().WindowsFilenames()
 		validateFlagAdded(t, builder, "windowsfilenames", "--windows-filenames", 0)
 		_ = builder.UnsetWindowsFilenames()
 		validateFlagRemoved(t, builder, "windowsfilenames", "--windows-filenames")
 	})
 	t.Run("NoWindowsFilenames", func(t *testing.T) {
-		builder := New().NoWindowsFilenames()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoWindowsFilenames()
 		validateFlagAdded(t, builder, "windowsfilenames", "--no-windows-filenames", 0)
 		_ = builder.UnsetWindowsFilenames()
 		validateFlagRemoved(t, builder, "windowsfilenames", "--no-windows-filenames")
 	})
 	t.Run("TrimFilenames", func(t *testing.T) {
-		builder := New().TrimFilenames(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().TrimFilenames(1)
 		validateFlagAdded(t, builder, "trim_file_name", "--trim-filenames", 1)
 		_ = builder.UnsetTrimFilenames()
 		validateFlagRemoved(t, builder, "trim_file_name", "--trim-filenames")
 	})
 	t.Run("NoOverwrites", func(t *testing.T) {
-		builder := New().NoOverwrites()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoOverwrites()
 		validateFlagAdded(t, builder, "overwrites", "--no-overwrites", 0)
 		_ = builder.UnsetOverwrites()
 		validateFlagRemoved(t, builder, "overwrites", "--no-overwrites")
 	})
 	t.Run("ForceOverwrites", func(t *testing.T) {
-		builder := New().ForceOverwrites()
+		t.Parallel()
+
+		builder := New().NoUpdate().ForceOverwrites()
 		validateFlagAdded(t, builder, "overwrites", "--force-overwrites", 0)
 		_ = builder.UnsetForceOverwrites()
 		validateFlagRemoved(t, builder, "overwrites", "--force-overwrites")
 	})
 	t.Run("NoForceOverwrites", func(t *testing.T) {
-		builder := New().NoForceOverwrites()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoForceOverwrites()
 		validateFlagAdded(t, builder, "overwrites", "--no-force-overwrites", 0)
 		_ = builder.UnsetForceOverwrites()
 		validateFlagRemoved(t, builder, "overwrites", "--no-force-overwrites")
 	})
 	t.Run("Continue", func(t *testing.T) {
-		builder := New().Continue()
+		t.Parallel()
+
+		builder := New().NoUpdate().Continue()
 		validateFlagAdded(t, builder, "continue_dl", "--continue", 0)
 		_ = builder.UnsetContinue()
 		validateFlagRemoved(t, builder, "continue_dl", "--continue")
 	})
 	t.Run("NoContinue", func(t *testing.T) {
-		builder := New().NoContinue()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoContinue()
 		validateFlagAdded(t, builder, "continue_dl", "--no-continue", 0)
 		_ = builder.UnsetContinue()
 		validateFlagRemoved(t, builder, "continue_dl", "--no-continue")
 	})
 	t.Run("Part", func(t *testing.T) {
-		builder := New().Part()
+		t.Parallel()
+
+		builder := New().NoUpdate().Part()
 		validateFlagAdded(t, builder, "nopart", "--part", 0)
 		_ = builder.UnsetPart()
 		validateFlagRemoved(t, builder, "nopart", "--part")
 	})
 	t.Run("NoPart", func(t *testing.T) {
-		builder := New().NoPart()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoPart()
 		validateFlagAdded(t, builder, "nopart", "--no-part", 0)
 		_ = builder.UnsetPart()
 		validateFlagRemoved(t, builder, "nopart", "--no-part")
 	})
 	t.Run("Mtime", func(t *testing.T) {
-		builder := New().Mtime()
+		t.Parallel()
+
+		builder := New().NoUpdate().Mtime()
 		validateFlagAdded(t, builder, "updatetime", "--mtime", 0)
 		_ = builder.UnsetMtime()
 		validateFlagRemoved(t, builder, "updatetime", "--mtime")
 	})
 	t.Run("NoMtime", func(t *testing.T) {
-		builder := New().NoMtime()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoMtime()
 		validateFlagAdded(t, builder, "updatetime", "--no-mtime", 0)
 		_ = builder.UnsetMtime()
 		validateFlagRemoved(t, builder, "updatetime", "--no-mtime")
 	})
 	t.Run("WriteDescription", func(t *testing.T) {
-		builder := New().WriteDescription()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteDescription()
 		validateFlagAdded(t, builder, "writedescription", "--write-description", 0)
 		_ = builder.UnsetWriteDescription()
 		validateFlagRemoved(t, builder, "writedescription", "--write-description")
 	})
 	t.Run("NoWriteDescription", func(t *testing.T) {
-		builder := New().NoWriteDescription()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoWriteDescription()
 		validateFlagAdded(t, builder, "writedescription", "--no-write-description", 0)
 		_ = builder.UnsetWriteDescription()
 		validateFlagRemoved(t, builder, "writedescription", "--no-write-description")
 	})
 	t.Run("WriteInfoJSON", func(t *testing.T) {
-		builder := New().WriteInfoJSON()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteInfoJSON()
 		validateFlagAdded(t, builder, "writeinfojson", "--write-info-json", 0)
 		_ = builder.UnsetWriteInfoJSON()
 		validateFlagRemoved(t, builder, "writeinfojson", "--write-info-json")
 	})
 	t.Run("NoWriteInfoJSON", func(t *testing.T) {
-		builder := New().NoWriteInfoJSON()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoWriteInfoJSON()
 		validateFlagAdded(t, builder, "writeinfojson", "--no-write-info-json", 0)
 		_ = builder.UnsetWriteInfoJSON()
 		validateFlagRemoved(t, builder, "writeinfojson", "--no-write-info-json")
 	})
 	t.Run("WriteAnnotations", func(t *testing.T) {
-		builder := New().WriteAnnotations()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteAnnotations()
 		validateFlagAdded(t, builder, "writeannotations", "--write-annotations", 0)
 		_ = builder.UnsetWriteAnnotations()
 		validateFlagRemoved(t, builder, "writeannotations", "--write-annotations")
 	})
 	t.Run("NoWriteAnnotations", func(t *testing.T) {
-		builder := New().NoWriteAnnotations()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoWriteAnnotations()
 		validateFlagAdded(t, builder, "writeannotations", "--no-write-annotations", 0)
 		_ = builder.UnsetWriteAnnotations()
 		validateFlagRemoved(t, builder, "writeannotations", "--no-write-annotations")
 	})
 	t.Run("WritePlaylistMetafiles", func(t *testing.T) {
-		builder := New().WritePlaylistMetafiles()
+		t.Parallel()
+
+		builder := New().NoUpdate().WritePlaylistMetafiles()
 		validateFlagAdded(t, builder, "allow_playlist_files", "--write-playlist-metafiles", 0)
 		_ = builder.UnsetWritePlaylistMetafiles()
 		validateFlagRemoved(t, builder, "allow_playlist_files", "--write-playlist-metafiles")
 	})
 	t.Run("NoWritePlaylistMetafiles", func(t *testing.T) {
-		builder := New().NoWritePlaylistMetafiles()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoWritePlaylistMetafiles()
 		validateFlagAdded(t, builder, "allow_playlist_files", "--no-write-playlist-metafiles", 0)
 		_ = builder.UnsetWritePlaylistMetafiles()
 		validateFlagRemoved(t, builder, "allow_playlist_files", "--no-write-playlist-metafiles")
 	})
 	t.Run("CleanInfoJSON", func(t *testing.T) {
-		builder := New().CleanInfoJSON()
+		t.Parallel()
+
+		builder := New().NoUpdate().CleanInfoJSON()
 		validateFlagAdded(t, builder, "clean_infojson", "--clean-info-json", 0)
 		_ = builder.UnsetCleanInfoJSON()
 		validateFlagRemoved(t, builder, "clean_infojson", "--clean-info-json")
 	})
 	t.Run("NoCleanInfoJSON", func(t *testing.T) {
-		builder := New().NoCleanInfoJSON()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoCleanInfoJSON()
 		validateFlagAdded(t, builder, "clean_infojson", "--no-clean-info-json", 0)
 		_ = builder.UnsetCleanInfoJSON()
 		validateFlagRemoved(t, builder, "clean_infojson", "--no-clean-info-json")
 	})
 	t.Run("WriteComments", func(t *testing.T) {
-		builder := New().WriteComments()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteComments()
 		validateFlagAdded(t, builder, "getcomments", "--write-comments", 0)
 		_ = builder.UnsetWriteComments()
 		validateFlagRemoved(t, builder, "getcomments", "--write-comments")
 	})
 	t.Run("NoWriteComments", func(t *testing.T) {
-		builder := New().NoWriteComments()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoWriteComments()
 		validateFlagAdded(t, builder, "getcomments", "--no-write-comments", 0)
 		_ = builder.UnsetWriteComments()
 		validateFlagRemoved(t, builder, "getcomments", "--no-write-comments")
 	})
 	t.Run("LoadInfoJSON", func(t *testing.T) {
-		builder := New().LoadInfoJSON("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().LoadInfoJSON("test")
 		validateFlagAdded(t, builder, "load_info_filename", "--load-info-json", 1)
 		_ = builder.UnsetLoadInfoJSON()
 		validateFlagRemoved(t, builder, "load_info_filename", "--load-info-json")
 	})
 	t.Run("Cookies", func(t *testing.T) {
-		builder := New().Cookies("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Cookies("test")
 		validateFlagAdded(t, builder, "cookiefile", "--cookies", 1)
 		_ = builder.UnsetCookies()
 		validateFlagRemoved(t, builder, "cookiefile", "--cookies")
 	})
 	t.Run("NoCookies", func(t *testing.T) {
-		builder := New().NoCookies()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoCookies()
 		validateFlagAdded(t, builder, "cookiefile", "--no-cookies", 0)
 		_ = builder.UnsetCookies()
 		validateFlagRemoved(t, builder, "cookiefile", "--no-cookies")
 	})
 	t.Run("CookiesFromBrowser", func(t *testing.T) {
-		builder := New().CookiesFromBrowser("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().CookiesFromBrowser("test")
 		validateFlagAdded(t, builder, "cookiesfrombrowser", "--cookies-from-browser", 1)
 		_ = builder.UnsetCookiesFromBrowser()
 		validateFlagRemoved(t, builder, "cookiesfrombrowser", "--cookies-from-browser")
 	})
 	t.Run("NoCookiesFromBrowser", func(t *testing.T) {
-		builder := New().NoCookiesFromBrowser()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoCookiesFromBrowser()
 		validateFlagAdded(t, builder, "cookiesfrombrowser", "--no-cookies-from-browser", 0)
 		_ = builder.UnsetCookiesFromBrowser()
 		validateFlagRemoved(t, builder, "cookiesfrombrowser", "--no-cookies-from-browser")
 	})
 	t.Run("CacheDir", func(t *testing.T) {
-		builder := New().CacheDir("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().CacheDir("test")
 		validateFlagAdded(t, builder, "cachedir", "--cache-dir", 1)
 		_ = builder.UnsetCacheDir()
 		validateFlagRemoved(t, builder, "cachedir", "--cache-dir")
 	})
 	t.Run("NoCacheDir", func(t *testing.T) {
-		builder := New().NoCacheDir()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoCacheDir()
 		validateFlagAdded(t, builder, "cachedir", "--no-cache-dir", 0)
 		_ = builder.UnsetCacheDir()
 		validateFlagRemoved(t, builder, "cachedir", "--no-cache-dir")
 	})
 	t.Run("RmCacheDir", func(t *testing.T) {
-		builder := New().RmCacheDir()
+		t.Parallel()
+
+		builder := New().NoUpdate().RmCacheDir()
 		validateFlagAdded(t, builder, "rm_cachedir", "--rm-cache-dir", 0)
 		_ = builder.UnsetRmCacheDir()
 		validateFlagRemoved(t, builder, "rm_cachedir", "--rm-cache-dir")
@@ -902,26 +1186,35 @@ func TestBuilder_Filesystem_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Thumbnail_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("WriteThumbnail", func(t *testing.T) {
-		builder := New().WriteThumbnail()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteThumbnail()
 		validateFlagAdded(t, builder, "writethumbnail", "--write-thumbnail", 0)
 		_ = builder.UnsetWriteThumbnail()
 		validateFlagRemoved(t, builder, "writethumbnail", "--write-thumbnail")
 	})
 	t.Run("NoWriteThumbnail", func(t *testing.T) {
-		builder := New().NoWriteThumbnail()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoWriteThumbnail()
 		validateFlagAdded(t, builder, "writethumbnail", "--no-write-thumbnail", 0)
 		_ = builder.UnsetWriteThumbnail()
 		validateFlagRemoved(t, builder, "writethumbnail", "--no-write-thumbnail")
 	})
 	t.Run("WriteAllThumbnails", func(t *testing.T) {
-		builder := New().WriteAllThumbnails()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteAllThumbnails()
 		validateFlagAdded(t, builder, "writethumbnail", "--write-all-thumbnails", 0)
 		_ = builder.UnsetWriteAllThumbnails()
 		validateFlagRemoved(t, builder, "writethumbnail", "--write-all-thumbnails")
 	})
 	t.Run("ListThumbnails", func(t *testing.T) {
-		builder := New().ListThumbnails()
+		t.Parallel()
+
+		builder := New().NoUpdate().ListThumbnails()
 		validateFlagAdded(t, builder, "list_thumbnails", "--list-thumbnails", 0)
 		_ = builder.UnsetListThumbnails()
 		validateFlagRemoved(t, builder, "list_thumbnails", "--list-thumbnails")
@@ -929,26 +1222,35 @@ func TestBuilder_Thumbnail_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_InternetShortcut_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("WriteLink", func(t *testing.T) {
-		builder := New().WriteLink()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteLink()
 		validateFlagAdded(t, builder, "writelink", "--write-link", 0)
 		_ = builder.UnsetWriteLink()
 		validateFlagRemoved(t, builder, "writelink", "--write-link")
 	})
 	t.Run("WriteURLLink", func(t *testing.T) {
-		builder := New().WriteURLLink()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteURLLink()
 		validateFlagAdded(t, builder, "writeurllink", "--write-url-link", 0)
 		_ = builder.UnsetWriteURLLink()
 		validateFlagRemoved(t, builder, "writeurllink", "--write-url-link")
 	})
 	t.Run("WriteWeblocLink", func(t *testing.T) {
-		builder := New().WriteWeblocLink()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteWeblocLink()
 		validateFlagAdded(t, builder, "writewebloclink", "--write-webloc-link", 0)
 		_ = builder.UnsetWriteWeblocLink()
 		validateFlagRemoved(t, builder, "writewebloclink", "--write-webloc-link")
 	})
 	t.Run("WriteDesktopLink", func(t *testing.T) {
-		builder := New().WriteDesktopLink()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteDesktopLink()
 		validateFlagAdded(t, builder, "writedesktoplink", "--write-desktop-link", 0)
 		_ = builder.UnsetWriteDesktopLink()
 		validateFlagRemoved(t, builder, "writedesktoplink", "--write-desktop-link")
@@ -956,206 +1258,275 @@ func TestBuilder_InternetShortcut_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_VerbositySimulation_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("Quiet", func(t *testing.T) {
-		builder := New().Quiet()
+		t.Parallel()
+
+		builder := New().NoUpdate().Quiet()
 		validateFlagAdded(t, builder, "quiet", "--quiet", 0)
 		_ = builder.UnsetQuiet()
 		validateFlagRemoved(t, builder, "quiet", "--quiet")
 	})
 	t.Run("NoQuiet", func(t *testing.T) {
-		builder := New().NoQuiet()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoQuiet()
 		validateFlagAdded(t, builder, "quiet", "--no-quiet", 0)
 		_ = builder.UnsetQuiet()
 		validateFlagRemoved(t, builder, "quiet", "--no-quiet")
 	})
 	t.Run("NoWarnings", func(t *testing.T) {
-		builder := New().NoWarnings()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoWarnings()
 		validateFlagAdded(t, builder, "no_warnings", "--no-warnings", 0)
 		_ = builder.UnsetWarnings()
 		validateFlagRemoved(t, builder, "no_warnings", "--no-warnings")
 	})
 	t.Run("Simulate", func(t *testing.T) {
-		builder := New().Simulate()
+		t.Parallel()
+
+		builder := New().NoUpdate().Simulate()
 		validateFlagAdded(t, builder, "simulate", "--simulate", 0)
 		_ = builder.UnsetSimulate()
 		validateFlagRemoved(t, builder, "simulate", "--simulate")
 	})
 	t.Run("NoSimulate", func(t *testing.T) {
-		builder := New().NoSimulate()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoSimulate()
 		validateFlagAdded(t, builder, "simulate", "--no-simulate", 0)
 		_ = builder.UnsetSimulate()
 		validateFlagRemoved(t, builder, "simulate", "--no-simulate")
 	})
 	t.Run("IgnoreNoFormatsError", func(t *testing.T) {
-		builder := New().IgnoreNoFormatsError()
+		t.Parallel()
+
+		builder := New().NoUpdate().IgnoreNoFormatsError()
 		validateFlagAdded(t, builder, "ignore_no_formats_error", "--ignore-no-formats-error", 0)
 		_ = builder.UnsetIgnoreNoFormatsError()
 		validateFlagRemoved(t, builder, "ignore_no_formats_error", "--ignore-no-formats-error")
 	})
 	t.Run("NoIgnoreNoFormatsError", func(t *testing.T) {
-		builder := New().NoIgnoreNoFormatsError()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoIgnoreNoFormatsError()
 		validateFlagAdded(t, builder, "ignore_no_formats_error", "--no-ignore-no-formats-error", 0)
 		_ = builder.UnsetIgnoreNoFormatsError()
 		validateFlagRemoved(t, builder, "ignore_no_formats_error", "--no-ignore-no-formats-error")
 	})
 	t.Run("SkipDownload", func(t *testing.T) {
-		builder := New().SkipDownload()
+		t.Parallel()
+
+		builder := New().NoUpdate().SkipDownload()
 		validateFlagAdded(t, builder, "skip_download", "--skip-download", 0)
 		_ = builder.UnsetSkipDownload()
 		validateFlagRemoved(t, builder, "skip_download", "--skip-download")
 	})
 	t.Run("Print", func(t *testing.T) {
-		builder := New().Print("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Print("test")
 		validateFlagAdded(t, builder, "forceprint", "--print", 1)
 		_ = builder.UnsetPrint()
 		validateFlagRemoved(t, builder, "forceprint", "--print")
 	})
 	t.Run("PrintToFile", func(t *testing.T) {
-		builder := New().PrintToFile("test", "test")
+		t.Parallel()
+
+		builder := New().NoUpdate().PrintToFile("test", "test")
 		validateFlagAdded(t, builder, "print_to_file", "--print-to-file", 2)
 		_ = builder.UnsetPrintToFile()
 		validateFlagRemoved(t, builder, "print_to_file", "--print-to-file")
 	})
 	t.Run("GetURL", func(t *testing.T) {
-		builder := New().GetURL()
+		t.Parallel()
+
+		builder := New().NoUpdate().GetURL()
 		validateFlagAdded(t, builder, "geturl", "--get-url", 0)
 		_ = builder.UnsetGetURL()
 		validateFlagRemoved(t, builder, "geturl", "--get-url")
 	})
 	t.Run("GetTitle", func(t *testing.T) {
-		builder := New().GetTitle()
+		t.Parallel()
+
+		builder := New().NoUpdate().GetTitle()
 		validateFlagAdded(t, builder, "gettitle", "--get-title", 0)
 		_ = builder.UnsetGetTitle()
 		validateFlagRemoved(t, builder, "gettitle", "--get-title")
 	})
 	t.Run("GetID", func(t *testing.T) {
-		builder := New().GetID()
+		t.Parallel()
+
+		builder := New().NoUpdate().GetID()
 		validateFlagAdded(t, builder, "getid", "--get-id", 0)
 		_ = builder.UnsetGetID()
 		validateFlagRemoved(t, builder, "getid", "--get-id")
 	})
 	t.Run("GetThumbnail", func(t *testing.T) {
-		builder := New().GetThumbnail()
+		t.Parallel()
+
+		builder := New().NoUpdate().GetThumbnail()
 		validateFlagAdded(t, builder, "getthumbnail", "--get-thumbnail", 0)
 		_ = builder.UnsetGetThumbnail()
 		validateFlagRemoved(t, builder, "getthumbnail", "--get-thumbnail")
 	})
 	t.Run("GetDescription", func(t *testing.T) {
-		builder := New().GetDescription()
+		t.Parallel()
+
+		builder := New().NoUpdate().GetDescription()
 		validateFlagAdded(t, builder, "getdescription", "--get-description", 0)
 		_ = builder.UnsetGetDescription()
 		validateFlagRemoved(t, builder, "getdescription", "--get-description")
 	})
 	t.Run("GetDuration", func(t *testing.T) {
-		builder := New().GetDuration()
+		t.Parallel()
+
+		builder := New().NoUpdate().GetDuration()
 		validateFlagAdded(t, builder, "getduration", "--get-duration", 0)
 		_ = builder.UnsetGetDuration()
 		validateFlagRemoved(t, builder, "getduration", "--get-duration")
 	})
 	t.Run("GetFilename", func(t *testing.T) {
-		builder := New().GetFilename()
+		t.Parallel()
+
+		builder := New().NoUpdate().GetFilename()
 		validateFlagAdded(t, builder, "getfilename", "--get-filename", 0)
 		_ = builder.UnsetGetFilename()
 		validateFlagRemoved(t, builder, "getfilename", "--get-filename")
 	})
 	t.Run("GetFormat", func(t *testing.T) {
-		builder := New().GetFormat()
+		t.Parallel()
+
+		builder := New().NoUpdate().GetFormat()
 		validateFlagAdded(t, builder, "getformat", "--get-format", 0)
 		_ = builder.UnsetGetFormat()
 		validateFlagRemoved(t, builder, "getformat", "--get-format")
 	})
 	t.Run("DumpJSON", func(t *testing.T) {
-		builder := New().DumpJSON()
+		t.Parallel()
+
+		builder := New().NoUpdate().DumpJSON()
 		validateFlagAdded(t, builder, "dumpjson", "--dump-json", 0)
 		_ = builder.UnsetDumpJSON()
 		validateFlagRemoved(t, builder, "dumpjson", "--dump-json")
 	})
 	t.Run("DumpSingleJSON", func(t *testing.T) {
-		builder := New().DumpSingleJSON()
+		t.Parallel()
+
+		builder := New().NoUpdate().DumpSingleJSON()
 		validateFlagAdded(t, builder, "dump_single_json", "--dump-single-json", 0)
 		_ = builder.UnsetDumpSingleJSON()
 		validateFlagRemoved(t, builder, "dump_single_json", "--dump-single-json")
 	})
 	t.Run("PrintJSON", func(t *testing.T) {
-		builder := New().PrintJSON()
+		t.Parallel()
+
+		builder := New().NoUpdate().PrintJSON()
 		validateFlagAdded(t, builder, "print_json", "--print-json", 0)
 		_ = builder.UnsetPrintJSON()
 		validateFlagRemoved(t, builder, "print_json", "--print-json")
 	})
 	t.Run("ForceWriteArchive", func(t *testing.T) {
-		builder := New().ForceWriteArchive()
+		t.Parallel()
+
+		builder := New().NoUpdate().ForceWriteArchive()
 		validateFlagAdded(t, builder, "force_write_download_archive", "--force-write-archive", 0)
 		_ = builder.UnsetForceWriteArchive()
 		validateFlagRemoved(t, builder, "force_write_download_archive", "--force-write-archive")
 	})
 	t.Run("Newline", func(t *testing.T) {
-		builder := New().Newline()
+		t.Parallel()
+
+		builder := New().NoUpdate().Newline()
 		validateFlagAdded(t, builder, "progress_with_newline", "--newline", 0)
 		_ = builder.UnsetNewline()
 		validateFlagRemoved(t, builder, "progress_with_newline", "--newline")
 	})
 	t.Run("NoProgress", func(t *testing.T) {
-		builder := New().NoProgress()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoProgress()
 		validateFlagAdded(t, builder, "noprogress", "--no-progress", 0)
 		_ = builder.UnsetProgress()
 		validateFlagRemoved(t, builder, "noprogress", "--no-progress")
 	})
 	t.Run("Progress", func(t *testing.T) {
-		builder := New().Progress()
+		t.Parallel()
+
+		builder := New().NoUpdate().Progress()
 		validateFlagAdded(t, builder, "noprogress", "--progress", 0)
 		_ = builder.UnsetProgress()
 		validateFlagRemoved(t, builder, "noprogress", "--progress")
 	})
 	t.Run("ConsoleTitle", func(t *testing.T) {
-		builder := New().ConsoleTitle()
+		t.Parallel()
+
+		builder := New().NoUpdate().ConsoleTitle()
 		validateFlagAdded(t, builder, "consoletitle", "--console-title", 0)
 		_ = builder.UnsetConsoleTitle()
 		validateFlagRemoved(t, builder, "consoletitle", "--console-title")
 	})
 	t.Run("ProgressTemplate", func(t *testing.T) {
-		builder := New().ProgressTemplate("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ProgressTemplate("test")
 		validateFlagAdded(t, builder, "progress_template", "--progress-template", 1)
 		_ = builder.UnsetProgressTemplate()
 		validateFlagRemoved(t, builder, "progress_template", "--progress-template")
 	})
 	t.Run("ProgressDelta", func(t *testing.T) {
-		builder := New().ProgressDelta(1.0)
+		t.Parallel()
+
+		builder := New().NoUpdate().ProgressDelta(1.0)
 		validateFlagAdded(t, builder, "progress_delta", "--progress-delta", 1)
 		_ = builder.UnsetProgressDelta()
 		validateFlagRemoved(t, builder, "progress_delta", "--progress-delta")
 	})
 	t.Run("Verbose", func(t *testing.T) {
-		builder := New().Verbose()
+		t.Parallel()
+
+		builder := New().NoUpdate().Verbose()
 		validateFlagAdded(t, builder, "verbose", "--verbose", 0)
 		_ = builder.UnsetVerbose()
 		validateFlagRemoved(t, builder, "verbose", "--verbose")
 	})
 	t.Run("DumpPages", func(t *testing.T) {
-		builder := New().DumpPages()
+		t.Parallel()
+
+		builder := New().NoUpdate().DumpPages()
 		validateFlagAdded(t, builder, "dump_intermediate_pages", "--dump-pages", 0)
 		_ = builder.UnsetDumpPages()
 		validateFlagRemoved(t, builder, "dump_intermediate_pages", "--dump-pages")
 	})
 	t.Run("WritePages", func(t *testing.T) {
-		builder := New().WritePages()
+		t.Parallel()
+
+		builder := New().NoUpdate().WritePages()
 		validateFlagAdded(t, builder, "write_pages", "--write-pages", 0)
 		_ = builder.UnsetWritePages()
 		validateFlagRemoved(t, builder, "write_pages", "--write-pages")
 	})
 	t.Run("PrintTraffic", func(t *testing.T) {
-		builder := New().PrintTraffic()
+		t.Parallel()
+
+		builder := New().NoUpdate().PrintTraffic()
 		validateFlagAdded(t, builder, "debug_printtraffic", "--print-traffic", 0)
 		_ = builder.UnsetPrintTraffic()
 		validateFlagRemoved(t, builder, "debug_printtraffic", "--print-traffic")
 	})
 	t.Run("CallHome", func(t *testing.T) {
-		builder := New().CallHome()
+		t.Parallel()
+
+		builder := New().NoUpdate().CallHome()
 		validateFlagAdded(t, builder, "call_home", "--call-home", 0)
 		_ = builder.UnsetCallHome()
 		validateFlagRemoved(t, builder, "call_home", "--call-home")
 	})
 	t.Run("NoCallHome", func(t *testing.T) {
-		builder := New().NoCallHome()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoCallHome()
 		validateFlagAdded(t, builder, "call_home", "--no-call-home", 0)
 		_ = builder.UnsetCallHome()
 		validateFlagRemoved(t, builder, "call_home", "--no-call-home")
@@ -1163,74 +1534,99 @@ func TestBuilder_VerbositySimulation_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Workaround_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("Encoding", func(t *testing.T) {
-		builder := New().Encoding("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Encoding("test")
 		validateFlagAdded(t, builder, "encoding", "--encoding", 1)
 		_ = builder.UnsetEncoding()
 		validateFlagRemoved(t, builder, "encoding", "--encoding")
 	})
 	t.Run("LegacyServerConnect", func(t *testing.T) {
-		builder := New().LegacyServerConnect()
+		t.Parallel()
+
+		builder := New().NoUpdate().LegacyServerConnect()
 		validateFlagAdded(t, builder, "legacy_server_connect", "--legacy-server-connect", 0)
 		_ = builder.UnsetLegacyServerConnect()
 		validateFlagRemoved(t, builder, "legacy_server_connect", "--legacy-server-connect")
 	})
 	t.Run("NoCheckCertificates", func(t *testing.T) {
-		builder := New().NoCheckCertificates()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoCheckCertificates()
 		validateFlagAdded(t, builder, "no_check_certificate", "--no-check-certificates", 0)
 		_ = builder.UnsetCheckCertificates()
 		validateFlagRemoved(t, builder, "no_check_certificate", "--no-check-certificates")
 	})
 	t.Run("PreferInsecure", func(t *testing.T) {
-		builder := New().PreferInsecure()
+		t.Parallel()
+
+		builder := New().NoUpdate().PreferInsecure()
 		validateFlagAdded(t, builder, "prefer_insecure", "--prefer-insecure", 0)
 		_ = builder.UnsetPreferInsecure()
 		validateFlagRemoved(t, builder, "prefer_insecure", "--prefer-insecure")
 	})
 	t.Run("UserAgent", func(t *testing.T) {
-		builder := New().UserAgent("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().UserAgent("test")
 		validateFlagAdded(t, builder, "user_agent", "--user-agent", 1)
 		_ = builder.UnsetUserAgent()
 		validateFlagRemoved(t, builder, "user_agent", "--user-agent")
 	})
 	t.Run("Referer", func(t *testing.T) {
-		builder := New().Referer("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Referer("test")
 		validateFlagAdded(t, builder, "referer", "--referer", 1)
 		_ = builder.UnsetReferer()
 		validateFlagRemoved(t, builder, "referer", "--referer")
 	})
 	t.Run("AddHeaders", func(t *testing.T) {
-		builder := New().AddHeaders("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().AddHeaders("test")
 		validateFlagAdded(t, builder, "headers", "--add-headers", 1)
 		_ = builder.UnsetAddHeaders()
 		validateFlagRemoved(t, builder, "headers", "--add-headers")
 	})
 	t.Run("BidiWorkaround", func(t *testing.T) {
-		builder := New().BidiWorkaround()
+		t.Parallel()
+
+		builder := New().NoUpdate().BidiWorkaround()
 		validateFlagAdded(t, builder, "bidi_workaround", "--bidi-workaround", 0)
 		_ = builder.UnsetBidiWorkaround()
 		validateFlagRemoved(t, builder, "bidi_workaround", "--bidi-workaround")
 	})
 	t.Run("SleepRequests", func(t *testing.T) {
-		builder := New().SleepRequests(1.0)
+		t.Parallel()
+
+		builder := New().NoUpdate().SleepRequests(1.0)
 		validateFlagAdded(t, builder, "sleep_interval_requests", "--sleep-requests", 1)
 		_ = builder.UnsetSleepRequests()
 		validateFlagRemoved(t, builder, "sleep_interval_requests", "--sleep-requests")
 	})
 	t.Run("SleepInterval", func(t *testing.T) {
-		builder := New().SleepInterval(1.0)
+		t.Parallel()
+
+		builder := New().NoUpdate().SleepInterval(1.0)
 		validateFlagAdded(t, builder, "sleep_interval", "--sleep-interval", 1)
 		_ = builder.UnsetSleepInterval()
 		validateFlagRemoved(t, builder, "sleep_interval", "--sleep-interval")
 	})
 	t.Run("MaxSleepInterval", func(t *testing.T) {
-		builder := New().MaxSleepInterval(1.0)
+		t.Parallel()
+
+		builder := New().NoUpdate().MaxSleepInterval(1.0)
 		validateFlagAdded(t, builder, "max_sleep_interval", "--max-sleep-interval", 1)
 		_ = builder.UnsetMaxSleepInterval()
 		validateFlagRemoved(t, builder, "max_sleep_interval", "--max-sleep-interval")
 	})
 	t.Run("SleepSubtitles", func(t *testing.T) {
-		builder := New().SleepSubtitles(1)
+		t.Parallel()
+
+		builder := New().NoUpdate().SleepSubtitles(1)
 		validateFlagAdded(t, builder, "sleep_interval_subtitles", "--sleep-subtitles", 1)
 		_ = builder.UnsetSleepSubtitles()
 		validateFlagRemoved(t, builder, "sleep_interval_subtitles", "--sleep-subtitles")
@@ -1238,110 +1634,147 @@ func TestBuilder_Workaround_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_VideoFormat_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("Format", func(t *testing.T) {
-		builder := New().Format("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Format("test")
 		validateFlagAdded(t, builder, "format", "--format", 1)
 		_ = builder.UnsetFormat()
 		validateFlagRemoved(t, builder, "format", "--format")
 	})
 	t.Run("FormatSort", func(t *testing.T) {
-		builder := New().FormatSort("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().FormatSort("test")
 		validateFlagAdded(t, builder, "format_sort", "--format-sort", 1)
 		_ = builder.UnsetFormatSort()
 		validateFlagRemoved(t, builder, "format_sort", "--format-sort")
 	})
 	t.Run("FormatSortForce", func(t *testing.T) {
-		builder := New().FormatSortForce()
+		t.Parallel()
+
+		builder := New().NoUpdate().FormatSortForce()
 		validateFlagAdded(t, builder, "format_sort_force", "--format-sort-force", 0)
 		_ = builder.UnsetFormatSortForce()
 		validateFlagRemoved(t, builder, "format_sort_force", "--format-sort-force")
 	})
 	t.Run("NoFormatSortForce", func(t *testing.T) {
-		builder := New().NoFormatSortForce()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoFormatSortForce()
 		validateFlagAdded(t, builder, "format_sort_force", "--no-format-sort-force", 0)
 		_ = builder.UnsetFormatSortForce()
 		validateFlagRemoved(t, builder, "format_sort_force", "--no-format-sort-force")
 	})
 	t.Run("VideoMultistreams", func(t *testing.T) {
-		builder := New().VideoMultistreams()
+		t.Parallel()
+
+		builder := New().NoUpdate().VideoMultistreams()
 		validateFlagAdded(t, builder, "allow_multiple_video_streams", "--video-multistreams", 0)
 		_ = builder.UnsetVideoMultistreams()
 		validateFlagRemoved(t, builder, "allow_multiple_video_streams", "--video-multistreams")
 	})
 	t.Run("NoVideoMultistreams", func(t *testing.T) {
-		builder := New().NoVideoMultistreams()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoVideoMultistreams()
 		validateFlagAdded(t, builder, "allow_multiple_video_streams", "--no-video-multistreams", 0)
 		_ = builder.UnsetVideoMultistreams()
 		validateFlagRemoved(t, builder, "allow_multiple_video_streams", "--no-video-multistreams")
 	})
 	t.Run("AudioMultistreams", func(t *testing.T) {
-		builder := New().AudioMultistreams()
+		t.Parallel()
+
+		builder := New().NoUpdate().AudioMultistreams()
 		validateFlagAdded(t, builder, "allow_multiple_audio_streams", "--audio-multistreams", 0)
 		_ = builder.UnsetAudioMultistreams()
 		validateFlagRemoved(t, builder, "allow_multiple_audio_streams", "--audio-multistreams")
 	})
 	t.Run("NoAudioMultistreams", func(t *testing.T) {
-		builder := New().NoAudioMultistreams()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoAudioMultistreams()
 		validateFlagAdded(t, builder, "allow_multiple_audio_streams", "--no-audio-multistreams", 0)
 		_ = builder.UnsetAudioMultistreams()
 		validateFlagRemoved(t, builder, "allow_multiple_audio_streams", "--no-audio-multistreams")
 	})
 	t.Run("AllFormats", func(t *testing.T) {
-		builder := New().AllFormats()
+		t.Parallel()
+
+		builder := New().NoUpdate().AllFormats()
 		validateFlagAdded(t, builder, "format", "--all-formats", 0)
 		_ = builder.UnsetAllFormats()
 		validateFlagRemoved(t, builder, "format", "--all-formats")
 	})
 	t.Run("PreferFreeFormats", func(t *testing.T) {
-		builder := New().PreferFreeFormats()
+		t.Parallel()
+
+		builder := New().NoUpdate().PreferFreeFormats()
 		validateFlagAdded(t, builder, "prefer_free_formats", "--prefer-free-formats", 0)
 		_ = builder.UnsetPreferFreeFormats()
 		validateFlagRemoved(t, builder, "prefer_free_formats", "--prefer-free-formats")
 	})
 	t.Run("NoPreferFreeFormats", func(t *testing.T) {
-		builder := New().NoPreferFreeFormats()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoPreferFreeFormats()
 		validateFlagAdded(t, builder, "prefer_free_formats", "--no-prefer-free-formats", 0)
 		_ = builder.UnsetPreferFreeFormats()
 		validateFlagRemoved(t, builder, "prefer_free_formats", "--no-prefer-free-formats")
 	})
 	t.Run("CheckFormats", func(t *testing.T) {
-		builder := New().CheckFormats()
+		t.Parallel()
+
+		builder := New().NoUpdate().CheckFormats()
 		validateFlagAdded(t, builder, "check_formats", "--check-formats", 0)
 		_ = builder.UnsetCheckFormats()
 		validateFlagRemoved(t, builder, "check_formats", "--check-formats")
 	})
 	t.Run("CheckAllFormats", func(t *testing.T) {
-		builder := New().CheckAllFormats()
+		t.Parallel()
+
+		builder := New().NoUpdate().CheckAllFormats()
 		validateFlagAdded(t, builder, "check_formats", "--check-all-formats", 0)
 		_ = builder.UnsetCheckAllFormats()
 		validateFlagRemoved(t, builder, "check_formats", "--check-all-formats")
 	})
 	t.Run("NoCheckFormats", func(t *testing.T) {
-		builder := New().NoCheckFormats()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoCheckFormats()
 		validateFlagAdded(t, builder, "check_formats", "--no-check-formats", 0)
 		_ = builder.UnsetCheckFormats()
 		validateFlagRemoved(t, builder, "check_formats", "--no-check-formats")
 	})
 	t.Run("ListFormats", func(t *testing.T) {
-		builder := New().ListFormats()
+		t.Parallel()
+
+		builder := New().NoUpdate().ListFormats()
 		validateFlagAdded(t, builder, "listformats", "--list-formats", 0)
 		_ = builder.UnsetListFormats()
 		validateFlagRemoved(t, builder, "listformats", "--list-formats")
 	})
 	t.Run("ListFormatsAsTable", func(t *testing.T) {
-		builder := New().ListFormatsAsTable()
+		t.Parallel()
+
+		builder := New().NoUpdate().ListFormatsAsTable()
 		validateFlagAdded(t, builder, "listformats_table", "--list-formats-as-table", 0)
 		_ = builder.UnsetListFormatsAsTable()
 		validateFlagRemoved(t, builder, "listformats_table", "--list-formats-as-table")
 	})
 	t.Run("ListFormatsOld", func(t *testing.T) {
-		builder := New().ListFormatsOld()
+		t.Parallel()
+
+		builder := New().NoUpdate().ListFormatsOld()
 		validateFlagAdded(t, builder, "listformats_table", "--list-formats-old", 0)
 		_ = builder.UnsetListFormatsOld()
 		validateFlagRemoved(t, builder, "listformats_table", "--list-formats-old")
 	})
 	t.Run("MergeOutputFormat", func(t *testing.T) {
-		builder := New().MergeOutputFormat("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().MergeOutputFormat("test")
 		validateFlagAdded(t, builder, "merge_output_format", "--merge-output-format", 1)
 		_ = builder.UnsetMergeOutputFormat()
 		validateFlagRemoved(t, builder, "merge_output_format", "--merge-output-format")
@@ -1349,50 +1782,67 @@ func TestBuilder_VideoFormat_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Subtitle_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("WriteSubs", func(t *testing.T) {
-		builder := New().WriteSubs()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteSubs()
 		validateFlagAdded(t, builder, "writesubtitles", "--write-subs", 0)
 		_ = builder.UnsetWriteSubs()
 		validateFlagRemoved(t, builder, "writesubtitles", "--write-subs")
 	})
 	t.Run("NoWriteSubs", func(t *testing.T) {
-		builder := New().NoWriteSubs()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoWriteSubs()
 		validateFlagAdded(t, builder, "writesubtitles", "--no-write-subs", 0)
 		_ = builder.UnsetWriteSubs()
 		validateFlagRemoved(t, builder, "writesubtitles", "--no-write-subs")
 	})
 	t.Run("WriteAutoSubs", func(t *testing.T) {
-		builder := New().WriteAutoSubs()
+		t.Parallel()
+
+		builder := New().NoUpdate().WriteAutoSubs()
 		validateFlagAdded(t, builder, "writeautomaticsub", "--write-auto-subs", 0)
 		_ = builder.UnsetWriteAutoSubs()
 		validateFlagRemoved(t, builder, "writeautomaticsub", "--write-auto-subs")
 	})
 	t.Run("NoWriteAutoSubs", func(t *testing.T) {
-		builder := New().NoWriteAutoSubs()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoWriteAutoSubs()
 		validateFlagAdded(t, builder, "writeautomaticsub", "--no-write-auto-subs", 0)
 		_ = builder.UnsetWriteAutoSubs()
 		validateFlagRemoved(t, builder, "writeautomaticsub", "--no-write-auto-subs")
 	})
 	t.Run("AllSubs", func(t *testing.T) {
-		builder := New().AllSubs()
+		t.Parallel()
+
+		builder := New().NoUpdate().AllSubs()
 		validateFlagAdded(t, builder, "allsubtitles", "--all-subs", 0)
 		_ = builder.UnsetAllSubs()
 		validateFlagRemoved(t, builder, "allsubtitles", "--all-subs")
 	})
 	t.Run("ListSubs", func(t *testing.T) {
-		builder := New().ListSubs()
+		t.Parallel()
+
+		builder := New().NoUpdate().ListSubs()
 		validateFlagAdded(t, builder, "listsubtitles", "--list-subs", 0)
 		_ = builder.UnsetListSubs()
 		validateFlagRemoved(t, builder, "listsubtitles", "--list-subs")
 	})
 	t.Run("SubFormat", func(t *testing.T) {
-		builder := New().SubFormat("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().SubFormat("test")
 		validateFlagAdded(t, builder, "subtitlesformat", "--sub-format", 1)
 		_ = builder.UnsetSubFormat()
 		validateFlagRemoved(t, builder, "subtitlesformat", "--sub-format")
 	})
 	t.Run("SubLangs", func(t *testing.T) {
-		builder := New().SubLangs("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().SubLangs("test")
 		validateFlagAdded(t, builder, "subtitleslangs", "--sub-langs", 1)
 		_ = builder.UnsetSubLangs()
 		validateFlagRemoved(t, builder, "subtitleslangs", "--sub-langs")
@@ -1400,86 +1850,115 @@ func TestBuilder_Subtitle_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Authentication_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("Username", func(t *testing.T) {
-		builder := New().Username("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Username("test")
 		validateFlagAdded(t, builder, "username", "--username", 1)
 		_ = builder.UnsetUsername()
 		validateFlagRemoved(t, builder, "username", "--username")
 	})
 	t.Run("Password", func(t *testing.T) {
-		builder := New().Password("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Password("test")
 		validateFlagAdded(t, builder, "password", "--password", 1)
 		_ = builder.UnsetPassword()
 		validateFlagRemoved(t, builder, "password", "--password")
 	})
 	t.Run("TwoFactor", func(t *testing.T) {
-		builder := New().TwoFactor("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().TwoFactor("test")
 		validateFlagAdded(t, builder, "twofactor", "--twofactor", 1)
 		_ = builder.UnsetTwoFactor()
 		validateFlagRemoved(t, builder, "twofactor", "--twofactor")
 	})
 	t.Run("Netrc", func(t *testing.T) {
-		builder := New().Netrc()
+		t.Parallel()
+
+		builder := New().NoUpdate().Netrc()
 		validateFlagAdded(t, builder, "usenetrc", "--netrc", 0)
 		_ = builder.UnsetNetrc()
 		validateFlagRemoved(t, builder, "usenetrc", "--netrc")
 	})
 	t.Run("NetrcLocation", func(t *testing.T) {
-		builder := New().NetrcLocation("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().NetrcLocation("test")
 		validateFlagAdded(t, builder, "netrc_location", "--netrc-location", 1)
 		_ = builder.UnsetNetrcLocation()
 		validateFlagRemoved(t, builder, "netrc_location", "--netrc-location")
 	})
 	t.Run("NetrcCmd", func(t *testing.T) {
-		builder := New().NetrcCmd("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().NetrcCmd("test")
 		validateFlagAdded(t, builder, "netrc_cmd", "--netrc-cmd", 1)
 		_ = builder.UnsetNetrcCmd()
 		validateFlagRemoved(t, builder, "netrc_cmd", "--netrc-cmd")
 	})
 	t.Run("VideoPassword", func(t *testing.T) {
-		builder := New().VideoPassword("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().VideoPassword("test")
 		validateFlagAdded(t, builder, "videopassword", "--video-password", 1)
 		_ = builder.UnsetVideoPassword()
 		validateFlagRemoved(t, builder, "videopassword", "--video-password")
 	})
 	t.Run("ApMSO", func(t *testing.T) {
-		builder := New().ApMSO("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ApMSO("test")
 		validateFlagAdded(t, builder, "ap_mso", "--ap-mso", 1)
 		_ = builder.UnsetApMSO()
 		validateFlagRemoved(t, builder, "ap_mso", "--ap-mso")
 	})
 	t.Run("ApUsername", func(t *testing.T) {
-		builder := New().ApUsername("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ApUsername("test")
 		validateFlagAdded(t, builder, "ap_username", "--ap-username", 1)
 		_ = builder.UnsetApUsername()
 		validateFlagRemoved(t, builder, "ap_username", "--ap-username")
 	})
 	t.Run("ApPassword", func(t *testing.T) {
-		builder := New().ApPassword("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ApPassword("test")
 		validateFlagAdded(t, builder, "ap_password", "--ap-password", 1)
 		_ = builder.UnsetApPassword()
 		validateFlagRemoved(t, builder, "ap_password", "--ap-password")
 	})
 	t.Run("ApListMSO", func(t *testing.T) {
-		builder := New().ApListMSO()
+		t.Parallel()
+
+		builder := New().NoUpdate().ApListMSO()
 		validateFlagAdded(t, builder, "ap_list_mso", "--ap-list-mso", 0)
 		_ = builder.UnsetApListMSO()
 		validateFlagRemoved(t, builder, "ap_list_mso", "--ap-list-mso")
 	})
 	t.Run("ClientCertificate", func(t *testing.T) {
-		builder := New().ClientCertificate("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ClientCertificate("test")
 		validateFlagAdded(t, builder, "client_certificate", "--client-certificate", 1)
 		_ = builder.UnsetClientCertificate()
 		validateFlagRemoved(t, builder, "client_certificate", "--client-certificate")
 	})
 	t.Run("ClientCertificateKey", func(t *testing.T) {
-		builder := New().ClientCertificateKey("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ClientCertificateKey("test")
 		validateFlagAdded(t, builder, "client_certificate_key", "--client-certificate-key", 1)
 		_ = builder.UnsetClientCertificateKey()
 		validateFlagRemoved(t, builder, "client_certificate_key", "--client-certificate-key")
 	})
 	t.Run("ClientCertificatePassword", func(t *testing.T) {
-		builder := New().ClientCertificatePassword("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ClientCertificatePassword("test")
 		validateFlagAdded(t, builder, "client_certificate_password", "--client-certificate-password", 1)
 		_ = builder.UnsetClientCertificatePassword()
 		validateFlagRemoved(t, builder, "client_certificate_password", "--client-certificate-password")
@@ -1487,254 +1966,339 @@ func TestBuilder_Authentication_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_PostProcessing_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("ExtractAudio", func(t *testing.T) {
-		builder := New().ExtractAudio()
+		t.Parallel()
+
+		builder := New().NoUpdate().ExtractAudio()
 		validateFlagAdded(t, builder, "extractaudio", "--extract-audio", 0)
 		_ = builder.UnsetExtractAudio()
 		validateFlagRemoved(t, builder, "extractaudio", "--extract-audio")
 	})
 	t.Run("AudioFormat", func(t *testing.T) {
-		builder := New().AudioFormat("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().AudioFormat("test")
 		validateFlagAdded(t, builder, "audioformat", "--audio-format", 1)
 		_ = builder.UnsetAudioFormat()
 		validateFlagRemoved(t, builder, "audioformat", "--audio-format")
 	})
 	t.Run("AudioQuality", func(t *testing.T) {
-		builder := New().AudioQuality("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().AudioQuality("test")
 		validateFlagAdded(t, builder, "audioquality", "--audio-quality", 1)
 		_ = builder.UnsetAudioQuality()
 		validateFlagRemoved(t, builder, "audioquality", "--audio-quality")
 	})
 	t.Run("RemuxVideo", func(t *testing.T) {
-		builder := New().RemuxVideo("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().RemuxVideo("test")
 		validateFlagAdded(t, builder, "remuxvideo", "--remux-video", 1)
 		_ = builder.UnsetRemuxVideo()
 		validateFlagRemoved(t, builder, "remuxvideo", "--remux-video")
 	})
 	t.Run("RecodeVideo", func(t *testing.T) {
-		builder := New().RecodeVideo("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().RecodeVideo("test")
 		validateFlagAdded(t, builder, "recodevideo", "--recode-video", 1)
 		_ = builder.UnsetRecodeVideo()
 		validateFlagRemoved(t, builder, "recodevideo", "--recode-video")
 	})
 	t.Run("PostProcessorArgs", func(t *testing.T) {
-		builder := New().PostProcessorArgs("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().PostProcessorArgs("test")
 		validateFlagAdded(t, builder, "postprocessor_args", "--postprocessor-args", 1)
 		_ = builder.UnsetPostProcessorArgs()
 		validateFlagRemoved(t, builder, "postprocessor_args", "--postprocessor-args")
 	})
 	t.Run("KeepVideo", func(t *testing.T) {
-		builder := New().KeepVideo()
+		t.Parallel()
+
+		builder := New().NoUpdate().KeepVideo()
 		validateFlagAdded(t, builder, "keepvideo", "--keep-video", 0)
 		_ = builder.UnsetKeepVideo()
 		validateFlagRemoved(t, builder, "keepvideo", "--keep-video")
 	})
 	t.Run("NoKeepVideo", func(t *testing.T) {
-		builder := New().NoKeepVideo()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoKeepVideo()
 		validateFlagAdded(t, builder, "keepvideo", "--no-keep-video", 0)
 		_ = builder.UnsetKeepVideo()
 		validateFlagRemoved(t, builder, "keepvideo", "--no-keep-video")
 	})
 	t.Run("PostOverwrites", func(t *testing.T) {
-		builder := New().PostOverwrites()
+		t.Parallel()
+
+		builder := New().NoUpdate().PostOverwrites()
 		validateFlagAdded(t, builder, "nopostoverwrites", "--post-overwrites", 0)
 		_ = builder.UnsetPostOverwrites()
 		validateFlagRemoved(t, builder, "nopostoverwrites", "--post-overwrites")
 	})
 	t.Run("NoPostOverwrites", func(t *testing.T) {
-		builder := New().NoPostOverwrites()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoPostOverwrites()
 		validateFlagAdded(t, builder, "nopostoverwrites", "--no-post-overwrites", 0)
 		_ = builder.UnsetPostOverwrites()
 		validateFlagRemoved(t, builder, "nopostoverwrites", "--no-post-overwrites")
 	})
 	t.Run("EmbedSubs", func(t *testing.T) {
-		builder := New().EmbedSubs()
+		t.Parallel()
+
+		builder := New().NoUpdate().EmbedSubs()
 		validateFlagAdded(t, builder, "embedsubtitles", "--embed-subs", 0)
 		_ = builder.UnsetEmbedSubs()
 		validateFlagRemoved(t, builder, "embedsubtitles", "--embed-subs")
 	})
 	t.Run("NoEmbedSubs", func(t *testing.T) {
-		builder := New().NoEmbedSubs()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoEmbedSubs()
 		validateFlagAdded(t, builder, "embedsubtitles", "--no-embed-subs", 0)
 		_ = builder.UnsetEmbedSubs()
 		validateFlagRemoved(t, builder, "embedsubtitles", "--no-embed-subs")
 	})
 	t.Run("EmbedThumbnail", func(t *testing.T) {
-		builder := New().EmbedThumbnail()
+		t.Parallel()
+
+		builder := New().NoUpdate().EmbedThumbnail()
 		validateFlagAdded(t, builder, "embedthumbnail", "--embed-thumbnail", 0)
 		_ = builder.UnsetEmbedThumbnail()
 		validateFlagRemoved(t, builder, "embedthumbnail", "--embed-thumbnail")
 	})
 	t.Run("NoEmbedThumbnail", func(t *testing.T) {
-		builder := New().NoEmbedThumbnail()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoEmbedThumbnail()
 		validateFlagAdded(t, builder, "embedthumbnail", "--no-embed-thumbnail", 0)
 		_ = builder.UnsetEmbedThumbnail()
 		validateFlagRemoved(t, builder, "embedthumbnail", "--no-embed-thumbnail")
 	})
 	t.Run("EmbedMetadata", func(t *testing.T) {
-		builder := New().EmbedMetadata()
+		t.Parallel()
+
+		builder := New().NoUpdate().EmbedMetadata()
 		validateFlagAdded(t, builder, "addmetadata", "--embed-metadata", 0)
 		_ = builder.UnsetEmbedMetadata()
 		validateFlagRemoved(t, builder, "addmetadata", "--embed-metadata")
 	})
 	t.Run("NoEmbedMetadata", func(t *testing.T) {
-		builder := New().NoEmbedMetadata()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoEmbedMetadata()
 		validateFlagAdded(t, builder, "addmetadata", "--no-embed-metadata", 0)
 		_ = builder.UnsetEmbedMetadata()
 		validateFlagRemoved(t, builder, "addmetadata", "--no-embed-metadata")
 	})
 	t.Run("EmbedChapters", func(t *testing.T) {
-		builder := New().EmbedChapters()
+		t.Parallel()
+
+		builder := New().NoUpdate().EmbedChapters()
 		validateFlagAdded(t, builder, "addchapters", "--embed-chapters", 0)
 		_ = builder.UnsetEmbedChapters()
 		validateFlagRemoved(t, builder, "addchapters", "--embed-chapters")
 	})
 	t.Run("NoEmbedChapters", func(t *testing.T) {
-		builder := New().NoEmbedChapters()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoEmbedChapters()
 		validateFlagAdded(t, builder, "addchapters", "--no-embed-chapters", 0)
 		_ = builder.UnsetEmbedChapters()
 		validateFlagRemoved(t, builder, "addchapters", "--no-embed-chapters")
 	})
 	t.Run("EmbedInfoJSON", func(t *testing.T) {
-		builder := New().EmbedInfoJSON()
+		t.Parallel()
+
+		builder := New().NoUpdate().EmbedInfoJSON()
 		validateFlagAdded(t, builder, "embed_infojson", "--embed-info-json", 0)
 		_ = builder.UnsetEmbedInfoJSON()
 		validateFlagRemoved(t, builder, "embed_infojson", "--embed-info-json")
 	})
 	t.Run("NoEmbedInfoJSON", func(t *testing.T) {
-		builder := New().NoEmbedInfoJSON()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoEmbedInfoJSON()
 		validateFlagAdded(t, builder, "embed_infojson", "--no-embed-info-json", 0)
 		_ = builder.UnsetEmbedInfoJSON()
 		validateFlagRemoved(t, builder, "embed_infojson", "--no-embed-info-json")
 	})
 	t.Run("MetadataFromTitle", func(t *testing.T) {
-		builder := New().MetadataFromTitle("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().MetadataFromTitle("test")
 		validateFlagAdded(t, builder, "metafromtitle", "--metadata-from-title", 1)
 		_ = builder.UnsetMetadataFromTitle()
 		validateFlagRemoved(t, builder, "metafromtitle", "--metadata-from-title")
 	})
 	t.Run("ParseMetadata", func(t *testing.T) {
-		builder := New().ParseMetadata("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ParseMetadata("test")
 		validateFlagAdded(t, builder, "parse_metadata", "--parse-metadata", 1)
 		_ = builder.UnsetParseMetadata()
 		validateFlagRemoved(t, builder, "parse_metadata", "--parse-metadata")
 	})
 	t.Run("ReplaceInMetadata", func(t *testing.T) {
-		builder := New().ReplaceInMetadata("test", "test", "test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ReplaceInMetadata("test", "test", "test")
 		validateFlagAdded(t, builder, "parse_metadata", "--replace-in-metadata", 3)
 		_ = builder.UnsetReplaceInMetadata()
 		validateFlagRemoved(t, builder, "parse_metadata", "--replace-in-metadata")
 	})
 	t.Run("Xattrs", func(t *testing.T) {
-		builder := New().Xattrs()
+		t.Parallel()
+
+		builder := New().NoUpdate().Xattrs()
 		validateFlagAdded(t, builder, "xattrs", "--xattrs", 0)
 		_ = builder.UnsetXattrs()
 		validateFlagRemoved(t, builder, "xattrs", "--xattrs")
 	})
 	t.Run("ConcatPlaylist", func(t *testing.T) {
-		builder := New().ConcatPlaylist("never")
+		t.Parallel()
+
+		builder := New().NoUpdate().ConcatPlaylist("never")
 		validateFlagAdded(t, builder, "concat_playlist", "--concat-playlist", 1)
 		_ = builder.UnsetConcatPlaylist()
 		validateFlagRemoved(t, builder, "concat_playlist", "--concat-playlist")
 	})
 	t.Run("Fixup", func(t *testing.T) {
-		builder := New().Fixup("never")
+		t.Parallel()
+
+		builder := New().NoUpdate().Fixup("never")
 		validateFlagAdded(t, builder, "fixup", "--fixup", 1)
 		_ = builder.UnsetFixup()
 		validateFlagRemoved(t, builder, "fixup", "--fixup")
 	})
 	t.Run("PreferAVConv", func(t *testing.T) {
-		builder := New().PreferAVConv()
+		t.Parallel()
+
+		builder := New().NoUpdate().PreferAVConv()
 		validateFlagAdded(t, builder, "prefer_ffmpeg", "--prefer-avconv", 0)
 		_ = builder.UnsetPreferAVConv()
 		validateFlagRemoved(t, builder, "prefer_ffmpeg", "--prefer-avconv")
 	})
 	t.Run("PreferFFmpeg", func(t *testing.T) {
-		builder := New().PreferFFmpeg()
+		t.Parallel()
+
+		builder := New().NoUpdate().PreferFFmpeg()
 		validateFlagAdded(t, builder, "prefer_ffmpeg", "--prefer-ffmpeg", 0)
 		_ = builder.UnsetPreferFFmpeg()
 		validateFlagRemoved(t, builder, "prefer_ffmpeg", "--prefer-ffmpeg")
 	})
 	t.Run("FFmpegLocation", func(t *testing.T) {
-		builder := New().FFmpegLocation("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().FFmpegLocation("test")
 		validateFlagAdded(t, builder, "ffmpeg_location", "--ffmpeg-location", 1)
 		_ = builder.UnsetFFmpegLocation()
 		validateFlagRemoved(t, builder, "ffmpeg_location", "--ffmpeg-location")
 	})
 	t.Run("Exec", func(t *testing.T) {
-		builder := New().Exec("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().Exec("test")
 		validateFlagAdded(t, builder, "exec_cmd", "--exec", 1)
 		_ = builder.UnsetExec()
 		validateFlagRemoved(t, builder, "exec_cmd", "--exec")
 	})
 	t.Run("NoExec", func(t *testing.T) {
-		builder := New().NoExec()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoExec()
 		validateFlagAdded(t, builder, "exec_cmd", "--no-exec", 0)
 		_ = builder.UnsetExec()
 		validateFlagRemoved(t, builder, "exec_cmd", "--no-exec")
 	})
 	t.Run("ExecBeforeDownload", func(t *testing.T) {
-		builder := New().ExecBeforeDownload("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ExecBeforeDownload("test")
 		validateFlagAdded(t, builder, "exec_before_dl_cmd", "--exec-before-download", 1)
 		_ = builder.UnsetExecBeforeDownload()
 		validateFlagRemoved(t, builder, "exec_before_dl_cmd", "--exec-before-download")
 	})
 	t.Run("NoExecBeforeDownload", func(t *testing.T) {
-		builder := New().NoExecBeforeDownload()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoExecBeforeDownload()
 		validateFlagAdded(t, builder, "exec_before_dl_cmd", "--no-exec-before-download", 0)
 		_ = builder.UnsetExecBeforeDownload()
 		validateFlagRemoved(t, builder, "exec_before_dl_cmd", "--no-exec-before-download")
 	})
 	t.Run("ConvertSubs", func(t *testing.T) {
-		builder := New().ConvertSubs("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ConvertSubs("test")
 		validateFlagAdded(t, builder, "convertsubtitles", "--convert-subs", 1)
 		_ = builder.UnsetConvertSubs()
 		validateFlagRemoved(t, builder, "convertsubtitles", "--convert-subs")
 	})
 	t.Run("ConvertThumbnails", func(t *testing.T) {
-		builder := New().ConvertThumbnails("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ConvertThumbnails("test")
 		validateFlagAdded(t, builder, "convertthumbnails", "--convert-thumbnails", 1)
 		_ = builder.UnsetConvertThumbnails()
 		validateFlagRemoved(t, builder, "convertthumbnails", "--convert-thumbnails")
 	})
 	t.Run("SplitChapters", func(t *testing.T) {
-		builder := New().SplitChapters()
+		t.Parallel()
+
+		builder := New().NoUpdate().SplitChapters()
 		validateFlagAdded(t, builder, "split_chapters", "--split-chapters", 0)
 		_ = builder.UnsetSplitChapters()
 		validateFlagRemoved(t, builder, "split_chapters", "--split-chapters")
 	})
 	t.Run("NoSplitChapters", func(t *testing.T) {
-		builder := New().NoSplitChapters()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoSplitChapters()
 		validateFlagAdded(t, builder, "split_chapters", "--no-split-chapters", 0)
 		_ = builder.UnsetSplitChapters()
 		validateFlagRemoved(t, builder, "split_chapters", "--no-split-chapters")
 	})
 	t.Run("RemoveChapters", func(t *testing.T) {
-		builder := New().RemoveChapters("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().RemoveChapters("test")
 		validateFlagAdded(t, builder, "remove_chapters", "--remove-chapters", 1)
 		_ = builder.UnsetRemoveChapters()
 		validateFlagRemoved(t, builder, "remove_chapters", "--remove-chapters")
 	})
 	t.Run("NoRemoveChapters", func(t *testing.T) {
-		builder := New().NoRemoveChapters()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoRemoveChapters()
 		validateFlagAdded(t, builder, "remove_chapters", "--no-remove-chapters", 0)
 		_ = builder.UnsetRemoveChapters()
 		validateFlagRemoved(t, builder, "remove_chapters", "--no-remove-chapters")
 	})
 	t.Run("ForceKeyframesAtCuts", func(t *testing.T) {
-		builder := New().ForceKeyframesAtCuts()
+		t.Parallel()
+
+		builder := New().NoUpdate().ForceKeyframesAtCuts()
 		validateFlagAdded(t, builder, "force_keyframes_at_cuts", "--force-keyframes-at-cuts", 0)
 		_ = builder.UnsetForceKeyframesAtCuts()
 		validateFlagRemoved(t, builder, "force_keyframes_at_cuts", "--force-keyframes-at-cuts")
 	})
 	t.Run("NoForceKeyframesAtCuts", func(t *testing.T) {
-		builder := New().NoForceKeyframesAtCuts()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoForceKeyframesAtCuts()
 		validateFlagAdded(t, builder, "force_keyframes_at_cuts", "--no-force-keyframes-at-cuts", 0)
 		_ = builder.UnsetForceKeyframesAtCuts()
 		validateFlagRemoved(t, builder, "force_keyframes_at_cuts", "--no-force-keyframes-at-cuts")
 	})
 	t.Run("UsePostProcessor", func(t *testing.T) {
-		builder := New().UsePostProcessor("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().UsePostProcessor("test")
 		validateFlagAdded(t, builder, "add_postprocessors", "--use-postprocessor", 1)
 		_ = builder.UnsetUsePostProcessor()
 		validateFlagRemoved(t, builder, "add_postprocessors", "--use-postprocessor")
@@ -1742,80 +2306,107 @@ func TestBuilder_PostProcessing_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_SponsorBlock_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("SponsorblockMark", func(t *testing.T) {
-		builder := New().SponsorblockMark("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().SponsorblockMark("test")
 		validateFlagAdded(t, builder, "sponsorblock_mark", "--sponsorblock-mark", 1)
 		_ = builder.UnsetSponsorblockMark()
 		validateFlagRemoved(t, builder, "sponsorblock_mark", "--sponsorblock-mark")
 	})
 	t.Run("SponsorblockRemove", func(t *testing.T) {
-		builder := New().SponsorblockRemove("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().SponsorblockRemove("test")
 		validateFlagAdded(t, builder, "sponsorblock_remove", "--sponsorblock-remove", 1)
 		_ = builder.UnsetSponsorblockRemove()
 		validateFlagRemoved(t, builder, "sponsorblock_remove", "--sponsorblock-remove")
 	})
 	t.Run("SponsorblockChapterTitle", func(t *testing.T) {
-		builder := New().SponsorblockChapterTitle("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().SponsorblockChapterTitle("test")
 		validateFlagAdded(t, builder, "sponsorblock_chapter_title", "--sponsorblock-chapter-title", 1)
 		_ = builder.UnsetSponsorblockChapterTitle()
 		validateFlagRemoved(t, builder, "sponsorblock_chapter_title", "--sponsorblock-chapter-title")
 	})
 	t.Run("NoSponsorblock", func(t *testing.T) {
-		builder := New().NoSponsorblock()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoSponsorblock()
 		validateFlagAdded(t, builder, "no_sponsorblock", "--no-sponsorblock", 0)
 		_ = builder.UnsetSponsorblock()
 		validateFlagRemoved(t, builder, "no_sponsorblock", "--no-sponsorblock")
 	})
 	t.Run("SponsorblockAPI", func(t *testing.T) {
-		builder := New().SponsorblockAPI("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().SponsorblockAPI("test")
 		validateFlagAdded(t, builder, "sponsorblock_api", "--sponsorblock-api", 1)
 		_ = builder.UnsetSponsorblockAPI()
 		validateFlagRemoved(t, builder, "sponsorblock_api", "--sponsorblock-api")
 	})
 	t.Run("Sponskrub", func(t *testing.T) {
-		builder := New().Sponskrub()
+		t.Parallel()
+
+		builder := New().NoUpdate().Sponskrub()
 		validateFlagAdded(t, builder, "sponskrub", "--sponskrub", 0)
 		_ = builder.UnsetSponskrub()
 		validateFlagRemoved(t, builder, "sponskrub", "--sponskrub")
 	})
 	t.Run("NoSponskrub", func(t *testing.T) {
-		builder := New().NoSponskrub()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoSponskrub()
 		validateFlagAdded(t, builder, "sponskrub", "--no-sponskrub", 0)
 		_ = builder.UnsetSponskrub()
 		validateFlagRemoved(t, builder, "sponskrub", "--no-sponskrub")
 	})
 	t.Run("SponskrubCut", func(t *testing.T) {
-		builder := New().SponskrubCut()
+		t.Parallel()
+
+		builder := New().NoUpdate().SponskrubCut()
 		validateFlagAdded(t, builder, "sponskrub_cut", "--sponskrub-cut", 0)
 		_ = builder.UnsetSponskrubCut()
 		validateFlagRemoved(t, builder, "sponskrub_cut", "--sponskrub-cut")
 	})
 	t.Run("NoSponskrubCut", func(t *testing.T) {
-		builder := New().NoSponskrubCut()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoSponskrubCut()
 		validateFlagAdded(t, builder, "sponskrub_cut", "--no-sponskrub-cut", 0)
 		_ = builder.UnsetSponskrubCut()
 		validateFlagRemoved(t, builder, "sponskrub_cut", "--no-sponskrub-cut")
 	})
 	t.Run("SponskrubForce", func(t *testing.T) {
-		builder := New().SponskrubForce()
+		t.Parallel()
+
+		builder := New().NoUpdate().SponskrubForce()
 		validateFlagAdded(t, builder, "sponskrub_force", "--sponskrub-force", 0)
 		_ = builder.UnsetSponskrubForce()
 		validateFlagRemoved(t, builder, "sponskrub_force", "--sponskrub-force")
 	})
 	t.Run("NoSponskrubForce", func(t *testing.T) {
-		builder := New().NoSponskrubForce()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoSponskrubForce()
 		validateFlagAdded(t, builder, "sponskrub_force", "--no-sponskrub-force", 0)
 		_ = builder.UnsetSponskrubForce()
 		validateFlagRemoved(t, builder, "sponskrub_force", "--no-sponskrub-force")
 	})
 	t.Run("SponskrubLocation", func(t *testing.T) {
-		builder := New().SponskrubLocation("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().SponskrubLocation("test")
 		validateFlagAdded(t, builder, "sponskrub_path", "--sponskrub-location", 1)
 		_ = builder.UnsetSponskrubLocation()
 		validateFlagRemoved(t, builder, "sponskrub_path", "--sponskrub-location")
 	})
 	t.Run("SponskrubArgs", func(t *testing.T) {
-		builder := New().SponskrubArgs("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().SponskrubArgs("test")
 		validateFlagAdded(t, builder, "sponskrub_args", "--sponskrub-args", 1)
 		_ = builder.UnsetSponskrubArgs()
 		validateFlagRemoved(t, builder, "sponskrub_args", "--sponskrub-args")
@@ -1823,62 +2414,83 @@ func TestBuilder_SponsorBlock_NonExecutable(t *testing.T) {
 }
 
 func TestBuilder_Extractor_NonExecutable(t *testing.T) {
+	t.Parallel()
 	t.Run("ExtractorRetries", func(t *testing.T) {
-		builder := New().ExtractorRetries("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ExtractorRetries("test")
 		validateFlagAdded(t, builder, "extractor_retries", "--extractor-retries", 1)
 		_ = builder.UnsetExtractorRetries()
 		validateFlagRemoved(t, builder, "extractor_retries", "--extractor-retries")
 	})
 	t.Run("AllowDynamicMPD", func(t *testing.T) {
-		builder := New().AllowDynamicMPD()
+		t.Parallel()
+
+		builder := New().NoUpdate().AllowDynamicMPD()
 		validateFlagAdded(t, builder, "dynamic_mpd", "--allow-dynamic-mpd", 0)
 		_ = builder.UnsetAllowDynamicMPD()
 		validateFlagRemoved(t, builder, "dynamic_mpd", "--allow-dynamic-mpd")
 	})
 	t.Run("IgnoreDynamicMPD", func(t *testing.T) {
-		builder := New().IgnoreDynamicMPD()
+		t.Parallel()
+
+		builder := New().NoUpdate().IgnoreDynamicMPD()
 		validateFlagAdded(t, builder, "dynamic_mpd", "--ignore-dynamic-mpd", 0)
 		_ = builder.UnsetIgnoreDynamicMPD()
 		validateFlagRemoved(t, builder, "dynamic_mpd", "--ignore-dynamic-mpd")
 	})
 	t.Run("HLSSplitDiscontinuity", func(t *testing.T) {
-		builder := New().HLSSplitDiscontinuity()
+		t.Parallel()
+
+		builder := New().NoUpdate().HLSSplitDiscontinuity()
 		validateFlagAdded(t, builder, "hls_split_discontinuity", "--hls-split-discontinuity", 0)
 		_ = builder.UnsetHLSSplitDiscontinuity()
 		validateFlagRemoved(t, builder, "hls_split_discontinuity", "--hls-split-discontinuity")
 	})
 	t.Run("NoHLSSplitDiscontinuity", func(t *testing.T) {
-		builder := New().NoHLSSplitDiscontinuity()
+		t.Parallel()
+
+		builder := New().NoUpdate().NoHLSSplitDiscontinuity()
 		validateFlagAdded(t, builder, "hls_split_discontinuity", "--no-hls-split-discontinuity", 0)
 		_ = builder.UnsetHLSSplitDiscontinuity()
 		validateFlagRemoved(t, builder, "hls_split_discontinuity", "--no-hls-split-discontinuity")
 	})
 	t.Run("ExtractorArgs", func(t *testing.T) {
-		builder := New().ExtractorArgs("test")
+		t.Parallel()
+
+		builder := New().NoUpdate().ExtractorArgs("test")
 		validateFlagAdded(t, builder, "extractor_args", "--extractor-args", 1)
 		_ = builder.UnsetExtractorArgs()
 		validateFlagRemoved(t, builder, "extractor_args", "--extractor-args")
 	})
 	t.Run("YoutubeIncludeDashManifest", func(t *testing.T) {
-		builder := New().YoutubeIncludeDashManifest()
+		t.Parallel()
+
+		builder := New().NoUpdate().YoutubeIncludeDashManifest()
 		validateFlagAdded(t, builder, "youtube_include_dash_manifest", "--youtube-include-dash-manifest", 0)
 		_ = builder.UnsetYoutubeIncludeDashManifest()
 		validateFlagRemoved(t, builder, "youtube_include_dash_manifest", "--youtube-include-dash-manifest")
 	})
 	t.Run("YoutubeSkipDashManifest", func(t *testing.T) {
-		builder := New().YoutubeSkipDashManifest()
+		t.Parallel()
+
+		builder := New().NoUpdate().YoutubeSkipDashManifest()
 		validateFlagAdded(t, builder, "youtube_include_dash_manifest", "--youtube-skip-dash-manifest", 0)
 		_ = builder.UnsetYoutubeSkipDashManifest()
 		validateFlagRemoved(t, builder, "youtube_include_dash_manifest", "--youtube-skip-dash-manifest")
 	})
 	t.Run("YoutubeIncludeHLSManifest", func(t *testing.T) {
-		builder := New().YoutubeIncludeHLSManifest()
+		t.Parallel()
+
+		builder := New().NoUpdate().YoutubeIncludeHLSManifest()
 		validateFlagAdded(t, builder, "youtube_include_hls_manifest", "--youtube-include-hls-manifest", 0)
 		_ = builder.UnsetYoutubeIncludeHLSManifest()
 		validateFlagRemoved(t, builder, "youtube_include_hls_manifest", "--youtube-include-hls-manifest")
 	})
 	t.Run("YoutubeSkipHLSManifest", func(t *testing.T) {
-		builder := New().YoutubeSkipHLSManifest()
+		t.Parallel()
+
+		builder := New().NoUpdate().YoutubeSkipHLSManifest()
 		validateFlagAdded(t, builder, "youtube_include_hls_manifest", "--youtube-skip-hls-manifest", 0)
 		_ = builder.UnsetYoutubeSkipHLSManifest()
 		validateFlagRemoved(t, builder, "youtube_include_hls_manifest", "--youtube-skip-hls-manifest")
