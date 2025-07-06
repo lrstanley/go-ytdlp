@@ -67,7 +67,6 @@
     - [yt-dlp](#yt-dlp)
     - [ffmpeg &amp; ffprobe](#ffmpeg--ffprobe)
   - [FlagConfig: JSON to/from Flags Conversion &amp; Usage](#flagconfig-json-tofrom-flags-conversion--usage)
-    - [Example: Struct for HTTP Server Integration](#example-struct-for-http-server-integration)
   - [Support &amp; Assistance](#raising_hand_man-support--assistance)
   - [Contributing](#handshake-contributing)
   - [License](#balance_scale-license)
