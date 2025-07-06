@@ -6,80 +6,103 @@
 
 package ytdlp
 
-{{- $imports := list }}
-{{- range $group := .OptionGroups }}
-{{- range $option := $group.Options }}
-{{- if $option.Executable }}{{ $imports = mustAppend $imports "context" }}{{- end }}{{/* end if executable */}}
-{{- if or (eq $option.Type "int") (eq $option.Type "float64") }}{{ $imports = mustAppend $imports "strconv" }}{{- end }}{{/* end if requires type conversion */}}
-{{- end }}{{/* end range for options */}}
-{{- end }}{{/* end range for option groups */}}
-
-{{- if $imports }}
 import (
-{{- range $import := ($imports | uniq) }}
-    {{ $import | quote }}
-{{- end }}
+    "context"
 )
-{{- end }}{{/* end if imports */}}
 
-{{/* variables modified during loops for state checks */}}
+func ptr[T any](v T) *T {
+	return &v
+}
+
+{{- /* variables modified during loops for state checks */}}
 {{ $unsets := list }}
 
 {{ range $group := .OptionGroups }}
 {{ range $option := .Options }}
-{{- if $option.Choices }}
-// {{ $option.Name | to_camel }}Option are parameter types for [{{ $option.Name | to_camel }}].
-type {{ $option.Name | to_camel }}Option {{ $option.Type }}
 
-var (
-{{- range $choice := $option.Choices }}
-    {{ $option.Name | to_camel }}{{ $choice | to_camel }} {{ $option.Name | to_camel }}Option = {{ if eq $option.Type "string" }}{{ $choice | quote }}{{ else }}{{ $choice }}{{ end }}
-{{- end }}
-)
+{{- /* choice logic, where the value of a flag has a list of possible values */}}
+{{- if $option.Choices }}
+    // {{ $option.Name | to_camel }}Option are parameter types for [{{ $option.Name | to_camel }}].
+    type {{ $option.Name | to_camel }}Option {{ $option.Type }}
+
+    var (
+    {{- range $choice := $option.Choices }}
+        {{ $option.Name | to_camel }}{{ $choice | to_camel }} {{ $option.Name | to_camel }}Option = {{ if eq $option.Type "string" }}{{ $choice | quote }}{{ else }}{{ $choice }}{{ end }}
+    {{- end }}
+    )
+
+    // All{{ $option.Name | to_camel }}Options are all of the possible values for the {{ $option.Name | to_camel }} option.
+    var All{{ $option.Name | to_camel }}Options = []{{ $option.Name | to_camel }}Option{
+    {{- range $choice := $option.Choices }}
+        {{ $option.Name | to_camel }}{{ $choice | to_camel }},
+    {{- end }}
+    }
 {{- end }}{{/* end if choices */}}
 
 {{- if $option.Executable }}
-{{ template "builder-help" $option }}
-func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template "builder-meta-args" $option }}) (*Result, error) {
-    c.addFlag(&Flag{
-        ID: {{ $option.ID | quote }},
-        Flag: {{ $option.Flag | quote }},
-        Args: {{ template "builder-slice-meta-args" $option }},
-    })
-
-    return c.runWithResult(ctx, c.buildCommand(ctx))
-}
+    {{- /* executable flags, that aren't related to the main functionality of yt-dlp, e.g. --version */}}
+    {{ template "builder-help" $option }}
+    func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template "builder-meta-args" $option }}) (*Result, error) {
+        return c.runWithResult(ctx, c.buildCommand(ctx,
+            {{- $option.Flag | quote }},
+            {{- if and (ne $option.Type "bool") (gt $option.NArgs 0) }}
+                {{- range $index, $arg := $option.ArgNames -}}
+                {{ $arg }},
+                {{- end }}
+            {{- end }}
+        {{- ""}}))
+    }
 {{- else }}
-{{ template "builder-help" $option }}
-func (c *Command) {{ $option.Name | to_camel }}({{ template "builder-meta-args" $option }}) *Command {
-    c.addFlag(&Flag{
-        ID: {{ $option.ID | quote }},
-        Flag: {{ $option.Flag | quote }},
-        Args: {{ template "builder-slice-meta-args" $option }},
-    })
-    return c
-}
+    {{ template "builder-help" $option }}
+    {{- /* setters */}}
+    func (c *Command) {{ $option.Name | to_camel }}({{ template "builder-meta-args" $option }}) *Command {
+        {{- range $coption := $group.Options }}
+        {{- if and (not $coption.Executable) (eq $coption.ID $option.ID) (not (eq $coption.Name $option.Name)) }}
+            c.flagConfig.{{ $group.Name | to_camel }}.{{ $coption.Name | to_camel }} = nil
+        {{- end }}{{/* end if eq ID */}}
+        {{- end }}{{/* end range for options */ -}}
 
-{{- $unsetID := ($option.Name | to_camel | trimPrefix "No" | trimPrefix "Yes") }}
-{{- if not (has $unsetID $unsets) }}
-{{- $unsets = mustAppend $unsets $unsetID }}
+        {{""}}
+        c.flagConfig.{{ $group.Name | to_camel }}.{{ $option.Name | to_camel }} ={{" " -}}
+            {{- if (eq $option.NArgs 0) -}}
+                ptr(true)
+            {{- else if (eq $option.NArgs 1) -}}
+                &{{ $option.ArgNames | join ", " }}
+            {{- else if (gt $option.NArgs 1) -}}
+                &Flag{{ $option.Name | to_camel }}{
+                    {{- range $index, $arg := $option.ArgNames }}
+                    {{ $arg | to_camel }}: {{ $arg }},
+                    {{- end }}
+                }
+            {{- end }}
+        return c
+    }
 
-// Unset{{ $unsetID }} unsets any flags that were previously set by one of:
-{{- range $coption := $group.Options }}
-{{- if $coption.Executable }}{{ continue }}{{- end }}
-{{- if eq $unsetID ($coption.Name | to_camel | trimPrefix "No" | trimPrefix "Yes") }}
-//   - [Command.{{ $coption.Name | to_camel }}]
-{{- end }}{{/* end if has suffix */}}
-{{- end }}{{/* end range for options */}}
-{{- if $option.Deprecated }}
-//
-// Deprecated: {{ $option.Deprecated }}
-{{- end }}{{/* end if deprecated */}}
-func (c *Command) Unset{{ $unsetID }}() *Command {
-    c.removeFlagByID({{ $option.ID | quote }})
-    return c
-}
-{{- end }}{{/* end if in $unsets */}}
+    {{/* unsetters */}}
+    {{- $unsetID := ($option.Name | to_camel | trimPrefix "No" | trimPrefix "Yes") }}
+    {{- if not (has $unsetID $unsets) }}
+        {{- $unsets = mustAppend $unsets $unsetID }}
+
+        // Unset{{ $unsetID }} unsets any flags that were previously set by one of:
+        {{- range $coption := $group.Options }}
+            {{- if $coption.Executable }}{{ continue }}{{- end }}
+            {{- if eq $unsetID ($coption.Name | to_camel | trimPrefix "No" | trimPrefix "Yes") }}
+                //   - [Command.{{ $coption.Name | to_camel }}]
+            {{- end }}{{/* end if has suffix */}}
+        {{- end }}{{/* end range for options */}}
+        {{- if $option.Deprecated }}
+        //
+        // Deprecated: {{ $option.Deprecated }}
+        {{- end }}{{/* end if deprecated */}}
+        func (c *Command) Unset{{ $unsetID }}() *Command {
+            {{- range $coption := $group.Options }}
+                {{- if and (not $coption.Executable) (eq $coption.ID $option.ID) }}
+                    c.flagConfig.{{ $group.Name | to_camel }}.{{ $coption.Name | to_camel }} = nil
+                {{- end }}{{/* end if eq ID */}}
+            {{- end }}{{/* end range for options */}}
+            return c
+        }
+    {{- end }}{{/* end if in $unsets */}}
 {{- end }}{{/* end if type */}}
 {{ end }}{{/* end range for options */}}
 {{ end }}{{/* end range for option groups */}}

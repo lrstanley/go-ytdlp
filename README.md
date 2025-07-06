@@ -66,6 +66,7 @@
   - [Install Function(s) &amp; Binary Management](#package-install-functions--binary-management)
     - [yt-dlp](#yt-dlp)
     - [ffmpeg &amp; ffprobe](#ffmpeg--ffprobe)
+  - [FlagConfig: JSON <-> Flags Conversion & Usage](#flagconfig-json--flags-conversion--usage)
   - [Support &amp; Assistance](#raising_hand_man-support--assistance)
   - [Contributing](#handshake-contributing)
   - [License](#balance_scale-license)
@@ -171,6 +172,38 @@ started without manually installing these dependencies, and ensures the correct 
 | windows_amd64 | https://github.com/yt-dlp/FFmpeg-Builds |
 | windows_arm   | https://github.com/yt-dlp/FFmpeg-Builds |
 
+## FlagConfig: JSON <-> Flags Conversion & Usage
+
+The `FlagConfig` type in **go-ytdlp** enables conversion between JSON and yt-dlp command-line flags.
+This is useful for scenarios such as HTTP APIs, web UIs, or persisting flag configurations in a database.
+
+- **Bidirectional Conversion:** Easily marshal and unmarshal yt-dlp flags to and from JSON. Use
+  `Command.SetFlagConfig` and `Command.GetFlagConfig` to set/get the flag config.
+- **Validation:** Use the provided validation functions and JSON schema to ensure correctness. The
+  JSON body allows duplicate flags (unless using the provided json schema), so always validate before use.
+- **JSON Schema:** The schema (available via the `optiondata.JSONSchema` variable and also
+  [located here](./optiondata/json-schema.json)) can be used for type generation in other languages (e.g.
+  TypeScript) and for client-side validation (e.g. using something like [json-schema-to-zod](https://www.npmjs.com/package/json-schema-to-zod)
+  when working with a web UI).
+- **Persistence:** If storing flag configs in a database, note that yt-dlp flags can change or be removed
+  at any time (in correlation to updates of **go-ytdlp**). Always validate after loading from storage.
+  - If validation fails, clear the invalid values in the JSON before retrying (e.g. using the
+    `ErrMultipleJSONParsingFlags` and `ErrJSONParsingFlag` error types, which include the path in the
+    JSON where the issue occurred).
+- **SupportedExtractors:** If persisting the values from this generated type, remember that extractors
+  can be changed or removed by yt-dlp at any time (in correlation to updates of **go-ytdlp**). If a
+  user requests a retry and the extractor is missing, consider defaulting to `generic` or another fallback.
+- **Intended Usage:** `FlagConfig` is designed for JSON marshalling/unmarshalling only. It is not intended
+  for direct use in Go code unless you are building HTTP servers, persisting configs, or similar use cases.
+  The builder pattern should be used in all other cases.
+
+### Example: Struct for HTTP Server Integration
+
+You can find an example of how to use the `FlagConfig` type for HTTP server integration in the
+[`_examples/http-server`](./_examples/http-server) directory.
+
+---
+
 <!-- template:begin:support -->
 <!-- do not edit anything in this "template" block, its auto-generated -->
 ## :raising_hand_man: Support & Assistance
@@ -224,4 +257,3 @@ SOFTWARE.
 ```
 
 _Also located [here](LICENSE)_
-<!-- template:end:license -->

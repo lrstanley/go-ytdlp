@@ -52,9 +52,9 @@ func (e *ErrExitCode) Error() string {
 }
 
 // IsExitCodeError returns true when the exit code of the yt-dlp process is non-zero.
-func IsExitCodeError(err error) bool {
+func IsExitCodeError(err error) (*ErrExitCode, bool) {
 	var e *ErrExitCode
-	return errors.As(err, &e)
+	return e, errors.As(err, &e)
 }
 
 // ErrMisconfig is returned when the yt-dlp executable is not found, or is not
@@ -74,9 +74,9 @@ func (e *ErrMisconfig) Error() string {
 
 // IsMisconfigError returns true when the yt-dlp executable is not found, or is not
 // configured properly.
-func IsMisconfigError(err error) bool {
+func IsMisconfigError(err error) (*ErrMisconfig, bool) {
 	var e *ErrMisconfig
-	return errors.As(err, &e)
+	return e, errors.As(err, &e)
 }
 
 // ErrParsing is returned when the yt-dlp process fails due to an invalid flag or
@@ -101,9 +101,9 @@ func (e *ErrParsing) Error() string {
 
 // IsParsingError returns true when the yt-dlp process fails due to an invalid flag or
 // argument, possibly due to a version mismatch or go-ytdlp bug.
-func IsParsingError(err error) bool {
+func IsParsingError(err error) (*ErrParsing, bool) {
 	var e *ErrParsing
-	return errors.As(err, &e)
+	return e, errors.As(err, &e)
 }
 
 // ErrUnknown is returned when the error is unknown according to go-ytdlp.
@@ -120,7 +120,47 @@ func (e *ErrUnknown) Error() string {
 }
 
 // IsUnknownError returns true when the error is unknown according to go-ytdlp.
-func IsUnknownError(err error) bool {
+func IsUnknownError(err error) (*ErrUnknown, bool) {
 	var e *ErrUnknown
-	return errors.As(err, &e)
+	return e, errors.As(err, &e)
+}
+
+type ErrJSONParsingFlag struct {
+	ID       string `json:"id,omitempty"`
+	JSONPath string `json:"json_path,omitempty"`
+	Flag     string `json:"flag,omitempty"`
+	Err      error  `json:"error,omitempty"`
+}
+
+func (e *ErrJSONParsingFlag) Unwrap() error {
+	return e.Err
+}
+
+func (e *ErrJSONParsingFlag) Error() string {
+	return fmt.Sprintf(
+		"error while parsing json at path %q (flag: %q, id: %q): %s",
+		e.JSONPath,
+		e.Flag,
+		e.ID,
+		e.Err,
+	)
+}
+
+// IsJSONParsingFlagError returns true when the error is a JSON parsing error.
+func IsJSONParsingFlagError(err error) (*ErrJSONParsingFlag, bool) {
+	var e *ErrJSONParsingFlag
+	return e, errors.As(err, &e)
+}
+
+type ErrMultipleJSONParsingFlags struct {
+	Errors []*ErrJSONParsingFlag `json:"errors,omitempty"`
+}
+
+func (e *ErrMultipleJSONParsingFlags) Error() string {
+	return fmt.Sprintf("multiple errors while parsing json: %s", e.Errors)
+}
+
+func IsMultipleJSONParsingFlagsError(err error) (*ErrMultipleJSONParsingFlags, bool) {
+	var e *ErrMultipleJSONParsingFlags
+	return e, errors.As(err, &e)
 }

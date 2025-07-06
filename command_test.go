@@ -17,6 +17,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	os.Setenv("YTDLP_DEBUG", "true")
 	MustInstallAll(context.TODO())
 	os.Exit(m.Run())
 }
@@ -127,8 +128,6 @@ func TestCommand_Simple(t *testing.T) {
 }
 
 func TestCommand_Version(t *testing.T) {
-	MustInstallAll(context.TODO())
-
 	res, err := New().Version(context.Background())
 	if err != nil {
 		t.Fatal(err)
@@ -149,8 +148,6 @@ func TestCommand_Version(t *testing.T) {
 }
 
 func TestCommand_Unset(t *testing.T) {
-	MustInstallAll(context.TODO())
-
 	builder := New().Progress().NoProgress().Output("test.mp4")
 
 	cmd := builder.buildCommand(context.TODO(), sampleFiles[0].url)
@@ -176,8 +173,6 @@ func TestCommand_Unset(t *testing.T) {
 }
 
 func TestCommand_Clone(t *testing.T) {
-	MustInstallAll(context.TODO())
-
 	builder1 := New().NoProgress().Output("test.mp4")
 
 	builder2 := builder1.Clone()
@@ -191,8 +186,6 @@ func TestCommand_Clone(t *testing.T) {
 }
 
 func TestCommand_SetExecutable(t *testing.T) {
-	MustInstallAll(context.TODO())
-
 	cmd := New().SetExecutable("/usr/bin/test").buildCommand(context.Background(), sampleFiles[0].url)
 
 	if cmd.Path != "/usr/bin/test" {
@@ -201,8 +194,6 @@ func TestCommand_SetExecutable(t *testing.T) {
 }
 
 func TestCommand_SetWorkDir(t *testing.T) {
-	MustInstallAll(context.TODO())
-
 	cmd := New().SetWorkDir("/tmp").buildCommand(context.Background(), sampleFiles[0].url)
 
 	if cmd.Dir != "/tmp" {
@@ -211,11 +202,26 @@ func TestCommand_SetWorkDir(t *testing.T) {
 }
 
 func TestCommand_SetEnvVar(t *testing.T) {
-	MustInstallAll(context.TODO())
-
 	cmd := New().SetEnvVar("TEST", "1").buildCommand(context.Background(), sampleFiles[0].url)
 
 	if !slices.Contains(cmd.Env, "TEST=1") {
 		t.Fatalf("expected env var to be TEST=1, got %v", cmd.Env)
+	}
+}
+
+func TestCommand_SetFlagConfig_DuplicateFlags(t *testing.T) {
+	flagConfig := &FlagConfig{}
+	flagConfig.General.IgnoreErrors = ptr(true)
+	flagConfig.General.AbortOnError = ptr(true)
+
+	builder := New().SetFlagConfig(flagConfig)
+
+	err := builder.flagConfig.General.Validate()
+	if err == nil {
+		t.Fatal("expected validation error, got nil")
+	}
+
+	if _, ok := IsMultipleJSONParsingFlagsError(err); !ok {
+		t.Fatalf("expected validation error to be a multiple JSON parsing flags error, got %v", err)
 	}
 }

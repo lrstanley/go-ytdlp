@@ -20,7 +20,7 @@ import (
 )
 
 var (
-	//go:embed ytdlp-public.key
+	//go:embed .github/ytdlp-public.key
 	ytdlpPublicKey []byte // From: https://github.com/yt-dlp/yt-dlp/blob/master/public.key
 
 	ytdlpResolveCache = atomic.Pointer[ResolvedInstall]{} // Should only be used by [Install].

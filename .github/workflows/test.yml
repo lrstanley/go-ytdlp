@@ -9,9 +9,6 @@ on:
     branches: [master]
     paths-ignore: [".gitignore", "**/*.md", ".github/ISSUE_TEMPLATE/**"]
 
-env:
-  YTDLP_DEBUG: true
-
 jobs:
   go-test:
     uses: lrstanley/.github/.github/workflows/lang-go-test-matrix.yml@master

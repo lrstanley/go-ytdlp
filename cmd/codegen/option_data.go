@@ -5,6 +5,7 @@
 package main
 
 import (
+	"log/slog"
 	"regexp"
 	"slices"
 	"strings"
@@ -33,6 +34,7 @@ type OptionData struct {
 func (c *OptionData) Generate() {
 	for i := range c.OptionGroups {
 		c.OptionGroups[i].Generate(c)
+		slog.Info("generated option group", "group", c.OptionGroups[i].Name)
 	}
 }
 
@@ -53,6 +55,7 @@ func (o *OptionGroup) Generate(parent *OptionData) {
 
 	for i := range o.Options {
 		o.Options[i].Generate(o)
+		slog.Info("generated option", "option", o.Options[i].Flag)
 	}
 
 	// Remove any ignored flags.

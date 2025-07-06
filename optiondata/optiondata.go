@@ -6,6 +6,11 @@
 // package are generated via cmd/codegen, and may change at any time.
 package optiondata
 
+import _ "embed"
+
+//go:embed json-schema.json
+var JSONSchema []byte
+
 // OptionGroup is a group of options (e.g. general, verbosity, etc).
 type OptionGroup struct {
 	// Name of the option group.
@@ -28,6 +33,8 @@ type Option struct {
 	NameCamelCase string `json:"name_camel_case"`
 	// NamePascalCase is the same as [Option.Name], but in PascalCase.
 	NamePascalCase string `json:"name_pascal_case"`
+	// NameSnakeCase is the same as [Option.Name], but in snake_case.
+	NameSnakeCase string `json:"name_snake_case"`
 	// Links are optional links to the documentation for the option.
 	URLs []*OptionURL `json:"urls,omitempty"`
 	// DefaultFlag is the first flag (priority on long flags).

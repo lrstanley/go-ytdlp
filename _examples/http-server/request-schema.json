@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lrstanley/go-ytdlp/_examples/http-server",
+  "$ref": "#/$defs/Config",
+  "$defs": {
+    "Config": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "flags": {
+          "description": "replace this with a remote url to the json-schema.json file, or write the go-ytdlp schema somewhere which it can be referenced in your project.",
+          "$ref": "../../optiondata/json-schema.json"
+        },
+        "env": {
+          "type": "object",
+          "properties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "args"
+      ]
+    }
+  }
+}

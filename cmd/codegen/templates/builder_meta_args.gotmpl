@@ -9,38 +9,17 @@
 {{- end -}}{{/* end define builder-meta-args */}}
 
 {{/*
-    template: builder-slice-meta-args
-*/}}
-{{- define "builder-slice-meta-args" -}}
-{{- $option := . -}}
-{{- if or (eq $option.Type "bool") (eq .NArgs 0) }}
-nil
-{{- else }}
-[]string{
-    {{- range $index, $arg := .ArgNames }}
-    {{- if $option.Choices }}{{/* if choices, type cast back to the original type when we pass in. */}}
-    {{- $arg = printf "%s(%s)" $option.Type $arg }}
-    {{- end }}{{/* end if choices */}}
-    {{- if eq $option.Type "string" }}
-    {{- $arg }},
-    {{- else if eq $option.Type "int" }}
-    strconv.Itoa({{ $arg }}),
-    {{- else if eq $option.Type "float64" }}
-    strconv.FormatFloat({{ $arg }}, 'g', -1, 64),
-    {{- end }}{{/* end if type */}}
-    {{- end }}{{/* end range for args */}}
-}
-{{- end }}{{/* end if type */}}
-{{- end -}}{{/* end define builder-slice-meta-args */}}
-
-{{/*
     template: builder-test-args
 */}}
 {{- define "builder-test-args" -}}
 {{- $option := . -}}
 {{- range $n := until $option.NArgs -}}
     {{- if eq $option.Type "string" -}}
-        "test"
+        {{- if $option.Choices -}}
+            {{ $option.Choices | first | quote }}
+        {{- else -}}
+            "test"
+        {{- end -}}
     {{- else if eq $option.Type "bool" -}}
         true
     {{- else if eq $option.Type "int" -}}

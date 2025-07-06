@@ -7,6 +7,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log/slog"
+	"maps"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -24,7 +26,6 @@ var (
 			"last": func(x int, a interface{}) bool {
 				return x == reflect.ValueOf(a).Len()-1 // if last index.
 			},
-
 			// https://github.com/iancoleman/strcase?tab=readme-ov-file#example
 			"to_camel": func(s string) string {
 				return acronymReplacer.Replace(strcase.ToCamel(s))
@@ -32,6 +33,15 @@ var (
 			"to_lower_camel": func(s string) string {
 				return acronymReplacer.Replace(strcase.ToLowerCamel(s))
 			}, // anyKindOfString
+			"to_snake": func(s string) string {
+				return strcase.ToSnake(s)
+			}, // any_kind_of_string
+			"has_prefix": func(s, prefix string) bool {
+				return strings.HasPrefix(s, prefix)
+			},
+			"has_suffix": func(s, suffix string) bool {
+				return strings.HasSuffix(s, suffix)
+			},
 		},
 	)
 
@@ -51,6 +61,12 @@ var (
 		template.New("buildertest.gotmpl").
 			Funcs(funcMap).
 			ParseGlob("./templates/builder*.gotmpl"),
+	)
+
+	commandJSONTmpl = template.Must(
+		template.New("command_json.gen.gotmpl").
+			Funcs(funcMap).
+			ParseGlob("./templates/command_json*.gotmpl"),
 	)
 
 	optionDataTmpl = template.Must(
@@ -110,19 +126,17 @@ var (
 	)
 )
 
-func mergeFuncMaps(maps ...template.FuncMap) template.FuncMap {
+func mergeFuncMaps(fm ...template.FuncMap) template.FuncMap {
 	out := template.FuncMap{}
-
-	for _, m := range maps {
-		for k, v := range m {
-			out[k] = v
-		}
+	for _, m := range fm {
+		maps.Copy(out, m)
 	}
-
 	return out
 }
 
 func createTemplateFile(dir, name string, tmpl *template.Template, data any) {
+	slog.Info("creating template file", "file", name)
+
 	err := os.MkdirAll(dir, 0o755)
 	if err != nil {
 		panic(err)
@@ -149,21 +163,30 @@ func createTemplateFile(dir, name string, tmpl *template.Template, data any) {
 }
 
 func main() {
+	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+	})))
+
 	if len(os.Args) < 3 { //nolint:gomnd
-		panic("usage: codegen <command_data.json> <output_dir>")
+		slog.Error("usage: codegen <command_data.json> <output_dir>")
+		os.Exit(1)
 	}
 
 	var data OptionData
 
+	slog.Info("reading option data file", "file", os.Args[1])
 	optionDataFile, err := os.Open(os.Args[1])
 	if err != nil {
-		panic(err)
+		slog.Error("failed to open option data file", "error", err)
+		os.Exit(1)
 	}
 	defer optionDataFile.Close()
 
+	slog.Info("decoding option data")
 	err = json.NewDecoder(optionDataFile).Decode(&data)
 	if err != nil {
-		panic(err)
+		slog.Error("failed to decode option data", "error", err)
+		os.Exit(1)
 	}
 
 	data.Generate()
@@ -172,4 +195,5 @@ func main() {
 	createTemplateFile(os.Args[2], "constants.gen.go", constantsTmpl, data)
 	createTemplateFile(os.Args[2], "builder.gen.go", builderTmpl, data)
 	createTemplateFile(os.Args[2], "builder.gen_test.go", builderTestTmpl, data)
+	createTemplateFile(os.Args[2], "command_json.gen.go", commandJSONTmpl, data)
 }

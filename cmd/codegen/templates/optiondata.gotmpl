@@ -50,6 +50,7 @@ var (
                 Name: {{ $option.Name | quote }},
                 NameCamelCase: {{ $option.Name | to_lower_camel | quote }},
                 NamePascalCase: {{ $option.Name | to_camel | quote }},
+                NameSnakeCase: {{ $option.Name | to_snake | quote }},
                 {{- if $option.URLs }}
                 URLs: []*OptionURL{
                     {{- range $url := $option.URLs }}

@@ -14,6 +14,7 @@ fetch:
 
 up:
 	cd ./cmd/codegen && go get -u -t ./... && go mod tidy
+	cd ./cmd/gen-jsonschema && go get -u -t ./... && go mod tidy
 	cd ./_examples && go get -u -t ./... && go mod tidy
 	go get -u -t ./... && go mod tidy
 
@@ -37,5 +38,6 @@ generate: license fetch patch
 		optiondata/*.gen.go
 	cd ./cmd/codegen && go run . ../patch-ytdlp/export-${YTDLP_VERSION}.json ../../
 	gofmt -e -s -w .
+	cd ./cmd/gen-jsonschema && go run . ../../optiondata/
 	go vet .
 	go test -v ./...

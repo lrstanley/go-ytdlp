@@ -6,10 +6,12 @@ package ytdlp
 
 import (
 	"context"
+	"fmt"
 	"maps"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 )
@@ -19,9 +21,9 @@ import (
 // the independent execution method (e.g. [Version]).
 func New() *Command {
 	cmd := &Command{
-		env: make(map[string]string),
+		env:        make(map[string]string),
+		flagConfig: &FlagConfig{},
 	}
-
 	return cmd
 }
 
@@ -30,7 +32,7 @@ type Command struct {
 	executable           string
 	directory            string
 	env                  map[string]string
-	flags                []*Flag
+	flagConfig           *FlagConfig
 	separateProcessGroup bool
 
 	progress *progressHandler
@@ -44,19 +46,33 @@ func (c *Command) Clone() *Command {
 		executable:           c.executable,
 		directory:            c.directory,
 		env:                  make(map[string]string, len(c.env)),
-		flags:                make([]*Flag, len(c.flags)),
+		flagConfig:           c.flagConfig.Clone(),
 		separateProcessGroup: c.separateProcessGroup,
 		progress:             c.progress,
 	}
-
 	maps.Copy(cc.env, c.env)
-
-	for i, f := range c.flags {
-		cc.flags[i] = f.Clone()
-	}
 	c.mu.RUnlock()
-
 	return cc
+}
+
+// GetFlagConfig returns a copy of the flag config.
+func (c *Command) GetFlagConfig() *FlagConfig {
+	c.mu.RLock()
+	cc := c.flagConfig.Clone()
+	c.mu.RUnlock()
+	return cc
+}
+
+// SetFlagConfig sets the flag config for the command, overriding ALL previously
+// set flags. If nil is provided, a new empty flag config will be used.
+func (c *Command) SetFlagConfig(flagConfig *FlagConfig) *Command {
+	if flagConfig == nil {
+		flagConfig = &FlagConfig{}
+	}
+	c.mu.Lock()
+	c.flagConfig = flagConfig.Clone()
+	c.mu.Unlock()
+	return c
 }
 
 // SetExecutable sets the executable path to yt-dlp for the command.
@@ -103,60 +119,17 @@ func (c *Command) SetSeparateProcessGroup(value bool) *Command {
 	return c
 }
 
-// getFlagsByID returns all flags with the provided ID/"dest".
-func (c *Command) getFlagsByID(id string) []*Flag {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-
-	var flags []*Flag
-
-	for _, f := range c.flags {
-		if f.ID == id {
-			flags = append(flags, f)
-		}
-	}
-
-	return flags
-}
-
-// addFlag adds a flag to the command. If a flag with the same ID/"dest" already
-// exists, it will be replaced.
-func (c *Command) addFlag(f *Flag) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
-	// If boolean flag, ensure it's not duplicated.
-	if f.Args == nil {
-		for i, ff := range c.flags {
-			if ff.ID == f.ID {
-				c.flags[i] = f
-				return
-			}
-		}
-	}
-
-	c.flags = append(c.flags, f)
-}
-
-// removeFlagByID removes a flag from the command by its ID/"dest".
-func (c *Command) removeFlagByID(id string) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
-	for i, f := range c.flags {
-		if f.ID == id {
-			c.flags = append(c.flags[:i], c.flags[i+1:]...)
-			// don't return as there might be multiple.
-		}
-	}
-}
-
 func (c *Command) hasJSONFlag() bool {
-	pf := c.getFlagsByID("forceprint")
-
-	return (len(pf) > 0 && len(pf[0].Args) > 0 && pf[0].Args[0] == "%()j") ||
-		c.getFlagsByID("print_json") != nil ||
-		c.getFlagsByID("dumpjson") != nil
+	if v := c.flagConfig.VerbositySimulation.Print; v != nil && *v == "%()j" {
+		return true
+	}
+	if v := c.flagConfig.VerbositySimulation.PrintJSON; v != nil && *v {
+		return true
+	}
+	if v := c.flagConfig.VerbositySimulation.DumpJSON; v != nil && *v {
+		return true
+	}
+	return false
 }
 
 // buildCommand builds the command to be executed. args passed here are any additional
@@ -164,7 +137,7 @@ func (c *Command) hasJSONFlag() bool {
 func (c *Command) buildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	var cmdArgs []string
 
-	for _, f := range c.flags {
+	for _, f := range c.flagConfig.ToFlags() {
 		cmdArgs = append(cmdArgs, f.Raw()...)
 	}
 
@@ -270,33 +243,70 @@ func (c *Command) runWithResult(ctx context.Context, cmd *exec.Cmd) (*Result, er
 // and returns the results (stdout/stderr, exit code, etc). args should be the
 // URLs that would normally be passed in to yt-dlp.
 func (c *Command) Run(ctx context.Context, args ...string) (*Result, error) {
+	if err := c.flagConfig.Validate(); err != nil {
+		return nil, err
+	}
+
 	cmd := c.buildCommand(ctx, args...)
 	return c.runWithResult(ctx, cmd)
 }
 
 type Flag struct {
-	ID   string   `json:"id"`   // Unique ID to ensure boolean flags are not duplicated.
-	Flag string   `json:"flag"` // Actual flag, e.g. "--version".
-	Args []string `json:"args"` // Optional args. If nil, it's a boolean flag.
-}
-
-func (f *Flag) Clone() *Flag {
-	return &Flag{
-		ID:   f.ID,
-		Flag: f.Flag,
-		Args: f.Args,
-	}
+	ID   string `json:"id"`   // Unique ID to ensure boolean flags are not duplicated.
+	Flag string `json:"flag"` // Actual flag, e.g. "--version".
+	Args []any  `json:"args"` // Optional args. If nil, it's a boolean flag.
 }
 
 func (f *Flag) Raw() (args []string) {
 	args = append(args, f.Flag)
 	if f.Args == nil {
-		return []string{f.Flag}
+		return args
 	}
 
-	if len(f.Args) > 0 {
-		args = append(args, f.Args...)
+	for _, arg := range f.Args {
+		if arg == nil {
+			continue
+		}
+
+		switch arg := arg.(type) {
+		case string:
+			args = append(args, arg)
+		case int:
+			args = append(args, strconv.Itoa(arg))
+		case int64:
+			args = append(args, strconv.FormatInt(arg, 10))
+		case float64:
+			args = append(args, strconv.FormatFloat(arg, 'g', -1, 64))
+		case bool:
+			args = append(args, strconv.FormatBool(arg))
+		default:
+			panic(fmt.Sprintf("unsupported arg type for flag: %T", arg))
+		}
 	}
 
 	return args
+}
+
+type Flags []*Flag
+
+func (f Flags) FindByID(id string) (flags Flags) {
+	for _, flag := range f {
+		if flag.ID == id {
+			flags = append(flags, flag)
+		}
+	}
+	return flags
+}
+
+func (f Flags) Duplicates() (duplicates Flags) {
+	seen := make(map[string]Flags)
+	for _, flag := range f {
+		seen[flag.ID] = append(seen[flag.ID], flag)
+	}
+	for _, flags := range seen {
+		if len(flags) > 1 {
+			duplicates = append(duplicates, flags...)
+		}
+	}
+	return duplicates
 }

@@ -1,0 +1,26 @@
+{
+  "$schema": "./request-schema.json",
+  "args": [
+    "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  ],
+  "flags": {
+    "verbosity_simulation": {
+      "print_json": true,
+      "no_progress": true
+    },
+    "video_format": {
+      "format_sort": "res,ext:mp4:m4a"
+    },
+    "post_processing": {
+      "recode_video": "mp4"
+    },
+    "video_selection": {
+      "no_playlist": true
+    },
+    "filesystem": {
+      "no_overwrites": true,
+      "continue": true,
+      "output": "%(extractor)s - %(title)s.%(ext)s"
+    }
+  }
+}

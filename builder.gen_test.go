@@ -13,7 +13,12 @@ import (
 func validateFlagAdded(t *testing.T, builder *Command, dest, flag string, nargs int) {
 	t.Helper()
 
-	for _, f := range builder.getFlagsByID(dest) {
+	err := builder.flagConfig.Validate()
+	if err != nil {
+		t.Fatalf("expected no validation errors, but got: %v", err)
+	}
+
+	for _, f := range builder.flagConfig.ToFlags().FindByID(dest) {
 		if f.Flag != flag || len(f.Args) != nargs {
 			t.Errorf("expected flag %q (dest: %q) to be added, but it was not (or was incorrectly", flag, dest)
 		}
@@ -34,7 +39,12 @@ func validateFlagAdded(t *testing.T, builder *Command, dest, flag string, nargs 
 func validateFlagRemoved(t *testing.T, builder *Command, dest, flag string) {
 	t.Helper()
 
-	if len(builder.getFlagsByID(dest)) != 0 {
+	err := builder.flagConfig.Validate()
+	if err != nil {
+		t.Fatalf("expected no validation errors, but got: %v", err)
+	}
+
+	if len(builder.flagConfig.ToFlags().FindByID(dest)) != 0 {
 		t.Errorf("expected flag %q (dest: %q) to be removed, but it was not", flag, dest)
 	}
 }
@@ -1622,13 +1632,13 @@ func TestBuilder_PostProcessing_NonExecutable(t *testing.T) {
 		validateFlagRemoved(t, builder, "xattrs", "--xattrs")
 	})
 	t.Run("ConcatPlaylist", func(t *testing.T) {
-		builder := New().ConcatPlaylist("test")
+		builder := New().ConcatPlaylist("never")
 		validateFlagAdded(t, builder, "concat_playlist", "--concat-playlist", 1)
 		_ = builder.UnsetConcatPlaylist()
 		validateFlagRemoved(t, builder, "concat_playlist", "--concat-playlist")
 	})
 	t.Run("Fixup", func(t *testing.T) {
-		builder := New().Fixup("test")
+		builder := New().Fixup("never")
 		validateFlagAdded(t, builder, "fixup", "--fixup", 1)
 		_ = builder.UnsetFixup()
 		validateFlagRemoved(t, builder, "fixup", "--fixup")
