@@ -198,7 +198,7 @@ This is useful for scenarios such as HTTP APIs, web UIs, or persisting flag conf
   for direct use in Go code unless you are building HTTP servers, persisting configs, or similar use cases.
   The builder pattern should be used in all other cases.
 
-### Example: Struct for HTTP Server Integration
+### Example: HTTP Server which Invokes `go-ytdlp`
 
 You can find an example of how to use the `FlagConfig` type for HTTP server integration in the
 [`_examples/http-server`](./_examples/http-server) directory.
