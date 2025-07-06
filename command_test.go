@@ -90,8 +90,6 @@ func TestCommand_Simple(t *testing.T) {
 
 	for _, f := range sampleFiles {
 		t.Run(f.name, func(t *testing.T) {
-			t.Parallel()
-
 			var stat fs.FileInfo
 
 			fn := filepath.Join(dir, fmt.Sprintf("%s - %s.%s", f.extractor, f.name, f.ext))
