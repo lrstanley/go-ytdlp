@@ -66,7 +66,7 @@
   - [Install Function(s) &amp; Binary Management](#package-install-functions--binary-management)
     - [yt-dlp](#yt-dlp)
     - [ffmpeg &amp; ffprobe](#ffmpeg--ffprobe)
-  - [FlagConfig: JSON &lt;-&gt; Flags Conversion &amp; Usage](#flagconfig-json---flags-conversion--usage)
+  - [FlagConfig: JSON to/from Flags Conversion &amp; Usage](#flagconfig-json-tofrom-flags-conversion--usage)
     - [Example: Struct for HTTP Server Integration](#example-struct-for-http-server-integration)
   - [Support &amp; Assistance](#raising_hand_man-support--assistance)
   - [Contributing](#handshake-contributing)
