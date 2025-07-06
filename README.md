@@ -66,10 +66,12 @@
   - [Install Function(s) &amp; Binary Management](#package-install-functions--binary-management)
     - [yt-dlp](#yt-dlp)
     - [ffmpeg &amp; ffprobe](#ffmpeg--ffprobe)
-  - [FlagConfig: JSON <-> Flags Conversion & Usage](#flagconfig-json--flags-conversion--usage)
+  - [FlagConfig: JSON &lt;-&gt; Flags Conversion &amp; Usage](#flagconfig-json---flags-conversion--usage)
+    - [Example: Struct for HTTP Server Integration](#example-struct-for-http-server-integration)
   - [Support &amp; Assistance](#raising_hand_man-support--assistance)
   - [Contributing](#handshake-contributing)
   - [License](#balance_scale-license)
+  - [License](#balance_scale-license-1)
 <!-- template:end:toc -->
 
 ## :sparkles: Features
@@ -257,3 +259,33 @@ SOFTWARE.
 ```
 
 _Also located [here](LICENSE)_
+template:begin:license -->
+<!-- do not edit anything in this "template" block, its auto-generated -->
+## :balance_scale: License
+
+```
+MIT License
+
+Copyright (c) 2023 Liam Stanley <liam@liam.sh>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+_Also located [here](LICENSE)_
+<!-- template:end:license
