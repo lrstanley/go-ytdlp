@@ -10,7 +10,7 @@ import (
     "testing"
 )
 
-func validateFlagAdded(t *testing.T, builder *Command, dest, flag string, nargs int) {
+func validateFlagAdded(t *testing.T, builder *Command, dest, flag string, nargs, expectedCount int) {
     t.Helper()
 
     err := builder.flagConfig.Validate()
@@ -18,7 +18,13 @@ func validateFlagAdded(t *testing.T, builder *Command, dest, flag string, nargs 
         t.Fatalf("expected no validation errors, but got: %v", err)
     }
 
-    for _, f := range builder.flagConfig.ToFlags().FindByID(dest) {
+    flags := builder.flagConfig.ToFlags().FindByID(dest)
+
+    if len(flags) != expectedCount {
+        t.Errorf("expected flag %q (dest: %q) to be added %d times, but it was added %d times", flag, dest, expectedCount, len(flags))
+    }
+
+    for _, f := range flags {
         if f.Flag != flag || len(f.Args) != nargs {
             t.Errorf("expected flag %q (dest: %q) to be added, but it was not (or was incorrectly", flag, dest)
         }
@@ -58,8 +64,10 @@ func TestBuilder_{{ $group.Name | to_camel | trimSuffix "s" }}_NonExecutable(t *
         t.Run({{ $id | quote }}, func(t *testing.T) {
             t.Parallel()
 
-            builder := New().NoUpdate().{{ $id }}({{ template "builder-test-args" $option }})
-            validateFlagAdded(t, builder, {{ $option.ID | quote }}, {{ $option.Flag | quote }}, {{ $option.NArgs }})
+            builder := New().NoUpdate().
+                {{ $id }}({{ template "builder-test-args" $option }}).
+                {{ $id }}({{ template "builder-test-args" $option }})
+            validateFlagAdded(t, builder, {{ $option.ID | quote }}, {{ $option.Flag | quote }}, {{ $option.NArgs }}, {{ if $option.AllowsMultiple }}2{{ else }}1{{ end }})
             _ = builder.Unset{{ $id | trimPrefix "No" | trimPrefix "Yes" }}()
             validateFlagRemoved(t, builder, {{ $option.ID | quote }}, {{ $option.Flag | quote }})
         })

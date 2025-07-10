@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -120,7 +121,7 @@ func (c *Command) SetSeparateProcessGroup(value bool) *Command {
 }
 
 func (c *Command) hasJSONFlag() bool {
-	if v := c.flagConfig.VerbositySimulation.Print; v != nil && *v == "%()j" {
+	if slices.Contains(c.flagConfig.VerbositySimulation.Print, "%(j)") && len(c.flagConfig.VerbositySimulation.Print) == 1 {
 		return true
 	}
 	if v := c.flagConfig.VerbositySimulation.PrintJSON; v != nil && *v {
@@ -132,9 +133,10 @@ func (c *Command) hasJSONFlag() bool {
 	return false
 }
 
-// buildCommand builds the command to be executed. args passed here are any additional
-// arguments to be passed to yt-dlp (commonly URLs or similar).
-func (c *Command) buildCommand(ctx context.Context, args ...string) *exec.Cmd {
+// BuildCommand builds the command to be executed. args passed here are any additional
+// arguments to be passed to yt-dlp (commonly URLs or similar). This should not be used
+// directly unless you want to reference the arguments passed to yt-dlp.
+func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	var cmdArgs []string
 
 	for _, f := range c.flagConfig.ToFlags() {
@@ -247,14 +249,15 @@ func (c *Command) Run(ctx context.Context, args ...string) (*Result, error) {
 		return nil, err
 	}
 
-	cmd := c.buildCommand(ctx, args...)
+	cmd := c.BuildCommand(ctx, args...)
 	return c.runWithResult(ctx, cmd)
 }
 
 type Flag struct {
-	ID   string `json:"id"`   // Unique ID to ensure boolean flags are not duplicated.
-	Flag string `json:"flag"` // Actual flag, e.g. "--version".
-	Args []any  `json:"args"` // Optional args. If nil, it's a boolean flag.
+	ID             string `json:"id"`              // Unique ID to ensure boolean flags are not duplicated.
+	Flag           string `json:"flag"`            // Actual flag, e.g. "--version".
+	AllowsMultiple bool   `json:"allows_multiple"` // If the flag allows multiple values.
+	Args           []any  `json:"args"`            // Optional args. If nil, it's a boolean flag.
 }
 
 func (f *Flag) Raw() (args []string) {
@@ -301,6 +304,9 @@ func (f Flags) FindByID(id string) (flags Flags) {
 func (f Flags) Duplicates() (duplicates Flags) {
 	seen := make(map[string]Flags)
 	for _, flag := range f {
+		if flag.AllowsMultiple {
+			continue
+		}
 		seen[flag.ID] = append(seen[flag.ID], flag)
 	}
 	for _, flags := range seen {

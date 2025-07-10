@@ -103,9 +103,17 @@ func (f *FlagConfig) ToFlags() (flags Flags) {
         flags = append(flags, f.{{ $group.Name | to_camel }}.ToFlags()...)
     {{- end }}{{/* end range for option groups */}}
 
-    {{/* dedup flags by their ID, where only the last one is kept, and the others are deleted */}}
+    // Deduplicate flags by their ID, where only the last one is kept, and the others are deleted.
     for i := 0; i < len(flags); i++ {
+        if flags[i].AllowsMultiple {
+            continue
+        }
+
         for j := i + 1; j < len(flags); j++ {
+            if flags[j].AllowsMultiple {
+                continue
+            }
+
             if flags[i].ID == flags[j].ID {
                 flags[j] = nil
                 flags = append(flags[:j], flags[j+1:]...)
@@ -126,7 +134,12 @@ type Flags{{ $group.Name | to_camel }} struct {
     {{- if $option.Help }}
         // {{ wrap 90 $option.Help | replace "\n" "\n// " }}
     {{- end }}
-    {{ $option.Name | to_camel }} *{{ template "flag-type" $option }} `json:"{{ $option.Name | to_snake }},omitempty" id:{{ $option.ID | quote }} {{ template "flag-jsonschema" $option }}`
+    {{ $option.Name | to_camel }}
+    {{- " " }}
+    {{- if $option.AllowsMultiple }}[]{{ end }}
+    {{- if (or (not $option.AllowsMultiple) (gt $option.NArgs 1)) }}*{{ end }}
+    {{- template "flag-type" $option }}
+    {{- " " }}`json:"{{ $option.Name | to_snake }},omitempty" id:{{ $option.ID | quote }} {{ template "flag-jsonschema" $option }}`
 {{- end }}{{/* end range for options */}}
 }
 
@@ -196,28 +209,52 @@ func (g *Flags{{ $group.Name | to_camel }}) ToFlags() (flags Flags) {
 
     {{- range $option := .Options -}}
         {{- if $option.Executable }}{{ continue }}{{ end }}
-        if g.{{ $option.Name | to_camel }} != nil {{ if (eq $option.NArgs 0) }} && *g.{{ $option.Name | to_camel }}{{ end }} {
-            flags = append(flags, &Flag{
-                {{- ""}}ID: {{ $option.ID | quote }},
-                {{- ""}}Flag: {{ $option.Flag | quote }},
-                {{- ""}}Args:
-                    {{- if (eq $option.NArgs 0) }}
-                    nil,
-                    {{- else if (eq $option.NArgs 1) }}
+        {{- if $option.AllowsMultiple }}
+            for _, v := range g.{{ $option.Name | to_camel }} {
+                flags = append(flags, &Flag{
+                    {{- ""}}ID: {{ $option.ID | quote }},
+                    {{- ""}}Flag: {{ $option.Flag | quote }},
+                    {{- ""}}AllowsMultiple: true,
+                    {{- ""}}Args:
+                    {{- if (eq $option.NArgs 1) }}
                         {{- if $option.Choices }}
-                            []any{string(*g.{{ $option.Name | to_camel }})},
+                            []any{string(v)},
                         {{- else }}
-                            []any{*g.{{ $option.Name | to_camel }}},
+                            []any{v},
                         {{- end }}
                     {{- else if (gt $option.NArgs 1) }}
                     []any{
-                        {{- range $arg := $option.ArgNames }}
-                        (*g.{{ $option.Name | to_camel }}).{{ $arg | to_camel }},
+                        {{- range $arg := $option.ArgNames -}}
+                        v.{{ $arg | to_camel }},
                         {{- end }}
-                    },
+                    }
                     {{- end }}
-            {{- ""}}})
-        }
+                {{- ""}}})
+            }
+        {{- else }}
+            if g.{{ $option.Name | to_camel }} != nil {{ if (eq $option.NArgs 0) }} && *g.{{ $option.Name | to_camel }}{{ end }} {
+                flags = append(flags, &Flag{
+                    {{- ""}}ID: {{ $option.ID | quote }},
+                    {{- ""}}Flag: {{ $option.Flag | quote }},
+                    {{- ""}}Args:
+                        {{- if (eq $option.NArgs 0) }}
+                        nil,
+                        {{- else if (eq $option.NArgs 1) }}
+                            {{- if $option.Choices }}
+                                []any{string(*g.{{ $option.Name | to_camel }})},
+                            {{- else }}
+                                []any{*g.{{ $option.Name | to_camel }}},
+                            {{- end }}
+                        {{- else if (gt $option.NArgs 1) }}
+                        []any{
+                            {{- range $arg := $option.ArgNames }}
+                            (*g.{{ $option.Name | to_camel }}).{{ $arg | to_camel }},
+                            {{- end }}
+                        },
+                        {{- end }}
+                {{- ""}}})
+            }
+        {{- end }}
     {{- end }}{{/* end range for options */}}
     return flags
 }

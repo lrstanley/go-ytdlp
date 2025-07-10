@@ -157,7 +157,7 @@ func TestCommand_Unset(t *testing.T) {
 
 	builder := New().NoUpdate().Progress().NoProgress().Output("test.mp4")
 
-	cmd := builder.buildCommand(context.TODO(), sampleFiles[0].url)
+	cmd := builder.BuildCommand(context.TODO(), sampleFiles[0].url)
 
 	// Make sure --no-progress is set.
 	if !slices.Contains(cmd.Args, "--no-progress") {
@@ -166,7 +166,7 @@ func TestCommand_Unset(t *testing.T) {
 
 	_ = builder.UnsetProgress()
 
-	cmd = builder.buildCommand(context.TODO(), sampleFiles[0].url)
+	cmd = builder.BuildCommand(context.TODO(), sampleFiles[0].url)
 
 	// Make sure --no-progress is not set.
 	if slices.Contains(cmd.Args, "--no-progress") {
@@ -186,7 +186,7 @@ func TestCommand_Clone(t *testing.T) {
 
 	builder2 := builder1.Clone()
 
-	cmd := builder2.buildCommand(context.TODO(), sampleFiles[0].url)
+	cmd := builder2.BuildCommand(context.TODO(), sampleFiles[0].url)
 
 	// Make sure --no-progress is set.
 	if !slices.Contains(cmd.Args, "--no-progress") {
@@ -197,7 +197,7 @@ func TestCommand_Clone(t *testing.T) {
 func TestCommand_SetExecutable(t *testing.T) {
 	t.Parallel()
 
-	cmd := New().NoUpdate().SetExecutable("/usr/bin/test").buildCommand(context.Background(), sampleFiles[0].url)
+	cmd := New().NoUpdate().SetExecutable("/usr/bin/test").BuildCommand(context.Background(), sampleFiles[0].url)
 
 	if cmd.Path != "/usr/bin/test" {
 		t.Fatalf("expected executable to be /usr/bin/test, got %s", cmd.Path)
@@ -207,7 +207,7 @@ func TestCommand_SetExecutable(t *testing.T) {
 func TestCommand_SetWorkDir(t *testing.T) {
 	t.Parallel()
 
-	cmd := New().NoUpdate().SetWorkDir("/tmp").buildCommand(context.Background(), sampleFiles[0].url)
+	cmd := New().NoUpdate().SetWorkDir("/tmp").BuildCommand(context.Background(), sampleFiles[0].url)
 
 	if cmd.Dir != "/tmp" {
 		t.Fatalf("expected workdir to be /tmp, got %s", cmd.Dir)
@@ -217,7 +217,7 @@ func TestCommand_SetWorkDir(t *testing.T) {
 func TestCommand_SetEnvVar(t *testing.T) {
 	t.Parallel()
 
-	cmd := New().NoUpdate().SetEnvVar("TEST", "1").buildCommand(context.Background(), sampleFiles[0].url)
+	cmd := New().NoUpdate().SetEnvVar("TEST", "1").BuildCommand(context.Background(), sampleFiles[0].url)
 
 	if !slices.Contains(cmd.Env, "TEST=1") {
 		t.Fatalf("expected env var to be TEST=1, got %v", cmd.Env)

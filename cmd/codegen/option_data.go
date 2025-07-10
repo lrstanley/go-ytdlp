@@ -64,16 +64,26 @@ func (o *OptionGroup) Generate(parent *OptionData) {
 	})
 }
 
+func (o *OptionGroup) AllAllowsMultiple() (opts []*Option) {
+	for _, o := range o.Options {
+		if o.AllowsMultiple {
+			opts = append(opts, &o)
+		}
+	}
+	return opts
+}
+
 type Option struct {
 	// Generated fields.
-	Parent     *OptionGroup `json:"-"` // Reference to parent.
-	Name       string       `json:"-"` // simplified name, based off the first found flags.
-	Flag       string       `json:"-"` // first flag (priority on long flags).
-	AllFlags   []string     `json:"-"` // all flags, short + long.
-	ArgNames   []string     `json:"-"` // MetaArgs converted to function arguments.
-	Executable bool         `json:"-"` // if the option means yt-dlp doesn't accept arguments, and some callback is done.
-	Deprecated string       `json:"-"` // if the option is deprecated, this will be the deprecation description.
-	URLs       []OptionURL  `json:"-"` // if the option has any links to the documentation.
+	Parent         *OptionGroup `json:"-"` // Reference to parent.
+	Name           string       `json:"-"` // simplified name, based off the first found flags.
+	Flag           string       `json:"-"` // first flag (priority on long flags).
+	AllFlags       []string     `json:"-"` // all flags, short + long.
+	ArgNames       []string     `json:"-"` // MetaArgs converted to function arguments.
+	Executable     bool         `json:"-"` // if the option means yt-dlp doesn't accept arguments, and some callback is done.
+	Deprecated     string       `json:"-"` // if the option is deprecated, this will be the deprecation description.
+	URLs           []OptionURL  `json:"-"` // if the option has any links to the documentation.
+	AllowsMultiple bool         `json:"-"` // if the option allows being invoked multiple times.
 
 	// Command data fields.
 	ID           string   `json:"id"`
@@ -109,6 +119,10 @@ func (o *Option) Generate(parent *OptionGroup) {
 
 	if slices.Contains(knownExecutable, o.ID) || slices.Contains(knownExecutable, o.Flag) {
 		o.Executable = true
+	}
+
+	if strings.Contains(o.Help, "used multiple times") || strings.Contains(o.Help, "option multiple times") {
+		o.AllowsMultiple = true
 	}
 
 	for _, d := range deprecatedFlags {

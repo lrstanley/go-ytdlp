@@ -20,7 +20,7 @@ func ptr[T any](v T) *T {
 //  - Version maps to cli flags: --version.
 //  - From option group: "General"
 func (c *Command) Version(ctx context.Context) (*Result, error) {
-	return c.runWithResult(ctx, c.buildCommand(ctx, "--version"))
+	return c.runWithResult(ctx, c.BuildCommand(ctx, "--version"))
 }
 
 // Check if updates are available. You cannot update when running from source code;
@@ -33,7 +33,7 @@ func (c *Command) Version(ctx context.Context) (*Result, error) {
 //  - Update maps to cli flags: -U/--update.
 //  - From option group: "General"
 func (c *Command) Update(ctx context.Context) (*Result, error) {
-	return c.runWithResult(ctx, c.buildCommand(ctx, "--update"))
+	return c.runWithResult(ctx, c.BuildCommand(ctx, "--update"))
 }
 
 // Do not check for updates (default)
@@ -65,7 +65,7 @@ func (c *Command) UnsetUpdate() *Command {
 //  - UpdateTo maps to cli flags: --update-to=[CHANNEL]@[TAG].
 //  - From option group: "General"
 func (c *Command) UpdateTo(ctx context.Context, value string) (*Result, error) {
-	return c.runWithResult(ctx, c.buildCommand(ctx, "--update-to", value))
+	return c.runWithResult(ctx, c.BuildCommand(ctx, "--update-to", value))
 }
 
 // Ignore download and postprocessing errors. The download will be considered
@@ -134,7 +134,7 @@ func (c *Command) AbortOnError() *Command {
 //  - DumpUserAgent maps to cli flags: --dump-user-agent.
 //  - From option group: "General"
 func (c *Command) DumpUserAgent(ctx context.Context) (*Result, error) {
-	return c.runWithResult(ctx, c.buildCommand(ctx, "--dump-user-agent"))
+	return c.runWithResult(ctx, c.BuildCommand(ctx, "--dump-user-agent"))
 }
 
 // List all supported extractors and exit
@@ -143,7 +143,7 @@ func (c *Command) DumpUserAgent(ctx context.Context) (*Result, error) {
 //  - ListExtractors maps to cli flags: --list-extractors.
 //  - From option group: "General"
 func (c *Command) ListExtractors(ctx context.Context) (*Result, error) {
-	return c.runWithResult(ctx, c.buildCommand(ctx, "--list-extractors"))
+	return c.runWithResult(ctx, c.BuildCommand(ctx, "--list-extractors"))
 }
 
 // Output descriptions of all supported extractors and exit
@@ -152,7 +152,7 @@ func (c *Command) ListExtractors(ctx context.Context) (*Result, error) {
 //  - ExtractorDescriptions maps to cli flags: --extractor-descriptions.
 //  - From option group: "General"
 func (c *Command) ExtractorDescriptions(ctx context.Context) (*Result, error) {
-	return c.runWithResult(ctx, c.buildCommand(ctx, "--extractor-descriptions"))
+	return c.runWithResult(ctx, c.BuildCommand(ctx, "--extractor-descriptions"))
 }
 
 // Extractor names to use separated by commas. You can also use regexes, "all",
@@ -273,7 +273,7 @@ func (c *Command) UnsetConfigLocations() *Command {
 //  - From option group: "General"
 func (c *Command) ConfigLocations(path string) *Command {
 	c.flagConfig.General.NoConfigLocations = nil
-	c.flagConfig.General.ConfigLocations = &path
+	c.flagConfig.General.ConfigLocations = append(c.flagConfig.General.ConfigLocations, path)
 	return c
 }
 
@@ -287,7 +287,7 @@ func (c *Command) ConfigLocations(path string) *Command {
 //  - From option group: "General"
 func (c *Command) PluginDirs(path string) *Command {
 	c.flagConfig.General.NoPluginDirs = nil
-	c.flagConfig.General.PluginDirs = &path
+	c.flagConfig.General.PluginDirs = append(c.flagConfig.General.PluginDirs, path)
 	return c
 }
 
@@ -484,7 +484,7 @@ func (c *Command) UnsetColors() *Command {
 //  - From option group: "General"
 func (c *Command) Color(policy string) *Command {
 	c.flagConfig.General.NoColors = nil
-	c.flagConfig.General.Color = &policy
+	c.flagConfig.General.Color = append(c.flagConfig.General.Color, policy)
 	return c
 }
 
@@ -528,7 +528,7 @@ func (c *Command) UnsetCompatOptions() *Command {
 //  - PresetAlias maps to cli flags: -t/--preset-alias=PRESET.
 //  - From option group: "General"
 func (c *Command) PresetAlias(preset string) *Command {
-	c.flagConfig.General.PresetAlias = &preset
+	c.flagConfig.General.PresetAlias = append(c.flagConfig.General.PresetAlias, preset)
 	return c
 }
 
@@ -1143,7 +1143,7 @@ func (c *Command) UnsetMaxViews() *Command {
 //  - From option group: "Video Selection"
 func (c *Command) MatchFilters(filter string) *Command {
 	c.flagConfig.VideoSelection.NoMatchFilters = nil
-	c.flagConfig.VideoSelection.MatchFilters = &filter
+	c.flagConfig.VideoSelection.MatchFilters = append(c.flagConfig.VideoSelection.MatchFilters, filter)
 	return c
 }
 
@@ -1575,7 +1575,7 @@ func (c *Command) UnsetFragmentRetries() *Command {
 //  - RetrySleep maps to cli flags: --retry-sleep=[TYPE:]EXPR.
 //  - From option group: "Download"
 func (c *Command) RetrySleep(expr string) *Command {
-	c.flagConfig.Download.RetrySleep = &expr
+	c.flagConfig.Download.RetrySleep = append(c.flagConfig.Download.RetrySleep, expr)
 	return c
 }
 
@@ -1937,7 +1937,7 @@ func (c *Command) NoHLSUseMPEGTS() *Command {
 //  - DownloadSections maps to cli flags: --download-sections=REGEX.
 //  - From option group: "Download"
 func (c *Command) DownloadSections(regex string) *Command {
-	c.flagConfig.Download.DownloadSections = &regex
+	c.flagConfig.Download.DownloadSections = append(c.flagConfig.Download.DownloadSections, regex)
 	return c
 }
 
@@ -1960,7 +1960,7 @@ func (c *Command) UnsetDownloadSections() *Command {
 //  - Downloader maps to cli flags: --downloader/--external-downloader=[PROTO:]NAME.
 //  - From option group: "Download"
 func (c *Command) Downloader(name string) *Command {
-	c.flagConfig.Download.Downloader = &name
+	c.flagConfig.Download.Downloader = append(c.flagConfig.Download.Downloader, name)
 	return c
 }
 
@@ -1981,7 +1981,7 @@ func (c *Command) UnsetDownloader() *Command {
 //  - DownloaderArgs maps to cli flags: --downloader-args/--external-downloader-args=NAME:ARGS.
 //  - From option group: "Download"
 func (c *Command) DownloaderArgs(nameargs string) *Command {
-	c.flagConfig.Download.DownloaderArgs = &nameargs
+	c.flagConfig.Download.DownloaderArgs = append(c.flagConfig.Download.DownloaderArgs, nameargs)
 	return c
 }
 
@@ -3052,7 +3052,7 @@ func (c *Command) UnsetSkipDownload() *Command {
 //  - Print maps to cli flags: -O/--print=[WHEN:]TEMPLATE.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) Print(template string) *Command {
-	c.flagConfig.VerbositySimulation.Print = &template
+	c.flagConfig.VerbositySimulation.Print = append(c.flagConfig.VerbositySimulation.Print, template)
 	return c
 }
 
@@ -3072,10 +3072,10 @@ func (c *Command) UnsetPrint() *Command {
 //  - PrintToFile maps to cli flags: --print-to-file=[WHEN:]TEMPLATE FILE.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) PrintToFile(template, file string) *Command {
-	c.flagConfig.VerbositySimulation.PrintToFile = &FlagPrintToFile{
+	c.flagConfig.VerbositySimulation.PrintToFile = append(c.flagConfig.VerbositySimulation.PrintToFile, &FlagPrintToFile{
 		Template: template,
 		File:     file,
-	}
+	})
 	return c
 }
 
@@ -3689,7 +3689,7 @@ func (c *Command) UnsetReferer() *Command {
 //  - AddHeaders maps to cli flags: --add-headers=FIELD:VALUE.
 //  - From option group: "Workarounds"
 func (c *Command) AddHeaders(fieldvalue string) *Command {
-	c.flagConfig.Workarounds.AddHeaders = &fieldvalue
+	c.flagConfig.Workarounds.AddHeaders = append(c.flagConfig.Workarounds.AddHeaders, fieldvalue)
 	return c
 }
 
@@ -4677,7 +4677,7 @@ func (c *Command) UnsetRecodeVideo() *Command {
 //  - PostProcessorArgs maps to cli flags: --postprocessor-args/--ppa=NAME:ARGS.
 //  - From option group: "Post-Processing"
 func (c *Command) PostProcessorArgs(nameargs string) *Command {
-	c.flagConfig.PostProcessing.PostProcessorArgs = &nameargs
+	c.flagConfig.PostProcessing.PostProcessorArgs = append(c.flagConfig.PostProcessing.PostProcessorArgs, nameargs)
 	return c
 }
 
@@ -4982,11 +4982,11 @@ func (c *Command) UnsetParseMetadata() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) ReplaceInMetadata(fields, regex, replace string) *Command {
 	c.flagConfig.PostProcessing.ParseMetadata = nil
-	c.flagConfig.PostProcessing.ReplaceInMetadata = &FlagReplaceInMetadata{
+	c.flagConfig.PostProcessing.ReplaceInMetadata = append(c.flagConfig.PostProcessing.ReplaceInMetadata, &FlagReplaceInMetadata{
 		Fields:  fields,
 		Regex:   regex,
 		Replace: replace,
-	}
+	})
 	return c
 }
 
@@ -5177,7 +5177,7 @@ func (c *Command) UnsetFFmpegLocation() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) Exec(cmd string) *Command {
 	c.flagConfig.PostProcessing.NoExec = nil
-	c.flagConfig.PostProcessing.Exec = &cmd
+	c.flagConfig.PostProcessing.Exec = append(c.flagConfig.PostProcessing.Exec, cmd)
 	return c
 }
 
@@ -5327,7 +5327,7 @@ func (c *Command) NoSplitChapters() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) RemoveChapters(regex string) *Command {
 	c.flagConfig.PostProcessing.NoRemoveChapters = nil
-	c.flagConfig.PostProcessing.RemoveChapters = &regex
+	c.flagConfig.PostProcessing.RemoveChapters = append(c.flagConfig.PostProcessing.RemoveChapters, regex)
 	return c
 }
 
@@ -5403,7 +5403,7 @@ func (c *Command) NoForceKeyframesAtCuts() *Command {
 //  - UsePostProcessor maps to cli flags: --use-postprocessor=NAME[:ARGS].
 //  - From option group: "Post-Processing"
 func (c *Command) UsePostProcessor(name string) *Command {
-	c.flagConfig.PostProcessing.UsePostProcessor = &name
+	c.flagConfig.PostProcessing.UsePostProcessor = append(c.flagConfig.PostProcessing.UsePostProcessor, name)
 	return c
 }
 
@@ -5781,7 +5781,7 @@ func (c *Command) NoHLSSplitDiscontinuity() *Command {
 //  - ExtractorArgs maps to cli flags: --extractor-args=IE_KEY:ARGS.
 //  - From option group: "Extractor"
 func (c *Command) ExtractorArgs(ieKeyargs string) *Command {
-	c.flagConfig.Extractor.ExtractorArgs = &ieKeyargs
+	c.flagConfig.Extractor.ExtractorArgs = append(c.flagConfig.Extractor.ExtractorArgs, ieKeyargs)
 	return c
 }
 

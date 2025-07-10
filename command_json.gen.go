@@ -116,8 +116,17 @@ func (f *FlagConfig) ToFlags() (flags Flags) {
 	flags = append(flags, f.SponsorBlock.ToFlags()...)
 	flags = append(flags, f.Extractor.ToFlags()...)
 
+	// Deduplicate flags by their ID, where only the last one is kept, and the others are deleted.
 	for i := 0; i < len(flags); i++ {
+		if flags[i].AllowsMultiple {
+			continue
+		}
+
 		for j := i + 1; j < len(flags); j++ {
+			if flags[j].AllowsMultiple {
+				continue
+			}
+
 			if flags[i].ID == flags[j].ID {
 				flags[j] = nil
 				flags = append(flags[:j], flags[j+1:]...)
@@ -159,11 +168,11 @@ type FlagsGeneral struct {
 	NoConfigLocations *bool `json:"no_config_locations,omitempty" id:"config_locations" jsonschema:"title=NoConfigLocations" jsonschema_extras:"uid=config_locations" jsonschema_description:"Do not load any custom configuration files (default). When given inside a configuration file, ignore all previous --config-locations defined in the current file"`
 	// Location of the main configuration file; either the path to the config or its containing
 	// directory ("-" for stdin). Can be used multiple times and inside other configuration files
-	ConfigLocations *string `json:"config_locations,omitempty" id:"config_locations" jsonschema:"title=ConfigLocations" jsonschema_extras:"uid=config_locations" jsonschema_description:"Location of the main configuration file; either the path to the config or its containing directory (\"-\" for stdin). Can be used multiple times and inside other configuration files"`
+	ConfigLocations []string `json:"config_locations,omitempty" id:"config_locations" jsonschema:"title=ConfigLocations" jsonschema_extras:"uid=config_locations" jsonschema_description:"Location of the main configuration file; either the path to the config or its containing directory (\"-\" for stdin). Can be used multiple times and inside other configuration files"`
 	// Path to an additional directory to search for plugins. This option can be used multiple
 	// times to add multiple directories. Use "default" to search the default plugin directories
 	// (default)
-	PluginDirs *string `json:"plugin_dirs,omitempty" id:"plugin_dirs" jsonschema:"title=PluginDirs" jsonschema_extras:"uid=plugin_dirs" jsonschema_description:"Path to an additional directory to search for plugins. This option can be used multiple times to add multiple directories. Use \"default\" to search the default plugin directories (default)"`
+	PluginDirs []string `json:"plugin_dirs,omitempty" id:"plugin_dirs" jsonschema:"title=PluginDirs" jsonschema_extras:"uid=plugin_dirs" jsonschema_description:"Path to an additional directory to search for plugins. This option can be used multiple times to add multiple directories. Use \"default\" to search the default plugin directories (default)"`
 	// Clear plugin directories to search, including defaults and those provided by previous
 	// --plugin-dirs
 	NoPluginDirs *bool `json:"no_plugin_dirs,omitempty" id:"plugin_dirs" jsonschema:"title=NoPluginDirs" jsonschema_extras:"uid=plugin_dirs" jsonschema_description:"Clear plugin directories to search, including defaults and those provided by previous --plugin-dirs"`
@@ -191,7 +200,7 @@ type FlagsGeneral struct {
 	// stderr) to apply the setting to. Can be one of "always", "auto" (default), "never", or
 	// "no_color" (use non color terminal sequences). Use "auto-tty" or "no_color-tty" to decide
 	// based on terminal support only. Can be used multiple times
-	Color *string `json:"color,omitempty" id:"color" jsonschema:"title=Color" jsonschema_extras:"uid=color" jsonschema_description:"Whether to emit color codes in output, optionally prefixed by the STREAM (stdout or stderr) to apply the setting to. Can be one of \"always\", \"auto\" (default), \"never\", or \"no_color\" (use non color terminal sequences). Use \"auto-tty\" or \"no_color-tty\" to decide based on terminal support only. Can be used multiple times"`
+	Color []string `json:"color,omitempty" id:"color" jsonschema:"title=Color" jsonschema_extras:"uid=color" jsonschema_description:"Whether to emit color codes in output, optionally prefixed by the STREAM (stdout or stderr) to apply the setting to. Can be one of \"always\", \"auto\" (default), \"never\", or \"no_color\" (use non color terminal sequences). Use \"auto-tty\" or \"no_color-tty\" to decide based on terminal support only. Can be used multiple times"`
 	// Options that can help keep compatibility with youtube-dl or youtube-dlc configurations by
 	// reverting some of the changes made in yt-dlp. See "Differences in default behavior" for
 	// details
@@ -199,7 +208,7 @@ type FlagsGeneral struct {
 	// Applies a predefined set of options. e.g. --preset-alias mp3. The following presets are
 	// available: mp3, aac, mp4, mkv, sleep. See the "Preset Aliases" section at the end for more
 	// info. This option can be used multiple times
-	PresetAlias *string `json:"preset_alias,omitempty" id:"preset-alias" jsonschema:"title=PresetAlias" jsonschema_extras:"uid=preset-alias" jsonschema_description:"Applies a predefined set of options. e.g. --preset-alias mp3. The following presets are available: mp3, aac, mp4, mkv, sleep. See the \"Preset Aliases\" section at the end for more info. This option can be used multiple times"`
+	PresetAlias []string `json:"preset_alias,omitempty" id:"preset-alias" jsonschema:"title=PresetAlias" jsonschema_extras:"uid=preset-alias" jsonschema_description:"Applies a predefined set of options. e.g. --preset-alias mp3. The following presets are available: mp3, aac, mp4, mkv, sleep. See the \"Preset Aliases\" section at the end for more info. This option can be used multiple times"`
 }
 
 // Validate ensures all flags have appropriate values. If there are validation-specific
@@ -260,11 +269,11 @@ func (g *FlagsGeneral) ToFlags() (flags Flags) {
 	if g.NoConfigLocations != nil && *g.NoConfigLocations {
 		flags = append(flags, &Flag{ID: "config_locations", Flag: "--no-config-locations", Args: nil})
 	}
-	if g.ConfigLocations != nil {
-		flags = append(flags, &Flag{ID: "config_locations", Flag: "--config-locations", Args: []any{*g.ConfigLocations}})
+	for _, v := range g.ConfigLocations {
+		flags = append(flags, &Flag{ID: "config_locations", Flag: "--config-locations", AllowsMultiple: true, Args: []any{v}})
 	}
-	if g.PluginDirs != nil {
-		flags = append(flags, &Flag{ID: "plugin_dirs", Flag: "--plugin-dirs", Args: []any{*g.PluginDirs}})
+	for _, v := range g.PluginDirs {
+		flags = append(flags, &Flag{ID: "plugin_dirs", Flag: "--plugin-dirs", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.NoPluginDirs != nil && *g.NoPluginDirs {
 		flags = append(flags, &Flag{ID: "plugin_dirs", Flag: "--no-plugin-dirs", Args: nil})
@@ -296,14 +305,14 @@ func (g *FlagsGeneral) ToFlags() (flags Flags) {
 	if g.NoColors != nil && *g.NoColors {
 		flags = append(flags, &Flag{ID: "color", Flag: "--no-colors", Args: nil})
 	}
-	if g.Color != nil {
-		flags = append(flags, &Flag{ID: "color", Flag: "--color", Args: []any{*g.Color}})
+	for _, v := range g.Color {
+		flags = append(flags, &Flag{ID: "color", Flag: "--color", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.CompatOptions != nil {
 		flags = append(flags, &Flag{ID: "compat_opts", Flag: "--compat-options", Args: []any{*g.CompatOptions}})
 	}
-	if g.PresetAlias != nil {
-		flags = append(flags, &Flag{ID: "preset-alias", Flag: "--preset-alias", Args: []any{*g.PresetAlias}})
+	for _, v := range g.PresetAlias {
+		flags = append(flags, &Flag{ID: "preset-alias", Flag: "--preset-alias", AllowsMultiple: true, Args: []any{v}})
 	}
 	return flags
 }
@@ -497,7 +506,7 @@ type FlagsVideoSelection struct {
 	// 100 (or the like field is not available) and also has a description that contains the
 	// phrase "cats & dogs" (caseless). Use "--match-filters -" to interactively ask whether to
 	// download each video
-	MatchFilters *string `json:"match_filters,omitempty" id:"match_filter" jsonschema:"title=MatchFilters" jsonschema_extras:"uid=match_filter" jsonschema_description:"Generic video filter. Any \"OUTPUT TEMPLATE\" field can be compared with a number or a string using the operators defined in \"Filtering Formats\". You can also simply specify a field to match if the field is present, use \"!field\" to check if the field is not present, and \"&\" to check multiple conditions. Use a \"\\\" to escape \"&\" or quotes if needed. If used multiple times, the filter matches if at least one of the conditions is met. E.g. --match-filters !is_live --match-filters \"like_count>?100 & description~='(?i)\\bcats \\& dogs\\b'\" matches only videos that are not live OR those that have a like count more than 100 (or the like field is not available) and also has a description that contains the phrase \"cats & dogs\" (caseless). Use \"--match-filters -\" to interactively ask whether to download each video"`
+	MatchFilters []string `json:"match_filters,omitempty" id:"match_filter" jsonschema:"title=MatchFilters" jsonschema_extras:"uid=match_filter" jsonschema_description:"Generic video filter. Any \"OUTPUT TEMPLATE\" field can be compared with a number or a string using the operators defined in \"Filtering Formats\". You can also simply specify a field to match if the field is present, use \"!field\" to check if the field is not present, and \"&\" to check multiple conditions. Use a \"\\\" to escape \"&\" or quotes if needed. If used multiple times, the filter matches if at least one of the conditions is met. E.g. --match-filters !is_live --match-filters \"like_count>?100 & description~='(?i)\\bcats \\& dogs\\b'\" matches only videos that are not live OR those that have a like count more than 100 (or the like field is not available) and also has a description that contains the phrase \"cats & dogs\" (caseless). Use \"--match-filters -\" to interactively ask whether to download each video"`
 	// Do not use any --match-filters (default)
 	NoMatchFilters *bool `json:"no_match_filters,omitempty" id:"match_filter" jsonschema:"title=NoMatchFilters" jsonschema_extras:"uid=match_filter" jsonschema_description:"Do not use any --match-filters (default)"`
 	// Same as "--match-filters" but stops the download process when a video is rejected
@@ -601,8 +610,8 @@ func (g *FlagsVideoSelection) ToFlags() (flags Flags) {
 	if g.MaxViews != nil {
 		flags = append(flags, &Flag{ID: "max_views", Flag: "--max-views", Args: []any{*g.MaxViews}})
 	}
-	if g.MatchFilters != nil {
-		flags = append(flags, &Flag{ID: "match_filter", Flag: "--match-filters", Args: []any{*g.MatchFilters}})
+	for _, v := range g.MatchFilters {
+		flags = append(flags, &Flag{ID: "match_filter", Flag: "--match-filters", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.NoMatchFilters != nil && *g.NoMatchFilters {
 		flags = append(flags, &Flag{ID: "match_filter", Flag: "--no-match-filters", Args: nil})
@@ -678,7 +687,7 @@ type FlagsDownload struct {
 	// linear=START[:END[:STEP=1]] or exp=START[:END[:BASE=2]]. This option can be used multiple
 	// times to set the sleep for the different retry types, e.g. --retry-sleep linear=1::2
 	// --retry-sleep fragment:exp=1:20
-	RetrySleep *string `json:"retry_sleep,omitempty" id:"retry_sleep" jsonschema:"title=RetrySleep" jsonschema_extras:"uid=retry_sleep" jsonschema_description:"Time to sleep between retries in seconds (optionally) prefixed by the type of retry (http (default), fragment, file_access, extractor) to apply the sleep to. EXPR can be a number, linear=START[:END[:STEP=1]] or exp=START[:END[:BASE=2]]. This option can be used multiple times to set the sleep for the different retry types, e.g. --retry-sleep linear=1::2 --retry-sleep fragment:exp=1:20"`
+	RetrySleep []string `json:"retry_sleep,omitempty" id:"retry_sleep" jsonschema:"title=RetrySleep" jsonschema_extras:"uid=retry_sleep" jsonschema_description:"Time to sleep between retries in seconds (optionally) prefixed by the type of retry (http (default), fragment, file_access, extractor) to apply the sleep to. EXPR can be a number, linear=START[:END[:STEP=1]] or exp=START[:END[:BASE=2]]. This option can be used multiple times to set the sleep for the different retry types, e.g. --retry-sleep linear=1::2 --retry-sleep fragment:exp=1:20"`
 	// Skip unavailable fragments for DASH, hlsnative and ISM downloads (default)
 	SkipUnavailableFragments *bool `json:"skip_unavailable_fragments,omitempty" id:"skip_unavailable_fragments" jsonschema:"title=SkipUnavailableFragments" jsonschema_extras:"uid=skip_unavailable_fragments" jsonschema_description:"Skip unavailable fragments for DASH, hlsnative and ISM downloads (default)"`
 	// Abort download if a fragment is unavailable
@@ -722,19 +731,19 @@ type FlagsDownload struct {
 	// used to download between the "start_time" and "end_time" extracted from the URL. Needs
 	// ffmpeg. This option can be used multiple times to download multiple sections, e.g.
 	// --download-sections "*10:15-inf" --download-sections "intro"
-	DownloadSections *string `json:"download_sections,omitempty" id:"download_ranges" jsonschema:"title=DownloadSections" jsonschema_extras:"uid=download_ranges" jsonschema_description:"Download only chapters that match the regular expression. A \"*\" prefix denotes time-range instead of chapter. Negative timestamps are calculated from the end. \"*from-url\" can be used to download between the \"start_time\" and \"end_time\" extracted from the URL. Needs ffmpeg. This option can be used multiple times to download multiple sections, e.g. --download-sections \"*10:15-inf\" --download-sections \"intro\""`
+	DownloadSections []string `json:"download_sections,omitempty" id:"download_ranges" jsonschema:"title=DownloadSections" jsonschema_extras:"uid=download_ranges" jsonschema_description:"Download only chapters that match the regular expression. A \"*\" prefix denotes time-range instead of chapter. Negative timestamps are calculated from the end. \"*from-url\" can be used to download between the \"start_time\" and \"end_time\" extracted from the URL. Needs ffmpeg. This option can be used multiple times to download multiple sections, e.g. --download-sections \"*10:15-inf\" --download-sections \"intro\""`
 	// Name or path of the external downloader to use (optionally) prefixed by the protocols
 	// (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c,
 	// avconv, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set
 	// different downloaders for different protocols. E.g. --downloader aria2c --downloader
 	// "dash,m3u8:native" will use aria2c for http/ftp downloads, and the native downloader for
 	// dash/m3u8 downloads
-	Downloader *string `json:"downloader,omitempty" id:"external_downloader" jsonschema:"title=Downloader" jsonschema_extras:"uid=external_downloader" jsonschema_description:"Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c, avconv, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads"`
+	Downloader []string `json:"downloader,omitempty" id:"external_downloader" jsonschema:"title=Downloader" jsonschema_extras:"uid=external_downloader" jsonschema_description:"Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c, avconv, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads"`
 	// Give these arguments to the external downloader. Specify the downloader name and the
 	// arguments separated by a colon ":". For ffmpeg, arguments can be passed to different
 	// positions using the same syntax as --postprocessor-args. You can use this option multiple
 	// times to give different arguments to different downloaders
-	DownloaderArgs *string `json:"downloader_args,omitempty" id:"external_downloader_args" jsonschema:"title=DownloaderArgs" jsonschema_extras:"uid=external_downloader_args" jsonschema_description:"Give these arguments to the external downloader. Specify the downloader name and the arguments separated by a colon \":\". For ffmpeg, arguments can be passed to different positions using the same syntax as --postprocessor-args. You can use this option multiple times to give different arguments to different downloaders"`
+	DownloaderArgs []string `json:"downloader_args,omitempty" id:"external_downloader_args" jsonschema:"title=DownloaderArgs" jsonschema_extras:"uid=external_downloader_args" jsonschema_description:"Give these arguments to the external downloader. Specify the downloader name and the arguments separated by a colon \":\". For ffmpeg, arguments can be passed to different positions using the same syntax as --postprocessor-args. You can use this option multiple times to give different arguments to different downloaders"`
 }
 
 // Validate ensures all flags have appropriate values. If there are validation-specific
@@ -786,8 +795,8 @@ func (g *FlagsDownload) ToFlags() (flags Flags) {
 	if g.FragmentRetries != nil {
 		flags = append(flags, &Flag{ID: "fragment_retries", Flag: "--fragment-retries", Args: []any{*g.FragmentRetries}})
 	}
-	if g.RetrySleep != nil {
-		flags = append(flags, &Flag{ID: "retry_sleep", Flag: "--retry-sleep", Args: []any{*g.RetrySleep}})
+	for _, v := range g.RetrySleep {
+		flags = append(flags, &Flag{ID: "retry_sleep", Flag: "--retry-sleep", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.SkipUnavailableFragments != nil && *g.SkipUnavailableFragments {
 		flags = append(flags, &Flag{ID: "skip_unavailable_fragments", Flag: "--skip-unavailable-fragments", Args: nil})
@@ -843,14 +852,14 @@ func (g *FlagsDownload) ToFlags() (flags Flags) {
 	if g.NoHLSUseMPEGTS != nil && *g.NoHLSUseMPEGTS {
 		flags = append(flags, &Flag{ID: "hls_use_mpegts", Flag: "--no-hls-use-mpegts", Args: nil})
 	}
-	if g.DownloadSections != nil {
-		flags = append(flags, &Flag{ID: "download_ranges", Flag: "--download-sections", Args: []any{*g.DownloadSections}})
+	for _, v := range g.DownloadSections {
+		flags = append(flags, &Flag{ID: "download_ranges", Flag: "--download-sections", AllowsMultiple: true, Args: []any{v}})
 	}
-	if g.Downloader != nil {
-		flags = append(flags, &Flag{ID: "external_downloader", Flag: "--downloader", Args: []any{*g.Downloader}})
+	for _, v := range g.Downloader {
+		flags = append(flags, &Flag{ID: "external_downloader", Flag: "--downloader", AllowsMultiple: true, Args: []any{v}})
 	}
-	if g.DownloaderArgs != nil {
-		flags = append(flags, &Flag{ID: "external_downloader_args", Flag: "--downloader-args", Args: []any{*g.DownloaderArgs}})
+	for _, v := range g.DownloaderArgs {
+		flags = append(flags, &Flag{ID: "external_downloader_args", Flag: "--downloader-args", AllowsMultiple: true, Args: []any{v}})
 	}
 	return flags
 }
@@ -1249,19 +1258,19 @@ type FlagsVerbositySimulation struct {
 	// it, separated by a ":". Supported values of "WHEN" are the same as that of
 	// --use-postprocessor (default: video). Implies --quiet. Implies --simulate unless
 	// --no-simulate or later stages of WHEN are used. This option can be used multiple times
-	Print *string `json:"print,omitempty" id:"forceprint" jsonschema:"title=Print" jsonschema_extras:"uid=forceprint" jsonschema_description:"Field name or output template to print to screen, optionally prefixed with when to print it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: video). Implies --quiet. Implies --simulate unless --no-simulate or later stages of WHEN are used. This option can be used multiple times"`
+	Print []string `json:"print,omitempty" id:"forceprint" jsonschema:"title=Print" jsonschema_extras:"uid=forceprint" jsonschema_description:"Field name or output template to print to screen, optionally prefixed with when to print it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: video). Implies --quiet. Implies --simulate unless --no-simulate or later stages of WHEN are used. This option can be used multiple times"`
 	// Append given template to the file. The values of WHEN and TEMPLATE are the same as that of
 	// --print. FILE uses the same syntax as the output template. This option can be used
 	// multiple times
-	PrintToFile    *FlagPrintToFile `json:"print_to_file,omitempty" id:"print_to_file" jsonschema:"title=PrintToFile" jsonschema_extras:"uid=print_to_file" jsonschema_description:"Append given template to the file. The values of WHEN and TEMPLATE are the same as that of --print. FILE uses the same syntax as the output template. This option can be used multiple times"`
-	GetURL         *bool            `json:"get_url,omitempty" id:"geturl" jsonschema:"title=GetURL" jsonschema_extras:"uid=geturl" jsonschema_description:""`
-	GetTitle       *bool            `json:"get_title,omitempty" id:"gettitle" jsonschema:"title=GetTitle" jsonschema_extras:"uid=gettitle" jsonschema_description:""`
-	GetID          *bool            `json:"get_id,omitempty" id:"getid" jsonschema:"title=GetID" jsonschema_extras:"uid=getid" jsonschema_description:""`
-	GetThumbnail   *bool            `json:"get_thumbnail,omitempty" id:"getthumbnail" jsonschema:"title=GetThumbnail" jsonschema_extras:"uid=getthumbnail" jsonschema_description:""`
-	GetDescription *bool            `json:"get_description,omitempty" id:"getdescription" jsonschema:"title=GetDescription" jsonschema_extras:"uid=getdescription" jsonschema_description:""`
-	GetDuration    *bool            `json:"get_duration,omitempty" id:"getduration" jsonschema:"title=GetDuration" jsonschema_extras:"uid=getduration" jsonschema_description:""`
-	GetFilename    *bool            `json:"get_filename,omitempty" id:"getfilename" jsonschema:"title=GetFilename" jsonschema_extras:"uid=getfilename" jsonschema_description:""`
-	GetFormat      *bool            `json:"get_format,omitempty" id:"getformat" jsonschema:"title=GetFormat" jsonschema_extras:"uid=getformat" jsonschema_description:""`
+	PrintToFile    []*FlagPrintToFile `json:"print_to_file,omitempty" id:"print_to_file" jsonschema:"title=PrintToFile" jsonschema_extras:"uid=print_to_file" jsonschema_description:"Append given template to the file. The values of WHEN and TEMPLATE are the same as that of --print. FILE uses the same syntax as the output template. This option can be used multiple times"`
+	GetURL         *bool              `json:"get_url,omitempty" id:"geturl" jsonschema:"title=GetURL" jsonschema_extras:"uid=geturl" jsonschema_description:""`
+	GetTitle       *bool              `json:"get_title,omitempty" id:"gettitle" jsonschema:"title=GetTitle" jsonschema_extras:"uid=gettitle" jsonschema_description:""`
+	GetID          *bool              `json:"get_id,omitempty" id:"getid" jsonschema:"title=GetID" jsonschema_extras:"uid=getid" jsonschema_description:""`
+	GetThumbnail   *bool              `json:"get_thumbnail,omitempty" id:"getthumbnail" jsonschema:"title=GetThumbnail" jsonschema_extras:"uid=getthumbnail" jsonschema_description:""`
+	GetDescription *bool              `json:"get_description,omitempty" id:"getdescription" jsonschema:"title=GetDescription" jsonschema_extras:"uid=getdescription" jsonschema_description:""`
+	GetDuration    *bool              `json:"get_duration,omitempty" id:"getduration" jsonschema:"title=GetDuration" jsonschema_extras:"uid=getduration" jsonschema_description:""`
+	GetFilename    *bool              `json:"get_filename,omitempty" id:"getfilename" jsonschema:"title=GetFilename" jsonschema_extras:"uid=getfilename" jsonschema_description:""`
+	GetFormat      *bool              `json:"get_format,omitempty" id:"getformat" jsonschema:"title=GetFormat" jsonschema_extras:"uid=getformat" jsonschema_description:""`
 	// Quiet, but print JSON information for each video. Simulate unless --no-simulate is used.
 	// See "OUTPUT TEMPLATE" for a description of available keys
 	DumpJSON *bool `json:"dump_json,omitempty" id:"dumpjson" jsonschema:"title=DumpJSON" jsonschema_extras:"uid=dumpjson" jsonschema_description:"Quiet, but print JSON information for each video. Simulate unless --no-simulate is used. See \"OUTPUT TEMPLATE\" for a description of available keys"`
@@ -1361,14 +1370,11 @@ func (g *FlagsVerbositySimulation) ToFlags() (flags Flags) {
 	if g.SkipDownload != nil && *g.SkipDownload {
 		flags = append(flags, &Flag{ID: "skip_download", Flag: "--skip-download", Args: nil})
 	}
-	if g.Print != nil {
-		flags = append(flags, &Flag{ID: "forceprint", Flag: "--print", Args: []any{*g.Print}})
+	for _, v := range g.Print {
+		flags = append(flags, &Flag{ID: "forceprint", Flag: "--print", AllowsMultiple: true, Args: []any{v}})
 	}
-	if g.PrintToFile != nil {
-		flags = append(flags, &Flag{ID: "print_to_file", Flag: "--print-to-file", Args: []any{
-			(*g.PrintToFile).Template,
-			(*g.PrintToFile).File,
-		}})
+	for _, v := range g.PrintToFile {
+		flags = append(flags, &Flag{ID: "print_to_file", Flag: "--print-to-file", AllowsMultiple: true, Args: []any{v.Template, v.File}})
 	}
 	if g.GetURL != nil && *g.GetURL {
 		flags = append(flags, &Flag{ID: "geturl", Flag: "--get-url", Args: nil})
@@ -1460,7 +1466,7 @@ type FlagsWorkarounds struct {
 	Referer        *string `json:"referer,omitempty" id:"referer" jsonschema:"title=Referer" jsonschema_extras:"uid=referer" jsonschema_description:""`
 	// Specify a custom HTTP header and its value, separated by a colon ":". You can use this
 	// option multiple times
-	AddHeaders *string `json:"add_headers,omitempty" id:"headers" jsonschema:"title=AddHeaders" jsonschema_extras:"uid=headers" jsonschema_description:"Specify a custom HTTP header and its value, separated by a colon \":\". You can use this option multiple times"`
+	AddHeaders []string `json:"add_headers,omitempty" id:"headers" jsonschema:"title=AddHeaders" jsonschema_extras:"uid=headers" jsonschema_description:"Specify a custom HTTP header and its value, separated by a colon \":\". You can use this option multiple times"`
 	// Work around terminals that lack bidirectional text support. Requires bidiv or fribidi
 	// executable in PATH
 	BidiWorkaround *bool `json:"bidi_workaround,omitempty" id:"bidi_workaround" jsonschema:"title=BidiWorkaround" jsonschema_extras:"uid=bidi_workaround" jsonschema_description:"Work around terminals that lack bidirectional text support. Requires bidiv or fribidi executable in PATH"`
@@ -1524,8 +1530,8 @@ func (g *FlagsWorkarounds) ToFlags() (flags Flags) {
 	if g.Referer != nil {
 		flags = append(flags, &Flag{ID: "referer", Flag: "--referer", Args: []any{*g.Referer}})
 	}
-	if g.AddHeaders != nil {
-		flags = append(flags, &Flag{ID: "headers", Flag: "--add-headers", Args: []any{*g.AddHeaders}})
+	for _, v := range g.AddHeaders {
+		flags = append(flags, &Flag{ID: "headers", Flag: "--add-headers", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.BidiWorkaround != nil && *g.BidiWorkaround {
 		flags = append(flags, &Flag{ID: "bidi_workaround", Flag: "--bidi-workaround", Args: nil})
@@ -1894,7 +1900,7 @@ type FlagsPostProcessing struct {
 	// pass the argument before the specified input/output file, e.g. --ppa "Merger+ffmpeg_i1:-v
 	// quiet". You can use this option multiple times to give different arguments to different
 	// postprocessors.
-	PostProcessorArgs *string `json:"postprocessor_args,omitempty" id:"postprocessor_args" jsonschema:"title=PostProcessorArgs" jsonschema_extras:"uid=postprocessor_args" jsonschema_description:"Give these arguments to the postprocessors. Specify the postprocessor/executable name and the arguments separated by a colon \":\" to give the argument to the specified postprocessor/executable. Supported PP are: Merger, ModifyChapters, SplitChapters, ExtractAudio, VideoRemuxer, VideoConvertor, Metadata, EmbedSubtitle, EmbedThumbnail, SubtitlesConvertor, ThumbnailsConvertor, FixupStretched, FixupM4a, FixupM3u8, FixupTimestamp and FixupDuration. The supported executables are: AtomicParsley, FFmpeg and FFprobe. You can also specify \"PP+EXE:ARGS\" to give the arguments to the specified executable only when being used by the specified postprocessor. Additionally, for ffmpeg/ffprobe, \"_i\"/\"_o\" can be appended to the prefix optionally followed by a number to pass the argument before the specified input/output file, e.g. --ppa \"Merger+ffmpeg_i1:-v quiet\". You can use this option multiple times to give different arguments to different postprocessors."`
+	PostProcessorArgs []string `json:"postprocessor_args,omitempty" id:"postprocessor_args" jsonschema:"title=PostProcessorArgs" jsonschema_extras:"uid=postprocessor_args" jsonschema_description:"Give these arguments to the postprocessors. Specify the postprocessor/executable name and the arguments separated by a colon \":\" to give the argument to the specified postprocessor/executable. Supported PP are: Merger, ModifyChapters, SplitChapters, ExtractAudio, VideoRemuxer, VideoConvertor, Metadata, EmbedSubtitle, EmbedThumbnail, SubtitlesConvertor, ThumbnailsConvertor, FixupStretched, FixupM4a, FixupM3u8, FixupTimestamp and FixupDuration. The supported executables are: AtomicParsley, FFmpeg and FFprobe. You can also specify \"PP+EXE:ARGS\" to give the arguments to the specified executable only when being used by the specified postprocessor. Additionally, for ffmpeg/ffprobe, \"_i\"/\"_o\" can be appended to the prefix optionally followed by a number to pass the argument before the specified input/output file, e.g. --ppa \"Merger+ffmpeg_i1:-v quiet\". You can use this option multiple times to give different arguments to different postprocessors."`
 	// Keep the intermediate video file on disk after post-processing
 	KeepVideo *bool `json:"keep_video,omitempty" id:"keepvideo" jsonschema:"title=KeepVideo" jsonschema_extras:"uid=keepvideo" jsonschema_description:"Keep the intermediate video file on disk after post-processing"`
 	// Delete the intermediate video file after post-processing (default)
@@ -1932,7 +1938,7 @@ type FlagsPostProcessing struct {
 	// Replace text in a metadata field using the given regex. This option can be used multiple
 	// times. Supported values of "WHEN" are the same as that of --use-postprocessor (default:
 	// pre_process)
-	ReplaceInMetadata *FlagReplaceInMetadata `json:"replace_in_metadata,omitempty" id:"parse_metadata" jsonschema:"title=ReplaceInMetadata" jsonschema_extras:"uid=parse_metadata" jsonschema_description:"Replace text in a metadata field using the given regex. This option can be used multiple times. Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: pre_process)"`
+	ReplaceInMetadata []*FlagReplaceInMetadata `json:"replace_in_metadata,omitempty" id:"parse_metadata" jsonschema:"title=ReplaceInMetadata" jsonschema_extras:"uid=parse_metadata" jsonschema_description:"Replace text in a metadata field using the given regex. This option can be used multiple times. Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: pre_process)"`
 	// Write metadata to the video file's xattrs (using Dublin Core and XDG standards)
 	Xattrs *bool `json:"xattrs,omitempty" id:"xattrs" jsonschema:"title=Xattrs" jsonschema_extras:"uid=xattrs" jsonschema_description:"Write metadata to the video file's xattrs (using Dublin Core and XDG standards)"`
 	// Concatenate videos in a playlist. One of "never", "always", or "multi_video" (default;
@@ -1954,7 +1960,7 @@ type FlagsPostProcessing struct {
 	// after_move). The same syntax as the output template can be used to pass any field as
 	// arguments to the command. If no fields are passed, %(filepath,_filename|)q is appended to
 	// the end of the command. This option can be used multiple times
-	Exec *string `json:"exec,omitempty" id:"exec_cmd" jsonschema:"title=Exec" jsonschema_extras:"uid=exec_cmd" jsonschema_description:"Execute a command, optionally prefixed with when to execute it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: after_move). The same syntax as the output template can be used to pass any field as arguments to the command. If no fields are passed, %(filepath,_filename|)q is appended to the end of the command. This option can be used multiple times"`
+	Exec []string `json:"exec,omitempty" id:"exec_cmd" jsonschema:"title=Exec" jsonschema_extras:"uid=exec_cmd" jsonschema_description:"Execute a command, optionally prefixed with when to execute it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: after_move). The same syntax as the output template can be used to pass any field as arguments to the command. If no fields are passed, %(filepath,_filename|)q is appended to the end of the command. This option can be used multiple times"`
 	// Remove any previously defined --exec
 	NoExec               *bool   `json:"no_exec,omitempty" id:"exec_cmd" jsonschema:"title=NoExec" jsonschema_extras:"uid=exec_cmd" jsonschema_description:"Remove any previously defined --exec"`
 	ExecBeforeDownload   *string `json:"exec_before_download,omitempty" id:"exec_before_dl_cmd" jsonschema:"title=ExecBeforeDownload" jsonschema_extras:"uid=exec_before_dl_cmd" jsonschema_description:""`
@@ -1974,7 +1980,7 @@ type FlagsPostProcessing struct {
 	NoSplitChapters *bool `json:"no_split_chapters,omitempty" id:"split_chapters" jsonschema:"title=NoSplitChapters" jsonschema_extras:"uid=split_chapters" jsonschema_description:"Do not split video based on chapters (default)"`
 	// Remove chapters whose title matches the given regular expression. The syntax is the same
 	// as --download-sections. This option can be used multiple times
-	RemoveChapters *string `json:"remove_chapters,omitempty" id:"remove_chapters" jsonschema:"title=RemoveChapters" jsonschema_extras:"uid=remove_chapters" jsonschema_description:"Remove chapters whose title matches the given regular expression. The syntax is the same as --download-sections. This option can be used multiple times"`
+	RemoveChapters []string `json:"remove_chapters,omitempty" id:"remove_chapters" jsonschema:"title=RemoveChapters" jsonschema_extras:"uid=remove_chapters" jsonschema_description:"Remove chapters whose title matches the given regular expression. The syntax is the same as --download-sections. This option can be used multiple times"`
 	// Do not remove any chapters from the file (default)
 	NoRemoveChapters *bool `json:"no_remove_chapters,omitempty" id:"remove_chapters" jsonschema:"title=NoRemoveChapters" jsonschema_extras:"uid=remove_chapters" jsonschema_description:"Do not remove any chapters from the file (default)"`
 	// Force keyframes at cuts when downloading/splitting/removing sections. This is slow due to
@@ -1991,7 +1997,7 @@ type FlagsPostProcessing struct {
 	// the video file to its final location), "after_video" (after downloading and processing all
 	// formats of a video), or "playlist" (at end of playlist). This option can be used multiple
 	// times to add different postprocessors
-	UsePostProcessor *string `json:"use_postprocessor,omitempty" id:"add_postprocessors" jsonschema:"title=UsePostProcessor" jsonschema_extras:"uid=add_postprocessors" jsonschema_description:"The (case-sensitive) name of plugin postprocessors to be enabled, and (optionally) arguments to be passed to it, separated by a colon \":\". ARGS are a semicolon \";\" delimited list of NAME=VALUE. The \"when\" argument determines when the postprocessor is invoked. It can be one of \"pre_process\" (after video extraction), \"after_filter\" (after video passes filter), \"video\" (after --format; before --print/--output), \"before_dl\" (before each video download), \"post_process\" (after each video download; default), \"after_move\" (after moving the video file to its final location), \"after_video\" (after downloading and processing all formats of a video), or \"playlist\" (at end of playlist). This option can be used multiple times to add different postprocessors"`
+	UsePostProcessor []string `json:"use_postprocessor,omitempty" id:"add_postprocessors" jsonschema:"title=UsePostProcessor" jsonschema_extras:"uid=add_postprocessors" jsonschema_description:"The (case-sensitive) name of plugin postprocessors to be enabled, and (optionally) arguments to be passed to it, separated by a colon \":\". ARGS are a semicolon \";\" delimited list of NAME=VALUE. The \"when\" argument determines when the postprocessor is invoked. It can be one of \"pre_process\" (after video extraction), \"after_filter\" (after video passes filter), \"video\" (after --format; before --print/--output), \"before_dl\" (before each video download), \"post_process\" (after each video download; default), \"after_move\" (after moving the video file to its final location), \"after_video\" (after downloading and processing all formats of a video), or \"playlist\" (at end of playlist). This option can be used multiple times to add different postprocessors"`
 }
 
 type FlagReplaceInMetadata struct {
@@ -2074,8 +2080,8 @@ func (g *FlagsPostProcessing) ToFlags() (flags Flags) {
 	if g.RecodeVideo != nil {
 		flags = append(flags, &Flag{ID: "recodevideo", Flag: "--recode-video", Args: []any{*g.RecodeVideo}})
 	}
-	if g.PostProcessorArgs != nil {
-		flags = append(flags, &Flag{ID: "postprocessor_args", Flag: "--postprocessor-args", Args: []any{*g.PostProcessorArgs}})
+	for _, v := range g.PostProcessorArgs {
+		flags = append(flags, &Flag{ID: "postprocessor_args", Flag: "--postprocessor-args", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.KeepVideo != nil && *g.KeepVideo {
 		flags = append(flags, &Flag{ID: "keepvideo", Flag: "--keep-video", Args: nil})
@@ -2125,12 +2131,8 @@ func (g *FlagsPostProcessing) ToFlags() (flags Flags) {
 	if g.ParseMetadata != nil {
 		flags = append(flags, &Flag{ID: "parse_metadata", Flag: "--parse-metadata", Args: []any{*g.ParseMetadata}})
 	}
-	if g.ReplaceInMetadata != nil {
-		flags = append(flags, &Flag{ID: "parse_metadata", Flag: "--replace-in-metadata", Args: []any{
-			(*g.ReplaceInMetadata).Fields,
-			(*g.ReplaceInMetadata).Regex,
-			(*g.ReplaceInMetadata).Replace,
-		}})
+	for _, v := range g.ReplaceInMetadata {
+		flags = append(flags, &Flag{ID: "parse_metadata", Flag: "--replace-in-metadata", AllowsMultiple: true, Args: []any{v.Fields, v.Regex, v.Replace}})
 	}
 	if g.Xattrs != nil && *g.Xattrs {
 		flags = append(flags, &Flag{ID: "xattrs", Flag: "--xattrs", Args: nil})
@@ -2150,8 +2152,8 @@ func (g *FlagsPostProcessing) ToFlags() (flags Flags) {
 	if g.FFmpegLocation != nil {
 		flags = append(flags, &Flag{ID: "ffmpeg_location", Flag: "--ffmpeg-location", Args: []any{*g.FFmpegLocation}})
 	}
-	if g.Exec != nil {
-		flags = append(flags, &Flag{ID: "exec_cmd", Flag: "--exec", Args: []any{*g.Exec}})
+	for _, v := range g.Exec {
+		flags = append(flags, &Flag{ID: "exec_cmd", Flag: "--exec", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.NoExec != nil && *g.NoExec {
 		flags = append(flags, &Flag{ID: "exec_cmd", Flag: "--no-exec", Args: nil})
@@ -2174,8 +2176,8 @@ func (g *FlagsPostProcessing) ToFlags() (flags Flags) {
 	if g.NoSplitChapters != nil && *g.NoSplitChapters {
 		flags = append(flags, &Flag{ID: "split_chapters", Flag: "--no-split-chapters", Args: nil})
 	}
-	if g.RemoveChapters != nil {
-		flags = append(flags, &Flag{ID: "remove_chapters", Flag: "--remove-chapters", Args: []any{*g.RemoveChapters}})
+	for _, v := range g.RemoveChapters {
+		flags = append(flags, &Flag{ID: "remove_chapters", Flag: "--remove-chapters", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.NoRemoveChapters != nil && *g.NoRemoveChapters {
 		flags = append(flags, &Flag{ID: "remove_chapters", Flag: "--no-remove-chapters", Args: nil})
@@ -2186,8 +2188,8 @@ func (g *FlagsPostProcessing) ToFlags() (flags Flags) {
 	if g.NoForceKeyframesAtCuts != nil && *g.NoForceKeyframesAtCuts {
 		flags = append(flags, &Flag{ID: "force_keyframes_at_cuts", Flag: "--no-force-keyframes-at-cuts", Args: nil})
 	}
-	if g.UsePostProcessor != nil {
-		flags = append(flags, &Flag{ID: "add_postprocessors", Flag: "--use-postprocessor", Args: []any{*g.UsePostProcessor}})
+	for _, v := range g.UsePostProcessor {
+		flags = append(flags, &Flag{ID: "add_postprocessors", Flag: "--use-postprocessor", AllowsMultiple: true, Args: []any{v}})
 	}
 	return flags
 }
@@ -2309,11 +2311,11 @@ type FlagsExtractor struct {
 	NoHLSSplitDiscontinuity *bool `json:"no_hls_split_discontinuity,omitempty" id:"hls_split_discontinuity" jsonschema:"title=NoHLSSplitDiscontinuity" jsonschema_extras:"uid=hls_split_discontinuity" jsonschema_description:"Do not split HLS playlists into different formats at discontinuities such as ad breaks (default)"`
 	// Pass ARGS arguments to the IE_KEY extractor. See "EXTRACTOR ARGUMENTS" for details. You
 	// can use this option multiple times to give arguments for different extractors
-	ExtractorArgs              *string `json:"extractor_args,omitempty" id:"extractor_args" jsonschema:"title=ExtractorArgs" jsonschema_extras:"uid=extractor_args" jsonschema_description:"Pass ARGS arguments to the IE_KEY extractor. See \"EXTRACTOR ARGUMENTS\" for details. You can use this option multiple times to give arguments for different extractors"`
-	YoutubeIncludeDashManifest *bool   `json:"youtube_include_dash_manifest,omitempty" id:"youtube_include_dash_manifest" jsonschema:"title=YoutubeIncludeDashManifest" jsonschema_extras:"uid=youtube_include_dash_manifest" jsonschema_description:""`
-	YoutubeSkipDashManifest    *bool   `json:"youtube_skip_dash_manifest,omitempty" id:"youtube_include_dash_manifest" jsonschema:"title=YoutubeSkipDashManifest" jsonschema_extras:"uid=youtube_include_dash_manifest" jsonschema_description:""`
-	YoutubeIncludeHLSManifest  *bool   `json:"youtube_include_hls_manifest,omitempty" id:"youtube_include_hls_manifest" jsonschema:"title=YoutubeIncludeHLSManifest" jsonschema_extras:"uid=youtube_include_hls_manifest" jsonschema_description:""`
-	YoutubeSkipHLSManifest     *bool   `json:"youtube_skip_hls_manifest,omitempty" id:"youtube_include_hls_manifest" jsonschema:"title=YoutubeSkipHLSManifest" jsonschema_extras:"uid=youtube_include_hls_manifest" jsonschema_description:""`
+	ExtractorArgs              []string `json:"extractor_args,omitempty" id:"extractor_args" jsonschema:"title=ExtractorArgs" jsonschema_extras:"uid=extractor_args" jsonschema_description:"Pass ARGS arguments to the IE_KEY extractor. See \"EXTRACTOR ARGUMENTS\" for details. You can use this option multiple times to give arguments for different extractors"`
+	YoutubeIncludeDashManifest *bool    `json:"youtube_include_dash_manifest,omitempty" id:"youtube_include_dash_manifest" jsonschema:"title=YoutubeIncludeDashManifest" jsonschema_extras:"uid=youtube_include_dash_manifest" jsonschema_description:""`
+	YoutubeSkipDashManifest    *bool    `json:"youtube_skip_dash_manifest,omitempty" id:"youtube_include_dash_manifest" jsonschema:"title=YoutubeSkipDashManifest" jsonschema_extras:"uid=youtube_include_dash_manifest" jsonschema_description:""`
+	YoutubeIncludeHLSManifest  *bool    `json:"youtube_include_hls_manifest,omitempty" id:"youtube_include_hls_manifest" jsonschema:"title=YoutubeIncludeHLSManifest" jsonschema_extras:"uid=youtube_include_hls_manifest" jsonschema_description:""`
+	YoutubeSkipHLSManifest     *bool    `json:"youtube_skip_hls_manifest,omitempty" id:"youtube_include_hls_manifest" jsonschema:"title=YoutubeSkipHLSManifest" jsonschema_extras:"uid=youtube_include_hls_manifest" jsonschema_description:""`
 }
 
 // Validate ensures all flags have appropriate values. If there are validation-specific
@@ -2362,8 +2364,8 @@ func (g *FlagsExtractor) ToFlags() (flags Flags) {
 	if g.NoHLSSplitDiscontinuity != nil && *g.NoHLSSplitDiscontinuity {
 		flags = append(flags, &Flag{ID: "hls_split_discontinuity", Flag: "--no-hls-split-discontinuity", Args: nil})
 	}
-	if g.ExtractorArgs != nil {
-		flags = append(flags, &Flag{ID: "extractor_args", Flag: "--extractor-args", Args: []any{*g.ExtractorArgs}})
+	for _, v := range g.ExtractorArgs {
+		flags = append(flags, &Flag{ID: "extractor_args", Flag: "--extractor-args", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.YoutubeIncludeDashManifest != nil && *g.YoutubeIncludeDashManifest {
 		flags = append(flags, &Flag{ID: "youtube_include_dash_manifest", Flag: "--youtube-include-dash-manifest", Args: nil})

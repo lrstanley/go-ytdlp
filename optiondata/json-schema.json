@@ -519,7 +519,10 @@
           "uid": "fragment_retries"
         },
         "retry_sleep": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "RetrySleep",
           "description": "Time to sleep between retries in seconds (optionally) prefixed by the type of retry (http (default), fragment, file_access, extractor) to apply the sleep to. EXPR can be a number, linear=START[:END[:STEP=1]] or exp=START[:END[:BASE=2]]. This option can be used multiple times to set the sleep for the different retry types, e.g. --retry-sleep linear=1::2 --retry-sleep fragment:exp=1:20",
           "uid": "retry_sleep"
@@ -629,19 +632,28 @@
           "uid": "hls_use_mpegts"
         },
         "download_sections": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "DownloadSections",
           "description": "Download only chapters that match the regular expression. A \"*\" prefix denotes time-range instead of chapter. Negative timestamps are calculated from the end. \"*from-url\" can be used to download between the \"start_time\" and \"end_time\" extracted from the URL. Needs ffmpeg. This option can be used multiple times to download multiple sections, e.g. --download-sections \"*10:15-inf\" --download-sections \"intro\"",
           "uid": "download_ranges"
         },
         "downloader": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "Downloader",
           "description": "Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c, avconv, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads",
           "uid": "external_downloader"
         },
         "downloader_args": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "DownloaderArgs",
           "description": "Give these arguments to the external downloader. Specify the downloader name and the arguments separated by a colon \":\". For ffmpeg, arguments can be passed to different positions using the same syntax as --postprocessor-args. You can use this option multiple times to give different arguments to different downloaders",
           "uid": "external_downloader_args"
@@ -797,7 +809,10 @@
           "uid": "hls_split_discontinuity"
         },
         "extractor_args": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "ExtractorArgs",
           "description": "Pass ARGS arguments to the IE_KEY extractor. See \"EXTRACTOR ARGUMENTS\" for details. You can use this option multiple times to give arguments for different extractors",
           "uid": "extractor_args"
@@ -1845,13 +1860,19 @@
           "uid": "config_locations"
         },
         "config_locations": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "ConfigLocations",
           "description": "Location of the main configuration file; either the path to the config or its containing directory (\"-\" for stdin). Can be used multiple times and inside other configuration files",
           "uid": "config_locations"
         },
         "plugin_dirs": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "PluginDirs",
           "description": "Path to an additional directory to search for plugins. This option can be used multiple times to add multiple directories. Use \"default\" to search the default plugin directories (default)",
           "uid": "plugin_dirs"
@@ -1916,7 +1937,10 @@
           "uid": "color"
         },
         "color": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "Color",
           "description": "Whether to emit color codes in output, optionally prefixed by the STREAM (stdout or stderr) to apply the setting to. Can be one of \"always\", \"auto\" (default), \"never\", or \"no_color\" (use non color terminal sequences). Use \"auto-tty\" or \"no_color-tty\" to decide based on terminal support only. Can be used multiple times",
           "uid": "color"
@@ -1928,7 +1952,10 @@
           "uid": "compat_opts"
         },
         "preset_alias": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "PresetAlias",
           "description": "Applies a predefined set of options. e.g. --preset-alias mp3. The following presets are available: mp3, aac, mp4, mkv, sleep. See the \"Preset Aliases\" section at the end for more info. This option can be used multiple times",
           "uid": "preset-alias"
@@ -2625,7 +2652,10 @@
           "uid": "recodevideo"
         },
         "postprocessor_args": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "PostProcessorArgs",
           "description": "Give these arguments to the postprocessors. Specify the postprocessor/executable name and the arguments separated by a colon \":\" to give the argument to the specified postprocessor/executable. Supported PP are: Merger, ModifyChapters, SplitChapters, ExtractAudio, VideoRemuxer, VideoConvertor, Metadata, EmbedSubtitle, EmbedThumbnail, SubtitlesConvertor, ThumbnailsConvertor, FixupStretched, FixupM4a, FixupM3u8, FixupTimestamp and FixupDuration. The supported executables are: AtomicParsley, FFmpeg and FFprobe. You can also specify \"PP+EXE:ARGS\" to give the arguments to the specified executable only when being used by the specified postprocessor. Additionally, for ffmpeg/ffprobe, \"_i\"/\"_o\" can be appended to the prefix optionally followed by a number to pass the argument before the specified input/output file, e.g. --ppa \"Merger+ffmpeg_i1:-v quiet\". You can use this option multiple times to give different arguments to different postprocessors.",
           "uid": "postprocessor_args"
@@ -2726,7 +2756,10 @@
           "uid": "parse_metadata"
         },
         "replace_in_metadata": {
-          "$ref": "#/$defs/FlagReplaceInMetadata",
+          "items": {
+            "$ref": "#/$defs/FlagReplaceInMetadata"
+          },
+          "type": "array",
           "title": "ReplaceInMetadata",
           "description": "Replace text in a metadata field using the given regex. This option can be used multiple times. Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: pre_process)",
           "uid": "parse_metadata"
@@ -2778,7 +2811,10 @@
           "uid": "ffmpeg_location"
         },
         "exec": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "Exec",
           "description": "Execute a command, optionally prefixed with when to execute it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: after_move). The same syntax as the output template can be used to pass any field as arguments to the command. If no fields are passed, %(filepath,_filename|)q is appended to the end of the command. This option can be used multiple times",
           "uid": "exec_cmd"
@@ -2824,7 +2860,10 @@
           "uid": "split_chapters"
         },
         "remove_chapters": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "RemoveChapters",
           "description": "Remove chapters whose title matches the given regular expression. The syntax is the same as --download-sections. This option can be used multiple times",
           "uid": "remove_chapters"
@@ -2848,7 +2887,10 @@
           "uid": "force_keyframes_at_cuts"
         },
         "use_postprocessor": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "UsePostProcessor",
           "description": "The (case-sensitive) name of plugin postprocessors to be enabled, and (optionally) arguments to be passed to it, separated by a colon \":\". ARGS are a semicolon \";\" delimited list of NAME=VALUE. The \"when\" argument determines when the postprocessor is invoked. It can be one of \"pre_process\" (after video extraction), \"after_filter\" (after video passes filter), \"video\" (after --format; before --print/--output), \"before_dl\" (before each video download), \"post_process\" (after each video download; default), \"after_move\" (after moving the video file to its final location), \"after_video\" (after downloading and processing all formats of a video), or \"playlist\" (at end of playlist). This option can be used multiple times to add different postprocessors",
           "uid": "add_postprocessors"
@@ -3400,13 +3442,19 @@
           "uid": "skip_download"
         },
         "print": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "Print",
           "description": "Field name or output template to print to screen, optionally prefixed with when to print it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: video). Implies --quiet. Implies --simulate unless --no-simulate or later stages of WHEN are used. This option can be used multiple times",
           "uid": "forceprint"
         },
         "print_to_file": {
-          "$ref": "#/$defs/FlagPrintToFile",
+          "items": {
+            "$ref": "#/$defs/FlagPrintToFile"
+          },
+          "type": "array",
           "title": "PrintToFile",
           "description": "Append given template to the file. The values of WHEN and TEMPLATE are the same as that of --print. FILE uses the same syntax as the output template. This option can be used multiple times",
           "uid": "print_to_file"
@@ -4141,7 +4189,10 @@
           "uid": "max_views"
         },
         "match_filters": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "MatchFilters",
           "description": "Generic video filter. Any \"OUTPUT TEMPLATE\" field can be compared with a number or a string using the operators defined in \"Filtering Formats\". You can also simply specify a field to match if the field is present, use \"!field\" to check if the field is not present, and \"\u0026\" to check multiple conditions. Use a \"\\\" to escape \"\u0026\" or quotes if needed. If used multiple times, the filter matches if at least one of the conditions is met. E.g. --match-filters !is_live --match-filters \"like_count\u003e?100 \u0026 description~='(?i)\\bcats \\\u0026 dogs\\b'\" matches only videos that are not live OR those that have a like count more than 100 (or the like field is not available) and also has a description that contains the phrase \"cats \u0026 dogs\" (caseless). Use \"--match-filters -\" to interactively ask whether to download each video",
           "uid": "match_filter"
@@ -4286,7 +4337,10 @@
           "uid": "referer"
         },
         "add_headers": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "AddHeaders",
           "description": "Specify a custom HTTP header and its value, separated by a colon \":\". You can use this option multiple times",
           "uid": "headers"

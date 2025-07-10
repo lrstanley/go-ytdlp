@@ -43,7 +43,7 @@ func ptr[T any](v T) *T {
     {{- /* executable flags, that aren't related to the main functionality of yt-dlp, e.g. --version */}}
     {{ template "builder-help" $option }}
     func (c *Command) {{ $option.Name | to_camel }}(ctx context.Context, {{ template "builder-meta-args" $option }}) (*Result, error) {
-        return c.runWithResult(ctx, c.buildCommand(ctx,
+        return c.runWithResult(ctx, c.BuildCommand(ctx,
             {{- $option.Flag | quote }},
             {{- if and (ne $option.Type "bool") (gt $option.NArgs 0) }}
                 {{- range $index, $arg := $option.ArgNames -}}
@@ -64,10 +64,13 @@ func ptr[T any](v T) *T {
 
         {{""}}
         c.flagConfig.{{ $group.Name | to_camel }}.{{ $option.Name | to_camel }} ={{" " -}}
+            {{- if $option.AllowsMultiple -}}append(
+                {{- ""}}c.flagConfig.{{ $group.Name | to_camel }}.{{ $option.Name | to_camel }},
+            {{- end }}
             {{- if (eq $option.NArgs 0) -}}
                 ptr(true)
             {{- else if (eq $option.NArgs 1) -}}
-                &{{ $option.ArgNames | join ", " }}
+                {{ if not $option.AllowsMultiple }}&{{ end }}{{ $option.ArgNames | join ", " }}
             {{- else if (gt $option.NArgs 1) -}}
                 &Flag{{ $option.Name | to_camel }}{
                     {{- range $index, $arg := $option.ArgNames }}
@@ -75,6 +78,7 @@ func ptr[T any](v T) *T {
                     {{- end }}
                 }
             {{- end }}
+            {{- if $option.AllowsMultiple -}}){{- end }}
         return c
     }
 
