@@ -6,7 +6,7 @@ replace github.com/lrstanley/go-ytdlp => ../..
 
 require (
 	github.com/invopop/jsonschema v0.13.0
-	github.com/lrstanley/go-ytdlp v1.0.0
+	github.com/lrstanley/go-ytdlp v1.1.1
 )
 
 require (
