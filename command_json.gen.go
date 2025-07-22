@@ -908,10 +908,10 @@ type FlagsFilesystem struct {
 	Part *bool `json:"part,omitempty" id:"nopart" jsonschema:"title=Part" jsonschema_extras:"uid=nopart" jsonschema_description:"Use .part files instead of writing directly into output file (default)"`
 	// Do not use .part files - write directly into output file
 	NoPart *bool `json:"no_part,omitempty" id:"nopart" jsonschema:"title=NoPart" jsonschema_extras:"uid=nopart" jsonschema_description:"Do not use .part files - write directly into output file"`
-	// Use the Last-modified header to set the file modification time (default)
-	Mtime *bool `json:"mtime,omitempty" id:"updatetime" jsonschema:"title=Mtime" jsonschema_extras:"uid=updatetime" jsonschema_description:"Use the Last-modified header to set the file modification time (default)"`
-	// Do not use the Last-modified header to set the file modification time
-	NoMtime *bool `json:"no_mtime,omitempty" id:"updatetime" jsonschema:"title=NoMtime" jsonschema_extras:"uid=updatetime" jsonschema_description:"Do not use the Last-modified header to set the file modification time"`
+	// Use the Last-modified header to set the file modification time
+	Mtime *bool `json:"mtime,omitempty" id:"updatetime" jsonschema:"title=Mtime" jsonschema_extras:"uid=updatetime" jsonschema_description:"Use the Last-modified header to set the file modification time"`
+	// Do not use the Last-modified header to set the file modification time (default)
+	NoMtime *bool `json:"no_mtime,omitempty" id:"updatetime" jsonschema:"title=NoMtime" jsonschema_extras:"uid=updatetime" jsonschema_description:"Do not use the Last-modified header to set the file modification time (default)"`
 	// Write video description to a .description file
 	WriteDescription *bool `json:"write_description,omitempty" id:"writedescription" jsonschema:"title=WriteDescription" jsonschema_extras:"uid=writedescription" jsonschema_description:"Write video description to a .description file"`
 	// Do not write video description (default)
