@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"strconv"
 	"strings"
@@ -35,6 +36,7 @@ type Command struct {
 	env                  map[string]string
 	flagConfig           *FlagConfig
 	separateProcessGroup bool
+	disableEnvVarInherit bool
 
 	progress *progressHandler
 }
@@ -96,7 +98,8 @@ func (c *Command) SetWorkDir(path string) *Command {
 }
 
 // SetEnvVar sets an environment variable for the command. If value is empty, it will
-// be removed.
+// be removed. If the key is "PATH", it will be merged with the parent process's PATH,
+// (where explicit values provided here will take precedence). See also [SetEnvVarInherit].
 func (c *Command) SetEnvVar(key, value string) *Command {
 	c.mu.Lock()
 	if value == "" {
@@ -120,6 +123,20 @@ func (c *Command) SetSeparateProcessGroup(value bool) *Command {
 	return c
 }
 
+// SetEnvVarInherit sets whether the command should inherit environment variables
+// from the parent process. If enabled, the command will inherit the parent process's
+// environment variables, and any environment variables set with [SetEnvVar] will be
+// merged with the parent process's environment variables. If disabled, the command
+// will only use the environment variables set with [SetEnvVar] (with the exception
+// of PATH). Explicitly set env vars with [SetEnvVar] will always take precedence
+// over the parent process's environment variables.
+func (c *Command) SetEnvVarInherit(enabled bool) *Command {
+	c.mu.Lock()
+	c.disableEnvVarInherit = !enabled
+	c.mu.Unlock()
+	return c
+}
+
 func (c *Command) hasJSONFlag() bool {
 	if slices.Contains(c.flagConfig.VerbositySimulation.Print, "%(j)") && len(c.flagConfig.VerbositySimulation.Print) == 1 {
 		return true
@@ -131,6 +148,33 @@ func (c *Command) hasJSONFlag() bool {
 		return true
 	}
 	return false
+}
+
+// toMap converts a slice of environment variables to a map. Handles Windows
+// environment variables that start with '='.
+func toMap(env []string) map[string]string {
+	r := map[string]string{}
+	for _, e := range env {
+		p := strings.SplitN(e, "=", 2)
+
+		if runtime.GOOS == "windows" {
+			// On Windows, env vars can start with "=".
+			prefix := false
+			if len(e) > 0 && e[0] == '=' {
+				e = e[1:]
+				prefix = true
+			}
+			p = strings.SplitN(e, "=", 2)
+			if prefix {
+				p[0] = "=" + p[0]
+			}
+		}
+
+		if len(p) == 2 {
+			r[p[0]] = p[1]
+		}
+	}
+	return r
 }
 
 // BuildCommand builds the command to be executed. args passed here are any additional
@@ -164,20 +208,41 @@ func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 		}
 	}
 
+	env := map[string]string{}
+	if !c.disableEnvVarInherit {
+		env = toMap(os.Environ())
+	}
+
+	// Merge in the command's environment variables, accounting for things like
+	// PATH, which should be merged with the previously provided PATH.
+	for k, v := range c.env {
+		switch k {
+		case "PATH":
+			if env["PATH"] != "" {
+				paths := filepath.SplitList(env["PATH"])
+				cpaths := filepath.SplitList(v)
+				// Append parent process paths to the end of our custom provided
+				// paths, only if they are not already in the PATH.
+				for _, p := range paths {
+					if !slices.Contains(cpaths, p) {
+						cpaths = append([]string{p}, cpaths...)
+					}
+				}
+				env["PATH"] = strings.Join(cpaths, string(filepath.ListSeparator))
+			} else {
+				env["PATH"] = v
+			}
+		default:
+			env[k] = v
+		}
+	}
+
 	cmd := exec.CommandContext(ctx, name, cmdArgs...)
 
 	// Add cache directory to $PATH, which would cover ffmpeg, ffprobe, etc.
 	cacheDir, err := GetCacheDir()
 	if err == nil {
-		var paths []string
-
-		if c.env["PATH"] != "" {
-			paths = filepath.SplitList(c.env["PATH"])
-		} else {
-			paths = filepath.SplitList(os.Getenv("PATH"))
-		}
-
-		c.env["PATH"] = strings.Join(append([]string{cacheDir}, paths...), string(filepath.ListSeparator))
+		env["PATH"] = strings.Join(append([]string{cacheDir}, filepath.SplitList(env["PATH"])...), string(filepath.ListSeparator))
 	}
 
 	if err != nil {
@@ -188,11 +253,9 @@ func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 		cmd.Dir = c.directory
 	}
 
-	if len(c.env) > 0 {
-		cmd.Env = make([]string, 0, len(c.env))
-		for k, v := range c.env {
-			cmd.Env = append(cmd.Env, k+"="+v)
-		}
+	cmd.Env = make([]string, 0, len(env))
+	for k, v := range env {
+		cmd.Env = append(cmd.Env, k+"="+v)
 	}
 	c.mu.RUnlock()
 
