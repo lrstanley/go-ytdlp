@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2025.08.20"
+	Version = "2025.08.22"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -1422,6 +1422,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "startrek", Description: "STAR TREK"},
 	{Name: "startv"},
 	{Name: "Steam"},
+	{Name: "SteamCommunity"},
 	{Name: "SteamCommunityBroadcast"},
 	{Name: "Stitcher"},
 	{Name: "StitcherShow"},
