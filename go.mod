@@ -6,7 +6,7 @@ toolchain go1.24.4
 
 require (
 	github.com/ProtonMail/go-crypto v1.3.0
-	github.com/ulikunitz/xz v0.5.13
+	github.com/ulikunitz/xz v0.5.15
 )
 
 require (
