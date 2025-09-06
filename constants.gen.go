@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2025.08.27"
+	Version = "2025.09.05"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -691,7 +691,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "khanacademy:unit"},
 	{Name: "kick:clips", AgeLimit: 18},
 	{Name: "kick:live", AgeLimit: 18},
-	{Name: "kick:vod"},
+	{Name: "kick:vod", AgeLimit: 18},
 	{Name: "Kicker"},
 	{Name: "KickStarter"},
 	{Name: "Kika", Description: "KiKA.de"},
@@ -1640,6 +1640,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Vbox7"},
 	{Name: "Veo"},
 	{Name: "Vesti", Description: "Вести.Ru (Currently broken)"},
+	{Name: "Vevo", AgeLimit: 18},
+	{Name: "VevoPlaylist"},
 	{Name: "VGTV", Description: "VGTV, BTTV, FTV, Aftenposten and Aftonbladet"},
 	{Name: "vh1.com"},
 	{Name: "vhx:embed", Description: "[vimeo]"},
