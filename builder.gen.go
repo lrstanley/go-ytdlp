@@ -27,7 +27,7 @@ func (c *Command) Version(ctx context.Context) (*Result, error) {
 // Use git to pull the latest changes
 //
 // References:
-//  - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#update
+//  - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#update
 //
 // Additional information:
 //  - Update maps to cli flags: -U/--update.
@@ -59,7 +59,7 @@ func (c *Command) UnsetUpdate() *Command {
 // "UPDATE" for details. Supported channels: stable, nightly, master
 //
 // References:
-//  - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#update
+//  - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#update
 //
 // Additional information:
 //  - UpdateTo maps to cli flags: --update-to=[CHANNEL]@[TAG].
@@ -126,15 +126,6 @@ func (c *Command) AbortOnError() *Command {
 	c.flagConfig.General.NoAbortOnError = nil
 	c.flagConfig.General.AbortOnError = ptr(true)
 	return c
-}
-
-// Display the current user-agent and exit
-//
-// Additional information:
-//  - DumpUserAgent maps to cli flags: --dump-user-agent.
-//  - From option group: "General"
-func (c *Command) DumpUserAgent(ctx context.Context) (*Result, error) {
-	return c.runWithResult(ctx, c.BuildCommand(ctx, "--dump-user-agent"))
 }
 
 // List all supported extractors and exit
@@ -501,7 +492,7 @@ func (c *Command) UnsetColor() *Command {
 // in default behavior" for details
 //
 // References:
-//  - Compatibility Options: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#differences-in-default-behavior
+//  - Compatibility Options: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#differences-in-default-behavior
 //
 // Additional information:
 //  - See [Command.UnsetCompatOptions], for unsetting the flag.
@@ -716,28 +707,6 @@ func (c *Command) GeoVerificationProxy(url string) *Command {
 //   - [Command.GeoVerificationProxy]
 func (c *Command) UnsetGeoVerificationProxy() *Command {
 	c.flagConfig.GeoRestriction.GeoVerificationProxy = nil
-	return c
-}
-
-// CNVerificationProxy sets the "cn-verification-proxy" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetCNVerificationProxy], for unsetting the flag.
-//  - CNVerificationProxy maps to cli flags: --cn-verification-proxy=URL (hidden).
-//  - From option group: "Geo-restriction"
-//
-// Deprecated: Use [Command.GeoVerificationProxy] instead.
-func (c *Command) CNVerificationProxy(url string) *Command {
-	c.flagConfig.GeoRestriction.CNVerificationProxy = &url
-	return c
-}
-
-// UnsetCNVerificationProxy unsets any flags that were previously set by one of:
-//   - [Command.CNVerificationProxy]
-//
-// Deprecated: Use [Command.GeoVerificationProxy] instead.
-func (c *Command) UnsetCNVerificationProxy() *Command {
-	c.flagConfig.GeoRestriction.CNVerificationProxy = nil
 	return c
 }
 
@@ -1414,45 +1383,6 @@ func (c *Command) UnsetSkipPlaylistAfterErrors() *Command {
 	return c
 }
 
-// IncludeAds sets the "include-ads" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetIncludeAds], for unsetting the flag.
-//  - IncludeAds maps to cli flags: --include-ads (hidden).
-//  - From option group: "Video Selection"
-//
-// Deprecated: No longer supported.
-func (c *Command) IncludeAds() *Command {
-	c.flagConfig.VideoSelection.NoIncludeAds = nil
-	c.flagConfig.VideoSelection.IncludeAds = ptr(true)
-	return c
-}
-
-// UnsetIncludeAds unsets any flags that were previously set by one of:
-//   - [Command.IncludeAds]
-//   - [Command.NoIncludeAds]
-//
-// Deprecated: No longer supported.
-func (c *Command) UnsetIncludeAds() *Command {
-	c.flagConfig.VideoSelection.IncludeAds = nil
-	c.flagConfig.VideoSelection.NoIncludeAds = nil
-	return c
-}
-
-// NoIncludeAds sets the "no-include-ads" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetIncludeAds], for unsetting the flag.
-//  - NoIncludeAds maps to cli flags: --no-include-ads (hidden).
-//  - From option group: "Video Selection"
-//
-// Deprecated: This flag is now default in yt-dlp.
-func (c *Command) NoIncludeAds() *Command {
-	c.flagConfig.VideoSelection.IncludeAds = nil
-	c.flagConfig.VideoSelection.NoIncludeAds = ptr(true)
-	return c
-}
-
 // Number of fragments of a dash/hlsnative video that should be downloaded
 // concurrently (default is 1)
 //
@@ -1823,24 +1753,6 @@ func (c *Command) NoLazyPlaylist() *Command {
 	return c
 }
 
-// Set file xattribute ytdl.filesize with expected file size
-//
-// Additional information:
-//  - See [Command.UnsetXattrSetFileSize], for unsetting the flag.
-//  - XattrSetFileSize maps to cli flags: --xattr-set-filesize.
-//  - From option group: "Download"
-func (c *Command) XattrSetFileSize() *Command {
-	c.flagConfig.Download.XattrSetFileSize = ptr(true)
-	return c
-}
-
-// UnsetXattrSetFileSize unsets any flags that were previously set by one of:
-//   - [Command.XattrSetFileSize]
-func (c *Command) UnsetXattrSetFileSize() *Command {
-	c.flagConfig.Download.XattrSetFileSize = nil
-	return c
-}
-
 // HLSPreferNative sets the "hls-prefer-native" flag (no description specified).
 //
 // Additional information:
@@ -1950,10 +1862,10 @@ func (c *Command) UnsetDownloadSections() *Command {
 
 // Name or path of the external downloader to use (optionally) prefixed by the
 // protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently
-// supports native, aria2c, avconv, axel, curl, ffmpeg, httpie, wget. You can use
-// this option multiple times to set different downloaders for different protocols.
-// E.g. --downloader aria2c --downloader "dash,m3u8:native" will use aria2c for
-// http/ftp downloads, and the native downloader for dash/m3u8 downloads
+// supports native, aria2c, axel, curl, ffmpeg, httpie, wget. You can use this
+// option multiple times to set different downloaders for different protocols. E.g.
+// --downloader aria2c --downloader "dash,m3u8:native" will use aria2c for http/ftp
+// downloads, and the native downloader for dash/m3u8 downloads
 //
 // Additional information:
 //  - See [Command.UnsetDownloader], for unsetting the flag.
@@ -2074,7 +1986,7 @@ func (c *Command) UnsetPaths() *Command {
 // Output filename template; see "OUTPUT TEMPLATE" for details
 //
 // References:
-//  - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#output-template
+//  - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#output-template
 //
 // Additional information:
 //  - See [Command.UnsetOutput], for unsetting the flag.
@@ -2462,45 +2374,6 @@ func (c *Command) UnsetWriteInfoJSON() *Command {
 func (c *Command) NoWriteInfoJSON() *Command {
 	c.flagConfig.Filesystem.WriteInfoJSON = nil
 	c.flagConfig.Filesystem.NoWriteInfoJSON = ptr(true)
-	return c
-}
-
-// WriteAnnotations sets the "write-annotations" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetWriteAnnotations], for unsetting the flag.
-//  - WriteAnnotations maps to cli flags: --write-annotations (hidden).
-//  - From option group: "Filesystem"
-//
-// Deprecated: No supported site has annotations now.
-func (c *Command) WriteAnnotations() *Command {
-	c.flagConfig.Filesystem.NoWriteAnnotations = nil
-	c.flagConfig.Filesystem.WriteAnnotations = ptr(true)
-	return c
-}
-
-// UnsetWriteAnnotations unsets any flags that were previously set by one of:
-//   - [Command.WriteAnnotations]
-//   - [Command.NoWriteAnnotations]
-//
-// Deprecated: No supported site has annotations now.
-func (c *Command) UnsetWriteAnnotations() *Command {
-	c.flagConfig.Filesystem.WriteAnnotations = nil
-	c.flagConfig.Filesystem.NoWriteAnnotations = nil
-	return c
-}
-
-// NoWriteAnnotations sets the "no-write-annotations" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetWriteAnnotations], for unsetting the flag.
-//  - NoWriteAnnotations maps to cli flags: --no-write-annotations (hidden).
-//  - From option group: "Filesystem"
-//
-// Deprecated: This flag is now default in yt-dlp.
-func (c *Command) NoWriteAnnotations() *Command {
-	c.flagConfig.Filesystem.WriteAnnotations = nil
-	c.flagConfig.Filesystem.NoWriteAnnotations = ptr(true)
 	return c
 }
 
@@ -3266,7 +3139,7 @@ func (c *Command) UnsetGetFormat() *Command {
 // is used. See "OUTPUT TEMPLATE" for a description of available keys
 //
 // References:
-//  - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#output-template
+//  - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#output-template
 //
 // Additional information:
 //  - See [Command.UnsetDumpJSON], for unsetting the flag.
@@ -3473,7 +3346,7 @@ func (c *Command) UnsetVerbose() *Command {
 //
 // Additional information:
 //  - See [Command.UnsetDumpPages], for unsetting the flag.
-//  - DumpPages maps to cli flags: --dump-pages/--dump-intermediate-pages.
+//  - DumpPages maps to cli flags: --dump-pages.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) DumpPages() *Command {
 	c.flagConfig.VerbositySimulation.DumpPages = ptr(true)
@@ -3510,7 +3383,7 @@ func (c *Command) UnsetWritePages() *Command {
 //
 // Additional information:
 //  - See [Command.UnsetPrintTraffic], for unsetting the flag.
-//  - PrintTraffic maps to cli flags: --print-traffic/--dump-headers.
+//  - PrintTraffic maps to cli flags: --print-traffic.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) PrintTraffic() *Command {
 	c.flagConfig.VerbositySimulation.PrintTraffic = ptr(true)
@@ -3521,45 +3394,6 @@ func (c *Command) PrintTraffic() *Command {
 //   - [Command.PrintTraffic]
 func (c *Command) UnsetPrintTraffic() *Command {
 	c.flagConfig.VerbositySimulation.PrintTraffic = nil
-	return c
-}
-
-// CallHome sets the "call-home" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetCallHome], for unsetting the flag.
-//  - CallHome maps to cli flags: -C/--call-home (hidden).
-//  - From option group: "Verbosity Simulation"
-//
-// Deprecated: Not implemented.
-func (c *Command) CallHome() *Command {
-	c.flagConfig.VerbositySimulation.NoCallHome = nil
-	c.flagConfig.VerbositySimulation.CallHome = ptr(true)
-	return c
-}
-
-// UnsetCallHome unsets any flags that were previously set by one of:
-//   - [Command.CallHome]
-//   - [Command.NoCallHome]
-//
-// Deprecated: Not implemented.
-func (c *Command) UnsetCallHome() *Command {
-	c.flagConfig.VerbositySimulation.CallHome = nil
-	c.flagConfig.VerbositySimulation.NoCallHome = nil
-	return c
-}
-
-// NoCallHome sets the "no-call-home" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetCallHome], for unsetting the flag.
-//  - NoCallHome maps to cli flags: --no-call-home (hidden).
-//  - From option group: "Verbosity Simulation"
-//
-// Deprecated: This flag is now default in yt-dlp.
-func (c *Command) NoCallHome() *Command {
-	c.flagConfig.VerbositySimulation.CallHome = nil
-	c.flagConfig.VerbositySimulation.NoCallHome = ptr(true)
 	return c
 }
 
@@ -3796,9 +3630,9 @@ func (c *Command) UnsetSleepSubtitles() *Command {
 // Video format code, see "FORMAT SELECTION" for more details
 //
 // References:
-//  - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#format-selection
-//  - Filter Formatting: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#filtering-formats
-//  - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#format-selection-examples
+//  - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#format-selection
+//  - Filter Formatting: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#filtering-formats
+//  - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#format-selection-examples
 //
 // Additional information:
 //  - See [Command.UnsetFormat], for unsetting the flag.
@@ -3821,8 +3655,8 @@ func (c *Command) UnsetFormat() *Command {
 // Sort the formats by the fields given, see "Sorting Formats" for more details
 //
 // References:
-//  - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#sorting-formats
-//  - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#format-selection-examples
+//  - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#sorting-formats
+//  - Format Selection Examples: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#format-selection-examples
 //
 // Additional information:
 //  - See [Command.UnsetFormatSort], for unsetting the flag.
@@ -3844,7 +3678,7 @@ func (c *Command) UnsetFormatSort() *Command {
 // Formats" for more details
 //
 // References:
-//  - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#sorting-formats
+//  - Sorting Formats: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#sorting-formats
 //
 // Additional information:
 //  - See [Command.UnsetFormatSortForce], for unsetting the flag.
@@ -3880,7 +3714,7 @@ func (c *Command) NoFormatSortForce() *Command {
 // Allow multiple video streams to be merged into a single file
 //
 // References:
-//  - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#format-selection
+//  - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#format-selection
 //
 // Additional information:
 //  - See [Command.UnsetVideoMultistreams], for unsetting the flag.
@@ -3916,7 +3750,7 @@ func (c *Command) NoVideoMultistreams() *Command {
 // Allow multiple audio streams to be merged into a single file
 //
 // References:
-//  - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#format-selection
+//  - Format Selection: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#format-selection
 //
 // Additional information:
 //  - See [Command.UnsetAudioMultistreams], for unsetting the flag.
@@ -4947,8 +4781,8 @@ func (c *Command) UnsetMetadataFromTitle() *Command {
 // --use-postprocessor (default: pre_process)
 //
 // References:
-//  - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#modifying-metadata
-//  - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#modifying-metadata-examples
+//  - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#modifying-metadata
+//  - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#modifying-metadata-examples
 //
 // Additional information:
 //  - See [Command.UnsetParseMetadata], for unsetting the flag.
@@ -4973,8 +4807,8 @@ func (c *Command) UnsetParseMetadata() *Command {
 // --use-postprocessor (default: pre_process)
 //
 // References:
-//  - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#modifying-metadata
-//  - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#modifying-metadata-examples
+//  - Modifying Metadata: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#modifying-metadata
+//  - Modifying Metadata Examples: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#modifying-metadata-examples
 //
 // Additional information:
 //  - See [Command.UnsetReplaceInMetadata], for unsetting the flag.
@@ -5039,7 +4873,7 @@ var AllConcatPlaylistOptions = []ConcatPlaylistOption{
 // the concatenated files. See "OUTPUT TEMPLATE" for details
 //
 // References:
-//  - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#output-template
+//  - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#output-template
 //
 // Additional information:
 //  - See [Command.UnsetConcatPlaylist], for unsetting the flag.
@@ -5097,60 +4931,12 @@ func (c *Command) UnsetFixup() *Command {
 	return c
 }
 
-// PreferAVConv sets the "prefer-avconv" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetPreferAVConv], for unsetting the flag.
-//  - PreferAVConv maps to cli flags: --prefer-avconv/--no-prefer-ffmpeg (hidden).
-//  - From option group: "Post-Processing"
-//
-// Deprecated: avconv is not officially supported by yt-dlp.
-func (c *Command) PreferAVConv() *Command {
-	c.flagConfig.PostProcessing.PreferFFmpeg = nil
-	c.flagConfig.PostProcessing.PreferAVConv = ptr(true)
-	return c
-}
-
-// UnsetPreferAVConv unsets any flags that were previously set by one of:
-//   - [Command.PreferAVConv]
-//
-// Deprecated: avconv is not officially supported by yt-dlp.
-func (c *Command) UnsetPreferAVConv() *Command {
-	c.flagConfig.PostProcessing.PreferAVConv = nil
-	c.flagConfig.PostProcessing.PreferFFmpeg = nil
-	return c
-}
-
-// PreferFFmpeg sets the "prefer-ffmpeg" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetPreferFFmpeg], for unsetting the flag.
-//  - PreferFFmpeg maps to cli flags: --prefer-ffmpeg/--no-prefer-avconv (hidden).
-//  - From option group: "Post-Processing"
-//
-// Deprecated: This flag is now default in yt-dlp.
-func (c *Command) PreferFFmpeg() *Command {
-	c.flagConfig.PostProcessing.PreferAVConv = nil
-	c.flagConfig.PostProcessing.PreferFFmpeg = ptr(true)
-	return c
-}
-
-// UnsetPreferFFmpeg unsets any flags that were previously set by one of:
-//   - [Command.PreferFFmpeg]
-//
-// Deprecated: This flag is now default in yt-dlp.
-func (c *Command) UnsetPreferFFmpeg() *Command {
-	c.flagConfig.PostProcessing.PreferAVConv = nil
-	c.flagConfig.PostProcessing.PreferFFmpeg = nil
-	return c
-}
-
 // Location of the ffmpeg binary; either the path to the binary or its containing
 // directory
 //
 // Additional information:
 //  - See [Command.UnsetFFmpegLocation], for unsetting the flag.
-//  - FFmpegLocation maps to cli flags: --ffmpeg-location/--avconv-location=PATH.
+//  - FFmpegLocation maps to cli flags: --ffmpeg-location=PATH.
 //  - From option group: "Post-Processing"
 func (c *Command) FFmpegLocation(path string) *Command {
 	c.flagConfig.PostProcessing.FFmpegLocation = &path
@@ -5285,7 +5071,7 @@ func (c *Command) UnsetConvertThumbnails() *Command {
 // the split files. See "OUTPUT TEMPLATE" for details
 //
 // References:
-//  - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#output-template
+//  - Output Template: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#output-template
 //
 // Additional information:
 //  - See [Command.UnsetSplitChapters], for unsetting the flag.
@@ -5516,167 +5302,6 @@ func (c *Command) UnsetSponsorblockAPI() *Command {
 	return c
 }
 
-// Sponskrub sets the "sponskrub" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetSponskrub], for unsetting the flag.
-//  - Sponskrub maps to cli flags: --sponskrub (hidden).
-//  - From option group: "SponsorBlock"
-//
-// Deprecated: Use [Command.SponsorblockMark] with `all` as an argument.
-func (c *Command) Sponskrub() *Command {
-	c.flagConfig.SponsorBlock.NoSponskrub = nil
-	c.flagConfig.SponsorBlock.Sponskrub = ptr(true)
-	return c
-}
-
-// UnsetSponskrub unsets any flags that were previously set by one of:
-//   - [Command.Sponskrub]
-//   - [Command.NoSponskrub]
-//
-// Deprecated: Use [Command.SponsorblockMark] with `all` as an argument.
-func (c *Command) UnsetSponskrub() *Command {
-	c.flagConfig.SponsorBlock.Sponskrub = nil
-	c.flagConfig.SponsorBlock.NoSponskrub = nil
-	return c
-}
-
-// NoSponskrub sets the "no-sponskrub" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetSponskrub], for unsetting the flag.
-//  - NoSponskrub maps to cli flags: --no-sponskrub (hidden).
-//  - From option group: "SponsorBlock"
-//
-// Deprecated: Use [Command.NoSponsorblock] instead.
-func (c *Command) NoSponskrub() *Command {
-	c.flagConfig.SponsorBlock.Sponskrub = nil
-	c.flagConfig.SponsorBlock.NoSponskrub = ptr(true)
-	return c
-}
-
-// SponskrubCut sets the "sponskrub-cut" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetSponskrubCut], for unsetting the flag.
-//  - SponskrubCut maps to cli flags: --sponskrub-cut (hidden).
-//  - From option group: "SponsorBlock"
-//
-// Deprecated: Use [Command.SponsorblockRemove] with `all` as an argument.
-func (c *Command) SponskrubCut() *Command {
-	c.flagConfig.SponsorBlock.NoSponskrubCut = nil
-	c.flagConfig.SponsorBlock.SponskrubCut = ptr(true)
-	return c
-}
-
-// UnsetSponskrubCut unsets any flags that were previously set by one of:
-//   - [Command.SponskrubCut]
-//   - [Command.NoSponskrubCut]
-//
-// Deprecated: Use [Command.SponsorblockRemove] with `all` as an argument.
-func (c *Command) UnsetSponskrubCut() *Command {
-	c.flagConfig.SponsorBlock.SponskrubCut = nil
-	c.flagConfig.SponsorBlock.NoSponskrubCut = nil
-	return c
-}
-
-// NoSponskrubCut sets the "no-sponskrub-cut" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetSponskrubCut], for unsetting the flag.
-//  - NoSponskrubCut maps to cli flags: --no-sponskrub-cut (hidden).
-//  - From option group: "SponsorBlock"
-//
-// Deprecated: Use [Command.SponsorblockRemove] with `-all` as an argument.
-func (c *Command) NoSponskrubCut() *Command {
-	c.flagConfig.SponsorBlock.SponskrubCut = nil
-	c.flagConfig.SponsorBlock.NoSponskrubCut = ptr(true)
-	return c
-}
-
-// SponskrubForce sets the "sponskrub-force" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetSponskrubForce], for unsetting the flag.
-//  - SponskrubForce maps to cli flags: --sponskrub-force (hidden).
-//  - From option group: "SponsorBlock"
-//
-// Deprecated: No longer applicable.
-func (c *Command) SponskrubForce() *Command {
-	c.flagConfig.SponsorBlock.NoSponskrubForce = nil
-	c.flagConfig.SponsorBlock.SponskrubForce = ptr(true)
-	return c
-}
-
-// UnsetSponskrubForce unsets any flags that were previously set by one of:
-//   - [Command.SponskrubForce]
-//   - [Command.NoSponskrubForce]
-//
-// Deprecated: No longer applicable.
-func (c *Command) UnsetSponskrubForce() *Command {
-	c.flagConfig.SponsorBlock.SponskrubForce = nil
-	c.flagConfig.SponsorBlock.NoSponskrubForce = nil
-	return c
-}
-
-// NoSponskrubForce sets the "no-sponskrub-force" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetSponskrubForce], for unsetting the flag.
-//  - NoSponskrubForce maps to cli flags: --no-sponskrub-force (hidden).
-//  - From option group: "SponsorBlock"
-//
-// Deprecated: No longer applicable.
-func (c *Command) NoSponskrubForce() *Command {
-	c.flagConfig.SponsorBlock.SponskrubForce = nil
-	c.flagConfig.SponsorBlock.NoSponskrubForce = ptr(true)
-	return c
-}
-
-// SponskrubLocation sets the "sponskrub-location" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetSponskrubLocation], for unsetting the flag.
-//  - SponskrubLocation maps to cli flags: --sponskrub-location=PATH (hidden).
-//  - From option group: "SponsorBlock"
-//
-// Deprecated: No longer applicable.
-func (c *Command) SponskrubLocation(path string) *Command {
-	c.flagConfig.SponsorBlock.SponskrubLocation = &path
-	return c
-}
-
-// UnsetSponskrubLocation unsets any flags that were previously set by one of:
-//   - [Command.SponskrubLocation]
-//
-// Deprecated: No longer applicable.
-func (c *Command) UnsetSponskrubLocation() *Command {
-	c.flagConfig.SponsorBlock.SponskrubLocation = nil
-	return c
-}
-
-// SponskrubArgs sets the "sponskrub-args" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetSponskrubArgs], for unsetting the flag.
-//  - SponskrubArgs maps to cli flags: --sponskrub-args=ARGS (hidden).
-//  - From option group: "SponsorBlock"
-//
-// Deprecated: No longer applicable.
-func (c *Command) SponskrubArgs(args string) *Command {
-	c.flagConfig.SponsorBlock.SponskrubArgs = &args
-	return c
-}
-
-// UnsetSponskrubArgs unsets any flags that were previously set by one of:
-//   - [Command.SponskrubArgs]
-//
-// Deprecated: No longer applicable.
-func (c *Command) UnsetSponskrubArgs() *Command {
-	c.flagConfig.SponsorBlock.SponskrubArgs = nil
-	return c
-}
-
 // Number of retries for known extractor errors (default is 3), or "infinite"
 //
 // Additional information:
@@ -5774,7 +5399,7 @@ func (c *Command) NoHLSSplitDiscontinuity() *Command {
 // extractors
 //
 // References:
-//  - Extractor Arguments: https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#extractor-arguments
+//  - Extractor Arguments: https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#extractor-arguments
 //
 // Additional information:
 //  - See [Command.UnsetExtractorArgs], for unsetting the flag.
@@ -5789,101 +5414,5 @@ func (c *Command) ExtractorArgs(ieKeyargs string) *Command {
 //   - [Command.ExtractorArgs]
 func (c *Command) UnsetExtractorArgs() *Command {
 	c.flagConfig.Extractor.ExtractorArgs = nil
-	return c
-}
-
-// YoutubeIncludeDashManifest sets the "youtube-include-dash-manifest" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetYoutubeIncludeDashManifest], for unsetting the flag.
-//  - YoutubeIncludeDashManifest maps to cli flags: --youtube-include-dash-manifest/--no-youtube-skip-dash-manifest (hidden).
-//  - From option group: "Extractor"
-//
-// Deprecated: Use [Command.YoutubeIncludeDashManifest] instead.
-func (c *Command) YoutubeIncludeDashManifest() *Command {
-	c.flagConfig.Extractor.YoutubeSkipDashManifest = nil
-	c.flagConfig.Extractor.YoutubeIncludeDashManifest = ptr(true)
-	return c
-}
-
-// UnsetYoutubeIncludeDashManifest unsets any flags that were previously set by one of:
-//   - [Command.YoutubeIncludeDashManifest]
-//
-// Deprecated: Use [Command.YoutubeIncludeDashManifest] instead.
-func (c *Command) UnsetYoutubeIncludeDashManifest() *Command {
-	c.flagConfig.Extractor.YoutubeIncludeDashManifest = nil
-	c.flagConfig.Extractor.YoutubeSkipDashManifest = nil
-	return c
-}
-
-// YoutubeSkipDashManifest sets the "youtube-skip-dash-manifest" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetYoutubeSkipDashManifest], for unsetting the flag.
-//  - YoutubeSkipDashManifest maps to cli flags: --youtube-skip-dash-manifest/--no-youtube-include-dash-manifest (hidden).
-//  - From option group: "Extractor"
-//
-// Deprecated: Use [Command.ExtractorArgs] with `youtube:skip=dash` as an argument.
-func (c *Command) YoutubeSkipDashManifest() *Command {
-	c.flagConfig.Extractor.YoutubeIncludeDashManifest = nil
-	c.flagConfig.Extractor.YoutubeSkipDashManifest = ptr(true)
-	return c
-}
-
-// UnsetYoutubeSkipDashManifest unsets any flags that were previously set by one of:
-//   - [Command.YoutubeSkipDashManifest]
-//
-// Deprecated: Use [Command.ExtractorArgs] with `youtube:skip=dash` as an argument.
-func (c *Command) UnsetYoutubeSkipDashManifest() *Command {
-	c.flagConfig.Extractor.YoutubeIncludeDashManifest = nil
-	c.flagConfig.Extractor.YoutubeSkipDashManifest = nil
-	return c
-}
-
-// YoutubeIncludeHLSManifest sets the "youtube-include-hls-manifest" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetYoutubeIncludeHLSManifest], for unsetting the flag.
-//  - YoutubeIncludeHLSManifest maps to cli flags: --youtube-include-hls-manifest/--no-youtube-skip-hls-manifest (hidden).
-//  - From option group: "Extractor"
-//
-// Deprecated: Use [Command.YoutubeIncludeHLSManifest] instead.
-func (c *Command) YoutubeIncludeHLSManifest() *Command {
-	c.flagConfig.Extractor.YoutubeSkipHLSManifest = nil
-	c.flagConfig.Extractor.YoutubeIncludeHLSManifest = ptr(true)
-	return c
-}
-
-// UnsetYoutubeIncludeHLSManifest unsets any flags that were previously set by one of:
-//   - [Command.YoutubeIncludeHLSManifest]
-//
-// Deprecated: Use [Command.YoutubeIncludeHLSManifest] instead.
-func (c *Command) UnsetYoutubeIncludeHLSManifest() *Command {
-	c.flagConfig.Extractor.YoutubeIncludeHLSManifest = nil
-	c.flagConfig.Extractor.YoutubeSkipHLSManifest = nil
-	return c
-}
-
-// YoutubeSkipHLSManifest sets the "youtube-skip-hls-manifest" flag (no description specified).
-//
-// Additional information:
-//  - See [Command.UnsetYoutubeSkipHLSManifest], for unsetting the flag.
-//  - YoutubeSkipHLSManifest maps to cli flags: --youtube-skip-hls-manifest/--no-youtube-include-hls-manifest (hidden).
-//  - From option group: "Extractor"
-//
-// Deprecated: Use [Command.ExtractorArgs] with `youtube:skip=hls` as an argument.
-func (c *Command) YoutubeSkipHLSManifest() *Command {
-	c.flagConfig.Extractor.YoutubeIncludeHLSManifest = nil
-	c.flagConfig.Extractor.YoutubeSkipHLSManifest = ptr(true)
-	return c
-}
-
-// UnsetYoutubeSkipHLSManifest unsets any flags that were previously set by one of:
-//   - [Command.YoutubeSkipHLSManifest]
-//
-// Deprecated: Use [Command.ExtractorArgs] with `youtube:skip=hls` as an argument.
-func (c *Command) UnsetYoutubeSkipHLSManifest() *Command {
-	c.flagConfig.Extractor.YoutubeIncludeHLSManifest = nil
-	c.flagConfig.Extractor.YoutubeSkipHLSManifest = nil
 	return c
 }

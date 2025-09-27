@@ -38,7 +38,6 @@ var (
 			optionIgnoreErrors,
 			optionNoAbortOnError,
 			optionAbortOnError,
-			optionDumpUserAgent,
 			optionListExtractors,
 			optionExtractorDescriptions,
 			optionUseExtractors,
@@ -80,7 +79,6 @@ var (
 		Name: "Geo-restriction",
 		Options: []*Option{
 			optionGeoVerificationProxy,
-			optionCNVerificationProxy,
 			optionXFF,
 			optionGeoBypass,
 			optionNoGeoBypass,
@@ -119,8 +117,6 @@ var (
 			optionBreakPerInput,
 			optionNoBreakPerInput,
 			optionSkipPlaylistAfterErrors,
-			optionIncludeAds,
-			optionNoIncludeAds,
 		},
 	}
 	groupDownload = &OptionGroup{
@@ -146,7 +142,6 @@ var (
 			optionPlaylistRandom,
 			optionLazyPlaylist,
 			optionNoLazyPlaylist,
-			optionXattrSetFileSize,
 			optionHLSPreferNative,
 			optionHLSPreferFFmpeg,
 			optionHLSUseMPEGTS,
@@ -185,8 +180,6 @@ var (
 			optionNoWriteDescription,
 			optionWriteInfoJSON,
 			optionNoWriteInfoJSON,
-			optionWriteAnnotations,
-			optionNoWriteAnnotations,
 			optionWritePlaylistMetafiles,
 			optionNoWritePlaylistMetafiles,
 			optionCleanInfoJSON,
@@ -256,8 +249,6 @@ var (
 			optionDumpPages,
 			optionWritePages,
 			optionPrintTraffic,
-			optionCallHome,
-			optionNoCallHome,
 		},
 	}
 	groupWorkarounds = &OptionGroup{
@@ -361,8 +352,6 @@ var (
 			optionXattrs,
 			optionConcatPlaylist,
 			optionFixup,
-			optionPreferAVConv,
-			optionPreferFFmpeg,
 			optionFFmpegLocation,
 			optionExec,
 			optionNoExec,
@@ -388,14 +377,6 @@ var (
 			optionSponsorblockChapterTitle,
 			optionNoSponsorblock,
 			optionSponsorblockAPI,
-			optionSponskrub,
-			optionNoSponskrub,
-			optionSponskrubCut,
-			optionNoSponskrubCut,
-			optionSponskrubForce,
-			optionNoSponskrubForce,
-			optionSponskrubLocation,
-			optionSponskrubArgs,
 		},
 	}
 	groupExtractor = &OptionGroup{
@@ -407,10 +388,6 @@ var (
 			optionHLSSplitDiscontinuity,
 			optionNoHLSSplitDiscontinuity,
 			optionExtractorArgs,
-			optionYoutubeIncludeDashManifest,
-			optionYoutubeSkipDashManifest,
-			optionYoutubeIncludeHLSManifest,
-			optionYoutubeSkipHLSManifest,
 		},
 	}
 )
@@ -424,7 +401,6 @@ var Options = []*Option{
 	optionIgnoreErrors,
 	optionNoAbortOnError,
 	optionAbortOnError,
-	optionDumpUserAgent,
 	optionListExtractors,
 	optionExtractorDescriptions,
 	optionUseExtractors,
@@ -456,7 +432,6 @@ var Options = []*Option{
 	optionForceIPv6,
 	optionEnableFileURLs,
 	optionGeoVerificationProxy,
-	optionCNVerificationProxy,
 	optionXFF,
 	optionGeoBypass,
 	optionNoGeoBypass,
@@ -490,8 +465,6 @@ var Options = []*Option{
 	optionBreakPerInput,
 	optionNoBreakPerInput,
 	optionSkipPlaylistAfterErrors,
-	optionIncludeAds,
-	optionNoIncludeAds,
 	optionConcurrentFragments,
 	optionLimitRate,
 	optionThrottledRate,
@@ -512,7 +485,6 @@ var Options = []*Option{
 	optionPlaylistRandom,
 	optionLazyPlaylist,
 	optionNoLazyPlaylist,
-	optionXattrSetFileSize,
 	optionHLSPreferNative,
 	optionHLSPreferFFmpeg,
 	optionHLSUseMPEGTS,
@@ -546,8 +518,6 @@ var Options = []*Option{
 	optionNoWriteDescription,
 	optionWriteInfoJSON,
 	optionNoWriteInfoJSON,
-	optionWriteAnnotations,
-	optionNoWriteAnnotations,
 	optionWritePlaylistMetafiles,
 	optionNoWritePlaylistMetafiles,
 	optionCleanInfoJSON,
@@ -602,8 +572,6 @@ var Options = []*Option{
 	optionDumpPages,
 	optionWritePages,
 	optionPrintTraffic,
-	optionCallHome,
-	optionNoCallHome,
 	optionEncoding,
 	optionLegacyServerConnect,
 	optionNoCheckCertificates,
@@ -682,8 +650,6 @@ var Options = []*Option{
 	optionXattrs,
 	optionConcatPlaylist,
 	optionFixup,
-	optionPreferAVConv,
-	optionPreferFFmpeg,
 	optionFFmpegLocation,
 	optionExec,
 	optionNoExec,
@@ -703,24 +669,12 @@ var Options = []*Option{
 	optionSponsorblockChapterTitle,
 	optionNoSponsorblock,
 	optionSponsorblockAPI,
-	optionSponskrub,
-	optionNoSponskrub,
-	optionSponskrubCut,
-	optionNoSponskrubCut,
-	optionSponskrubForce,
-	optionNoSponskrubForce,
-	optionSponskrubLocation,
-	optionSponskrubArgs,
 	optionExtractorRetries,
 	optionAllowDynamicMPD,
 	optionIgnoreDynamicMPD,
 	optionHLSSplitDiscontinuity,
 	optionNoHLSSplitDiscontinuity,
 	optionExtractorArgs,
-	optionYoutubeIncludeDashManifest,
-	optionYoutubeSkipDashManifest,
-	optionYoutubeIncludeHLSManifest,
-	optionYoutubeSkipHLSManifest,
 }
 
 // Underlying options.
@@ -746,7 +700,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#update",
 			},
 		},
 		DefaultFlag: "--update",
@@ -777,7 +731,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#update",
 			},
 		},
 		DefaultFlag: "--update-to",
@@ -825,18 +779,6 @@ var (
 		Help:           "Abort downloading of further videos if an error occurs",
 		Type:           "bool",
 		LongFlags:      []string{"--abort-on-error", "--no-ignore-errors"},
-	}
-	optionDumpUserAgent = &Option{
-		ID:             "dump_user_agent",
-		Name:           "dump-user-agent",
-		NameCamelCase:  "dumpUserAgent",
-		NamePascalCase: "DumpUserAgent",
-		NameSnakeCase:  "dump_user_agent",
-		DefaultFlag:    "--dump-user-agent",
-		Executable:     true,
-		Help:           "Display the current user-agent and exit",
-		Type:           "bool",
-		LongFlags:      []string{"--dump-user-agent"},
 	}
 	optionListExtractors = &Option{
 		ID:             "list_extractors",
@@ -1107,7 +1049,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Compatibility Options",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#differences-in-default-behavior",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#differences-in-default-behavior",
 			},
 		},
 		DefaultFlag: "--compat-options",
@@ -1258,22 +1200,6 @@ var (
 		MetaArgs:       "URL",
 		Type:           "string",
 		LongFlags:      []string{"--geo-verification-proxy"},
-		NArgs:          1,
-	}
-	optionCNVerificationProxy = &Option{
-		ID:             "cn_verification_proxy",
-		Name:           "cn-verification-proxy",
-		NameCamelCase:  "cnVerificationProxy",
-		NamePascalCase: "CNVerificationProxy",
-		NameSnakeCase:  "cn_verification_proxy",
-		DefaultFlag:    "--cn-verification-proxy",
-		ArgNames:       []string{"url"},
-		Executable:     false,
-		Deprecated:     "Use [Command.GeoVerificationProxy] instead.",
-		Hidden:         true,
-		MetaArgs:       "URL",
-		Type:           "string",
-		LongFlags:      []string{"--cn-verification-proxy"},
 		NArgs:          1,
 	}
 	optionXFF = &Option{
@@ -1747,32 +1673,6 @@ var (
 		LongFlags:      []string{"--skip-playlist-after-errors"},
 		NArgs:          1,
 	}
-	optionIncludeAds = &Option{
-		ID:             "include_ads",
-		Name:           "include-ads",
-		NameCamelCase:  "includeAds",
-		NamePascalCase: "IncludeAds",
-		NameSnakeCase:  "include_ads",
-		DefaultFlag:    "--include-ads",
-		Executable:     false,
-		Deprecated:     "No longer supported.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--include-ads"},
-	}
-	optionNoIncludeAds = &Option{
-		ID:             "include_ads",
-		Name:           "no-include-ads",
-		NameCamelCase:  "noIncludeAds",
-		NamePascalCase: "NoIncludeAds",
-		NameSnakeCase:  "no_include_ads",
-		DefaultFlag:    "--no-include-ads",
-		Executable:     false,
-		Deprecated:     "This flag is now default in yt-dlp.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--no-include-ads"},
-	}
 	optionConcurrentFragments = &Option{
 		ID:             "concurrent_fragment_downloads",
 		Name:           "concurrent-fragments",
@@ -2045,18 +1945,6 @@ var (
 		Type:           "bool",
 		LongFlags:      []string{"--no-lazy-playlist"},
 	}
-	optionXattrSetFileSize = &Option{
-		ID:             "xattr_set_filesize",
-		Name:           "xattr-set-filesize",
-		NameCamelCase:  "xattrSetFileSize",
-		NamePascalCase: "XattrSetFileSize",
-		NameSnakeCase:  "xattr_set_filesize",
-		DefaultFlag:    "--xattr-set-filesize",
-		Executable:     false,
-		Help:           "Set file xattribute ytdl.filesize with expected file size",
-		Type:           "bool",
-		LongFlags:      []string{"--xattr-set-filesize"},
-	}
 	optionHLSPreferNative = &Option{
 		ID:             "hls_prefer_native",
 		Name:           "hls-prefer-native",
@@ -2131,7 +2019,7 @@ var (
 		DefaultFlag:    "--downloader",
 		ArgNames:       []string{"name"},
 		Executable:     false,
-		Help:           "Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c, avconv, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads",
+		Help:           "Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads",
 		MetaArgs:       "[PROTO:]NAME",
 		Type:           "string",
 		LongFlags:      []string{"--downloader", "--external-downloader"},
@@ -2218,7 +2106,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--output",
@@ -2498,32 +2386,6 @@ var (
 		Help:           "Do not write video metadata (default)",
 		Type:           "bool",
 		LongFlags:      []string{"--no-write-info-json"},
-	}
-	optionWriteAnnotations = &Option{
-		ID:             "writeannotations",
-		Name:           "write-annotations",
-		NameCamelCase:  "writeAnnotations",
-		NamePascalCase: "WriteAnnotations",
-		NameSnakeCase:  "write_annotations",
-		DefaultFlag:    "--write-annotations",
-		Executable:     false,
-		Deprecated:     "No supported site has annotations now.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--write-annotations"},
-	}
-	optionNoWriteAnnotations = &Option{
-		ID:             "writeannotations",
-		Name:           "no-write-annotations",
-		NameCamelCase:  "noWriteAnnotations",
-		NamePascalCase: "NoWriteAnnotations",
-		NameSnakeCase:  "no_write_annotations",
-		DefaultFlag:    "--no-write-annotations",
-		Executable:     false,
-		Deprecated:     "This flag is now default in yt-dlp.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--no-write-annotations"},
 	}
 	optionWritePlaylistMetafiles = &Option{
 		ID:             "allow_playlist_files",
@@ -3047,7 +2909,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--dump-json",
@@ -3195,7 +3057,7 @@ var (
 		Executable:     false,
 		Help:           "Print downloaded pages encoded using base64 to debug problems (very verbose)",
 		Type:           "bool",
-		LongFlags:      []string{"--dump-pages", "--dump-intermediate-pages"},
+		LongFlags:      []string{"--dump-pages"},
 	}
 	optionWritePages = &Option{
 		ID:             "write_pages",
@@ -3219,34 +3081,7 @@ var (
 		Executable:     false,
 		Help:           "Display sent and read HTTP traffic",
 		Type:           "bool",
-		LongFlags:      []string{"--print-traffic", "--dump-headers"},
-	}
-	optionCallHome = &Option{
-		ID:             "call_home",
-		Name:           "call-home",
-		NameCamelCase:  "callHome",
-		NamePascalCase: "CallHome",
-		NameSnakeCase:  "call_home",
-		DefaultFlag:    "--call-home",
-		Executable:     false,
-		Deprecated:     "Not implemented.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--call-home"},
-		ShortFlags:     []string{"-C"},
-	}
-	optionNoCallHome = &Option{
-		ID:             "call_home",
-		Name:           "no-call-home",
-		NameCamelCase:  "noCallHome",
-		NamePascalCase: "NoCallHome",
-		NameSnakeCase:  "no_call_home",
-		DefaultFlag:    "--no-call-home",
-		Executable:     false,
-		Deprecated:     "This flag is now default in yt-dlp.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--no-call-home"},
+		LongFlags:      []string{"--print-traffic"},
 	}
 	optionEncoding = &Option{
 		ID:             "encoding",
@@ -3427,15 +3262,15 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#format-selection",
 			},
 			{
 				Name: "Filter Formatting",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#filtering-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#filtering-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format",
@@ -3457,11 +3292,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#sorting-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format-sort",
@@ -3483,7 +3318,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#sorting-formats",
 			},
 		},
 		DefaultFlag: "--format-sort-force",
@@ -3515,7 +3350,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--video-multistreams",
@@ -3545,7 +3380,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--audio-multistreams",
@@ -4287,11 +4122,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--parse-metadata",
@@ -4312,11 +4147,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--replace-in-metadata",
@@ -4349,7 +4184,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--concat-playlist",
@@ -4378,32 +4213,6 @@ var (
 		LongFlags:      []string{"--fixup"},
 		NArgs:          1,
 	}
-	optionPreferAVConv = &Option{
-		ID:             "prefer_ffmpeg",
-		Name:           "prefer-avconv",
-		NameCamelCase:  "preferAVConv",
-		NamePascalCase: "PreferAVConv",
-		NameSnakeCase:  "prefer_avconv",
-		DefaultFlag:    "--prefer-avconv",
-		Executable:     false,
-		Deprecated:     "avconv is not officially supported by yt-dlp.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--prefer-avconv", "--no-prefer-ffmpeg"},
-	}
-	optionPreferFFmpeg = &Option{
-		ID:             "prefer_ffmpeg",
-		Name:           "prefer-ffmpeg",
-		NameCamelCase:  "preferFFmpeg",
-		NamePascalCase: "PreferFFmpeg",
-		NameSnakeCase:  "prefer_ffmpeg",
-		DefaultFlag:    "--prefer-ffmpeg",
-		Executable:     false,
-		Deprecated:     "This flag is now default in yt-dlp.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--prefer-ffmpeg", "--no-prefer-avconv"},
-	}
 	optionFFmpegLocation = &Option{
 		ID:             "ffmpeg_location",
 		Name:           "ffmpeg-location",
@@ -4416,7 +4225,7 @@ var (
 		Help:           "Location of the ffmpeg binary; either the path to the binary or its containing directory",
 		MetaArgs:       "PATH",
 		Type:           "string",
-		LongFlags:      []string{"--ffmpeg-location", "--avconv-location"},
+		LongFlags:      []string{"--ffmpeg-location"},
 		NArgs:          1,
 	}
 	optionExec = &Option{
@@ -4514,7 +4323,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--split-chapters",
@@ -4673,116 +4482,6 @@ var (
 		LongFlags:      []string{"--sponsorblock-api"},
 		NArgs:          1,
 	}
-	optionSponskrub = &Option{
-		ID:             "sponskrub",
-		Name:           "sponskrub",
-		NameCamelCase:  "sponskrub",
-		NamePascalCase: "Sponskrub",
-		NameSnakeCase:  "sponskrub",
-		DefaultFlag:    "--sponskrub",
-		Executable:     false,
-		Deprecated:     "Use [Command.SponsorblockMark] with `all` as an argument.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--sponskrub"},
-	}
-	optionNoSponskrub = &Option{
-		ID:             "sponskrub",
-		Name:           "no-sponskrub",
-		NameCamelCase:  "noSponskrub",
-		NamePascalCase: "NoSponskrub",
-		NameSnakeCase:  "no_sponskrub",
-		DefaultFlag:    "--no-sponskrub",
-		Executable:     false,
-		Deprecated:     "Use [Command.NoSponsorblock] instead.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--no-sponskrub"},
-	}
-	optionSponskrubCut = &Option{
-		ID:             "sponskrub_cut",
-		Name:           "sponskrub-cut",
-		NameCamelCase:  "sponskrubCut",
-		NamePascalCase: "SponskrubCut",
-		NameSnakeCase:  "sponskrub_cut",
-		DefaultFlag:    "--sponskrub-cut",
-		Executable:     false,
-		Deprecated:     "Use [Command.SponsorblockRemove] with `all` as an argument.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--sponskrub-cut"},
-	}
-	optionNoSponskrubCut = &Option{
-		ID:             "sponskrub_cut",
-		Name:           "no-sponskrub-cut",
-		NameCamelCase:  "noSponskrubCut",
-		NamePascalCase: "NoSponskrubCut",
-		NameSnakeCase:  "no_sponskrub_cut",
-		DefaultFlag:    "--no-sponskrub-cut",
-		Executable:     false,
-		Deprecated:     "Use [Command.SponsorblockRemove] with `-all` as an argument.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--no-sponskrub-cut"},
-	}
-	optionSponskrubForce = &Option{
-		ID:             "sponskrub_force",
-		Name:           "sponskrub-force",
-		NameCamelCase:  "sponskrubForce",
-		NamePascalCase: "SponskrubForce",
-		NameSnakeCase:  "sponskrub_force",
-		DefaultFlag:    "--sponskrub-force",
-		Executable:     false,
-		Deprecated:     "No longer applicable.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--sponskrub-force"},
-	}
-	optionNoSponskrubForce = &Option{
-		ID:             "sponskrub_force",
-		Name:           "no-sponskrub-force",
-		NameCamelCase:  "noSponskrubForce",
-		NamePascalCase: "NoSponskrubForce",
-		NameSnakeCase:  "no_sponskrub_force",
-		DefaultFlag:    "--no-sponskrub-force",
-		Executable:     false,
-		Deprecated:     "No longer applicable.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--no-sponskrub-force"},
-	}
-	optionSponskrubLocation = &Option{
-		ID:             "sponskrub_path",
-		Name:           "sponskrub-location",
-		NameCamelCase:  "sponskrubLocation",
-		NamePascalCase: "SponskrubLocation",
-		NameSnakeCase:  "sponskrub_location",
-		DefaultFlag:    "--sponskrub-location",
-		ArgNames:       []string{"path"},
-		Executable:     false,
-		Deprecated:     "No longer applicable.",
-		Hidden:         true,
-		MetaArgs:       "PATH",
-		Type:           "string",
-		LongFlags:      []string{"--sponskrub-location"},
-		NArgs:          1,
-	}
-	optionSponskrubArgs = &Option{
-		ID:             "sponskrub_args",
-		Name:           "sponskrub-args",
-		NameCamelCase:  "sponskrubArgs",
-		NamePascalCase: "SponskrubArgs",
-		NameSnakeCase:  "sponskrub_args",
-		DefaultFlag:    "--sponskrub-args",
-		ArgNames:       []string{"args"},
-		Executable:     false,
-		Deprecated:     "No longer applicable.",
-		Hidden:         true,
-		MetaArgs:       "ARGS",
-		Type:           "string",
-		LongFlags:      []string{"--sponskrub-args"},
-		NArgs:          1,
-	}
 	optionExtractorRetries = &Option{
 		ID:             "extractor_retries",
 		Name:           "extractor-retries",
@@ -4855,7 +4554,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Extractor Arguments",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.05/README.md#extractor-arguments",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.09.26/README.md#extractor-arguments",
 			},
 		},
 		DefaultFlag: "--extractor-args",
@@ -4866,57 +4565,5 @@ var (
 		Type:        "string",
 		LongFlags:   []string{"--extractor-args"},
 		NArgs:       1,
-	}
-	optionYoutubeIncludeDashManifest = &Option{
-		ID:             "youtube_include_dash_manifest",
-		Name:           "youtube-include-dash-manifest",
-		NameCamelCase:  "youtubeIncludeDashManifest",
-		NamePascalCase: "YoutubeIncludeDashManifest",
-		NameSnakeCase:  "youtube_include_dash_manifest",
-		DefaultFlag:    "--youtube-include-dash-manifest",
-		Executable:     false,
-		Deprecated:     "Use [Command.YoutubeIncludeDashManifest] instead.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--youtube-include-dash-manifest", "--no-youtube-skip-dash-manifest"},
-	}
-	optionYoutubeSkipDashManifest = &Option{
-		ID:             "youtube_include_dash_manifest",
-		Name:           "youtube-skip-dash-manifest",
-		NameCamelCase:  "youtubeSkipDashManifest",
-		NamePascalCase: "YoutubeSkipDashManifest",
-		NameSnakeCase:  "youtube_skip_dash_manifest",
-		DefaultFlag:    "--youtube-skip-dash-manifest",
-		Executable:     false,
-		Deprecated:     "Use [Command.ExtractorArgs] with `youtube:skip=dash` as an argument.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--youtube-skip-dash-manifest", "--no-youtube-include-dash-manifest"},
-	}
-	optionYoutubeIncludeHLSManifest = &Option{
-		ID:             "youtube_include_hls_manifest",
-		Name:           "youtube-include-hls-manifest",
-		NameCamelCase:  "youtubeIncludeHLSManifest",
-		NamePascalCase: "YoutubeIncludeHLSManifest",
-		NameSnakeCase:  "youtube_include_hls_manifest",
-		DefaultFlag:    "--youtube-include-hls-manifest",
-		Executable:     false,
-		Deprecated:     "Use [Command.YoutubeIncludeHLSManifest] instead.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--youtube-include-hls-manifest", "--no-youtube-skip-hls-manifest"},
-	}
-	optionYoutubeSkipHLSManifest = &Option{
-		ID:             "youtube_include_hls_manifest",
-		Name:           "youtube-skip-hls-manifest",
-		NameCamelCase:  "youtubeSkipHLSManifest",
-		NamePascalCase: "YoutubeSkipHLSManifest",
-		NameSnakeCase:  "youtube_skip_hls_manifest",
-		DefaultFlag:    "--youtube-skip-hls-manifest",
-		Executable:     false,
-		Deprecated:     "Use [Command.ExtractorArgs] with `youtube:skip=hls` as an argument.",
-		Hidden:         true,
-		Type:           "bool",
-		LongFlags:      []string{"--youtube-skip-hls-manifest", "--no-youtube-include-hls-manifest"},
 	}
 )
