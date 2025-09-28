@@ -403,7 +403,6 @@ type FlagsGeoRestriction struct {
 	// specified by --proxy (or none, if the option is not present) is used for the actual
 	// downloading
 	GeoVerificationProxy *string `json:"geo_verification_proxy,omitempty" id:"geo_verification_proxy" jsonschema:"title=GeoVerificationProxy" jsonschema_extras:"uid=geo_verification_proxy" jsonschema_description:"Use this proxy to verify the IP address for some geo-restricted sites. The default proxy specified by --proxy (or none, if the option is not present) is used for the actual downloading"`
-	CNVerificationProxy  *string `json:"cn_verification_proxy,omitempty" id:"cn_verification_proxy" jsonschema:"title=CNVerificationProxy" jsonschema_extras:"uid=cn_verification_proxy" jsonschema_description:""`
 	// How to fake X-Forwarded-For HTTP header to try bypassing geographic restriction. One of
 	// "default" (only when known to be useful), "never", an IP block in CIDR notation, or a
 	// two-letter ISO 3166-2 country code
@@ -447,9 +446,6 @@ func (g *FlagsGeoRestriction) ToFlags() (flags Flags) {
 	}
 	if g.GeoVerificationProxy != nil {
 		flags = append(flags, &Flag{ID: "geo_verification_proxy", Flag: "--geo-verification-proxy", Args: []any{*g.GeoVerificationProxy}})
-	}
-	if g.CNVerificationProxy != nil {
-		flags = append(flags, &Flag{ID: "cn_verification_proxy", Flag: "--cn-verification-proxy", Args: []any{*g.CNVerificationProxy}})
 	}
 	if g.XFF != nil {
 		flags = append(flags, &Flag{ID: "geo_bypass", Flag: "--xff", Args: []any{*g.XFF}})
@@ -538,9 +534,7 @@ type FlagsVideoSelection struct {
 	// --break-on-existing and similar options terminates the entire download queue
 	NoBreakPerInput *bool `json:"no_break_per_input,omitempty" id:"break_per_url" jsonschema:"title=NoBreakPerInput" jsonschema_extras:"uid=break_per_url" jsonschema_description:"--break-on-existing and similar options terminates the entire download queue"`
 	// Number of allowed failures until the rest of the playlist is skipped
-	SkipPlaylistAfterErrors *int  `json:"skip_playlist_after_errors,omitempty" id:"skip_playlist_after_errors" jsonschema:"title=SkipPlaylistAfterErrors" jsonschema_extras:"uid=skip_playlist_after_errors" jsonschema_description:"Number of allowed failures until the rest of the playlist is skipped"`
-	IncludeAds              *bool `json:"include_ads,omitempty" id:"include_ads" jsonschema:"title=IncludeAds" jsonschema_extras:"uid=include_ads" jsonschema_description:""`
-	NoIncludeAds            *bool `json:"no_include_ads,omitempty" id:"include_ads" jsonschema:"title=NoIncludeAds" jsonschema_extras:"uid=include_ads" jsonschema_description:""`
+	SkipPlaylistAfterErrors *int `json:"skip_playlist_after_errors,omitempty" id:"skip_playlist_after_errors" jsonschema:"title=SkipPlaylistAfterErrors" jsonschema_extras:"uid=skip_playlist_after_errors" jsonschema_description:"Number of allowed failures until the rest of the playlist is skipped"`
 }
 
 // Validate ensures all flags have appropriate values. If there are validation-specific
@@ -658,12 +652,6 @@ func (g *FlagsVideoSelection) ToFlags() (flags Flags) {
 	if g.SkipPlaylistAfterErrors != nil {
 		flags = append(flags, &Flag{ID: "skip_playlist_after_errors", Flag: "--skip-playlist-after-errors", Args: []any{*g.SkipPlaylistAfterErrors}})
 	}
-	if g.IncludeAds != nil && *g.IncludeAds {
-		flags = append(flags, &Flag{ID: "include_ads", Flag: "--include-ads", Args: nil})
-	}
-	if g.NoIncludeAds != nil && *g.NoIncludeAds {
-		flags = append(flags, &Flag{ID: "include_ads", Flag: "--no-include-ads", Args: nil})
-	}
 	return flags
 }
 
@@ -714,11 +702,9 @@ type FlagsDownload struct {
 	// --playlist-random and --playlist-reverse
 	LazyPlaylist *bool `json:"lazy_playlist,omitempty" id:"lazy_playlist" jsonschema:"title=LazyPlaylist" jsonschema_extras:"uid=lazy_playlist" jsonschema_description:"Process entries in the playlist as they are received. This disables n_entries, --playlist-random and --playlist-reverse"`
 	// Process videos in the playlist only after the entire playlist is parsed (default)
-	NoLazyPlaylist *bool `json:"no_lazy_playlist,omitempty" id:"lazy_playlist" jsonschema:"title=NoLazyPlaylist" jsonschema_extras:"uid=lazy_playlist" jsonschema_description:"Process videos in the playlist only after the entire playlist is parsed (default)"`
-	// Set file xattribute ytdl.filesize with expected file size
-	XattrSetFileSize *bool `json:"xattr_set_filesize,omitempty" id:"xattr_set_filesize" jsonschema:"title=XattrSetFileSize" jsonschema_extras:"uid=xattr_set_filesize" jsonschema_description:"Set file xattribute ytdl.filesize with expected file size"`
-	HLSPreferNative  *bool `json:"hls_prefer_native,omitempty" id:"hls_prefer_native" jsonschema:"title=HLSPreferNative" jsonschema_extras:"uid=hls_prefer_native" jsonschema_description:""`
-	HLSPreferFFmpeg  *bool `json:"hls_prefer_ffmpeg,omitempty" id:"hls_prefer_native" jsonschema:"title=HLSPreferFFmpeg" jsonschema_extras:"uid=hls_prefer_native" jsonschema_description:""`
+	NoLazyPlaylist  *bool `json:"no_lazy_playlist,omitempty" id:"lazy_playlist" jsonschema:"title=NoLazyPlaylist" jsonschema_extras:"uid=lazy_playlist" jsonschema_description:"Process videos in the playlist only after the entire playlist is parsed (default)"`
+	HLSPreferNative *bool `json:"hls_prefer_native,omitempty" id:"hls_prefer_native" jsonschema:"title=HLSPreferNative" jsonschema_extras:"uid=hls_prefer_native" jsonschema_description:""`
+	HLSPreferFFmpeg *bool `json:"hls_prefer_ffmpeg,omitempty" id:"hls_prefer_native" jsonschema:"title=HLSPreferFFmpeg" jsonschema_extras:"uid=hls_prefer_native" jsonschema_description:""`
 	// Use the mpegts container for HLS videos; allowing some players to play the video while
 	// downloading, and reducing the chance of file corruption if download is interrupted. This
 	// is enabled by default for live streams
@@ -734,11 +720,11 @@ type FlagsDownload struct {
 	DownloadSections []string `json:"download_sections,omitempty" id:"download_ranges" jsonschema:"title=DownloadSections" jsonschema_extras:"uid=download_ranges" jsonschema_description:"Download only chapters that match the regular expression. A \"*\" prefix denotes time-range instead of chapter. Negative timestamps are calculated from the end. \"*from-url\" can be used to download between the \"start_time\" and \"end_time\" extracted from the URL. Needs ffmpeg. This option can be used multiple times to download multiple sections, e.g. --download-sections \"*10:15-inf\" --download-sections \"intro\""`
 	// Name or path of the external downloader to use (optionally) prefixed by the protocols
 	// (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c,
-	// avconv, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set
-	// different downloaders for different protocols. E.g. --downloader aria2c --downloader
+	// axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different
+	// downloaders for different protocols. E.g. --downloader aria2c --downloader
 	// "dash,m3u8:native" will use aria2c for http/ftp downloads, and the native downloader for
 	// dash/m3u8 downloads
-	Downloader []string `json:"downloader,omitempty" id:"external_downloader" jsonschema:"title=Downloader" jsonschema_extras:"uid=external_downloader" jsonschema_description:"Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c, avconv, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads"`
+	Downloader []string `json:"downloader,omitempty" id:"external_downloader" jsonschema:"title=Downloader" jsonschema_extras:"uid=external_downloader" jsonschema_description:"Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads"`
 	// Give these arguments to the external downloader. Specify the downloader name and the
 	// arguments separated by a colon ":". For ffmpeg, arguments can be passed to different
 	// positions using the same syntax as --postprocessor-args. You can use this option multiple
@@ -837,9 +823,6 @@ func (g *FlagsDownload) ToFlags() (flags Flags) {
 	if g.NoLazyPlaylist != nil && *g.NoLazyPlaylist {
 		flags = append(flags, &Flag{ID: "lazy_playlist", Flag: "--no-lazy-playlist", Args: nil})
 	}
-	if g.XattrSetFileSize != nil && *g.XattrSetFileSize {
-		flags = append(flags, &Flag{ID: "xattr_set_filesize", Flag: "--xattr-set-filesize", Args: nil})
-	}
 	if g.HLSPreferNative != nil && *g.HLSPreferNative {
 		flags = append(flags, &Flag{ID: "hls_prefer_native", Flag: "--hls-prefer-native", Args: nil})
 	}
@@ -919,9 +902,7 @@ type FlagsFilesystem struct {
 	// Write video metadata to a .info.json file (this may contain personal information)
 	WriteInfoJSON *bool `json:"write_info_json,omitempty" id:"writeinfojson" jsonschema:"title=WriteInfoJSON" jsonschema_extras:"uid=writeinfojson" jsonschema_description:"Write video metadata to a .info.json file (this may contain personal information)"`
 	// Do not write video metadata (default)
-	NoWriteInfoJSON    *bool `json:"no_write_info_json,omitempty" id:"writeinfojson" jsonschema:"title=NoWriteInfoJSON" jsonschema_extras:"uid=writeinfojson" jsonschema_description:"Do not write video metadata (default)"`
-	WriteAnnotations   *bool `json:"write_annotations,omitempty" id:"writeannotations" jsonschema:"title=WriteAnnotations" jsonschema_extras:"uid=writeannotations" jsonschema_description:""`
-	NoWriteAnnotations *bool `json:"no_write_annotations,omitempty" id:"writeannotations" jsonschema:"title=NoWriteAnnotations" jsonschema_extras:"uid=writeannotations" jsonschema_description:""`
+	NoWriteInfoJSON *bool `json:"no_write_info_json,omitempty" id:"writeinfojson" jsonschema:"title=NoWriteInfoJSON" jsonschema_extras:"uid=writeinfojson" jsonschema_description:"Do not write video metadata (default)"`
 	// Write playlist metadata in addition to the video metadata when using --write-info-json,
 	// --write-description etc. (default)
 	WritePlaylistMetafiles *bool `json:"write_playlist_metafiles,omitempty" id:"allow_playlist_files" jsonschema:"title=WritePlaylistMetafiles" jsonschema_extras:"uid=allow_playlist_files" jsonschema_description:"Write playlist metadata in addition to the video metadata when using --write-info-json, --write-description etc. (default)"`
@@ -1069,12 +1050,6 @@ func (g *FlagsFilesystem) ToFlags() (flags Flags) {
 	}
 	if g.NoWriteInfoJSON != nil && *g.NoWriteInfoJSON {
 		flags = append(flags, &Flag{ID: "writeinfojson", Flag: "--no-write-info-json", Args: nil})
-	}
-	if g.WriteAnnotations != nil && *g.WriteAnnotations {
-		flags = append(flags, &Flag{ID: "writeannotations", Flag: "--write-annotations", Args: nil})
-	}
-	if g.NoWriteAnnotations != nil && *g.NoWriteAnnotations {
-		flags = append(flags, &Flag{ID: "writeannotations", Flag: "--no-write-annotations", Args: nil})
 	}
 	if g.WritePlaylistMetafiles != nil && *g.WritePlaylistMetafiles {
 		flags = append(flags, &Flag{ID: "allow_playlist_files", Flag: "--write-playlist-metafiles", Args: nil})
@@ -1306,8 +1281,6 @@ type FlagsVerbositySimulation struct {
 	WritePages *bool `json:"write_pages,omitempty" id:"write_pages" jsonschema:"title=WritePages" jsonschema_extras:"uid=write_pages" jsonschema_description:"Write downloaded intermediary pages to files in the current directory to debug problems"`
 	// Display sent and read HTTP traffic
 	PrintTraffic *bool `json:"print_traffic,omitempty" id:"debug_printtraffic" jsonschema:"title=PrintTraffic" jsonschema_extras:"uid=debug_printtraffic" jsonschema_description:"Display sent and read HTTP traffic"`
-	CallHome     *bool `json:"call_home,omitempty" id:"call_home" jsonschema:"title=CallHome" jsonschema_extras:"uid=call_home" jsonschema_description:""`
-	NoCallHome   *bool `json:"no_call_home,omitempty" id:"call_home" jsonschema:"title=NoCallHome" jsonschema_extras:"uid=call_home" jsonschema_description:""`
 }
 
 type FlagPrintToFile struct {
@@ -1441,12 +1414,6 @@ func (g *FlagsVerbositySimulation) ToFlags() (flags Flags) {
 	}
 	if g.PrintTraffic != nil && *g.PrintTraffic {
 		flags = append(flags, &Flag{ID: "debug_printtraffic", Flag: "--print-traffic", Args: nil})
-	}
-	if g.CallHome != nil && *g.CallHome {
-		flags = append(flags, &Flag{ID: "call_home", Flag: "--call-home", Args: nil})
-	}
-	if g.NoCallHome != nil && *g.NoCallHome {
-		flags = append(flags, &Flag{ID: "call_home", Flag: "--no-call-home", Args: nil})
 	}
 	return flags
 }
@@ -1950,9 +1917,7 @@ type FlagsPostProcessing struct {
 	// Automatically correct known faults of the file. One of never (do nothing), warn (only emit
 	// a warning), detect_or_warn (the default; fix the file if we can, warn otherwise), force
 	// (try fixing even if the file already exists)
-	Fixup        *FixupOption `json:"fixup,omitempty" id:"fixup" jsonschema:"enum=never,enum=ignore,enum=warn,enum=detect_or_warn,enum=force,title=Fixup" jsonschema_extras:"uid=fixup" jsonschema_description:"Automatically correct known faults of the file. One of never (do nothing), warn (only emit a warning), detect_or_warn (the default; fix the file if we can, warn otherwise), force (try fixing even if the file already exists)"`
-	PreferAVConv *bool        `json:"prefer_avconv,omitempty" id:"prefer_ffmpeg" jsonschema:"title=PreferAVConv" jsonschema_extras:"uid=prefer_ffmpeg" jsonschema_description:""`
-	PreferFFmpeg *bool        `json:"prefer_ffmpeg,omitempty" id:"prefer_ffmpeg" jsonschema:"title=PreferFFmpeg" jsonschema_extras:"uid=prefer_ffmpeg" jsonschema_description:""`
+	Fixup *FixupOption `json:"fixup,omitempty" id:"fixup" jsonschema:"enum=never,enum=ignore,enum=warn,enum=detect_or_warn,enum=force,title=Fixup" jsonschema_extras:"uid=fixup" jsonschema_description:"Automatically correct known faults of the file. One of never (do nothing), warn (only emit a warning), detect_or_warn (the default; fix the file if we can, warn otherwise), force (try fixing even if the file already exists)"`
 	// Location of the ffmpeg binary; either the path to the binary or its containing directory
 	FFmpegLocation *string `json:"ffmpeg_location,omitempty" id:"ffmpeg_location" jsonschema:"title=FFmpegLocation" jsonschema_extras:"uid=ffmpeg_location" jsonschema_description:"Location of the ffmpeg binary; either the path to the binary or its containing directory"`
 	// Execute a command, optionally prefixed with when to execute it, separated by a ":".
@@ -2143,12 +2108,6 @@ func (g *FlagsPostProcessing) ToFlags() (flags Flags) {
 	if g.Fixup != nil {
 		flags = append(flags, &Flag{ID: "fixup", Flag: "--fixup", Args: []any{string(*g.Fixup)}})
 	}
-	if g.PreferAVConv != nil && *g.PreferAVConv {
-		flags = append(flags, &Flag{ID: "prefer_ffmpeg", Flag: "--prefer-avconv", Args: nil})
-	}
-	if g.PreferFFmpeg != nil && *g.PreferFFmpeg {
-		flags = append(flags, &Flag{ID: "prefer_ffmpeg", Flag: "--prefer-ffmpeg", Args: nil})
-	}
 	if g.FFmpegLocation != nil {
 		flags = append(flags, &Flag{ID: "ffmpeg_location", Flag: "--ffmpeg-location", Args: []any{*g.FFmpegLocation}})
 	}
@@ -2213,15 +2172,7 @@ type FlagsSponsorBlock struct {
 	// Disable both --sponsorblock-mark and --sponsorblock-remove
 	NoSponsorblock *bool `json:"no_sponsorblock,omitempty" id:"no_sponsorblock" jsonschema:"title=NoSponsorblock" jsonschema_extras:"uid=no_sponsorblock" jsonschema_description:"Disable both --sponsorblock-mark and --sponsorblock-remove"`
 	// SponsorBlock API location, defaults to https://sponsor.ajay.app
-	SponsorblockAPI   *string `json:"sponsorblock_api,omitempty" id:"sponsorblock_api" jsonschema:"title=SponsorblockAPI" jsonschema_extras:"uid=sponsorblock_api" jsonschema_description:"SponsorBlock API location, defaults to https://sponsor.ajay.app"`
-	Sponskrub         *bool   `json:"sponskrub,omitempty" id:"sponskrub" jsonschema:"title=Sponskrub" jsonschema_extras:"uid=sponskrub" jsonschema_description:""`
-	NoSponskrub       *bool   `json:"no_sponskrub,omitempty" id:"sponskrub" jsonschema:"title=NoSponskrub" jsonschema_extras:"uid=sponskrub" jsonschema_description:""`
-	SponskrubCut      *bool   `json:"sponskrub_cut,omitempty" id:"sponskrub_cut" jsonschema:"title=SponskrubCut" jsonschema_extras:"uid=sponskrub_cut" jsonschema_description:""`
-	NoSponskrubCut    *bool   `json:"no_sponskrub_cut,omitempty" id:"sponskrub_cut" jsonschema:"title=NoSponskrubCut" jsonschema_extras:"uid=sponskrub_cut" jsonschema_description:""`
-	SponskrubForce    *bool   `json:"sponskrub_force,omitempty" id:"sponskrub_force" jsonschema:"title=SponskrubForce" jsonschema_extras:"uid=sponskrub_force" jsonschema_description:""`
-	NoSponskrubForce  *bool   `json:"no_sponskrub_force,omitempty" id:"sponskrub_force" jsonschema:"title=NoSponskrubForce" jsonschema_extras:"uid=sponskrub_force" jsonschema_description:""`
-	SponskrubLocation *string `json:"sponskrub_location,omitempty" id:"sponskrub_path" jsonschema:"title=SponskrubLocation" jsonschema_extras:"uid=sponskrub_path" jsonschema_description:""`
-	SponskrubArgs     *string `json:"sponskrub_args,omitempty" id:"sponskrub_args" jsonschema:"title=SponskrubArgs" jsonschema_extras:"uid=sponskrub_args" jsonschema_description:""`
+	SponsorblockAPI *string `json:"sponsorblock_api,omitempty" id:"sponsorblock_api" jsonschema:"title=SponsorblockAPI" jsonschema_extras:"uid=sponsorblock_api" jsonschema_description:"SponsorBlock API location, defaults to https://sponsor.ajay.app"`
 }
 
 // Validate ensures all flags have appropriate values. If there are validation-specific
@@ -2270,30 +2221,6 @@ func (g *FlagsSponsorBlock) ToFlags() (flags Flags) {
 	if g.SponsorblockAPI != nil {
 		flags = append(flags, &Flag{ID: "sponsorblock_api", Flag: "--sponsorblock-api", Args: []any{*g.SponsorblockAPI}})
 	}
-	if g.Sponskrub != nil && *g.Sponskrub {
-		flags = append(flags, &Flag{ID: "sponskrub", Flag: "--sponskrub", Args: nil})
-	}
-	if g.NoSponskrub != nil && *g.NoSponskrub {
-		flags = append(flags, &Flag{ID: "sponskrub", Flag: "--no-sponskrub", Args: nil})
-	}
-	if g.SponskrubCut != nil && *g.SponskrubCut {
-		flags = append(flags, &Flag{ID: "sponskrub_cut", Flag: "--sponskrub-cut", Args: nil})
-	}
-	if g.NoSponskrubCut != nil && *g.NoSponskrubCut {
-		flags = append(flags, &Flag{ID: "sponskrub_cut", Flag: "--no-sponskrub-cut", Args: nil})
-	}
-	if g.SponskrubForce != nil && *g.SponskrubForce {
-		flags = append(flags, &Flag{ID: "sponskrub_force", Flag: "--sponskrub-force", Args: nil})
-	}
-	if g.NoSponskrubForce != nil && *g.NoSponskrubForce {
-		flags = append(flags, &Flag{ID: "sponskrub_force", Flag: "--no-sponskrub-force", Args: nil})
-	}
-	if g.SponskrubLocation != nil {
-		flags = append(flags, &Flag{ID: "sponskrub_path", Flag: "--sponskrub-location", Args: []any{*g.SponskrubLocation}})
-	}
-	if g.SponskrubArgs != nil {
-		flags = append(flags, &Flag{ID: "sponskrub_args", Flag: "--sponskrub-args", Args: []any{*g.SponskrubArgs}})
-	}
 	return flags
 }
 
@@ -2311,11 +2238,7 @@ type FlagsExtractor struct {
 	NoHLSSplitDiscontinuity *bool `json:"no_hls_split_discontinuity,omitempty" id:"hls_split_discontinuity" jsonschema:"title=NoHLSSplitDiscontinuity" jsonschema_extras:"uid=hls_split_discontinuity" jsonschema_description:"Do not split HLS playlists into different formats at discontinuities such as ad breaks (default)"`
 	// Pass ARGS arguments to the IE_KEY extractor. See "EXTRACTOR ARGUMENTS" for details. You
 	// can use this option multiple times to give arguments for different extractors
-	ExtractorArgs              []string `json:"extractor_args,omitempty" id:"extractor_args" jsonschema:"title=ExtractorArgs" jsonschema_extras:"uid=extractor_args" jsonschema_description:"Pass ARGS arguments to the IE_KEY extractor. See \"EXTRACTOR ARGUMENTS\" for details. You can use this option multiple times to give arguments for different extractors"`
-	YoutubeIncludeDashManifest *bool    `json:"youtube_include_dash_manifest,omitempty" id:"youtube_include_dash_manifest" jsonschema:"title=YoutubeIncludeDashManifest" jsonschema_extras:"uid=youtube_include_dash_manifest" jsonschema_description:""`
-	YoutubeSkipDashManifest    *bool    `json:"youtube_skip_dash_manifest,omitempty" id:"youtube_include_dash_manifest" jsonschema:"title=YoutubeSkipDashManifest" jsonschema_extras:"uid=youtube_include_dash_manifest" jsonschema_description:""`
-	YoutubeIncludeHLSManifest  *bool    `json:"youtube_include_hls_manifest,omitempty" id:"youtube_include_hls_manifest" jsonschema:"title=YoutubeIncludeHLSManifest" jsonschema_extras:"uid=youtube_include_hls_manifest" jsonschema_description:""`
-	YoutubeSkipHLSManifest     *bool    `json:"youtube_skip_hls_manifest,omitempty" id:"youtube_include_hls_manifest" jsonschema:"title=YoutubeSkipHLSManifest" jsonschema_extras:"uid=youtube_include_hls_manifest" jsonschema_description:""`
+	ExtractorArgs []string `json:"extractor_args,omitempty" id:"extractor_args" jsonschema:"title=ExtractorArgs" jsonschema_extras:"uid=extractor_args" jsonschema_description:"Pass ARGS arguments to the IE_KEY extractor. See \"EXTRACTOR ARGUMENTS\" for details. You can use this option multiple times to give arguments for different extractors"`
 }
 
 // Validate ensures all flags have appropriate values. If there are validation-specific
@@ -2366,18 +2289,6 @@ func (g *FlagsExtractor) ToFlags() (flags Flags) {
 	}
 	for _, v := range g.ExtractorArgs {
 		flags = append(flags, &Flag{ID: "extractor_args", Flag: "--extractor-args", AllowsMultiple: true, Args: []any{v}})
-	}
-	if g.YoutubeIncludeDashManifest != nil && *g.YoutubeIncludeDashManifest {
-		flags = append(flags, &Flag{ID: "youtube_include_dash_manifest", Flag: "--youtube-include-dash-manifest", Args: nil})
-	}
-	if g.YoutubeSkipDashManifest != nil && *g.YoutubeSkipDashManifest {
-		flags = append(flags, &Flag{ID: "youtube_include_dash_manifest", Flag: "--youtube-skip-dash-manifest", Args: nil})
-	}
-	if g.YoutubeIncludeHLSManifest != nil && *g.YoutubeIncludeHLSManifest {
-		flags = append(flags, &Flag{ID: "youtube_include_hls_manifest", Flag: "--youtube-include-hls-manifest", Args: nil})
-	}
-	if g.YoutubeSkipHLSManifest != nil && *g.YoutubeSkipHLSManifest {
-		flags = append(flags, &Flag{ID: "youtube_include_hls_manifest", Flag: "--youtube-skip-hls-manifest", Args: nil})
 	}
 	return flags
 }
