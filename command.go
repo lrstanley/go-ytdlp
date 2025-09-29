@@ -16,6 +16,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 // New is the recommended way to return a new yt-dlp command builder. Once all
@@ -23,8 +24,9 @@ import (
 // the independent execution method (e.g. [Version]).
 func New() *Command {
 	cmd := &Command{
-		env:        make(map[string]string),
-		flagConfig: &FlagConfig{},
+		env:           make(map[string]string),
+		flagConfig:    &FlagConfig{},
+		cancelMaxWait: 1 * time.Second,
 	}
 	return cmd
 }
@@ -36,6 +38,7 @@ type Command struct {
 	env                  map[string]string
 	flagConfig           *FlagConfig
 	separateProcessGroup bool
+	cancelMaxWait        time.Duration
 	disableEnvVarInherit bool
 
 	progress *progressHandler
@@ -120,6 +123,15 @@ func (c *Command) SetSeparateProcessGroup(value bool) *Command {
 	c.separateProcessGroup = value
 	c.mu.Unlock()
 
+	return c
+}
+
+// SetCancelMaxWait sets the maximum wait time before the command is killed,
+// after the context is cancelled. Defaults to 1 second.
+func (c *Command) SetCancelMaxWait(value time.Duration) *Command {
+	c.mu.Lock()
+	c.cancelMaxWait = value
+	c.mu.Unlock()
 	return c
 }
 
@@ -238,6 +250,9 @@ func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	}
 
 	cmd := exec.CommandContext(ctx, name, cmdArgs...)
+
+	// Ensure all children (e.g. ffmpeg) are killed after the command is killed.
+	cmd.WaitDelay = c.cancelMaxWait
 
 	// Add cache directory to $PATH, which would cover ffmpeg, ffprobe, etc.
 	cacheDir, err := GetCacheDir()
