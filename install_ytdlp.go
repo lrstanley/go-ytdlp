@@ -23,8 +23,9 @@ var (
 	//go:embed .github/ytdlp-public.key
 	ytdlpPublicKey []byte // From: https://github.com/yt-dlp/yt-dlp/blob/master/public.key
 
-	ytdlpResolveCache = atomic.Pointer[ResolvedInstall]{} // Should only be used by [Install].
-	ytdlpInstallLock  sync.Mutex
+	ytdlpResolveCache   = atomic.Pointer[ResolvedInstall]{} // Should only be used by [Install].
+	ytdlpBinConfigCache = atomic.Pointer[string]{}
+	ytdlpInstallLock    sync.Mutex
 
 	ytdlpBinConfigs = map[string]struct {
 		src  string
@@ -46,17 +47,26 @@ var (
 // current runtime. If the current runtime is not supported, an error is
 // returned. dest will always be returned (it will be an assumption).
 func ytdlpGetDownloadBinary() (src string, dest []string, err error) {
+	if cached := ytdlpBinConfigCache.Load(); cached != nil {
+		if binary, ok := ytdlpBinConfigs[*cached]; ok {
+			return binary.src, binary.dest, nil
+		}
+	}
+
 	src = runtime.GOOS + "_" + runtime.GOARCH
 	if runtime.GOOS == "linux" && systemHasMusl() {
 		src = "musl" + src
 	}
 
 	if binary, ok := ytdlpBinConfigs[src]; ok {
+		ytdlpBinConfigCache.Store(&src)
 		return binary.src, binary.dest, nil
 	}
 
 	if runtime.GOOS == "linux" {
-		return ytdlpBinConfigs["linux_unknown"].src, ytdlpBinConfigs["linux_unknown"].dest, nil
+		src = "linux_unknown"
+		ytdlpBinConfigCache.Store(&src)
+		return ytdlpBinConfigs[src].src, ytdlpBinConfigs[src].dest, nil
 	}
 
 	var supported []string
