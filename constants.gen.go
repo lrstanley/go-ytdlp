@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2025.09.26"
+	Version = "2025.10.14"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -267,6 +267,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Canalsurmas"},
 	{Name: "CaracolTvPlay", Description: "[caracoltv-play]"},
 	{Name: "cbc.ca"},
+	{Name: "cbc.ca:listen"},
 	{Name: "cbc.ca:player"},
 	{Name: "cbc.ca:player:playlist"},
 	{Name: "CBS", Description: "(Currently broken)"},
@@ -610,6 +611,11 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Hypem"},
 	{Name: "Hytale"},
 	{Name: "Icareus"},
+	{Name: "IdagioAlbum"},
+	{Name: "IdagioPersonalPlaylist"},
+	{Name: "IdagioPlaylist"},
+	{Name: "IdagioRecording"},
+	{Name: "IdagioTrack"},
 	{Name: "IdolPlus"},
 	{Name: "iflix:episode"},
 	{Name: "IflixSeries"},
