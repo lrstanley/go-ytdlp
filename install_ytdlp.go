@@ -23,20 +23,23 @@ var (
 	//go:embed .github/ytdlp-public.key
 	ytdlpPublicKey []byte // From: https://github.com/yt-dlp/yt-dlp/blob/master/public.key
 
-	ytdlpResolveCache = atomic.Pointer[ResolvedInstall]{} // Should only be used by [Install].
-	ytdlpInstallLock  sync.Mutex
+	ytdlpResolveCache   = atomic.Pointer[ResolvedInstall]{} // Should only be used by [Install].
+	ytdlpBinConfigCache = atomic.Pointer[string]{}
+	ytdlpInstallLock    sync.Mutex
 
 	ytdlpBinConfigs = map[string]struct {
 		src  string
 		dest []string
 	}{
-		"darwin_amd64":  {"yt-dlp_macos", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"darwin_arm64":  {"yt-dlp_macos", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"linux_amd64":   {"yt-dlp_linux", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"linux_arm64":   {"yt-dlp_linux_aarch64", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"linux_armv7l":  {"yt-dlp_linux_armv7l", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"linux_unknown": {"yt-dlp", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"windows_amd64": {"yt-dlp.exe", []string{"yt-dlp-" + Version + ".exe", "yt-dlp.exe"}},
+		"darwin_amd64":    {"yt-dlp_macos", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"darwin_arm64":    {"yt-dlp_macos", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"linux_amd64":     {"yt-dlp_linux", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"linux_arm64":     {"yt-dlp_linux_aarch64", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"musllinux_amd64": {"yt-dlp_musllinux", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"musllinux_arm64": {"yt-dlp_musllinux_aarch64", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"linux_armv7l":    {"yt-dlp_linux_armv7l", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"linux_unknown":   {"yt-dlp", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"windows_amd64":   {"yt-dlp.exe", []string{"yt-dlp-" + Version + ".exe", "yt-dlp.exe"}},
 	}
 )
 
@@ -44,13 +47,26 @@ var (
 // current runtime. If the current runtime is not supported, an error is
 // returned. dest will always be returned (it will be an assumption).
 func ytdlpGetDownloadBinary() (src string, dest []string, err error) {
+	if cached := ytdlpBinConfigCache.Load(); cached != nil {
+		if binary, ok := ytdlpBinConfigs[*cached]; ok {
+			return binary.src, binary.dest, nil
+		}
+	}
+
 	src = runtime.GOOS + "_" + runtime.GOARCH
+	if runtime.GOOS == "linux" && systemHasMusl() {
+		src = "musl" + src
+	}
+
 	if binary, ok := ytdlpBinConfigs[src]; ok {
+		ytdlpBinConfigCache.Store(&src)
 		return binary.src, binary.dest, nil
 	}
 
 	if runtime.GOOS == "linux" {
-		return ytdlpBinConfigs["linux_unknown"].src, ytdlpBinConfigs["linux_unknown"].dest, nil
+		src = "linux_unknown"
+		ytdlpBinConfigCache.Store(&src)
+		return ytdlpBinConfigs[src].src, ytdlpBinConfigs[src].dest, nil
 	}
 
 	var supported []string
@@ -258,4 +274,32 @@ func ytdlpGetVersion(ctx context.Context, r *ResolvedInstall) error {
 	r.Version = strings.TrimSpace(stdout.String())
 	debug(ctx, "yt-dlp version", "version", r.Version)
 	return nil
+}
+
+// systemHasMusl reports whether the system uses musl libc.
+func systemHasMusl() bool {
+	cmd := exec.Command("ldd", "--version")
+	// Ignore error because ldd often returns exit status 1 even with valid output
+	output, _ := cmd.CombinedOutput()
+
+	if len(output) > 0 {
+		// ldd outputs libc info in first line: "musl libc..."
+		firstLine := strings.Split(string(output), "\n")[0]
+		return strings.Contains(strings.ToLower(firstLine), "musl")
+	}
+
+	// Fallback: check common musl lib paths
+	muslPaths := []string{
+		"/lib/ld-musl-x86_64.so.1",
+		"/lib/ld-musl-aarch64.so.1",
+		"/lib/ld-musl-armhf.so.1",
+	}
+
+	for _, path := range muslPaths {
+		if _, err := os.Stat(path); err == nil {
+			return true
+		}
+	}
+
+	return false
 }
