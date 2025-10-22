@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2025.10.14"
+	Version = "2025.10.22"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -109,7 +109,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "aol.com", Description: "Yahoo screen and movies (Currently broken)"},
 	{Name: "APA"},
 	{Name: "Aparat"},
-	{Name: "AppleConnect"},
+	{Name: "apple:music:connect", Description: "Apple Music Connect"},
 	{Name: "AppleDaily", Description: "臺灣蘋果日報"},
 	{Name: "ApplePodcasts"},
 	{Name: "appletrailers"},
@@ -1579,7 +1579,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "tvigle", Description: "Интернет-телевидение Tvigle.ru", AgeLimit: 12},
 	{Name: "TVIPlayer"},
 	{Name: "TVN24", Description: "(Currently broken)"},
-	{Name: "TVNoe", Description: "(Currently broken)"},
+	{Name: "tvnoe", Description: "Televize Noe"},
 	{Name: "tvopengr:embed", Description: "tvopen.gr embedded videos"},
 	{Name: "tvopengr:watch", Description: "tvopen.gr (and ethnos.gr) videos"},
 	{Name: "tvp", Description: "Telewizja Polska", AgeLimit: 12},
