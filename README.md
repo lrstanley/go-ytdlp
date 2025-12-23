@@ -66,6 +66,7 @@
   - [Install Function(s) &amp; Binary Management](#package-install-functions--binary-management)
     - [yt-dlp](#yt-dlp)
     - [ffmpeg &amp; ffprobe](#ffmpeg--ffprobe)
+    - [deno](#deno)
   - [FlagConfig: JSON to/from Flags Conversion &amp; Usage](#flagconfig-json-tofrom-flags-conversion--usage)
   - [Support &amp; Assistance](#raising_hand_man-support--assistance)
   - [Contributing](#handshake-contributing)
@@ -76,7 +77,7 @@
 
 - CLI bindings for yt-dlp -- including all flags/commands.
 - Optional `Install*` helpers to auto-download the latest supported version of
-  yt-dlp, ffmpeg and ffprobe, including proper checksum validation for secure downloads (yt-dlp only).
+  yt-dlp, ffmpeg, ffprobe and deno, including proper checksum validation for secure downloads (yt-dlp only).
   - Worry less about making sure yt-dlp is installed wherever **go-ytdlp** is running from!
 - Carried over help documentation for all functions/methods.
 - Flags with arguments have type mappings according to what the actual flags expect.
@@ -145,10 +146,10 @@ Source: [bubble-dl](./_examples/bubble-dl)
 ## :package: Install Function(s) & Binary Management
 
 The `Install*` function helpers in **go-ytdlp** allow you to automatically download and cache the
-required binaries (`yt-dlp`, `ffmpeg`, and `ffprobe`) for your platform. This makes it easy to get
+required binaries (`yt-dlp`, `ffmpeg`, `ffprobe` and `deno`) for your platform. This makes it easy to get
 started without manually installing these dependencies, and ensures the correct versions are used.
 
-> **Note:** Download/installation of `ffmpeg` and `ffprobe` is only supported on a handful of platforms.
+> **Note:** Download/installation of `ffmpeg`, `ffprobe` and `deno` is only supported on a handful of platforms.
 > It is still recommended to install them via other means if your platform is not listed below.
 
 ### yt-dlp
@@ -171,6 +172,16 @@ started without manually installing these dependencies, and ensures the correct 
 | linux_arm64   | https://github.com/yt-dlp/FFmpeg-Builds |
 | windows_amd64 | https://github.com/yt-dlp/FFmpeg-Builds |
 | windows_arm   | https://github.com/yt-dlp/FFmpeg-Builds |
+
+### deno
+
+| OS/Arch       | deno Download Source                                                                         |
+|---------------|----------------------------------------------------------------------------------------------|
+| darwin_amd64  | https://github.com/denoland/deno/releases/latest/download/deno-x86_64-apple-darwin.zip       |
+| darwin_arm64  | https://github.com/denoland/deno/releases/latest/download/deno-aarch64-apple-darwin.zip      |
+| linux_amd64   | https://github.com/denoland/deno/releases/latest/download/deno-x86_64-unknown-linux-gnu.zip  |
+| linux_arm64   | https://github.com/denoland/deno/releases/latest/download/deno-aarch64-unknown-linux-gnu.zip |
+| windows_amd64 | https://github.com/denoland/deno/releases/latest/download/deno-x86_64-pc-windows-msvc.zip    |
 
 ## FlagConfig: JSON to/from Flags Conversion & Usage
 
