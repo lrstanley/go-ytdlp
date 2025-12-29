@@ -59,7 +59,7 @@ func RemoveInstallCache() error {
 	ytdlpResolveCache.Store(nil)
 	ffmpegResolveCache.Store(nil)
 	ffprobeResolveCache.Store(nil)
-	denoResolveCache.Store(nil)
+	bunResolveCache.Store(nil)
 	return nil
 }
 
@@ -153,7 +153,7 @@ func InstallAll(ctx context.Context) ([]*ResolvedInstall, error) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		r, err := InstallDeno(ctx, nil)
+		r, err := InstallBun(ctx, nil)
 		if err != nil {
 			mu.Lock()
 			errs = append(errs, err)
