@@ -603,12 +603,6 @@
           "description": "Process videos in the playlist only after the entire playlist is parsed (default)",
           "uid": "lazy_playlist"
         },
-        "xattr_set_filesize": {
-          "type": "boolean",
-          "title": "XattrSetFileSize",
-          "description": "Set file xattribute ytdl.filesize with expected file size",
-          "uid": "xattr_set_filesize"
-        },
         "hls_prefer_native": {
           "type": "boolean",
           "title": "HLSPreferNative",
@@ -646,7 +640,7 @@
           },
           "type": "array",
           "title": "Downloader",
-          "description": "Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c, avconv, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads",
+          "description": "Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads",
           "uid": "external_downloader"
         },
         "downloader_args": {
@@ -719,62 +713,6 @@
               ]
             }
           }
-        },
-        {
-          "if": {
-            "required": [
-              "youtube_include_dash_manifest"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "youtube_skip_dash_manifest"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "youtube_skip_dash_manifest"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "youtube_include_dash_manifest"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "youtube_include_hls_manifest"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "youtube_skip_hls_manifest"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "youtube_skip_hls_manifest"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "youtube_include_hls_manifest"
-              ]
-            }
-          }
         }
       ],
       "properties": {
@@ -816,26 +754,6 @@
           "title": "ExtractorArgs",
           "description": "Pass ARGS arguments to the IE_KEY extractor. See \"EXTRACTOR ARGUMENTS\" for details. You can use this option multiple times to give arguments for different extractors",
           "uid": "extractor_args"
-        },
-        "youtube_include_dash_manifest": {
-          "type": "boolean",
-          "title": "YoutubeIncludeDashManifest",
-          "uid": "youtube_include_dash_manifest"
-        },
-        "youtube_skip_dash_manifest": {
-          "type": "boolean",
-          "title": "YoutubeSkipDashManifest",
-          "uid": "youtube_include_dash_manifest"
-        },
-        "youtube_include_hls_manifest": {
-          "type": "boolean",
-          "title": "YoutubeIncludeHLSManifest",
-          "uid": "youtube_include_hls_manifest"
-        },
-        "youtube_skip_hls_manifest": {
-          "type": "boolean",
-          "title": "YoutubeSkipHLSManifest",
-          "uid": "youtube_include_hls_manifest"
         }
       },
       "additionalProperties": false,
@@ -1227,34 +1145,6 @@
         {
           "if": {
             "required": [
-              "no_write_annotations"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "write_annotations"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "write_annotations"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "no_write_annotations"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
               "no_write_description"
             ]
           },
@@ -1430,13 +1320,13 @@
         "mtime": {
           "type": "boolean",
           "title": "Mtime",
-          "description": "Use the Last-modified header to set the file modification time (default)",
+          "description": "Use the Last-modified header to set the file modification time",
           "uid": "updatetime"
         },
         "no_mtime": {
           "type": "boolean",
           "title": "NoMtime",
-          "description": "Do not use the Last-modified header to set the file modification time",
+          "description": "Do not use the Last-modified header to set the file modification time (default)",
           "uid": "updatetime"
         },
         "write_description": {
@@ -1462,16 +1352,6 @@
           "title": "NoWriteInfoJSON",
           "description": "Do not write video metadata (default)",
           "uid": "writeinfojson"
-        },
-        "write_annotations": {
-          "type": "boolean",
-          "title": "WriteAnnotations",
-          "uid": "writeannotations"
-        },
-        "no_write_annotations": {
-          "type": "boolean",
-          "title": "NoWriteAnnotations",
-          "uid": "writeannotations"
         },
         "write_playlist_metafiles": {
           "type": "boolean",
@@ -1695,6 +1575,34 @@
         {
           "if": {
             "required": [
+              "js_runtimes"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "no_js_runtimes"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "no_js_runtimes"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "js_runtimes"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
               "live_from_start"
             ]
           },
@@ -1772,6 +1680,34 @@
             "not": {
               "required": [
                 "no_plugin_dirs"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "no_remote_components"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "remote_components"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "remote_components"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "no_remote_components"
               ]
             }
           }
@@ -1882,6 +1818,36 @@
           "title": "NoPluginDirs",
           "description": "Clear plugin directories to search, including defaults and those provided by previous --plugin-dirs",
           "uid": "plugin_dirs"
+        },
+        "js_runtimes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "JsRuntimes",
+          "description": "Additional JavaScript runtime to enable, with an optional location for the runtime (either the path to the binary or its containing directory). This option can be used multiple times to enable multiple runtimes. Supported runtimes are (in order of priority, from highest to lowest): deno, node, quickjs, bun. Only \"deno\" is enabled by default. The highest priority runtime that is both enabled and available will be used. In order to use a lower priority runtime when \"deno\" is available, --no-js-runtimes needs to be passed before enabling other runtimes",
+          "uid": "js_runtimes"
+        },
+        "no_js_runtimes": {
+          "type": "boolean",
+          "title": "NoJsRuntimes",
+          "description": "Clear JavaScript runtimes to enable, including defaults and those provided by previous --js-runtimes",
+          "uid": "js_runtimes"
+        },
+        "remote_components": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "RemoteComponents",
+          "description": "Remote components to allow yt-dlp to fetch when required. This option is currently not needed if you are using an official executable or have the requisite version of the yt-dlp-ejs package installed. You can use this option multiple times to allow multiple components. Supported values: ejs:npm (external JavaScript components from npm), ejs:github (external JavaScript components from yt-dlp-ejs GitHub). By default, no remote components are allowed",
+          "uid": "remote_components"
+        },
+        "no_remote_components": {
+          "type": "boolean",
+          "title": "NoRemoteComponents",
+          "description": "Disallow fetching of all remote components, including any previously allowed by --remote-components or defaults.",
+          "uid": "remote_components"
         },
         "flat_playlist": {
           "type": "boolean",
@@ -2058,11 +2024,6 @@
           "title": "GeoVerificationProxy",
           "description": "Use this proxy to verify the IP address for some geo-restricted sites. The default proxy specified by --proxy (or none, if the option is not present) is used for the actual downloading",
           "uid": "geo_verification_proxy"
-        },
-        "cn_verification_proxy": {
-          "type": "string",
-          "title": "CNVerificationProxy",
-          "uid": "cn_verification_proxy"
         },
         "xff": {
           "type": "string",
@@ -2538,34 +2499,6 @@
         {
           "if": {
             "required": [
-              "prefer_avconv"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "prefer_ffmpeg"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "prefer_ffmpeg"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "prefer_avconv"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
               "no_remove_chapters"
             ]
           },
@@ -2794,16 +2727,6 @@
           "description": "Automatically correct known faults of the file. One of never (do nothing), warn (only emit a warning), detect_or_warn (the default; fix the file if we can, warn otherwise), force (try fixing even if the file already exists)",
           "uid": "fixup"
         },
-        "prefer_avconv": {
-          "type": "boolean",
-          "title": "PreferAVConv",
-          "uid": "prefer_ffmpeg"
-        },
-        "prefer_ffmpeg": {
-          "type": "boolean",
-          "title": "PreferFFmpeg",
-          "uid": "prefer_ffmpeg"
-        },
         "ffmpeg_location": {
           "type": "string",
           "title": "FFmpegLocation",
@@ -2900,97 +2823,11 @@
       "type": "object"
     },
     "FlagsSponsorBlock": {
-      "allOf": [
-        {
-          "if": {
-            "required": [
-              "no_sponskrub"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "sponskrub"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "sponskrub"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "no_sponskrub"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "no_sponskrub_cut"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "sponskrub_cut"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "sponskrub_cut"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "no_sponskrub_cut"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "no_sponskrub_force"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "sponskrub_force"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "sponskrub_force"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "no_sponskrub_force"
-              ]
-            }
-          }
-        }
-      ],
       "properties": {
         "sponsorblock_mark": {
           "type": "string",
           "title": "SponsorblockMark",
-          "description": "SponsorBlock categories to create chapters for, separated by commas. Available categories are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, poi_highlight, chapter, all and default (=all). You can prefix the category with a \"-\" to exclude it. See [1] for descriptions of the categories. E.g. --sponsorblock-mark all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories",
+          "description": "SponsorBlock categories to create chapters for, separated by commas. Available categories are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, hook, poi_highlight, chapter, all and default (=all). You can prefix the category with a \"-\" to exclude it. See [1] for descriptions of the categories. E.g. --sponsorblock-mark all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories",
           "uid": "sponsorblock_mark"
         },
         "sponsorblock_remove": {
@@ -3016,46 +2853,6 @@
           "title": "SponsorblockAPI",
           "description": "SponsorBlock API location, defaults to https://sponsor.ajay.app",
           "uid": "sponsorblock_api"
-        },
-        "sponskrub": {
-          "type": "boolean",
-          "title": "Sponskrub",
-          "uid": "sponskrub"
-        },
-        "no_sponskrub": {
-          "type": "boolean",
-          "title": "NoSponskrub",
-          "uid": "sponskrub"
-        },
-        "sponskrub_cut": {
-          "type": "boolean",
-          "title": "SponskrubCut",
-          "uid": "sponskrub_cut"
-        },
-        "no_sponskrub_cut": {
-          "type": "boolean",
-          "title": "NoSponskrubCut",
-          "uid": "sponskrub_cut"
-        },
-        "sponskrub_force": {
-          "type": "boolean",
-          "title": "SponskrubForce",
-          "uid": "sponskrub_force"
-        },
-        "no_sponskrub_force": {
-          "type": "boolean",
-          "title": "NoSponskrubForce",
-          "uid": "sponskrub_force"
-        },
-        "sponskrub_location": {
-          "type": "string",
-          "title": "SponskrubLocation",
-          "uid": "sponskrub_path"
-        },
-        "sponskrub_args": {
-          "type": "string",
-          "title": "SponskrubArgs",
-          "uid": "sponskrub_args"
         }
       },
       "additionalProperties": false,
@@ -3251,34 +3048,6 @@
     },
     "FlagsVerbositySimulation": {
       "allOf": [
-        {
-          "if": {
-            "required": [
-              "call_home"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "no_call_home"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "no_call_home"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "call_home"
-              ]
-            }
-          }
-        },
         {
           "if": {
             "required": [
@@ -3581,16 +3350,6 @@
           "title": "PrintTraffic",
           "description": "Display sent and read HTTP traffic",
           "uid": "debug_printtraffic"
-        },
-        "call_home": {
-          "type": "boolean",
-          "title": "CallHome",
-          "uid": "call_home"
-        },
-        "no_call_home": {
-          "type": "boolean",
-          "title": "NoCallHome",
-          "uid": "call_home"
         }
       },
       "additionalProperties": false,
@@ -4039,34 +3798,6 @@
         {
           "if": {
             "required": [
-              "include_ads"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "no_include_ads"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
-              "no_include_ads"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "include_ads"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
               "match_filters"
             ]
           },
@@ -4135,7 +3866,7 @@
         "playlist_items": {
           "type": "string",
           "title": "PlaylistItems",
-          "description": "Comma separated playlist_index of the items to download. You can specify a range using \"[START]:[STOP][:STEP]\". For backward compatibility, START-STOP is also supported. Use negative indices to count from the right and negative STEP to download in reverse order. E.g. \"-I 1:3,7,-5::2\" used on a playlist of size 15 will download the items at index 1,2,3,7,11,13,15",
+          "description": "Comma-separated playlist_index of the items to download. You can specify a range using \"[START]:[STOP][:STEP]\". For backward compatibility, START-STOP is also supported. Use negative indices to count from the right and negative STEP to download in reverse order. E.g. \"-I 1:3,7,-5::2\" used on a playlist of size 15 will download the items at index 1,2,3,7,11,13,15",
           "uid": "playlist_items"
         },
         "match_title": {
@@ -4285,16 +4016,6 @@
           "title": "SkipPlaylistAfterErrors",
           "description": "Number of allowed failures until the rest of the playlist is skipped",
           "uid": "skip_playlist_after_errors"
-        },
-        "include_ads": {
-          "type": "boolean",
-          "title": "IncludeAds",
-          "uid": "include_ads"
-        },
-        "no_include_ads": {
-          "type": "boolean",
-          "title": "NoIncludeAds",
-          "uid": "include_ads"
         }
       },
       "additionalProperties": false,

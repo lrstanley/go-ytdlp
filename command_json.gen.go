@@ -176,6 +176,27 @@ type FlagsGeneral struct {
 	// Clear plugin directories to search, including defaults and those provided by previous
 	// --plugin-dirs
 	NoPluginDirs *bool `json:"no_plugin_dirs,omitempty" id:"plugin_dirs" jsonschema:"title=NoPluginDirs" jsonschema_extras:"uid=plugin_dirs" jsonschema_description:"Clear plugin directories to search, including defaults and those provided by previous --plugin-dirs"`
+	// Additional JavaScript runtime to enable, with an optional location for the runtime (either
+	// the path to the binary or its containing directory). This option can be used multiple
+	// times to enable multiple runtimes. Supported runtimes are (in order of priority, from
+	// highest to lowest): deno, node, quickjs, bun. Only "deno" is enabled by default. The
+	// highest priority runtime that is both enabled and available will be used. In order to use
+	// a lower priority runtime when "deno" is available, --no-js-runtimes needs to be passed
+	// before enabling other runtimes
+	JsRuntimes []string `json:"js_runtimes,omitempty" id:"js_runtimes" jsonschema:"title=JsRuntimes" jsonschema_extras:"uid=js_runtimes" jsonschema_description:"Additional JavaScript runtime to enable, with an optional location for the runtime (either the path to the binary or its containing directory). This option can be used multiple times to enable multiple runtimes. Supported runtimes are (in order of priority, from highest to lowest): deno, node, quickjs, bun. Only \"deno\" is enabled by default. The highest priority runtime that is both enabled and available will be used. In order to use a lower priority runtime when \"deno\" is available, --no-js-runtimes needs to be passed before enabling other runtimes"`
+	// Clear JavaScript runtimes to enable, including defaults and those provided by previous
+	// --js-runtimes
+	NoJsRuntimes *bool `json:"no_js_runtimes,omitempty" id:"js_runtimes" jsonschema:"title=NoJsRuntimes" jsonschema_extras:"uid=js_runtimes" jsonschema_description:"Clear JavaScript runtimes to enable, including defaults and those provided by previous --js-runtimes"`
+	// Remote components to allow yt-dlp to fetch when required. This option is currently not
+	// needed if you are using an official executable or have the requisite version of the
+	// yt-dlp-ejs package installed. You can use this option multiple times to allow multiple
+	// components. Supported values: ejs:npm (external JavaScript components from npm),
+	// ejs:github (external JavaScript components from yt-dlp-ejs GitHub). By default, no remote
+	// components are allowed
+	RemoteComponents []string `json:"remote_components,omitempty" id:"remote_components" jsonschema:"title=RemoteComponents" jsonschema_extras:"uid=remote_components" jsonschema_description:"Remote components to allow yt-dlp to fetch when required. This option is currently not needed if you are using an official executable or have the requisite version of the yt-dlp-ejs package installed. You can use this option multiple times to allow multiple components. Supported values: ejs:npm (external JavaScript components from npm), ejs:github (external JavaScript components from yt-dlp-ejs GitHub). By default, no remote components are allowed"`
+	// Disallow fetching of all remote components, including any previously allowed by
+	// --remote-components or defaults.
+	NoRemoteComponents *bool `json:"no_remote_components,omitempty" id:"remote_components" jsonschema:"title=NoRemoteComponents" jsonschema_extras:"uid=remote_components" jsonschema_description:"Disallow fetching of all remote components, including any previously allowed by --remote-components or defaults."`
 	// Do not extract a playlist's URL result entries; some entry metadata may be missing and
 	// downloading may be bypassed
 	FlatPlaylist *bool `json:"flat_playlist,omitempty" id:"extract_flat" jsonschema:"title=FlatPlaylist" jsonschema_extras:"uid=extract_flat" jsonschema_description:"Do not extract a playlist's URL result entries; some entry metadata may be missing and downloading may be bypassed"`
@@ -277,6 +298,18 @@ func (g *FlagsGeneral) ToFlags() (flags Flags) {
 	}
 	if g.NoPluginDirs != nil && *g.NoPluginDirs {
 		flags = append(flags, &Flag{ID: "plugin_dirs", Flag: "--no-plugin-dirs", Args: nil})
+	}
+	for _, v := range g.JsRuntimes {
+		flags = append(flags, &Flag{ID: "js_runtimes", Flag: "--js-runtimes", AllowsMultiple: true, Args: []any{v}})
+	}
+	if g.NoJsRuntimes != nil && *g.NoJsRuntimes {
+		flags = append(flags, &Flag{ID: "js_runtimes", Flag: "--no-js-runtimes", Args: nil})
+	}
+	for _, v := range g.RemoteComponents {
+		flags = append(flags, &Flag{ID: "remote_components", Flag: "--remote-components", AllowsMultiple: true, Args: []any{v}})
+	}
+	if g.NoRemoteComponents != nil && *g.NoRemoteComponents {
+		flags = append(flags, &Flag{ID: "remote_components", Flag: "--no-remote-components", Args: nil})
 	}
 	if g.FlatPlaylist != nil && *g.FlatPlaylist {
 		flags = append(flags, &Flag{ID: "extract_flat", Flag: "--flat-playlist", Args: nil})
@@ -468,12 +501,12 @@ func (g *FlagsGeoRestriction) ToFlags() (flags Flags) {
 type FlagsVideoSelection struct {
 	PlaylistStart *int `json:"playlist_start,omitempty" id:"playliststart" jsonschema:"title=PlaylistStart" jsonschema_extras:"uid=playliststart" jsonschema_description:""`
 	PlaylistEnd   *int `json:"playlist_end,omitempty" id:"playlistend" jsonschema:"title=PlaylistEnd" jsonschema_extras:"uid=playlistend" jsonschema_description:""`
-	// Comma separated playlist_index of the items to download. You can specify a range using
+	// Comma-separated playlist_index of the items to download. You can specify a range using
 	// "[START]:[STOP][:STEP]". For backward compatibility, START-STOP is also supported. Use
 	// negative indices to count from the right and negative STEP to download in reverse order.
 	// E.g. "-I 1:3,7,-5::2" used on a playlist of size 15 will download the items at index
 	// 1,2,3,7,11,13,15
-	PlaylistItems *string `json:"playlist_items,omitempty" id:"playlist_items" jsonschema:"title=PlaylistItems" jsonschema_extras:"uid=playlist_items" jsonschema_description:"Comma separated playlist_index of the items to download. You can specify a range using \"[START]:[STOP][:STEP]\". For backward compatibility, START-STOP is also supported. Use negative indices to count from the right and negative STEP to download in reverse order. E.g. \"-I 1:3,7,-5::2\" used on a playlist of size 15 will download the items at index 1,2,3,7,11,13,15"`
+	PlaylistItems *string `json:"playlist_items,omitempty" id:"playlist_items" jsonschema:"title=PlaylistItems" jsonschema_extras:"uid=playlist_items" jsonschema_description:"Comma-separated playlist_index of the items to download. You can specify a range using \"[START]:[STOP][:STEP]\". For backward compatibility, START-STOP is also supported. Use negative indices to count from the right and negative STEP to download in reverse order. E.g. \"-I 1:3,7,-5::2\" used on a playlist of size 15 will download the items at index 1,2,3,7,11,13,15"`
 	MatchTitle    *string `json:"match_title,omitempty" id:"matchtitle" jsonschema:"title=MatchTitle" jsonschema_extras:"uid=matchtitle" jsonschema_description:""`
 	RejectTitle   *string `json:"reject_title,omitempty" id:"rejecttitle" jsonschema:"title=RejectTitle" jsonschema_extras:"uid=rejecttitle" jsonschema_description:""`
 	// Abort download if filesize is smaller than SIZE, e.g. 50k or 44.6M
@@ -2155,11 +2188,11 @@ func (g *FlagsPostProcessing) ToFlags() (flags Flags) {
 
 type FlagsSponsorBlock struct {
 	// SponsorBlock categories to create chapters for, separated by commas. Available categories
-	// are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic,
+	// are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, hook,
 	// poi_highlight, chapter, all and default (=all). You can prefix the category with a "-" to
 	// exclude it. See [1] for descriptions of the categories. E.g. --sponsorblock-mark
 	// all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories
-	SponsorblockMark *string `json:"sponsorblock_mark,omitempty" id:"sponsorblock_mark" jsonschema:"title=SponsorblockMark" jsonschema_extras:"uid=sponsorblock_mark" jsonschema_description:"SponsorBlock categories to create chapters for, separated by commas. Available categories are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, poi_highlight, chapter, all and default (=all). You can prefix the category with a \"-\" to exclude it. See [1] for descriptions of the categories. E.g. --sponsorblock-mark all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories"`
+	SponsorblockMark *string `json:"sponsorblock_mark,omitempty" id:"sponsorblock_mark" jsonschema:"title=SponsorblockMark" jsonschema_extras:"uid=sponsorblock_mark" jsonschema_description:"SponsorBlock categories to create chapters for, separated by commas. Available categories are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, hook, poi_highlight, chapter, all and default (=all). You can prefix the category with a \"-\" to exclude it. See [1] for descriptions of the categories. E.g. --sponsorblock-mark all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories"`
 	// SponsorBlock categories to be removed from the video file, separated by commas. If a
 	// category is present in both mark and remove, remove takes precedence. The syntax and
 	// available categories are the same as for --sponsorblock-mark except that "default" refers

@@ -177,6 +177,46 @@ func TestBuilder_General_NonExecutable(t *testing.T) {
 		_ = builder.UnsetPluginDirs()
 		validateFlagRemoved(t, builder, "plugin_dirs", "--no-plugin-dirs")
 	})
+	t.Run("JsRuntimes", func(t *testing.T) {
+		t.Parallel()
+
+		builder := New().NoUpdate().
+			JsRuntimes("test").
+			JsRuntimes("test")
+		validateFlagAdded(t, builder, "js_runtimes", "--js-runtimes", 1, 2)
+		_ = builder.UnsetJsRuntimes()
+		validateFlagRemoved(t, builder, "js_runtimes", "--js-runtimes")
+	})
+	t.Run("NoJsRuntimes", func(t *testing.T) {
+		t.Parallel()
+
+		builder := New().NoUpdate().
+			NoJsRuntimes().
+			NoJsRuntimes()
+		validateFlagAdded(t, builder, "js_runtimes", "--no-js-runtimes", 0, 1)
+		_ = builder.UnsetJsRuntimes()
+		validateFlagRemoved(t, builder, "js_runtimes", "--no-js-runtimes")
+	})
+	t.Run("RemoteComponents", func(t *testing.T) {
+		t.Parallel()
+
+		builder := New().NoUpdate().
+			RemoteComponents("test").
+			RemoteComponents("test")
+		validateFlagAdded(t, builder, "remote_components", "--remote-components", 1, 2)
+		_ = builder.UnsetRemoteComponents()
+		validateFlagRemoved(t, builder, "remote_components", "--remote-components")
+	})
+	t.Run("NoRemoteComponents", func(t *testing.T) {
+		t.Parallel()
+
+		builder := New().NoUpdate().
+			NoRemoteComponents().
+			NoRemoteComponents()
+		validateFlagAdded(t, builder, "remote_components", "--no-remote-components", 0, 1)
+		_ = builder.UnsetRemoteComponents()
+		validateFlagRemoved(t, builder, "remote_components", "--no-remote-components")
+	})
 	t.Run("FlatPlaylist", func(t *testing.T) {
 		t.Parallel()
 
