@@ -183,6 +183,12 @@ started without manually installing these dependencies, and ensures the correct 
 | linux_arm64   | https://github.com/oven-sh/bun/releases/latest/download/bun-linux-aarch64.zip  |
 | windows_amd64 | https://github.com/oven-sh/bun/releases/latest/download/bun-windows-x64.zip    |
 
+#### Using a different JS runtime
+
+Multiple JavaScript runtimes are supported by yt-dlp, but they are disabled by default. You can add a different runtime to the list of enabled ones using `.JsRuntimes("node")` or clear the list using `.NoJsRuntimes()`. If no options are set, bun will be [enabled by default](command.go#L198).
+
+Refer to the [official documentation](https://github.com/yt-dlp/yt-dlp/wiki/EJS) for more information.
+
 ## FlagConfig: JSON to/from Flags Conversion & Usage
 
 The `FlagConfig` type in **go-ytdlp** enables conversion between JSON and yt-dlp command-line flags.

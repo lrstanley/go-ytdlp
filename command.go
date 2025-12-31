@@ -195,6 +195,15 @@ func toMap(env []string) map[string]string {
 func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	var cmdArgs []string
 
+	// If bun is in resolve cache and user didn't set any runtime settings, enable bun
+	if bunResolveCache.Load() != nil &&
+		len(c.flagConfig.General.JsRuntimes) == 0 &&
+		c.flagConfig.General.NoJsRuntimes == nil {
+
+		debug(ctx, "automatically enabling js runtime bun")
+		c.flagConfig.General.JsRuntimes = []string{"bun"}
+	}
+
 	for _, f := range c.flagConfig.ToFlags() {
 		cmdArgs = append(cmdArgs, f.Raw()...)
 	}
