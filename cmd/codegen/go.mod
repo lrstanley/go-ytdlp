@@ -2,7 +2,7 @@ module github.com/lrstanley/go-ytdlp/cmd/codegen
 
 go 1.23.0
 
-toolchain go1.24.4
+toolchain go1.25.6
 
 require (
 	github.com/Masterminds/sprig/v3 v3.3.0
