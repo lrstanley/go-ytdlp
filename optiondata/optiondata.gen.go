@@ -48,6 +48,10 @@ var (
 			optionConfigLocations,
 			optionPluginDirs,
 			optionNoPluginDirs,
+			optionJsRuntimes,
+			optionNoJsRuntimes,
+			optionRemoteComponents,
+			optionNoRemoteComponents,
 			optionFlatPlaylist,
 			optionNoFlatPlaylist,
 			optionLiveFromStart,
@@ -273,6 +277,7 @@ var (
 		Options: []*Option{
 			optionFormat,
 			optionFormatSort,
+			optionFormatSortReset,
 			optionFormatSortForce,
 			optionNoFormatSortForce,
 			optionVideoMultistreams,
@@ -411,6 +416,10 @@ var Options = []*Option{
 	optionConfigLocations,
 	optionPluginDirs,
 	optionNoPluginDirs,
+	optionJsRuntimes,
+	optionNoJsRuntimes,
+	optionRemoteComponents,
+	optionNoRemoteComponents,
 	optionFlatPlaylist,
 	optionNoFlatPlaylist,
 	optionLiveFromStart,
@@ -586,6 +595,7 @@ var Options = []*Option{
 	optionSleepSubtitles,
 	optionFormat,
 	optionFormatSort,
+	optionFormatSortReset,
 	optionFormatSortForce,
 	optionNoFormatSortForce,
 	optionVideoMultistreams,
@@ -700,7 +710,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#update",
 			},
 		},
 		DefaultFlag: "--update",
@@ -731,7 +741,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Update Notes",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#update",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#update",
 			},
 		},
 		DefaultFlag: "--update-to",
@@ -893,10 +903,10 @@ var (
 		NamePascalCase: "PluginDirs",
 		NameSnakeCase:  "plugin_dirs",
 		DefaultFlag:    "--plugin-dirs",
-		ArgNames:       []string{"path"},
+		ArgNames:       []string{"dir"},
 		Executable:     false,
 		Help:           "Path to an additional directory to search for plugins. This option can be used multiple times to add multiple directories. Use \"default\" to search the default plugin directories (default)",
-		MetaArgs:       "PATH",
+		MetaArgs:       "DIR",
 		Type:           "string",
 		LongFlags:      []string{"--plugin-dirs"},
 		NArgs:          1,
@@ -912,6 +922,60 @@ var (
 		Help:           "Clear plugin directories to search, including defaults and those provided by previous --plugin-dirs",
 		Type:           "bool",
 		LongFlags:      []string{"--no-plugin-dirs"},
+	}
+	optionJsRuntimes = &Option{
+		ID:             "js_runtimes",
+		Name:           "js-runtimes",
+		NameCamelCase:  "jsRuntimes",
+		NamePascalCase: "JsRuntimes",
+		NameSnakeCase:  "js_runtimes",
+		DefaultFlag:    "--js-runtimes",
+		ArgNames:       []string{"runtime"},
+		Executable:     false,
+		Help:           "Additional JavaScript runtime to enable, with an optional location for the runtime (either the path to the binary or its containing directory). This option can be used multiple times to enable multiple runtimes. Supported runtimes are (in order of priority, from highest to lowest): deno, node, quickjs, bun. Only \"deno\" is enabled by default. The highest priority runtime that is both enabled and available will be used. In order to use a lower priority runtime when \"deno\" is available, --no-js-runtimes needs to be passed before enabling other runtimes",
+		MetaArgs:       "RUNTIME[:PATH]",
+		Type:           "string",
+		LongFlags:      []string{"--js-runtimes"},
+		NArgs:          1,
+	}
+	optionNoJsRuntimes = &Option{
+		ID:             "js_runtimes",
+		Name:           "no-js-runtimes",
+		NameCamelCase:  "noJsRuntimes",
+		NamePascalCase: "NoJsRuntimes",
+		NameSnakeCase:  "no_js_runtimes",
+		DefaultFlag:    "--no-js-runtimes",
+		Executable:     false,
+		Help:           "Clear JavaScript runtimes to enable, including defaults and those provided by previous --js-runtimes",
+		Type:           "bool",
+		LongFlags:      []string{"--no-js-runtimes"},
+	}
+	optionRemoteComponents = &Option{
+		ID:             "remote_components",
+		Name:           "remote-components",
+		NameCamelCase:  "remoteComponents",
+		NamePascalCase: "RemoteComponents",
+		NameSnakeCase:  "remote_components",
+		DefaultFlag:    "--remote-components",
+		ArgNames:       []string{"component"},
+		Executable:     false,
+		Help:           "Remote components to allow yt-dlp to fetch when required. This option is currently not needed if you are using an official executable or have the requisite version of the yt-dlp-ejs package installed. You can use this option multiple times to allow multiple components. Supported values: ejs:npm (external JavaScript components from npm), ejs:github (external JavaScript components from yt-dlp-ejs GitHub). By default, no remote components are allowed",
+		MetaArgs:       "COMPONENT",
+		Type:           "string",
+		LongFlags:      []string{"--remote-components"},
+		NArgs:          1,
+	}
+	optionNoRemoteComponents = &Option{
+		ID:             "remote_components",
+		Name:           "no-remote-components",
+		NameCamelCase:  "noRemoteComponents",
+		NamePascalCase: "NoRemoteComponents",
+		NameSnakeCase:  "no_remote_components",
+		DefaultFlag:    "--no-remote-components",
+		Executable:     false,
+		Help:           "Disallow fetching of all remote components, including any previously allowed by --remote-components or defaults.",
+		Type:           "bool",
+		LongFlags:      []string{"--no-remote-components"},
 	}
 	optionFlatPlaylist = &Option{
 		ID:             "extract_flat",
@@ -1049,7 +1113,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Compatibility Options",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#differences-in-default-behavior",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#differences-in-default-behavior",
 			},
 		},
 		DefaultFlag: "--compat-options",
@@ -1316,7 +1380,7 @@ var (
 		DefaultFlag:    "--playlist-items",
 		ArgNames:       []string{"itemSpec"},
 		Executable:     false,
-		Help:           "Comma separated playlist_index of the items to download. You can specify a range using \"[START]:[STOP][:STEP]\". For backward compatibility, START-STOP is also supported. Use negative indices to count from the right and negative STEP to download in reverse order. E.g. \"-I 1:3,7,-5::2\" used on a playlist of size 15 will download the items at index 1,2,3,7,11,13,15",
+		Help:           "Comma-separated playlist_index of the items to download. You can specify a range using \"[START]:[STOP][:STEP]\". For backward compatibility, START-STOP is also supported. Use negative indices to count from the right and negative STEP to download in reverse order. E.g. \"-I 1:3,7,-5::2\" used on a playlist of size 15 will download the items at index 1,2,3,7,11,13,15",
 		MetaArgs:       "ITEM_SPEC",
 		Type:           "string",
 		LongFlags:      []string{"--playlist-items"},
@@ -2106,7 +2170,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--output",
@@ -2909,7 +2973,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--dump-json",
@@ -3249,7 +3313,7 @@ var (
 		Executable:     false,
 		Help:           "Number of seconds to sleep before each subtitle download",
 		MetaArgs:       "SECONDS",
-		Type:           "int",
+		Type:           "float64",
 		LongFlags:      []string{"--sleep-subtitles"},
 		NArgs:          1,
 	}
@@ -3262,15 +3326,15 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#format-selection",
 			},
 			{
 				Name: "Filter Formatting",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#filtering-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#filtering-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format",
@@ -3292,11 +3356,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#sorting-formats",
 			},
 			{
 				Name: "Format Selection Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#format-selection-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#format-selection-examples",
 			},
 		},
 		DefaultFlag: "--format-sort",
@@ -3309,6 +3373,18 @@ var (
 		ShortFlags:  []string{"-S"},
 		NArgs:       1,
 	}
+	optionFormatSortReset = &Option{
+		ID:             "format_sort",
+		Name:           "format-sort-reset",
+		NameCamelCase:  "formatSortReset",
+		NamePascalCase: "FormatSortReset",
+		NameSnakeCase:  "format_sort_reset",
+		DefaultFlag:    "--format-sort-reset",
+		Executable:     false,
+		Help:           "Disregard previous user specified sort order and reset to the default",
+		Type:           "bool",
+		LongFlags:      []string{"--format-sort-reset"},
+	}
 	optionFormatSortForce = &Option{
 		ID:             "format_sort_force",
 		Name:           "format-sort-force",
@@ -3318,7 +3394,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Sorting Formats",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#sorting-formats",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#sorting-formats",
 			},
 		},
 		DefaultFlag: "--format-sort-force",
@@ -3350,7 +3426,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--video-multistreams",
@@ -3380,7 +3456,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Format Selection",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#format-selection",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#format-selection",
 			},
 		},
 		DefaultFlag: "--audio-multistreams",
@@ -4122,11 +4198,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--parse-metadata",
@@ -4147,11 +4223,11 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Modifying Metadata",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#modifying-metadata",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#modifying-metadata",
 			},
 			{
 				Name: "Modifying Metadata Examples",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#modifying-metadata-examples",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#modifying-metadata-examples",
 			},
 		},
 		DefaultFlag: "--replace-in-metadata",
@@ -4184,7 +4260,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--concat-playlist",
@@ -4323,7 +4399,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Output Template",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#output-template",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#output-template",
 			},
 		},
 		DefaultFlag: "--split-chapters",
@@ -4419,7 +4495,7 @@ var (
 		DefaultFlag:    "--sponsorblock-mark",
 		ArgNames:       []string{"cats"},
 		Executable:     false,
-		Help:           "SponsorBlock categories to create chapters for, separated by commas. Available categories are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, poi_highlight, chapter, all and default (=all). You can prefix the category with a \"-\" to exclude it. See [1] for descriptions of the categories. E.g. --sponsorblock-mark all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories",
+		Help:           "SponsorBlock categories to create chapters for, separated by commas. Available categories are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, hook, poi_highlight, chapter, all and default (=all). You can prefix the category with a \"-\" to exclude it. See [1] for descriptions of the categories. E.g. --sponsorblock-mark all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories",
 		MetaArgs:       "CATS",
 		Type:           "string",
 		LongFlags:      []string{"--sponsorblock-mark"},
@@ -4554,7 +4630,7 @@ var (
 		URLs: []*OptionURL{
 			{
 				Name: "Extractor Arguments",
-				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2025.10.22/README.md#extractor-arguments",
+				URL:  "https://github.com/yt-dlp/yt-dlp/blob/2026.02.04/README.md#extractor-arguments",
 			},
 		},
 		DefaultFlag: "--extractor-args",
