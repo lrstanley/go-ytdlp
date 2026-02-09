@@ -105,7 +105,7 @@ func InstallAll(ctx context.Context) ([]*ResolvedInstall, error) {
 	var installs []*ResolvedInstall
 	var errs []error
 
-	wg.Add(1)
+	wg.Add(1) // TODO: change these to use wg.Go when we upgrade to go 1.25+.
 	go func() {
 		defer wg.Done()
 		r, err := Install(ctx, nil)
