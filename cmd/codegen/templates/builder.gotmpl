@@ -57,7 +57,13 @@ func ptr[T any](v T) *T {
     {{- /* setters */}}
     func (c *Command) {{ $option.Name | to_camel }}({{ template "builder-meta-args" $option }}) *Command {
         {{- range $coption := $group.Options }}
-        {{- if and (not $coption.Executable) (eq $coption.ID $option.ID) (not (eq $coption.Name $option.Name)) }}
+        {{- if
+            and
+            (not $coption.Executable)
+            (eq $coption.ID $option.ID)
+            (not (eq $coption.Name $option.Name))
+            (not $option.NoOverride)
+        }}
             c.flagConfig.{{ $group.Name | to_camel }}.{{ $coption.Name | to_camel }} = nil
         {{- end }}{{/* end if eq ID */}}
         {{- end }}{{/* end range for options */ -}}

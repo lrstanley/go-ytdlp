@@ -13,6 +13,7 @@ import (
 	"sort"
 
 	"github.com/invopop/jsonschema"
+	"github.com/lmittmann/tint"
 	"github.com/lrstanley/go-ytdlp"
 )
 
@@ -22,9 +23,13 @@ type UIDMapper struct {
 }
 
 func main() {
-	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
-		Level: slog.LevelDebug,
-	})))
+	slog.SetDefault(slog.New(tint.NewHandler(
+		os.Stderr,
+		&tint.Options{
+			Level:     slog.LevelDebug,
+			AddSource: true,
+		},
+	)))
 
 	ref := jsonschema.Reflector{
 		AllowAdditionalProperties: false,

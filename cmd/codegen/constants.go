@@ -4,6 +4,12 @@
 
 package main
 
+// noOverrideIDs are flag IDs that are not intended to override other flags with
+// the same ID.
+var noOverrideIDs = []string{
+	"js_runtimes",
+}
+
 // ignoredFlags are flags that are not intended to be used by the end-user and/or
 // don't make sense in a binding library scenario.
 //

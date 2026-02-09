@@ -157,6 +157,7 @@ func TestCommand_Unset(t *testing.T) {
 
 	builder := New().NoUpdate().Progress().NoProgress().Output("test.mp4")
 
+	bunResolveCache.Store(nil) // Explicitly clear the resolve cache for bun, so it doesn't inject itself into the command.
 	cmd := builder.BuildCommand(context.TODO(), sampleFiles[0].url)
 
 	// Make sure --no-progress is set.
@@ -166,6 +167,7 @@ func TestCommand_Unset(t *testing.T) {
 
 	_ = builder.UnsetProgress()
 
+	bunResolveCache.Store(nil) // Explicitly clear the resolve cache for bun, so it doesn't inject itself into the command.
 	cmd = builder.BuildCommand(context.TODO(), sampleFiles[0].url)
 
 	// Make sure --no-progress is not set.

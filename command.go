@@ -195,13 +195,10 @@ func toMap(env []string) map[string]string {
 func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	var cmdArgs []string
 
-	// If bun is in resolve cache and user didn't set any runtime settings, enable bun
-	if bunResolveCache.Load() != nil &&
-		len(c.flagConfig.General.JsRuntimes) == 0 &&
-		c.flagConfig.General.NoJsRuntimes == nil {
-
-		debug(ctx, "automatically enabling js runtime bun")
-		c.flagConfig.General.JsRuntimes = []string{"bun"}
+	if bunResolveCache.Load() != nil && len(c.flagConfig.General.JsRuntimes) == 0 && c.flagConfig.General.NoJsRuntimes == nil {
+		// Explicitly disable other options, and enable bun since they installed bun
+		// through our install cache.
+		c.NoJsRuntimes().JsRuntimes("bun")
 	}
 
 	for _, f := range c.flagConfig.ToFlags() {
@@ -378,6 +375,20 @@ func (f *Flag) Raw() (args []string) {
 }
 
 type Flags []*Flag
+
+// Sort sorts the flags, ensuring some special flags are always ordered correctly.
+func (f Flags) Sort() {
+	slices.SortFunc(f, func(a, b *Flag) int {
+		switch {
+		case strings.HasPrefix(a.Flag, "--no") && !strings.HasPrefix(b.Flag, "--no"):
+			return -1
+		case strings.HasPrefix(b.Flag, "--no") && !strings.HasPrefix(a.Flag, "--no"):
+			return 1
+		default:
+			return strings.Compare(a.ID, b.ID)
+		}
+	})
+}
 
 func (f Flags) FindByID(id string) (flags Flags) {
 	for _, flag := range f {

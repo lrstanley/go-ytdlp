@@ -3489,6 +3489,34 @@
         {
           "if": {
             "required": [
+              "format_sort"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "format_sort_reset"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "format_sort_reset"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "format_sort"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
               "format_sort_force"
             ]
           },
@@ -3582,6 +3610,12 @@
           "type": "string",
           "title": "FormatSort",
           "description": "Sort the formats by the fields given, see \"Sorting Formats\" for more details",
+          "uid": "format_sort"
+        },
+        "format_sort_reset": {
+          "type": "boolean",
+          "title": "FormatSortReset",
+          "description": "Disregard previous user specified sort order and reset to the default",
           "uid": "format_sort"
         },
         "format_sort_force": {
@@ -4091,7 +4125,7 @@
           "uid": "max_sleep_interval"
         },
         "sleep_subtitles": {
-          "type": "integer",
+          "type": "number",
           "title": "SleepSubtitles",
           "description": "Number of seconds to sleep before each subtitle download",
           "uid": "sleep_interval_subtitles"

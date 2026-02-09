@@ -133,6 +133,7 @@ func (f *FlagConfig) ToFlags() (flags Flags) {
 			}
 		}
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -347,6 +348,7 @@ func (g *FlagsGeneral) ToFlags() (flags Flags) {
 	for _, v := range g.PresetAlias {
 		flags = append(flags, &Flag{ID: "preset-alias", Flag: "--preset-alias", AllowsMultiple: true, Args: []any{v}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -428,6 +430,7 @@ func (g *FlagsNetwork) ToFlags() (flags Flags) {
 	if g.EnableFileURLs != nil && *g.EnableFileURLs {
 		flags = append(flags, &Flag{ID: "enable_file_urls", Flag: "--enable-file-urls", Args: nil})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -495,6 +498,7 @@ func (g *FlagsGeoRestriction) ToFlags() (flags Flags) {
 	if g.GeoBypassIPBlock != nil {
 		flags = append(flags, &Flag{ID: "geo_bypass", Flag: "--geo-bypass-ip-block", Args: []any{*g.GeoBypassIPBlock}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -685,6 +689,7 @@ func (g *FlagsVideoSelection) ToFlags() (flags Flags) {
 	if g.SkipPlaylistAfterErrors != nil {
 		flags = append(flags, &Flag{ID: "skip_playlist_after_errors", Flag: "--skip-playlist-after-errors", Args: []any{*g.SkipPlaylistAfterErrors}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -877,6 +882,7 @@ func (g *FlagsDownload) ToFlags() (flags Flags) {
 	for _, v := range g.DownloaderArgs {
 		flags = append(flags, &Flag{ID: "external_downloader_args", Flag: "--downloader-args", AllowsMultiple: true, Args: []any{v}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1126,6 +1132,7 @@ func (g *FlagsFilesystem) ToFlags() (flags Flags) {
 	if g.RmCacheDir != nil && *g.RmCacheDir {
 		flags = append(flags, &Flag{ID: "rm_cachedir", Flag: "--rm-cache-dir", Args: nil})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1183,6 +1190,7 @@ func (g *FlagsThumbnail) ToFlags() (flags Flags) {
 	if g.ListThumbnails != nil && *g.ListThumbnails {
 		flags = append(flags, &Flag{ID: "list_thumbnails", Flag: "--list-thumbnails", Args: nil})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1241,6 +1249,7 @@ func (g *FlagsInternetShortcut) ToFlags() (flags Flags) {
 	if g.WriteDesktopLink != nil && *g.WriteDesktopLink {
 		flags = append(flags, &Flag{ID: "writedesktoplink", Flag: "--write-desktop-link", Args: nil})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1448,6 +1457,7 @@ func (g *FlagsVerbositySimulation) ToFlags() (flags Flags) {
 	if g.PrintTraffic != nil && *g.PrintTraffic {
 		flags = append(flags, &Flag{ID: "debug_printtraffic", Flag: "--print-traffic", Args: nil})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1478,7 +1488,7 @@ type FlagsWorkarounds struct {
 	// Maximum number of seconds to sleep. Can only be used along with --min-sleep-interval
 	MaxSleepInterval *float64 `json:"max_sleep_interval,omitempty" id:"max_sleep_interval" jsonschema:"title=MaxSleepInterval" jsonschema_extras:"uid=max_sleep_interval" jsonschema_description:"Maximum number of seconds to sleep. Can only be used along with --min-sleep-interval"`
 	// Number of seconds to sleep before each subtitle download
-	SleepSubtitles *int `json:"sleep_subtitles,omitempty" id:"sleep_interval_subtitles" jsonschema:"title=SleepSubtitles" jsonschema_extras:"uid=sleep_interval_subtitles" jsonschema_description:"Number of seconds to sleep before each subtitle download"`
+	SleepSubtitles *float64 `json:"sleep_subtitles,omitempty" id:"sleep_interval_subtitles" jsonschema:"title=SleepSubtitles" jsonschema_extras:"uid=sleep_interval_subtitles" jsonschema_description:"Number of seconds to sleep before each subtitle download"`
 }
 
 // Validate ensures all flags have appropriate values. If there are validation-specific
@@ -1548,6 +1558,7 @@ func (g *FlagsWorkarounds) ToFlags() (flags Flags) {
 	if g.SleepSubtitles != nil {
 		flags = append(flags, &Flag{ID: "sleep_interval_subtitles", Flag: "--sleep-subtitles", Args: []any{*g.SleepSubtitles}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1556,6 +1567,8 @@ type FlagsVideoFormat struct {
 	Format *string `json:"format,omitempty" id:"format" jsonschema:"title=Format" jsonschema_extras:"uid=format" jsonschema_description:"Video format code, see \"FORMAT SELECTION\" for more details"`
 	// Sort the formats by the fields given, see "Sorting Formats" for more details
 	FormatSort *string `json:"format_sort,omitempty" id:"format_sort" jsonschema:"title=FormatSort" jsonschema_extras:"uid=format_sort" jsonschema_description:"Sort the formats by the fields given, see \"Sorting Formats\" for more details"`
+	// Disregard previous user specified sort order and reset to the default
+	FormatSortReset *bool `json:"format_sort_reset,omitempty" id:"format_sort" jsonschema:"title=FormatSortReset" jsonschema_extras:"uid=format_sort" jsonschema_description:"Disregard previous user specified sort order and reset to the default"`
 	// Force user specified sort order to have precedence over all fields, see "Sorting Formats"
 	// for more details
 	FormatSortForce *bool `json:"format_sort_force,omitempty" id:"format_sort_force" jsonschema:"title=FormatSortForce" jsonschema_extras:"uid=format_sort_force" jsonschema_description:"Force user specified sort order to have precedence over all fields, see \"Sorting Formats\" for more details"`
@@ -1627,6 +1640,9 @@ func (g *FlagsVideoFormat) ToFlags() (flags Flags) {
 	if g.FormatSort != nil {
 		flags = append(flags, &Flag{ID: "format_sort", Flag: "--format-sort", Args: []any{*g.FormatSort}})
 	}
+	if g.FormatSortReset != nil && *g.FormatSortReset {
+		flags = append(flags, &Flag{ID: "format_sort", Flag: "--format-sort-reset", Args: nil})
+	}
 	if g.FormatSortForce != nil && *g.FormatSortForce {
 		flags = append(flags, &Flag{ID: "format_sort_force", Flag: "--format-sort-force", Args: nil})
 	}
@@ -1675,6 +1691,7 @@ func (g *FlagsVideoFormat) ToFlags() (flags Flags) {
 	if g.MergeOutputFormat != nil {
 		flags = append(flags, &Flag{ID: "merge_output_format", Flag: "--merge-output-format", Args: []any{*g.MergeOutputFormat}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1755,6 +1772,7 @@ func (g *FlagsSubtitle) ToFlags() (flags Flags) {
 	if g.SubLangs != nil {
 		flags = append(flags, &Flag{ID: "subtitleslangs", Flag: "--sub-langs", Args: []any{*g.SubLangs}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1866,6 +1884,7 @@ func (g *FlagsAuthentication) ToFlags() (flags Flags) {
 	if g.ClientCertificatePassword != nil {
 		flags = append(flags, &Flag{ID: "client_certificate_password", Flag: "--client-certificate-password", Args: []any{*g.ClientCertificatePassword}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -2183,6 +2202,7 @@ func (g *FlagsPostProcessing) ToFlags() (flags Flags) {
 	for _, v := range g.UsePostProcessor {
 		flags = append(flags, &Flag{ID: "add_postprocessors", Flag: "--use-postprocessor", AllowsMultiple: true, Args: []any{v}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -2254,6 +2274,7 @@ func (g *FlagsSponsorBlock) ToFlags() (flags Flags) {
 	if g.SponsorblockAPI != nil {
 		flags = append(flags, &Flag{ID: "sponsorblock_api", Flag: "--sponsorblock-api", Args: []any{*g.SponsorblockAPI}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -2323,5 +2344,6 @@ func (g *FlagsExtractor) ToFlags() (flags Flags) {
 	for _, v := range g.ExtractorArgs {
 		flags = append(flags, &Flag{ID: "extractor_args", Flag: "--extractor-args", AllowsMultiple: true, Args: []any{v}})
 	}
+	flags.Sort()
 	return flags
 }

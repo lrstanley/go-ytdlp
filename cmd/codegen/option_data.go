@@ -81,6 +81,7 @@ type Option struct {
 	AllFlags       []string     `json:"-"` // all flags, short + long.
 	ArgNames       []string     `json:"-"` // MetaArgs converted to function arguments.
 	Executable     bool         `json:"-"` // if the option means yt-dlp doesn't accept arguments, and some callback is done.
+	NoOverride     bool         `json:"-"` // if the option should not override other flags with the same ID.
 	Deprecated     string       `json:"-"` // if the option is deprecated, this will be the deprecation description.
 	URLs           []OptionURL  `json:"-"` // if the option has any links to the documentation.
 	AllowsMultiple bool         `json:"-"` // if the option allows being invoked multiple times.
@@ -129,6 +130,10 @@ func (o *Option) Generate(parent *OptionGroup) {
 		if strings.EqualFold(d[0], o.ID) || strings.EqualFold(d[0], o.Flag) {
 			o.Deprecated = d[1]
 		}
+	}
+
+	if slices.Contains(noOverrideIDs, o.ID) {
+		o.NoOverride = true
 	}
 
 	switch o.Type {
