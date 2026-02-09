@@ -23,6 +23,7 @@ var ignoredFlags = []string{
 	"--no-allow-unplayable-formats", // Not intended to be used by the end-user.
 	"--test",                        // Not intended to be used by the end-user.
 	"--youtube-print-sig-code",      // Not intended to be used by the end-user.
+	"--format-sort-reset",           // We already handle the same logic that this flag does, internally.
 }
 
 // deprecatedFlags are flags that are deprecated (but still work), and should be replaced

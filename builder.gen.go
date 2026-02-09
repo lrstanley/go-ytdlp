@@ -3740,7 +3740,6 @@ func (c *Command) UnsetFormat() *Command {
 //  - FormatSort maps to cli flags: -S/--format-sort=SORTORDER.
 //  - From option group: "Video Format"
 func (c *Command) FormatSort(sortorder string) *Command {
-	c.flagConfig.VideoFormat.FormatSortReset = nil
 	c.flagConfig.VideoFormat.FormatSort = &sortorder
 	return c
 }
@@ -3749,27 +3748,6 @@ func (c *Command) FormatSort(sortorder string) *Command {
 //   - [Command.FormatSort]
 func (c *Command) UnsetFormatSort() *Command {
 	c.flagConfig.VideoFormat.FormatSort = nil
-	c.flagConfig.VideoFormat.FormatSortReset = nil
-	return c
-}
-
-// Disregard previous user specified sort order and reset to the default
-//
-// Additional information:
-//  - See [Command.UnsetFormatSortReset], for unsetting the flag.
-//  - FormatSortReset maps to cli flags: --format-sort-reset.
-//  - From option group: "Video Format"
-func (c *Command) FormatSortReset() *Command {
-	c.flagConfig.VideoFormat.FormatSort = nil
-	c.flagConfig.VideoFormat.FormatSortReset = ptr(true)
-	return c
-}
-
-// UnsetFormatSortReset unsets any flags that were previously set by one of:
-//   - [Command.FormatSortReset]
-func (c *Command) UnsetFormatSortReset() *Command {
-	c.flagConfig.VideoFormat.FormatSort = nil
-	c.flagConfig.VideoFormat.FormatSortReset = nil
 	return c
 }
 

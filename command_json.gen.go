@@ -1567,8 +1567,6 @@ type FlagsVideoFormat struct {
 	Format *string `json:"format,omitempty" id:"format" jsonschema:"title=Format" jsonschema_extras:"uid=format" jsonschema_description:"Video format code, see \"FORMAT SELECTION\" for more details"`
 	// Sort the formats by the fields given, see "Sorting Formats" for more details
 	FormatSort *string `json:"format_sort,omitempty" id:"format_sort" jsonschema:"title=FormatSort" jsonschema_extras:"uid=format_sort" jsonschema_description:"Sort the formats by the fields given, see \"Sorting Formats\" for more details"`
-	// Disregard previous user specified sort order and reset to the default
-	FormatSortReset *bool `json:"format_sort_reset,omitempty" id:"format_sort" jsonschema:"title=FormatSortReset" jsonschema_extras:"uid=format_sort" jsonschema_description:"Disregard previous user specified sort order and reset to the default"`
 	// Force user specified sort order to have precedence over all fields, see "Sorting Formats"
 	// for more details
 	FormatSortForce *bool `json:"format_sort_force,omitempty" id:"format_sort_force" jsonschema:"title=FormatSortForce" jsonschema_extras:"uid=format_sort_force" jsonschema_description:"Force user specified sort order to have precedence over all fields, see \"Sorting Formats\" for more details"`
@@ -1639,9 +1637,6 @@ func (g *FlagsVideoFormat) ToFlags() (flags Flags) {
 	}
 	if g.FormatSort != nil {
 		flags = append(flags, &Flag{ID: "format_sort", Flag: "--format-sort", Args: []any{*g.FormatSort}})
-	}
-	if g.FormatSortReset != nil && *g.FormatSortReset {
-		flags = append(flags, &Flag{ID: "format_sort", Flag: "--format-sort-reset", Args: nil})
 	}
 	if g.FormatSortForce != nil && *g.FormatSortForce {
 		flags = append(flags, &Flag{ID: "format_sort_force", Flag: "--format-sort-force", Args: nil})

@@ -277,7 +277,6 @@ var (
 		Options: []*Option{
 			optionFormat,
 			optionFormatSort,
-			optionFormatSortReset,
 			optionFormatSortForce,
 			optionNoFormatSortForce,
 			optionVideoMultistreams,
@@ -595,7 +594,6 @@ var Options = []*Option{
 	optionSleepSubtitles,
 	optionFormat,
 	optionFormatSort,
-	optionFormatSortReset,
 	optionFormatSortForce,
 	optionNoFormatSortForce,
 	optionVideoMultistreams,
@@ -1082,8 +1080,6 @@ func FindByName(id string) *Option {
 		return optionFormat
 	case "format-sort", "FormatSort", "formatSort", "format_sort":
 		return optionFormatSort
-	case "format-sort-reset", "FormatSortReset", "formatSortReset", "format_sort_reset":
-		return optionFormatSortReset
 	case "format-sort-force", "FormatSortForce", "formatSortForce", "format_sort_force":
 		return optionFormatSortForce
 	case "no-format-sort-force", "NoFormatSortForce", "noFormatSortForce", "no_format_sort_force":
@@ -1417,7 +1413,7 @@ func FindByID(id string) (options []*Option) {
 	case "format":
 		return []*Option{optionFormat, optionAllFormats}
 	case "format_sort":
-		return []*Option{optionFormatSort, optionFormatSortReset}
+		return []*Option{optionFormatSort}
 	case "format_sort_force":
 		return []*Option{optionFormatSortForce, optionNoFormatSortForce}
 	case "fragment_retries":
@@ -4374,18 +4370,6 @@ var (
 		LongFlags:   []string{"--format-sort"},
 		ShortFlags:  []string{"-S"},
 		NArgs:       1,
-	}
-	optionFormatSortReset = &Option{
-		ID:             "format_sort",
-		Name:           "format-sort-reset",
-		NameCamelCase:  "formatSortReset",
-		NamePascalCase: "FormatSortReset",
-		NameSnakeCase:  "format_sort_reset",
-		DefaultFlag:    "--format-sort-reset",
-		Executable:     false,
-		Help:           "Disregard previous user specified sort order and reset to the default",
-		Type:           "bool",
-		LongFlags:      []string{"--format-sort-reset"},
 	}
 	optionFormatSortForce = &Option{
 		ID:             "format_sort_force",
