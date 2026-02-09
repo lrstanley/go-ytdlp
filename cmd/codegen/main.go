@@ -177,7 +177,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	var data OptionData
+	data := OptionData{
+		OptionIDs: make(map[string][]*Option),
+	}
 
 	slog.Info("reading option data file", "file", os.Args[1])
 	optionDataFile, err := os.Open(os.Args[1])

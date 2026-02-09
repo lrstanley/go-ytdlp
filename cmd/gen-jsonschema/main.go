@@ -15,6 +15,7 @@ import (
 	"github.com/invopop/jsonschema"
 	"github.com/lmittmann/tint"
 	"github.com/lrstanley/go-ytdlp"
+	"github.com/lrstanley/go-ytdlp/optiondata"
 )
 
 type UIDMapper struct {
@@ -76,6 +77,19 @@ func main() {
 			slog.Debug("adding all-of condition due to duplicate uids", "name", name, "props", propMap.Props)
 
 			for _, prop := range propMap.Props {
+				var disallowsOverride bool
+
+				for _, opt := range optiondata.FindByID(prop) {
+					if opt.NoOverride {
+						disallowsOverride = true
+						break
+					}
+				}
+
+				if disallowsOverride {
+					continue
+				}
+
 				slog.Debug("processing all-of for duplicate prop", "name", name, "prop", prop)
 
 				var otherProps []string

@@ -687,6 +687,1006 @@ var Options = []*Option{
 	optionExtractorArgs,
 }
 
+// FindByName finds an option by its name if found, nil otherwise.
+func FindByName(id string) *Option {
+	switch id {
+	case "version", "Version":
+		return optionVersion
+	case "update", "Update":
+		return optionUpdate
+	case "no-update", "NoUpdate", "noUpdate", "no_update":
+		return optionNoUpdate
+	case "update-to", "UpdateTo", "updateTo", "update_to":
+		return optionUpdateTo
+	case "ignore-errors", "IgnoreErrors", "ignoreErrors", "ignore_errors":
+		return optionIgnoreErrors
+	case "no-abort-on-error", "NoAbortOnError", "noAbortOnError", "no_abort_on_error":
+		return optionNoAbortOnError
+	case "abort-on-error", "AbortOnError", "abortOnError", "abort_on_error":
+		return optionAbortOnError
+	case "list-extractors", "ListExtractors", "listExtractors", "list_extractors":
+		return optionListExtractors
+	case "extractor-descriptions", "ExtractorDescriptions", "extractorDescriptions", "extractor_descriptions":
+		return optionExtractorDescriptions
+	case "use-extractors", "UseExtractors", "useExtractors", "use_extractors":
+		return optionUseExtractors
+	case "force-generic-extractor", "ForceGenericExtractor", "forceGenericExtractor", "force_generic_extractor":
+		return optionForceGenericExtractor
+	case "default-search", "DefaultSearch", "defaultSearch", "default_search":
+		return optionDefaultSearch
+	case "ignore-config", "IgnoreConfig", "ignoreConfig", "ignore_config":
+		return optionIgnoreConfig
+	case "no-config-locations", "NoConfigLocations", "noConfigLocations", "no_config_locations":
+		return optionNoConfigLocations
+	case "config-locations", "ConfigLocations", "configLocations", "config_locations":
+		return optionConfigLocations
+	case "plugin-dirs", "PluginDirs", "pluginDirs", "plugin_dirs":
+		return optionPluginDirs
+	case "no-plugin-dirs", "NoPluginDirs", "noPluginDirs", "no_plugin_dirs":
+		return optionNoPluginDirs
+	case "js-runtimes", "JsRuntimes", "jsRuntimes", "js_runtimes":
+		return optionJsRuntimes
+	case "no-js-runtimes", "NoJsRuntimes", "noJsRuntimes", "no_js_runtimes":
+		return optionNoJsRuntimes
+	case "remote-components", "RemoteComponents", "remoteComponents", "remote_components":
+		return optionRemoteComponents
+	case "no-remote-components", "NoRemoteComponents", "noRemoteComponents", "no_remote_components":
+		return optionNoRemoteComponents
+	case "flat-playlist", "FlatPlaylist", "flatPlaylist", "flat_playlist":
+		return optionFlatPlaylist
+	case "no-flat-playlist", "NoFlatPlaylist", "noFlatPlaylist", "no_flat_playlist":
+		return optionNoFlatPlaylist
+	case "live-from-start", "LiveFromStart", "liveFromStart", "live_from_start":
+		return optionLiveFromStart
+	case "no-live-from-start", "NoLiveFromStart", "noLiveFromStart", "no_live_from_start":
+		return optionNoLiveFromStart
+	case "wait-for-video", "WaitForVideo", "waitForVideo", "wait_for_video":
+		return optionWaitForVideo
+	case "no-wait-for-video", "NoWaitForVideo", "noWaitForVideo", "no_wait_for_video":
+		return optionNoWaitForVideo
+	case "mark-watched", "MarkWatched", "markWatched", "mark_watched":
+		return optionMarkWatched
+	case "no-mark-watched", "NoMarkWatched", "noMarkWatched", "no_mark_watched":
+		return optionNoMarkWatched
+	case "no-colors", "NoColors", "noColors", "no_colors":
+		return optionNoColors
+	case "color", "Color":
+		return optionColor
+	case "compat-options", "CompatOptions", "compatOptions", "compat_options":
+		return optionCompatOptions
+	case "preset-alias", "PresetAlias", "presetAlias", "preset_alias":
+		return optionPresetAlias
+	case "proxy", "Proxy":
+		return optionProxy
+	case "socket-timeout", "SocketTimeout", "socketTimeout", "socket_timeout":
+		return optionSocketTimeout
+	case "source-address", "SourceAddress", "sourceAddress", "source_address":
+		return optionSourceAddress
+	case "impersonate", "Impersonate":
+		return optionImpersonate
+	case "list-impersonate-targets", "ListImpersonateTargets", "listImpersonateTargets", "list_impersonate_targets":
+		return optionListImpersonateTargets
+	case "force-ipv4", "ForceIPv4", "forceIPv4", "force_ipv_4":
+		return optionForceIPv4
+	case "force-ipv6", "ForceIPv6", "forceIPv6", "force_ipv_6":
+		return optionForceIPv6
+	case "enable-file-urls", "EnableFileURLs", "enableFileURLs", "enable_file_urls":
+		return optionEnableFileURLs
+	case "geo-verification-proxy", "GeoVerificationProxy", "geoVerificationProxy", "geo_verification_proxy":
+		return optionGeoVerificationProxy
+	case "xff", "XFF":
+		return optionXFF
+	case "geo-bypass", "GeoBypass", "geoBypass", "geo_bypass":
+		return optionGeoBypass
+	case "no-geo-bypass", "NoGeoBypass", "noGeoBypass", "no_geo_bypass":
+		return optionNoGeoBypass
+	case "geo-bypass-country", "GeoBypassCountry", "geoBypassCountry", "geo_bypass_country":
+		return optionGeoBypassCountry
+	case "geo-bypass-ip-block", "GeoBypassIPBlock", "geoBypassIPBlock", "geo_bypass_ip_block":
+		return optionGeoBypassIPBlock
+	case "playlist-start", "PlaylistStart", "playlistStart", "playlist_start":
+		return optionPlaylistStart
+	case "playlist-end", "PlaylistEnd", "playlistEnd", "playlist_end":
+		return optionPlaylistEnd
+	case "playlist-items", "PlaylistItems", "playlistItems", "playlist_items":
+		return optionPlaylistItems
+	case "match-title", "MatchTitle", "matchTitle", "match_title":
+		return optionMatchTitle
+	case "reject-title", "RejectTitle", "rejectTitle", "reject_title":
+		return optionRejectTitle
+	case "min-filesize", "MinFileSize", "minFileSize", "min_filesize":
+		return optionMinFileSize
+	case "max-filesize", "MaxFileSize", "maxFileSize", "max_filesize":
+		return optionMaxFileSize
+	case "date", "Date":
+		return optionDate
+	case "datebefore", "DateBefore", "dateBefore":
+		return optionDateBefore
+	case "dateafter", "DateAfter", "dateAfter":
+		return optionDateAfter
+	case "min-views", "MinViews", "minViews", "min_views":
+		return optionMinViews
+	case "max-views", "MaxViews", "maxViews", "max_views":
+		return optionMaxViews
+	case "match-filters", "MatchFilters", "matchFilters", "match_filters":
+		return optionMatchFilters
+	case "no-match-filters", "NoMatchFilters", "noMatchFilters", "no_match_filters":
+		return optionNoMatchFilters
+	case "break-match-filters", "BreakMatchFilters", "breakMatchFilters", "break_match_filters":
+		return optionBreakMatchFilters
+	case "no-break-match-filters", "NoBreakMatchFilters", "noBreakMatchFilters", "no_break_match_filters":
+		return optionNoBreakMatchFilters
+	case "no-playlist", "NoPlaylist", "noPlaylist", "no_playlist":
+		return optionNoPlaylist
+	case "yes-playlist", "YesPlaylist", "yesPlaylist", "yes_playlist":
+		return optionYesPlaylist
+	case "age-limit", "AgeLimit", "ageLimit", "age_limit":
+		return optionAgeLimit
+	case "download-archive", "DownloadArchive", "downloadArchive", "download_archive":
+		return optionDownloadArchive
+	case "no-download-archive", "NoDownloadArchive", "noDownloadArchive", "no_download_archive":
+		return optionNoDownloadArchive
+	case "max-downloads", "MaxDownloads", "maxDownloads", "max_downloads":
+		return optionMaxDownloads
+	case "break-on-existing", "BreakOnExisting", "breakOnExisting", "break_on_existing":
+		return optionBreakOnExisting
+	case "no-break-on-existing", "NoBreakOnExisting", "noBreakOnExisting", "no_break_on_existing":
+		return optionNoBreakOnExisting
+	case "break-on-reject", "BreakOnReject", "breakOnReject", "break_on_reject":
+		return optionBreakOnReject
+	case "break-per-input", "BreakPerInput", "breakPerInput", "break_per_input":
+		return optionBreakPerInput
+	case "no-break-per-input", "NoBreakPerInput", "noBreakPerInput", "no_break_per_input":
+		return optionNoBreakPerInput
+	case "skip-playlist-after-errors", "SkipPlaylistAfterErrors", "skipPlaylistAfterErrors", "skip_playlist_after_errors":
+		return optionSkipPlaylistAfterErrors
+	case "concurrent-fragments", "ConcurrentFragments", "concurrentFragments", "concurrent_fragments":
+		return optionConcurrentFragments
+	case "limit-rate", "LimitRate", "limitRate", "limit_rate":
+		return optionLimitRate
+	case "throttled-rate", "ThrottledRate", "throttledRate", "throttled_rate":
+		return optionThrottledRate
+	case "retries", "Retries":
+		return optionRetries
+	case "file-access-retries", "FileAccessRetries", "fileAccessRetries", "file_access_retries":
+		return optionFileAccessRetries
+	case "fragment-retries", "FragmentRetries", "fragmentRetries", "fragment_retries":
+		return optionFragmentRetries
+	case "retry-sleep", "RetrySleep", "retrySleep", "retry_sleep":
+		return optionRetrySleep
+	case "skip-unavailable-fragments", "SkipUnavailableFragments", "skipUnavailableFragments", "skip_unavailable_fragments":
+		return optionSkipUnavailableFragments
+	case "abort-on-unavailable-fragments", "AbortOnUnavailableFragments", "abortOnUnavailableFragments", "abort_on_unavailable_fragments":
+		return optionAbortOnUnavailableFragments
+	case "keep-fragments", "KeepFragments", "keepFragments", "keep_fragments":
+		return optionKeepFragments
+	case "no-keep-fragments", "NoKeepFragments", "noKeepFragments", "no_keep_fragments":
+		return optionNoKeepFragments
+	case "buffer-size", "BufferSize", "bufferSize", "buffer_size":
+		return optionBufferSize
+	case "resize-buffer", "ResizeBuffer", "resizeBuffer", "resize_buffer":
+		return optionResizeBuffer
+	case "no-resize-buffer", "NoResizeBuffer", "noResizeBuffer", "no_resize_buffer":
+		return optionNoResizeBuffer
+	case "http-chunk-size", "HTTPChunkSize", "httpChunkSize", "http_chunk_size":
+		return optionHTTPChunkSize
+	case "playlist-reverse", "PlaylistReverse", "playlistReverse", "playlist_reverse":
+		return optionPlaylistReverse
+	case "no-playlist-reverse", "NoPlaylistReverse", "noPlaylistReverse", "no_playlist_reverse":
+		return optionNoPlaylistReverse
+	case "playlist-random", "PlaylistRandom", "playlistRandom", "playlist_random":
+		return optionPlaylistRandom
+	case "lazy-playlist", "LazyPlaylist", "lazyPlaylist", "lazy_playlist":
+		return optionLazyPlaylist
+	case "no-lazy-playlist", "NoLazyPlaylist", "noLazyPlaylist", "no_lazy_playlist":
+		return optionNoLazyPlaylist
+	case "hls-prefer-native", "HLSPreferNative", "hlsPreferNative", "hls_prefer_native":
+		return optionHLSPreferNative
+	case "hls-prefer-ffmpeg", "HLSPreferFFmpeg", "hlsPreferFFmpeg", "hls_prefer_ffmpeg":
+		return optionHLSPreferFFmpeg
+	case "hls-use-mpegts", "HLSUseMPEGTS", "hlsUseMPEGTS", "hls_use_mpegts":
+		return optionHLSUseMPEGTS
+	case "no-hls-use-mpegts", "NoHLSUseMPEGTS", "noHLSUseMPEGTS", "no_hls_use_mpegts":
+		return optionNoHLSUseMPEGTS
+	case "download-sections", "DownloadSections", "downloadSections", "download_sections":
+		return optionDownloadSections
+	case "downloader", "Downloader":
+		return optionDownloader
+	case "downloader-args", "DownloaderArgs", "downloaderArgs", "downloader_args":
+		return optionDownloaderArgs
+	case "batch-file", "BatchFile", "batchFile", "batch_file":
+		return optionBatchFile
+	case "no-batch-file", "NoBatchFile", "noBatchFile", "no_batch_file":
+		return optionNoBatchFile
+	case "id", "ID":
+		return optionID
+	case "paths", "Paths":
+		return optionPaths
+	case "output", "Output":
+		return optionOutput
+	case "output-na-placeholder", "OutputNaPlaceholder", "outputNaPlaceholder", "output_na_placeholder":
+		return optionOutputNaPlaceholder
+	case "autonumber-size", "AutoNumberSize", "autoNumberSize", "autonumber_size":
+		return optionAutoNumberSize
+	case "autonumber-start", "AutoNumberStart", "autoNumberStart", "autonumber_start":
+		return optionAutoNumberStart
+	case "restrict-filenames", "RestrictFilenames", "restrictFilenames", "restrict_filenames":
+		return optionRestrictFilenames
+	case "no-restrict-filenames", "NoRestrictFilenames", "noRestrictFilenames", "no_restrict_filenames":
+		return optionNoRestrictFilenames
+	case "windows-filenames", "WindowsFilenames", "windowsFilenames", "windows_filenames":
+		return optionWindowsFilenames
+	case "no-windows-filenames", "NoWindowsFilenames", "noWindowsFilenames", "no_windows_filenames":
+		return optionNoWindowsFilenames
+	case "trim-filenames", "TrimFilenames", "trimFilenames", "trim_filenames":
+		return optionTrimFilenames
+	case "no-overwrites", "NoOverwrites", "noOverwrites", "no_overwrites":
+		return optionNoOverwrites
+	case "force-overwrites", "ForceOverwrites", "forceOverwrites", "force_overwrites":
+		return optionForceOverwrites
+	case "no-force-overwrites", "NoForceOverwrites", "noForceOverwrites", "no_force_overwrites":
+		return optionNoForceOverwrites
+	case "continue", "Continue":
+		return optionContinue
+	case "no-continue", "NoContinue", "noContinue", "no_continue":
+		return optionNoContinue
+	case "part", "Part":
+		return optionPart
+	case "no-part", "NoPart", "noPart", "no_part":
+		return optionNoPart
+	case "mtime", "Mtime":
+		return optionMtime
+	case "no-mtime", "NoMtime", "noMtime", "no_mtime":
+		return optionNoMtime
+	case "write-description", "WriteDescription", "writeDescription", "write_description":
+		return optionWriteDescription
+	case "no-write-description", "NoWriteDescription", "noWriteDescription", "no_write_description":
+		return optionNoWriteDescription
+	case "write-info-json", "WriteInfoJSON", "writeInfoJSON", "write_info_json":
+		return optionWriteInfoJSON
+	case "no-write-info-json", "NoWriteInfoJSON", "noWriteInfoJSON", "no_write_info_json":
+		return optionNoWriteInfoJSON
+	case "write-playlist-metafiles", "WritePlaylistMetafiles", "writePlaylistMetafiles", "write_playlist_metafiles":
+		return optionWritePlaylistMetafiles
+	case "no-write-playlist-metafiles", "NoWritePlaylistMetafiles", "noWritePlaylistMetafiles", "no_write_playlist_metafiles":
+		return optionNoWritePlaylistMetafiles
+	case "clean-info-json", "CleanInfoJSON", "cleanInfoJSON", "clean_info_json":
+		return optionCleanInfoJSON
+	case "no-clean-info-json", "NoCleanInfoJSON", "noCleanInfoJSON", "no_clean_info_json":
+		return optionNoCleanInfoJSON
+	case "write-comments", "WriteComments", "writeComments", "write_comments":
+		return optionWriteComments
+	case "no-write-comments", "NoWriteComments", "noWriteComments", "no_write_comments":
+		return optionNoWriteComments
+	case "load-info-json", "LoadInfoJSON", "loadInfoJSON", "load_info_json":
+		return optionLoadInfoJSON
+	case "cookies", "Cookies":
+		return optionCookies
+	case "no-cookies", "NoCookies", "noCookies", "no_cookies":
+		return optionNoCookies
+	case "cookies-from-browser", "CookiesFromBrowser", "cookiesFromBrowser", "cookies_from_browser":
+		return optionCookiesFromBrowser
+	case "no-cookies-from-browser", "NoCookiesFromBrowser", "noCookiesFromBrowser", "no_cookies_from_browser":
+		return optionNoCookiesFromBrowser
+	case "cache-dir", "CacheDir", "cacheDir", "cache_dir":
+		return optionCacheDir
+	case "no-cache-dir", "NoCacheDir", "noCacheDir", "no_cache_dir":
+		return optionNoCacheDir
+	case "rm-cache-dir", "RmCacheDir", "rmCacheDir", "rm_cache_dir":
+		return optionRmCacheDir
+	case "write-thumbnail", "WriteThumbnail", "writeThumbnail", "write_thumbnail":
+		return optionWriteThumbnail
+	case "no-write-thumbnail", "NoWriteThumbnail", "noWriteThumbnail", "no_write_thumbnail":
+		return optionNoWriteThumbnail
+	case "write-all-thumbnails", "WriteAllThumbnails", "writeAllThumbnails", "write_all_thumbnails":
+		return optionWriteAllThumbnails
+	case "list-thumbnails", "ListThumbnails", "listThumbnails", "list_thumbnails":
+		return optionListThumbnails
+	case "write-link", "WriteLink", "writeLink", "write_link":
+		return optionWriteLink
+	case "write-url-link", "WriteURLLink", "writeURLLink", "write_url_link":
+		return optionWriteURLLink
+	case "write-webloc-link", "WriteWeblocLink", "writeWeblocLink", "write_webloc_link":
+		return optionWriteWeblocLink
+	case "write-desktop-link", "WriteDesktopLink", "writeDesktopLink", "write_desktop_link":
+		return optionWriteDesktopLink
+	case "quiet", "Quiet":
+		return optionQuiet
+	case "no-quiet", "NoQuiet", "noQuiet", "no_quiet":
+		return optionNoQuiet
+	case "no-warnings", "NoWarnings", "noWarnings", "no_warnings":
+		return optionNoWarnings
+	case "simulate", "Simulate":
+		return optionSimulate
+	case "no-simulate", "NoSimulate", "noSimulate", "no_simulate":
+		return optionNoSimulate
+	case "ignore-no-formats-error", "IgnoreNoFormatsError", "ignoreNoFormatsError", "ignore_no_formats_error":
+		return optionIgnoreNoFormatsError
+	case "no-ignore-no-formats-error", "NoIgnoreNoFormatsError", "noIgnoreNoFormatsError", "no_ignore_no_formats_error":
+		return optionNoIgnoreNoFormatsError
+	case "skip-download", "SkipDownload", "skipDownload", "skip_download":
+		return optionSkipDownload
+	case "print", "Print":
+		return optionPrint
+	case "print-to-file", "PrintToFile", "printToFile", "print_to_file":
+		return optionPrintToFile
+	case "get-url", "GetURL", "getURL", "get_url":
+		return optionGetURL
+	case "get-title", "GetTitle", "getTitle", "get_title":
+		return optionGetTitle
+	case "get-id", "GetID", "getID", "get_id":
+		return optionGetID
+	case "get-thumbnail", "GetThumbnail", "getThumbnail", "get_thumbnail":
+		return optionGetThumbnail
+	case "get-description", "GetDescription", "getDescription", "get_description":
+		return optionGetDescription
+	case "get-duration", "GetDuration", "getDuration", "get_duration":
+		return optionGetDuration
+	case "get-filename", "GetFilename", "getFilename", "get_filename":
+		return optionGetFilename
+	case "get-format", "GetFormat", "getFormat", "get_format":
+		return optionGetFormat
+	case "dump-json", "DumpJSON", "dumpJSON", "dump_json":
+		return optionDumpJSON
+	case "dump-single-json", "DumpSingleJSON", "dumpSingleJSON", "dump_single_json":
+		return optionDumpSingleJSON
+	case "print-json", "PrintJSON", "printJSON", "print_json":
+		return optionPrintJSON
+	case "force-write-archive", "ForceWriteArchive", "forceWriteArchive", "force_write_archive":
+		return optionForceWriteArchive
+	case "newline", "Newline":
+		return optionNewline
+	case "no-progress", "NoProgress", "noProgress", "no_progress":
+		return optionNoProgress
+	case "progress", "Progress":
+		return optionProgress
+	case "console-title", "ConsoleTitle", "consoleTitle", "console_title":
+		return optionConsoleTitle
+	case "progress-template", "ProgressTemplate", "progressTemplate", "progress_template":
+		return optionProgressTemplate
+	case "progress-delta", "ProgressDelta", "progressDelta", "progress_delta":
+		return optionProgressDelta
+	case "verbose", "Verbose":
+		return optionVerbose
+	case "dump-pages", "DumpPages", "dumpPages", "dump_pages":
+		return optionDumpPages
+	case "write-pages", "WritePages", "writePages", "write_pages":
+		return optionWritePages
+	case "print-traffic", "PrintTraffic", "printTraffic", "print_traffic":
+		return optionPrintTraffic
+	case "encoding", "Encoding":
+		return optionEncoding
+	case "legacy-server-connect", "LegacyServerConnect", "legacyServerConnect", "legacy_server_connect":
+		return optionLegacyServerConnect
+	case "no-check-certificates", "NoCheckCertificates", "noCheckCertificates", "no_check_certificates":
+		return optionNoCheckCertificates
+	case "prefer-insecure", "PreferInsecure", "preferInsecure", "prefer_insecure":
+		return optionPreferInsecure
+	case "user-agent", "UserAgent", "userAgent", "user_agent":
+		return optionUserAgent
+	case "referer", "Referer":
+		return optionReferer
+	case "add-headers", "AddHeaders", "addHeaders", "add_headers":
+		return optionAddHeaders
+	case "bidi-workaround", "BidiWorkaround", "bidiWorkaround", "bidi_workaround":
+		return optionBidiWorkaround
+	case "sleep-requests", "SleepRequests", "sleepRequests", "sleep_requests":
+		return optionSleepRequests
+	case "sleep-interval", "SleepInterval", "sleepInterval", "sleep_interval":
+		return optionSleepInterval
+	case "max-sleep-interval", "MaxSleepInterval", "maxSleepInterval", "max_sleep_interval":
+		return optionMaxSleepInterval
+	case "sleep-subtitles", "SleepSubtitles", "sleepSubtitles", "sleep_subtitles":
+		return optionSleepSubtitles
+	case "format", "Format":
+		return optionFormat
+	case "format-sort", "FormatSort", "formatSort", "format_sort":
+		return optionFormatSort
+	case "format-sort-reset", "FormatSortReset", "formatSortReset", "format_sort_reset":
+		return optionFormatSortReset
+	case "format-sort-force", "FormatSortForce", "formatSortForce", "format_sort_force":
+		return optionFormatSortForce
+	case "no-format-sort-force", "NoFormatSortForce", "noFormatSortForce", "no_format_sort_force":
+		return optionNoFormatSortForce
+	case "video-multistreams", "VideoMultistreams", "videoMultistreams", "video_multistreams":
+		return optionVideoMultistreams
+	case "no-video-multistreams", "NoVideoMultistreams", "noVideoMultistreams", "no_video_multistreams":
+		return optionNoVideoMultistreams
+	case "audio-multistreams", "AudioMultistreams", "audioMultistreams", "audio_multistreams":
+		return optionAudioMultistreams
+	case "no-audio-multistreams", "NoAudioMultistreams", "noAudioMultistreams", "no_audio_multistreams":
+		return optionNoAudioMultistreams
+	case "all-formats", "AllFormats", "allFormats", "all_formats":
+		return optionAllFormats
+	case "prefer-free-formats", "PreferFreeFormats", "preferFreeFormats", "prefer_free_formats":
+		return optionPreferFreeFormats
+	case "no-prefer-free-formats", "NoPreferFreeFormats", "noPreferFreeFormats", "no_prefer_free_formats":
+		return optionNoPreferFreeFormats
+	case "check-formats", "CheckFormats", "checkFormats", "check_formats":
+		return optionCheckFormats
+	case "check-all-formats", "CheckAllFormats", "checkAllFormats", "check_all_formats":
+		return optionCheckAllFormats
+	case "no-check-formats", "NoCheckFormats", "noCheckFormats", "no_check_formats":
+		return optionNoCheckFormats
+	case "list-formats", "ListFormats", "listFormats", "list_formats":
+		return optionListFormats
+	case "list-formats-as-table", "ListFormatsAsTable", "listFormatsAsTable", "list_formats_as_table":
+		return optionListFormatsAsTable
+	case "list-formats-old", "ListFormatsOld", "listFormatsOld", "list_formats_old":
+		return optionListFormatsOld
+	case "merge-output-format", "MergeOutputFormat", "mergeOutputFormat", "merge_output_format":
+		return optionMergeOutputFormat
+	case "write-subs", "WriteSubs", "writeSubs", "write_subs":
+		return optionWriteSubs
+	case "no-write-subs", "NoWriteSubs", "noWriteSubs", "no_write_subs":
+		return optionNoWriteSubs
+	case "write-auto-subs", "WriteAutoSubs", "writeAutoSubs", "write_auto_subs":
+		return optionWriteAutoSubs
+	case "no-write-auto-subs", "NoWriteAutoSubs", "noWriteAutoSubs", "no_write_auto_subs":
+		return optionNoWriteAutoSubs
+	case "all-subs", "AllSubs", "allSubs", "all_subs":
+		return optionAllSubs
+	case "list-subs", "ListSubs", "listSubs", "list_subs":
+		return optionListSubs
+	case "sub-format", "SubFormat", "subFormat", "sub_format":
+		return optionSubFormat
+	case "sub-langs", "SubLangs", "subLangs", "sub_langs":
+		return optionSubLangs
+	case "username", "Username":
+		return optionUsername
+	case "password", "Password":
+		return optionPassword
+	case "twofactor", "TwoFactor", "twoFactor":
+		return optionTwoFactor
+	case "netrc", "Netrc":
+		return optionNetrc
+	case "netrc-location", "NetrcLocation", "netrcLocation", "netrc_location":
+		return optionNetrcLocation
+	case "netrc-cmd", "NetrcCmd", "netrcCmd", "netrc_cmd":
+		return optionNetrcCmd
+	case "video-password", "VideoPassword", "videoPassword", "video_password":
+		return optionVideoPassword
+	case "ap-mso", "ApMSO", "apMSO", "ap_mso":
+		return optionApMSO
+	case "ap-username", "ApUsername", "apUsername", "ap_username":
+		return optionApUsername
+	case "ap-password", "ApPassword", "apPassword", "ap_password":
+		return optionApPassword
+	case "ap-list-mso", "ApListMSO", "apListMSO", "ap_list_mso":
+		return optionApListMSO
+	case "client-certificate", "ClientCertificate", "clientCertificate", "client_certificate":
+		return optionClientCertificate
+	case "client-certificate-key", "ClientCertificateKey", "clientCertificateKey", "client_certificate_key":
+		return optionClientCertificateKey
+	case "client-certificate-password", "ClientCertificatePassword", "clientCertificatePassword", "client_certificate_password":
+		return optionClientCertificatePassword
+	case "extract-audio", "ExtractAudio", "extractAudio", "extract_audio":
+		return optionExtractAudio
+	case "audio-format", "AudioFormat", "audioFormat", "audio_format":
+		return optionAudioFormat
+	case "audio-quality", "AudioQuality", "audioQuality", "audio_quality":
+		return optionAudioQuality
+	case "remux-video", "RemuxVideo", "remuxVideo", "remux_video":
+		return optionRemuxVideo
+	case "recode-video", "RecodeVideo", "recodeVideo", "recode_video":
+		return optionRecodeVideo
+	case "postprocessor-args", "PostProcessorArgs", "postProcessorArgs", "postprocessor_args":
+		return optionPostProcessorArgs
+	case "keep-video", "KeepVideo", "keepVideo", "keep_video":
+		return optionKeepVideo
+	case "no-keep-video", "NoKeepVideo", "noKeepVideo", "no_keep_video":
+		return optionNoKeepVideo
+	case "post-overwrites", "PostOverwrites", "postOverwrites", "post_overwrites":
+		return optionPostOverwrites
+	case "no-post-overwrites", "NoPostOverwrites", "noPostOverwrites", "no_post_overwrites":
+		return optionNoPostOverwrites
+	case "embed-subs", "EmbedSubs", "embedSubs", "embed_subs":
+		return optionEmbedSubs
+	case "no-embed-subs", "NoEmbedSubs", "noEmbedSubs", "no_embed_subs":
+		return optionNoEmbedSubs
+	case "embed-thumbnail", "EmbedThumbnail", "embedThumbnail", "embed_thumbnail":
+		return optionEmbedThumbnail
+	case "no-embed-thumbnail", "NoEmbedThumbnail", "noEmbedThumbnail", "no_embed_thumbnail":
+		return optionNoEmbedThumbnail
+	case "embed-metadata", "EmbedMetadata", "embedMetadata", "embed_metadata":
+		return optionEmbedMetadata
+	case "no-embed-metadata", "NoEmbedMetadata", "noEmbedMetadata", "no_embed_metadata":
+		return optionNoEmbedMetadata
+	case "embed-chapters", "EmbedChapters", "embedChapters", "embed_chapters":
+		return optionEmbedChapters
+	case "no-embed-chapters", "NoEmbedChapters", "noEmbedChapters", "no_embed_chapters":
+		return optionNoEmbedChapters
+	case "embed-info-json", "EmbedInfoJSON", "embedInfoJSON", "embed_info_json":
+		return optionEmbedInfoJSON
+	case "no-embed-info-json", "NoEmbedInfoJSON", "noEmbedInfoJSON", "no_embed_info_json":
+		return optionNoEmbedInfoJSON
+	case "metadata-from-title", "MetadataFromTitle", "metadataFromTitle", "metadata_from_title":
+		return optionMetadataFromTitle
+	case "parse-metadata", "ParseMetadata", "parseMetadata", "parse_metadata":
+		return optionParseMetadata
+	case "replace-in-metadata", "ReplaceInMetadata", "replaceInMetadata", "replace_in_metadata":
+		return optionReplaceInMetadata
+	case "xattrs", "Xattrs":
+		return optionXattrs
+	case "concat-playlist", "ConcatPlaylist", "concatPlaylist", "concat_playlist":
+		return optionConcatPlaylist
+	case "fixup", "Fixup":
+		return optionFixup
+	case "ffmpeg-location", "FFmpegLocation", "ffmpegLocation", "ffmpeg_location":
+		return optionFFmpegLocation
+	case "exec", "Exec":
+		return optionExec
+	case "no-exec", "NoExec", "noExec", "no_exec":
+		return optionNoExec
+	case "exec-before-download", "ExecBeforeDownload", "execBeforeDownload", "exec_before_download":
+		return optionExecBeforeDownload
+	case "no-exec-before-download", "NoExecBeforeDownload", "noExecBeforeDownload", "no_exec_before_download":
+		return optionNoExecBeforeDownload
+	case "convert-subs", "ConvertSubs", "convertSubs", "convert_subs":
+		return optionConvertSubs
+	case "convert-thumbnails", "ConvertThumbnails", "convertThumbnails", "convert_thumbnails":
+		return optionConvertThumbnails
+	case "split-chapters", "SplitChapters", "splitChapters", "split_chapters":
+		return optionSplitChapters
+	case "no-split-chapters", "NoSplitChapters", "noSplitChapters", "no_split_chapters":
+		return optionNoSplitChapters
+	case "remove-chapters", "RemoveChapters", "removeChapters", "remove_chapters":
+		return optionRemoveChapters
+	case "no-remove-chapters", "NoRemoveChapters", "noRemoveChapters", "no_remove_chapters":
+		return optionNoRemoveChapters
+	case "force-keyframes-at-cuts", "ForceKeyframesAtCuts", "forceKeyframesAtCuts", "force_keyframes_at_cuts":
+		return optionForceKeyframesAtCuts
+	case "no-force-keyframes-at-cuts", "NoForceKeyframesAtCuts", "noForceKeyframesAtCuts", "no_force_keyframes_at_cuts":
+		return optionNoForceKeyframesAtCuts
+	case "use-postprocessor", "UsePostProcessor", "usePostProcessor", "use_postprocessor":
+		return optionUsePostProcessor
+	case "sponsorblock-mark", "SponsorblockMark", "sponsorblockMark", "sponsorblock_mark":
+		return optionSponsorblockMark
+	case "sponsorblock-remove", "SponsorblockRemove", "sponsorblockRemove", "sponsorblock_remove":
+		return optionSponsorblockRemove
+	case "sponsorblock-chapter-title", "SponsorblockChapterTitle", "sponsorblockChapterTitle", "sponsorblock_chapter_title":
+		return optionSponsorblockChapterTitle
+	case "no-sponsorblock", "NoSponsorblock", "noSponsorblock", "no_sponsorblock":
+		return optionNoSponsorblock
+	case "sponsorblock-api", "SponsorblockAPI", "sponsorblockAPI", "sponsorblock_api":
+		return optionSponsorblockAPI
+	case "extractor-retries", "ExtractorRetries", "extractorRetries", "extractor_retries":
+		return optionExtractorRetries
+	case "allow-dynamic-mpd", "AllowDynamicMPD", "allowDynamicMPD", "allow_dynamic_mpd":
+		return optionAllowDynamicMPD
+	case "ignore-dynamic-mpd", "IgnoreDynamicMPD", "ignoreDynamicMPD", "ignore_dynamic_mpd":
+		return optionIgnoreDynamicMPD
+	case "hls-split-discontinuity", "HLSSplitDiscontinuity", "hlsSplitDiscontinuity", "hls_split_discontinuity":
+		return optionHLSSplitDiscontinuity
+	case "no-hls-split-discontinuity", "NoHLSSplitDiscontinuity", "noHLSSplitDiscontinuity", "no_hls_split_discontinuity":
+		return optionNoHLSSplitDiscontinuity
+	case "extractor-args", "ExtractorArgs", "extractorArgs", "extractor_args":
+		return optionExtractorArgs
+	default:
+		return nil
+	}
+}
+
+// FindByID finds options by their ID if found, nil otherwise.
+func FindByID(id string) (options []*Option) {
+	switch id {
+	case "add_postprocessors":
+		return []*Option{optionUsePostProcessor}
+	case "addchapters":
+		return []*Option{optionEmbedChapters, optionNoEmbedChapters}
+	case "addmetadata":
+		return []*Option{optionEmbedMetadata, optionNoEmbedMetadata}
+	case "age_limit":
+		return []*Option{optionAgeLimit}
+	case "allow_multiple_audio_streams":
+		return []*Option{optionAudioMultistreams, optionNoAudioMultistreams}
+	case "allow_multiple_video_streams":
+		return []*Option{optionVideoMultistreams, optionNoVideoMultistreams}
+	case "allow_playlist_files":
+		return []*Option{optionWritePlaylistMetafiles, optionNoWritePlaylistMetafiles}
+	case "allowed_extractors":
+		return []*Option{optionUseExtractors}
+	case "allsubtitles":
+		return []*Option{optionAllSubs}
+	case "ap_list_mso":
+		return []*Option{optionApListMSO}
+	case "ap_mso":
+		return []*Option{optionApMSO}
+	case "ap_password":
+		return []*Option{optionApPassword}
+	case "ap_username":
+		return []*Option{optionApUsername}
+	case "audioformat":
+		return []*Option{optionAudioFormat}
+	case "audioquality":
+		return []*Option{optionAudioQuality}
+	case "autonumber_size":
+		return []*Option{optionAutoNumberSize}
+	case "autonumber_start":
+		return []*Option{optionAutoNumberStart}
+	case "batchfile":
+		return []*Option{optionBatchFile, optionNoBatchFile}
+	case "bidi_workaround":
+		return []*Option{optionBidiWorkaround}
+	case "break_on_existing":
+		return []*Option{optionBreakOnExisting, optionNoBreakOnExisting}
+	case "break_on_reject":
+		return []*Option{optionBreakOnReject}
+	case "break_per_url":
+		return []*Option{optionBreakPerInput, optionNoBreakPerInput}
+	case "breaking_match_filter":
+		return []*Option{optionBreakMatchFilters, optionNoBreakMatchFilters}
+	case "buffersize":
+		return []*Option{optionBufferSize}
+	case "cachedir":
+		return []*Option{optionCacheDir, optionNoCacheDir}
+	case "check_formats":
+		return []*Option{optionCheckFormats, optionCheckAllFormats, optionNoCheckFormats}
+	case "clean_infojson":
+		return []*Option{optionCleanInfoJSON, optionNoCleanInfoJSON}
+	case "client_certificate":
+		return []*Option{optionClientCertificate}
+	case "client_certificate_key":
+		return []*Option{optionClientCertificateKey}
+	case "client_certificate_password":
+		return []*Option{optionClientCertificatePassword}
+	case "color":
+		return []*Option{optionNoColors, optionColor}
+	case "compat_opts":
+		return []*Option{optionCompatOptions}
+	case "concat_playlist":
+		return []*Option{optionConcatPlaylist}
+	case "concurrent_fragment_downloads":
+		return []*Option{optionConcurrentFragments}
+	case "config_locations":
+		return []*Option{optionNoConfigLocations, optionConfigLocations}
+	case "consoletitle":
+		return []*Option{optionConsoleTitle}
+	case "continue_dl":
+		return []*Option{optionContinue, optionNoContinue}
+	case "convertsubtitles":
+		return []*Option{optionConvertSubs}
+	case "convertthumbnails":
+		return []*Option{optionConvertThumbnails}
+	case "cookiefile":
+		return []*Option{optionCookies, optionNoCookies}
+	case "cookiesfrombrowser":
+		return []*Option{optionCookiesFromBrowser, optionNoCookiesFromBrowser}
+	case "date":
+		return []*Option{optionDate}
+	case "dateafter":
+		return []*Option{optionDateAfter}
+	case "datebefore":
+		return []*Option{optionDateBefore}
+	case "debug_printtraffic":
+		return []*Option{optionPrintTraffic}
+	case "default_search":
+		return []*Option{optionDefaultSearch}
+	case "download_archive":
+		return []*Option{optionDownloadArchive, optionNoDownloadArchive}
+	case "download_ranges":
+		return []*Option{optionDownloadSections}
+	case "dump_intermediate_pages":
+		return []*Option{optionDumpPages}
+	case "dump_single_json":
+		return []*Option{optionDumpSingleJSON}
+	case "dumpjson":
+		return []*Option{optionDumpJSON}
+	case "dynamic_mpd":
+		return []*Option{optionAllowDynamicMPD, optionIgnoreDynamicMPD}
+	case "embed_infojson":
+		return []*Option{optionEmbedInfoJSON, optionNoEmbedInfoJSON}
+	case "embedsubtitles":
+		return []*Option{optionEmbedSubs, optionNoEmbedSubs}
+	case "embedthumbnail":
+		return []*Option{optionEmbedThumbnail, optionNoEmbedThumbnail}
+	case "enable_file_urls":
+		return []*Option{optionEnableFileURLs}
+	case "encoding":
+		return []*Option{optionEncoding}
+	case "exec_before_dl_cmd":
+		return []*Option{optionExecBeforeDownload, optionNoExecBeforeDownload}
+	case "exec_cmd":
+		return []*Option{optionExec, optionNoExec}
+	case "external_downloader":
+		return []*Option{optionDownloader}
+	case "external_downloader_args":
+		return []*Option{optionDownloaderArgs}
+	case "extract_flat":
+		return []*Option{optionFlatPlaylist, optionNoFlatPlaylist}
+	case "extractaudio":
+		return []*Option{optionExtractAudio}
+	case "extractor_args":
+		return []*Option{optionExtractorArgs}
+	case "extractor_retries":
+		return []*Option{optionExtractorRetries}
+	case "ffmpeg_location":
+		return []*Option{optionFFmpegLocation}
+	case "file_access_retries":
+		return []*Option{optionFileAccessRetries}
+	case "fixup":
+		return []*Option{optionFixup}
+	case "force_generic_extractor":
+		return []*Option{optionForceGenericExtractor}
+	case "force_keyframes_at_cuts":
+		return []*Option{optionForceKeyframesAtCuts, optionNoForceKeyframesAtCuts}
+	case "force_write_download_archive":
+		return []*Option{optionForceWriteArchive}
+	case "forceprint":
+		return []*Option{optionPrint}
+	case "format":
+		return []*Option{optionFormat, optionAllFormats}
+	case "format_sort":
+		return []*Option{optionFormatSort, optionFormatSortReset}
+	case "format_sort_force":
+		return []*Option{optionFormatSortForce, optionNoFormatSortForce}
+	case "fragment_retries":
+		return []*Option{optionFragmentRetries}
+	case "geo_bypass":
+		return []*Option{optionXFF, optionGeoBypass, optionNoGeoBypass, optionGeoBypassCountry, optionGeoBypassIPBlock}
+	case "geo_verification_proxy":
+		return []*Option{optionGeoVerificationProxy}
+	case "getcomments":
+		return []*Option{optionWriteComments, optionNoWriteComments}
+	case "getdescription":
+		return []*Option{optionGetDescription}
+	case "getduration":
+		return []*Option{optionGetDuration}
+	case "getfilename":
+		return []*Option{optionGetFilename}
+	case "getformat":
+		return []*Option{optionGetFormat}
+	case "getid":
+		return []*Option{optionGetID}
+	case "getthumbnail":
+		return []*Option{optionGetThumbnail}
+	case "gettitle":
+		return []*Option{optionGetTitle}
+	case "geturl":
+		return []*Option{optionGetURL}
+	case "headers":
+		return []*Option{optionAddHeaders}
+	case "hls_prefer_native":
+		return []*Option{optionHLSPreferNative, optionHLSPreferFFmpeg}
+	case "hls_split_discontinuity":
+		return []*Option{optionHLSSplitDiscontinuity, optionNoHLSSplitDiscontinuity}
+	case "hls_use_mpegts":
+		return []*Option{optionHLSUseMPEGTS, optionNoHLSUseMPEGTS}
+	case "http_chunk_size":
+		return []*Option{optionHTTPChunkSize}
+	case "ignore_no_formats_error":
+		return []*Option{optionIgnoreNoFormatsError, optionNoIgnoreNoFormatsError}
+	case "ignoreconfig":
+		return []*Option{optionIgnoreConfig}
+	case "ignoreerrors":
+		return []*Option{optionIgnoreErrors, optionNoAbortOnError, optionAbortOnError}
+	case "impersonate":
+		return []*Option{optionImpersonate}
+	case "js_runtimes":
+		return []*Option{optionJsRuntimes, optionNoJsRuntimes}
+	case "keep_fragments":
+		return []*Option{optionKeepFragments, optionNoKeepFragments}
+	case "keepvideo":
+		return []*Option{optionKeepVideo, optionNoKeepVideo}
+	case "lazy_playlist":
+		return []*Option{optionLazyPlaylist, optionNoLazyPlaylist}
+	case "legacy_server_connect":
+		return []*Option{optionLegacyServerConnect}
+	case "list_extractor_descriptions":
+		return []*Option{optionExtractorDescriptions}
+	case "list_extractors":
+		return []*Option{optionListExtractors}
+	case "list_impersonate_targets":
+		return []*Option{optionListImpersonateTargets}
+	case "list_thumbnails":
+		return []*Option{optionListThumbnails}
+	case "listformats":
+		return []*Option{optionListFormats}
+	case "listformats_table":
+		return []*Option{optionListFormatsAsTable, optionListFormatsOld}
+	case "listsubtitles":
+		return []*Option{optionListSubs}
+	case "live_from_start":
+		return []*Option{optionLiveFromStart, optionNoLiveFromStart}
+	case "load_info_filename":
+		return []*Option{optionLoadInfoJSON}
+	case "mark_watched":
+		return []*Option{optionMarkWatched, optionNoMarkWatched}
+	case "match_filter":
+		return []*Option{optionMatchFilters, optionNoMatchFilters}
+	case "matchtitle":
+		return []*Option{optionMatchTitle}
+	case "max_downloads":
+		return []*Option{optionMaxDownloads}
+	case "max_filesize":
+		return []*Option{optionMaxFileSize}
+	case "max_sleep_interval":
+		return []*Option{optionMaxSleepInterval}
+	case "max_views":
+		return []*Option{optionMaxViews}
+	case "merge_output_format":
+		return []*Option{optionMergeOutputFormat}
+	case "metafromtitle":
+		return []*Option{optionMetadataFromTitle}
+	case "min_filesize":
+		return []*Option{optionMinFileSize}
+	case "min_views":
+		return []*Option{optionMinViews}
+	case "netrc_cmd":
+		return []*Option{optionNetrcCmd}
+	case "netrc_location":
+		return []*Option{optionNetrcLocation}
+	case "no_check_certificate":
+		return []*Option{optionNoCheckCertificates}
+	case "no_sponsorblock":
+		return []*Option{optionNoSponsorblock}
+	case "no_warnings":
+		return []*Option{optionNoWarnings}
+	case "nopart":
+		return []*Option{optionPart, optionNoPart}
+	case "noplaylist":
+		return []*Option{optionNoPlaylist, optionYesPlaylist}
+	case "nopostoverwrites":
+		return []*Option{optionPostOverwrites, optionNoPostOverwrites}
+	case "noprogress":
+		return []*Option{optionNoProgress, optionProgress}
+	case "noresizebuffer":
+		return []*Option{optionResizeBuffer, optionNoResizeBuffer}
+	case "outtmpl":
+		return []*Option{optionOutput}
+	case "outtmpl_na_placeholder":
+		return []*Option{optionOutputNaPlaceholder}
+	case "overwrites":
+		return []*Option{optionNoOverwrites, optionForceOverwrites, optionNoForceOverwrites}
+	case "parse_metadata":
+		return []*Option{optionParseMetadata, optionReplaceInMetadata}
+	case "password":
+		return []*Option{optionPassword}
+	case "paths":
+		return []*Option{optionPaths}
+	case "playlist_items":
+		return []*Option{optionPlaylistItems}
+	case "playlist_random":
+		return []*Option{optionPlaylistRandom}
+	case "playlist_reverse":
+		return []*Option{optionPlaylistReverse, optionNoPlaylistReverse}
+	case "playlistend":
+		return []*Option{optionPlaylistEnd}
+	case "playliststart":
+		return []*Option{optionPlaylistStart}
+	case "plugin_dirs":
+		return []*Option{optionPluginDirs, optionNoPluginDirs}
+	case "postprocessor_args":
+		return []*Option{optionPostProcessorArgs}
+	case "prefer_free_formats":
+		return []*Option{optionPreferFreeFormats, optionNoPreferFreeFormats}
+	case "prefer_insecure":
+		return []*Option{optionPreferInsecure}
+	case "preset-alias":
+		return []*Option{optionPresetAlias}
+	case "print_json":
+		return []*Option{optionPrintJSON}
+	case "print_to_file":
+		return []*Option{optionPrintToFile}
+	case "progress_delta":
+		return []*Option{optionProgressDelta}
+	case "progress_template":
+		return []*Option{optionProgressTemplate}
+	case "progress_with_newline":
+		return []*Option{optionNewline}
+	case "proxy":
+		return []*Option{optionProxy}
+	case "quiet":
+		return []*Option{optionQuiet, optionNoQuiet}
+	case "ratelimit":
+		return []*Option{optionLimitRate}
+	case "recodevideo":
+		return []*Option{optionRecodeVideo}
+	case "referer":
+		return []*Option{optionReferer}
+	case "rejecttitle":
+		return []*Option{optionRejectTitle}
+	case "remote_components":
+		return []*Option{optionRemoteComponents, optionNoRemoteComponents}
+	case "remove_chapters":
+		return []*Option{optionRemoveChapters, optionNoRemoveChapters}
+	case "remuxvideo":
+		return []*Option{optionRemuxVideo}
+	case "restrictfilenames":
+		return []*Option{optionRestrictFilenames, optionNoRestrictFilenames}
+	case "retries":
+		return []*Option{optionRetries}
+	case "retry_sleep":
+		return []*Option{optionRetrySleep}
+	case "rm_cachedir":
+		return []*Option{optionRmCacheDir}
+	case "simulate":
+		return []*Option{optionSimulate, optionNoSimulate}
+	case "skip_download":
+		return []*Option{optionSkipDownload}
+	case "skip_playlist_after_errors":
+		return []*Option{optionSkipPlaylistAfterErrors}
+	case "skip_unavailable_fragments":
+		return []*Option{optionSkipUnavailableFragments, optionAbortOnUnavailableFragments}
+	case "sleep_interval":
+		return []*Option{optionSleepInterval}
+	case "sleep_interval_requests":
+		return []*Option{optionSleepRequests}
+	case "sleep_interval_subtitles":
+		return []*Option{optionSleepSubtitles}
+	case "socket_timeout":
+		return []*Option{optionSocketTimeout}
+	case "source_address":
+		return []*Option{optionSourceAddress, optionForceIPv4, optionForceIPv6}
+	case "split_chapters":
+		return []*Option{optionSplitChapters, optionNoSplitChapters}
+	case "sponsorblock_api":
+		return []*Option{optionSponsorblockAPI}
+	case "sponsorblock_chapter_title":
+		return []*Option{optionSponsorblockChapterTitle}
+	case "sponsorblock_mark":
+		return []*Option{optionSponsorblockMark}
+	case "sponsorblock_remove":
+		return []*Option{optionSponsorblockRemove}
+	case "subtitlesformat":
+		return []*Option{optionSubFormat}
+	case "subtitleslangs":
+		return []*Option{optionSubLangs}
+	case "throttledratelimit":
+		return []*Option{optionThrottledRate}
+	case "trim_file_name":
+		return []*Option{optionTrimFilenames}
+	case "twofactor":
+		return []*Option{optionTwoFactor}
+	case "update_self":
+		return []*Option{optionUpdate, optionNoUpdate, optionUpdateTo}
+	case "updatetime":
+		return []*Option{optionMtime, optionNoMtime}
+	case "useid":
+		return []*Option{optionID}
+	case "usenetrc":
+		return []*Option{optionNetrc}
+	case "user_agent":
+		return []*Option{optionUserAgent}
+	case "username":
+		return []*Option{optionUsername}
+	case "verbose":
+		return []*Option{optionVerbose}
+	case "version":
+		return []*Option{optionVersion}
+	case "videopassword":
+		return []*Option{optionVideoPassword}
+	case "wait_for_video":
+		return []*Option{optionWaitForVideo, optionNoWaitForVideo}
+	case "windowsfilenames":
+		return []*Option{optionWindowsFilenames, optionNoWindowsFilenames}
+	case "write_pages":
+		return []*Option{optionWritePages}
+	case "writeautomaticsub":
+		return []*Option{optionWriteAutoSubs, optionNoWriteAutoSubs}
+	case "writedescription":
+		return []*Option{optionWriteDescription, optionNoWriteDescription}
+	case "writedesktoplink":
+		return []*Option{optionWriteDesktopLink}
+	case "writeinfojson":
+		return []*Option{optionWriteInfoJSON, optionNoWriteInfoJSON}
+	case "writelink":
+		return []*Option{optionWriteLink}
+	case "writesubtitles":
+		return []*Option{optionWriteSubs, optionNoWriteSubs}
+	case "writethumbnail":
+		return []*Option{optionWriteThumbnail, optionNoWriteThumbnail, optionWriteAllThumbnails}
+	case "writeurllink":
+		return []*Option{optionWriteURLLink}
+	case "writewebloclink":
+		return []*Option{optionWriteWeblocLink}
+	case "xattrs":
+		return []*Option{optionXattrs}
+	default:
+		return nil
+	}
+}
+
 // Underlying options.
 var (
 	optionVersion = &Option{
@@ -937,6 +1937,7 @@ var (
 		Type:           "string",
 		LongFlags:      []string{"--js-runtimes"},
 		NArgs:          1,
+		NoOverride:     true,
 	}
 	optionNoJsRuntimes = &Option{
 		ID:             "js_runtimes",
@@ -949,6 +1950,7 @@ var (
 		Help:           "Clear JavaScript runtimes to enable, including defaults and those provided by previous --js-runtimes",
 		Type:           "bool",
 		LongFlags:      []string{"--no-js-runtimes"},
+		NoOverride:     true,
 	}
 	optionRemoteComponents = &Option{
 		ID:             "remote_components",

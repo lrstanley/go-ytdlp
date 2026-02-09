@@ -25,16 +25,23 @@ type OptionURL struct {
 }
 
 type OptionData struct {
-	Channel      string        `json:"channel"`
-	Version      string        `json:"version"`
-	OptionGroups []OptionGroup `json:"option_groups"`
-	Extractors   []Extractor   `json:"extractors"`
+	Channel      string               `json:"channel"`
+	Version      string               `json:"version"`
+	OptionGroups []OptionGroup        `json:"option_groups"`
+	OptionIDs    map[string][]*Option `json:"option_ids"`
+	Extractors   []Extractor          `json:"extractors"`
 }
 
 func (c *OptionData) Generate() {
 	for i := range c.OptionGroups {
 		c.OptionGroups[i].Generate(c)
 		slog.Info("generated option group", "group", c.OptionGroups[i].Name)
+	}
+
+	for _, g := range c.OptionGroups {
+		for _, o := range g.Options {
+			c.OptionIDs[o.ID] = append(c.OptionIDs[o.ID], &o)
+		}
 	}
 }
 

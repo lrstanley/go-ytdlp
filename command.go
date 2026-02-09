@@ -195,6 +195,7 @@ func toMap(env []string) map[string]string {
 func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	var cmdArgs []string
 
+	c.mu.RLock()
 	if bunResolveCache.Load() != nil && len(c.flagConfig.General.JsRuntimes) == 0 && c.flagConfig.General.NoJsRuntimes == nil {
 		// Explicitly disable other options, and enable bun since they installed bun
 		// through our install cache.
@@ -210,7 +211,6 @@ func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	var name string
 	var err error
 
-	c.mu.RLock()
 	name = c.executable
 
 	if name == "" {

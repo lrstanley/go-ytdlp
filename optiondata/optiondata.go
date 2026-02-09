@@ -63,6 +63,8 @@ type Option struct {
 	ShortFlags []string `json:"short_flags"`
 	// NArgs is the number of arguments the option accepts.
 	NArgs int `json:"nargs"`
+	// NoOverride is true if the option should not override other flags with the same ID.
+	NoOverride bool `json:"no_override"`
 }
 
 type OptionURL struct {
