@@ -1,8 +1,8 @@
 module github.com/lrstanley/go-ytdlp
 
-go 1.24.0
+go 1.25.0
 
-toolchain go1.24.4
+toolchain go1.26.0
 
 require (
 	github.com/ProtonMail/go-crypto v1.3.0
@@ -11,7 +11,7 @@ require (
 
 require (
 	github.com/cloudflare/circl v1.6.3 // indirect
-	golang.org/x/crypto v0.47.0 // indirect
+	golang.org/x/crypto v0.48.0 // indirect
 	golang.org/x/sys v0.41.0 // indirect
 )
 

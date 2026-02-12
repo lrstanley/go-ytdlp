@@ -1575,20 +1575,6 @@
         {
           "if": {
             "required": [
-              "no_js_runtimes"
-            ]
-          },
-          "then": {
-            "not": {
-              "required": [
-                "js_runtimes"
-              ]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": [
               "live_from_start"
             ]
           },

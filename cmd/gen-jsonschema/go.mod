@@ -1,6 +1,6 @@
 module github.com/lrstanley/go-ytdlp/cmd/gen-jsonschema
 
-go 1.24.4
+go 1.26.0
 
 replace github.com/lrstanley/go-ytdlp => ../..
 
@@ -18,7 +18,7 @@ require (
 	github.com/mailru/easyjson v0.9.1 // indirect
 	github.com/ulikunitz/xz v0.5.15 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
-	golang.org/x/crypto v0.47.0 // indirect
+	golang.org/x/crypto v0.48.0 // indirect
 	golang.org/x/sys v0.41.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

@@ -79,7 +79,7 @@ func main() {
 			for _, prop := range propMap.Props {
 				var disallowsOverride bool
 
-				for _, opt := range optiondata.FindByID(prop) {
+				for _, opt := range optiondata.FindByID(propMap.UID) {
 					if opt.NoOverride {
 						disallowsOverride = true
 						break

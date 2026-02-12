@@ -177,15 +177,19 @@ started without manually installing these dependencies, and ensures the correct 
 
 | OS/Arch       | bun Download Source                                                            |
 |---------------|--------------------------------------------------------------------------------|
-| darwin_amd64  | https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-x64.zip     |
-| darwin_arm64  | https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-aarch64.zip |
-| linux_amd64   | https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip      |
-| linux_arm64   | https://github.com/oven-sh/bun/releases/latest/download/bun-linux-aarch64.zip  |
-| windows_amd64 | https://github.com/oven-sh/bun/releases/latest/download/bun-windows-x64.zip    |
+| darwin_amd64  | https://github.com/oven-sh/bun |
+| darwin_arm64  | https://github.com/oven-sh/bun |
+| linux_amd64   | https://github.com/oven-sh/bun |
+| linux_arm64   | https://github.com/oven-sh/bun |
+| windows_amd64 | https://github.com/oven-sh/bun |
 
 #### Using a different JS runtime
 
-Multiple JavaScript runtimes are supported by yt-dlp, but they are disabled by default. You can add a different runtime to the list of enabled ones using `.JsRuntimes("node")` or clear the list using `.NoJsRuntimes()`. If no options are set, bun will be [enabled by default](command.go#L198).
+Multiple JavaScript runtimes are supported by **yt-dlp**, in the same way that **yt-dlp** itself handles
+multiple runtimes. However, when using `[Must]InstallAll` (or `[Must]InstallBun`), it will automatically
+enable [Bun](https://bun.com/) by default (and explicitly disable other runtimes). **yt-dlp** prefers
+[Deno](https://deno.com/) over Bun, however, Deno still doesn't support musl-based linux distros (like
+Alpine Linux uses) yet.
 
 Refer to the [official documentation](https://github.com/yt-dlp/yt-dlp/wiki/EJS) for more information.
 

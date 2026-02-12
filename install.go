@@ -105,9 +105,7 @@ func InstallAll(ctx context.Context) ([]*ResolvedInstall, error) {
 	var installs []*ResolvedInstall
 	var errs []error
 
-	wg.Add(1) // TODO: change these to use wg.Go when we upgrade to go 1.25+.
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		r, err := Install(ctx, nil)
 		if err != nil {
 			mu.Lock()
@@ -118,11 +116,9 @@ func InstallAll(ctx context.Context) ([]*ResolvedInstall, error) {
 		mu.Lock()
 		installs = append(installs, r)
 		mu.Unlock()
-	}()
+	})
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		r, err := InstallFFmpeg(ctx, nil)
 		if err != nil {
 			mu.Lock()
@@ -133,11 +129,9 @@ func InstallAll(ctx context.Context) ([]*ResolvedInstall, error) {
 		mu.Lock()
 		installs = append(installs, r)
 		mu.Unlock()
-	}()
+	})
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		r, err := InstallFFprobe(ctx, nil)
 		if err != nil {
 			mu.Lock()
@@ -148,11 +142,9 @@ func InstallAll(ctx context.Context) ([]*ResolvedInstall, error) {
 		mu.Lock()
 		installs = append(installs, r)
 		mu.Unlock()
-	}()
+	})
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		r, err := InstallBun(ctx, nil)
 		if err != nil {
 			mu.Lock()
@@ -163,7 +155,7 @@ func InstallAll(ctx context.Context) ([]*ResolvedInstall, error) {
 		mu.Lock()
 		installs = append(installs, r)
 		mu.Unlock()
-	}()
+	})
 
 	wg.Wait()
 
