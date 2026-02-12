@@ -13,7 +13,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -27,50 +26,19 @@ var (
 	ytdlpInstallLock  sync.Mutex
 
 	ytdlpBinConfigs = map[string]struct {
-		src  string
-		dest []string
+		sourceBinary string
+		binaries     []string
 	}{
-		"darwin_amd64":  {"yt-dlp_macos", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"darwin_arm64":  {"yt-dlp_macos", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"linux_amd64":   {"yt-dlp_linux", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"linux_arm64":   {"yt-dlp_linux_aarch64", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"linux_armv7l":  {"yt-dlp_linux_armv7l", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"linux_unknown": {"yt-dlp", []string{"yt-dlp-" + Version, "yt-dlp"}},
-		"windows_amd64": {"yt-dlp.exe", []string{"yt-dlp-" + Version + ".exe", "yt-dlp.exe"}},
+		"darwin_amd64":     {"yt-dlp_macos", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"darwin_arm64":     {"yt-dlp_macos", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"linux_amd64":      {"yt-dlp_linux", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"linux_musl_amd64": {"yt-dlp_musllinux", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"linux_arm64":      {"yt-dlp_linux_aarch64", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"linux_armv7l":     {"yt-dlp_linux_armv7l", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"linux_unknown":    {"yt-dlp", []string{"yt-dlp-" + Version, "yt-dlp"}},
+		"windows_amd64":    {"yt-dlp.exe", []string{"yt-dlp-" + Version + ".exe", "yt-dlp.exe"}},
 	}
 )
-
-// ytdlpGetDownloadBinary returns the source and destination binary names for the
-// current runtime. If the current runtime is not supported, an error is
-// returned. dest will always be returned (it will be an assumption).
-func ytdlpGetDownloadBinary() (src string, dest []string, err error) {
-	src = runtime.GOOS + "_" + runtime.GOARCH
-	if binary, ok := ytdlpBinConfigs[src]; ok {
-		return binary.src, binary.dest, nil
-	}
-
-	if runtime.GOOS == "linux" {
-		return ytdlpBinConfigs["linux_unknown"].src, ytdlpBinConfigs["linux_unknown"].dest, nil
-	}
-
-	var supported []string
-	for k := range ytdlpBinConfigs {
-		supported = append(supported, k)
-	}
-
-	if runtime.GOOS == "windows" {
-		dest = []string{"yt-dlp.exe"}
-	} else {
-		dest = []string{"yt-dlp"}
-	}
-
-	return "", dest, fmt.Errorf(
-		"unsupported os/arch combo: %s/%s (supported: %s)",
-		runtime.GOOS,
-		runtime.GOARCH,
-		strings.Join(supported, ", "),
-	)
-}
 
 // InstallOptions are configuration options for installing yt-dlp dynamically (when
 // it's not already installed).
@@ -123,8 +91,12 @@ func Install(ctx context.Context, opts *InstallOptions) (*ResolvedInstall, error
 	ytdlpInstallLock.Lock()
 	defer ytdlpInstallLock.Unlock()
 
-	_, binaries, _ := ytdlpGetDownloadBinary() // don't check error yet.
-	resolved, err := resolveExecutable(ctx, false, opts.DisableSystem, binaries)
+	config, err := getBinaryConfig(ytdlpBinConfigs)
+	if err != nil {
+		return nil, err
+	}
+
+	resolved, err := resolveExecutable(ctx, false, opts.DisableSystem, config.binaries)
 	if err == nil {
 		if resolved.Version == "" {
 			err = ytdlpGetVersion(ctx, resolved)
@@ -154,15 +126,9 @@ func Install(ctx context.Context, opts *InstallOptions) (*ResolvedInstall, error
 		return nil, errors.New("yt-dlp executable not found, and downloading is disabled")
 	}
 
-	src, dest, err := ytdlpGetDownloadBinary()
-	if err != nil {
-		return nil, err
-	}
-
 	downloadURL := opts.DownloadURL
-
 	if downloadURL == "" {
-		downloadURL = ytdlpGithubReleaseAsset(src)
+		downloadURL = ytdlpGithubReleaseAsset(config.sourceBinary)
 	}
 
 	// Prepare cache directory.
@@ -171,7 +137,7 @@ func Install(ctx context.Context, opts *InstallOptions) (*ResolvedInstall, error
 		return nil, err
 	}
 
-	_, err = downloadFile(ctx, downloadURL, dir, filepath.Join(dir, dest[0]+".tmp"), 0o700) //nolint:gomnd
+	_, err = downloadFile(ctx, downloadURL, dir, filepath.Join(dir, config.binaries[0]+".tmp"), 0o700) //nolint:gomnd
 	if err != nil {
 		return nil, err
 	}
@@ -203,8 +169,8 @@ func Install(ctx context.Context, opts *InstallOptions) (*ResolvedInstall, error
 			ctx,
 			filepath.Join(dir, "SHA2-256SUMS-"+Version),
 			filepath.Join(dir, "SHA2-256SUMS-"+Version+".sig"),
-			filepath.Join(dir, dest[0]+".tmp"),
-			src,
+			filepath.Join(dir, config.binaries[0]+".tmp"),
+			config.sourceBinary,
 		)
 		if err != nil {
 			return nil, err
@@ -212,13 +178,13 @@ func Install(ctx context.Context, opts *InstallOptions) (*ResolvedInstall, error
 	}
 
 	// Rename the file to the correct name.
-	err = os.Rename(filepath.Join(dir, dest[0]+".tmp"), filepath.Join(dir, dest[0]))
+	err = os.Rename(filepath.Join(dir, config.binaries[0]+".tmp"), filepath.Join(dir, config.binaries[0]))
 	if err != nil {
 		return nil, fmt.Errorf("unable to rename yt-dlp executable: %w", err)
 	}
 
 	// re-resolve now that we've downloaded the binary, and validated things.
-	resolved, err = resolveExecutable(ctx, true, opts.DisableSystem, binaries)
+	resolved, err = resolveExecutable(ctx, true, opts.DisableSystem, config.binaries)
 	if err != nil {
 		return nil, err
 	}

@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -23,31 +22,35 @@ var (
 
 	bunBinConfigs = map[string]bunBinConfig{
 		"darwin_amd64": {
-			url: "https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-x64.zip",
-			bun: "bun",
+			url:    "https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-x64.zip",
+			binary: "bun",
 		},
 		"darwin_arm64": {
-			url: "https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-aarch64.zip",
-			bun: "bun",
+			url:    "https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-aarch64.zip",
+			binary: "bun",
 		},
 		"linux_amd64": {
-			url: "https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip",
-			bun: "bun",
+			url:    "https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip",
+			binary: "bun",
+		},
+		"linux_musl_amd64": {
+			url:    "https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64-musl.zip",
+			binary: "bun",
 		},
 		"linux_arm64": {
-			url: "https://github.com/oven-sh/bun/releases/latest/download/bun-linux-aarch64.zip",
-			bun: "bun",
+			url:    "https://github.com/oven-sh/bun/releases/latest/download/bun-linux-aarch64.zip",
+			binary: "bun",
 		},
 		"windows_amd64": {
-			url: "https://github.com/oven-sh/bun/releases/latest/download/bun-windows-x64.zip",
-			bun: "bun.exe",
+			url:    "https://github.com/oven-sh/bun/releases/latest/download/bun-windows-x64.zip",
+			binary: "bun.exe",
 		},
 	}
 )
 
 type bunBinConfig struct {
-	url string
-	bun string
+	url    string
+	binary string
 }
 
 type InstallBunOptions struct {
@@ -73,10 +76,10 @@ func MustInstallBun(ctx context.Context, opts *InstallBunOptions) {
 }
 
 // InstallBun will attempt to download and install bun for the current platform.
-// If the binary is already installed or found in the PATH, it will return the resolved
-// binary unless [InstallBunOptions.DisableSystem] is set to true. Note that
-// downloading of bun is only supported on a handful of platforms, and so
-// it is still recommended to install bun via other means.
+// If the binary is already installed or found in the PATH, it will return the
+// resolved binary unless [InstallBunOptions.DisableSystem] is set to true. Note
+// that downloading of bun is only supported on a handful of platforms, and so it
+// is still recommended to install bun via other means.
 func InstallBun(ctx context.Context, opts *InstallBunOptions) (*ResolvedInstall, error) {
 	bunInstallLock.Lock()
 	defer bunInstallLock.Unlock()
@@ -89,8 +92,12 @@ func InstallBun(ctx context.Context, opts *InstallBunOptions) (*ResolvedInstall,
 		return cached, nil
 	}
 
-	_, binaries, _ := bunGetDownloadBinary() // don't check error yet.
-	resolved, err := resolveExecutable(ctx, false, opts.DisableSystem, binaries)
+	config, err := getBinaryConfig(bunBinConfigs)
+	if err != nil {
+		return nil, err
+	}
+
+	resolved, err := resolveExecutable(ctx, false, opts.DisableSystem, []string{config.binary})
 	if err == nil {
 		if resolved.Version == "" {
 			err = bunGetVersion(ctx, resolved)
@@ -98,7 +105,6 @@ func InstallBun(ctx context.Context, opts *InstallBunOptions) (*ResolvedInstall,
 				return nil, err
 			}
 		}
-
 		bunResolveCache.Store(resolved)
 		return resolved, nil
 	}
@@ -107,7 +113,6 @@ func InstallBun(ctx context.Context, opts *InstallBunOptions) (*ResolvedInstall,
 		return nil, errors.New("bun binary not found, and downloading is disabled")
 	}
 
-	// Download and install bun.
 	resolved, err = downloadAndInstallBun(ctx, opts)
 	if err != nil {
 		return nil, err
@@ -118,14 +123,9 @@ func InstallBun(ctx context.Context, opts *InstallBunOptions) (*ResolvedInstall,
 }
 
 func downloadAndInstallBun(ctx context.Context, opts *InstallBunOptions) (*ResolvedInstall, error) {
-	src, destBinaries, err := bunGetDownloadBinary()
+	config, err := getBinaryConfig(bunBinConfigs)
 	if err != nil {
 		return nil, err
-	}
-
-	config, ok := bunBinConfigs[src]
-	if !ok {
-		return nil, fmt.Errorf("no bun download configuration for %s", src)
 	}
 
 	cacheDir, err := createCacheDir(ctx)
@@ -138,10 +138,10 @@ func downloadAndInstallBun(ctx context.Context, opts *InstallBunOptions) (*Resol
 		downloadURL = config.url
 	}
 
-	destPath := filepath.Join(cacheDir, destBinaries[0])
+	destPath := filepath.Join(cacheDir, config.binary)
 
 	// Download and extract archive.
-	err = downloadAndExtractFilesFromArchive(ctx, downloadURL, cacheDir, []string{config.bun})
+	err = downloadAndExtractFilesFromArchive(ctx, downloadURL, cacheDir, []string{config.binary})
 	if err != nil {
 		return nil, fmt.Errorf("failed to download and extract bun archive: %w", err)
 	}
@@ -151,31 +151,6 @@ func downloadAndInstallBun(ctx context.Context, opts *InstallBunOptions) (*Resol
 		FromCache:  false,
 		Downloaded: true,
 	}, nil
-}
-
-func bunGetDownloadBinary() (src string, dest []string, err error) {
-	src = runtime.GOOS + "_" + runtime.GOARCH
-	if binary, ok := bunBinConfigs[src]; ok {
-		return src, []string{binary.bun}, nil
-	}
-
-	var supported []string
-	for k := range bunBinConfigs {
-		supported = append(supported, k)
-	}
-
-	if runtime.GOOS == "windows" {
-		dest = []string{"bun.exe"}
-	} else {
-		dest = []string{"bun"}
-	}
-
-	return src, dest, fmt.Errorf(
-		"unsupported os/arch combo: %s/%s (supported: %s)",
-		runtime.GOOS,
-		runtime.GOARCH,
-		strings.Join(supported, ", "),
-	)
 }
 
 func bunGetVersion(ctx context.Context, r *ResolvedInstall) error {

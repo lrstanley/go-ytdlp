@@ -214,15 +214,15 @@ func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	name = c.executable
 
 	if name == "" {
-		r := ytdlpResolveCache.Load()
-		if r == nil {
-			_, binaries, _ := ytdlpGetDownloadBinary() // don't check error yet.
-			r, err = resolveExecutable(ctx, false, false, binaries)
-			if err == nil {
-				name = r.Executable
-			}
-		} else {
+		if r := ytdlpResolveCache.Load(); r != nil {
 			name = r.Executable
+		} else {
+			if config, _ := getBinaryConfig(ytdlpBinConfigs); config != nil {
+				r, err = resolveExecutable(ctx, false, false, config.binaries)
+				if err == nil {
+					name = r.Executable
+				}
+			}
 		}
 	}
 

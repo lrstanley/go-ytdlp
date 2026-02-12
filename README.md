@@ -165,13 +165,14 @@ started without manually installing these dependencies, and ensures the correct 
 
 ### ffmpeg & ffprobe
 
-| OS/Arch       | ffmpeg/ffprobe Download Source          |
-|---------------|-----------------------------------------|
-| darwin_amd64  | https://evermeet.cx/ffmpeg/             |
-| linux_amd64   | https://github.com/yt-dlp/FFmpeg-Builds |
-| linux_arm64   | https://github.com/yt-dlp/FFmpeg-Builds |
-| windows_amd64 | https://github.com/yt-dlp/FFmpeg-Builds |
-| windows_arm   | https://github.com/yt-dlp/FFmpeg-Builds |
+| OS/Arch       | ffmpeg/ffprobe Download Source         |
+|---------------|----------------------------------------|
+| darwin_amd64  | https://evermeet.cx/ffmpeg/            |
+| darwin_arm64  | https://www.osxexperts.net/            |
+| linux_amd64   | https://github.com/BtbN/FFmpeg-Builds/ |
+| linux_arm64   | https://github.com/BtbN/FFmpeg-Builds/ |
+| windows_amd64 | https://github.com/BtbN/FFmpeg-Builds/ |
+| windows_arm   | https://github.com/BtbN/FFmpeg-Builds/ |
 
 ### bun
 

@@ -20,6 +20,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 	"time"
@@ -32,6 +33,48 @@ const (
 	xdgCacheDir     = "go-ytdlp"       // Cache directory that will be appended to the XDG cache directory.
 	downloadTimeout = 30 * time.Second // HTTP timeout for downloading the yt-dlp binary.
 )
+
+// supportsMusl checks if the OS is MUSL based, using "ldd" on "/bin/ls" to see
+// if it's a MUSL binary. This is not a great solution, but there isn't really
+// a great alternative.
+var supportsMusl = sync.OnceValue(func() bool {
+	if runtime.GOOS != "linux" {
+		return false
+	}
+	out, err := exec.Command("ldd", "/bin/ls").Output()
+	if err == nil && strings.Contains(string(out), "musl") {
+		return true
+	}
+	return false
+})
+
+// getBinaryConfig returns the binary configuration for the current runtime.
+// If the current runtime is not supported/found, nil is returned.
+func getBinaryConfig[T any](cfg map[string]T) (*T, error) {
+	var configSupportsMusl bool
+	for k := range cfg {
+		if strings.Contains(k, "musl") {
+			configSupportsMusl = true
+			break
+		}
+	}
+
+	if runtime.GOOS == "linux" && configSupportsMusl && supportsMusl() {
+		if binary, ok := cfg[runtime.GOOS+"_musl_"+runtime.GOARCH]; ok {
+			return &binary, nil
+		}
+	}
+
+	if binary, ok := cfg[runtime.GOOS+"_"+runtime.GOARCH]; ok {
+		return &binary, nil
+	}
+
+	if binary, ok := cfg[runtime.GOOS+"_unknown"]; ok {
+		return &binary, nil
+	}
+
+	return nil, fmt.Errorf("no binary configuration for %s", runtime.GOOS+"_"+runtime.GOARCH)
+}
 
 // GetCacheDir returns the cache directory for go-ytdlp. Note that it may not be created yet.
 func GetCacheDir() (string, error) {
@@ -250,17 +293,8 @@ func downloadAndExtractFilesFromArchive(ctx context.Context, downloadURL, cacheD
 // extractFilesFromArchive extracts the specified files from the given archive (zip, tar.xz) into cacheDir.
 // The archive type is detected from the file extension.
 func extractFilesFromArchive(ctx context.Context, archivePath, cacheDir string, filenames []string) error {
-	var archiveType string
-	if strings.HasSuffix(archivePath, ".zip") {
-		archiveType = "zip"
-	} else if strings.HasSuffix(archivePath, ".tar.xz") {
-		archiveType = "tar.xz"
-	} else {
-		return fmt.Errorf("unsupported archive format for file: %s", archivePath)
-	}
-
-	switch archiveType {
-	case "zip":
+	switch {
+	case strings.HasSuffix(archivePath, ".zip"):
 		debug(
 			ctx, "extracting zip archive",
 			"archive", archivePath,
@@ -305,7 +339,7 @@ func extractFilesFromArchive(ctx context.Context, archivePath, cacheDir string, 
 			}
 		}
 		return nil
-	case "tar.xz":
+	case strings.HasSuffix(archivePath, ".tar.xz"):
 		debug(
 			ctx, "extracting tar.xz archive",
 			"archive", archivePath,
@@ -355,7 +389,7 @@ func extractFilesFromArchive(ctx context.Context, archivePath, cacheDir string, 
 		}
 		return nil
 	default:
-		return fmt.Errorf("unsupported archive type: %s", archiveType)
+		return fmt.Errorf("unsupported archive format for file: %s", archivePath)
 	}
 }
 
