@@ -293,7 +293,7 @@ var ffmpegVersionRegex = regexp.MustCompile(`^(?:ffmpeg|ffprobe) version ([^ ]+)
 func ffGetVersion(ctx context.Context, r *ResolvedInstall) error {
 	var stdout bytes.Buffer
 
-	cmd := exec.Command(r.Executable, "-version") //nolint:gosec
+	cmd := exec.CommandContext(ctx, r.Executable, "-version") //nolint:gosec
 	cmd.Stdout = &stdout
 	applySyscall(cmd, false)
 

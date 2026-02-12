@@ -172,7 +172,7 @@ func toMap(env []string) map[string]string {
 		if runtime.GOOS == "windows" {
 			// On Windows, env vars can start with "=".
 			prefix := false
-			if len(e) > 0 && e[0] == '=' {
+			if e != "" && e[0] == '=' {
 				e = e[1:]
 				prefix = true
 			}

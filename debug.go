@@ -18,5 +18,5 @@ func debug(ctx context.Context, msg string, args ...any) {
 	if !debug {
 		return
 	}
-	debugLogger.DebugContext(ctx, msg, args...)
+	debugLogger.DebugContext(ctx, msg, args...) //nolint:sloglint
 }

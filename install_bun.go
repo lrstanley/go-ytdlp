@@ -156,7 +156,7 @@ func downloadAndInstallBun(ctx context.Context, opts *InstallBunOptions) (*Resol
 func bunGetVersion(ctx context.Context, r *ResolvedInstall) error {
 	var stdout bytes.Buffer
 
-	cmd := exec.Command(r.Executable, "--version") //nolint:gosec
+	cmd := exec.CommandContext(ctx, r.Executable, "--version") //nolint:gosec
 	cmd.Stdout = &stdout
 	applySyscall(cmd, false)
 

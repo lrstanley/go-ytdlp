@@ -2,6 +2,7 @@
 // this source code is governed by the MIT license that can be found in
 // the LICENSE file.
 
+//nolint:errname
 package ytdlp
 
 import (
@@ -54,7 +55,7 @@ func (e *ErrExitCode) Error() string {
 // IsExitCodeError returns true when the exit code of the yt-dlp process is non-zero.
 func IsExitCodeError(err error) (*ErrExitCode, bool) {
 	var e *ErrExitCode
-	return e, errors.As(err, &e)
+	return e, errors.As(err, &e) //nolint:gocritic
 }
 
 // ErrMisconfig is returned when the yt-dlp executable is not found, or is not
@@ -76,7 +77,7 @@ func (e *ErrMisconfig) Error() string {
 // configured properly.
 func IsMisconfigError(err error) (*ErrMisconfig, bool) {
 	var e *ErrMisconfig
-	return e, errors.As(err, &e)
+	return e, errors.As(err, &e) //nolint:gocritic
 }
 
 // ErrParsing is returned when the yt-dlp process fails due to an invalid flag or
@@ -103,7 +104,7 @@ func (e *ErrParsing) Error() string {
 // argument, possibly due to a version mismatch or go-ytdlp bug.
 func IsParsingError(err error) (*ErrParsing, bool) {
 	var e *ErrParsing
-	return e, errors.As(err, &e)
+	return e, errors.As(err, &e) //nolint:gocritic
 }
 
 // ErrUnknown is returned when the error is unknown according to go-ytdlp.
@@ -122,7 +123,7 @@ func (e *ErrUnknown) Error() string {
 // IsUnknownError returns true when the error is unknown according to go-ytdlp.
 func IsUnknownError(err error) (*ErrUnknown, bool) {
 	var e *ErrUnknown
-	return e, errors.As(err, &e)
+	return e, errors.As(err, &e) //nolint:gocritic
 }
 
 type ErrJSONParsingFlag struct {
@@ -149,7 +150,7 @@ func (e *ErrJSONParsingFlag) Error() string {
 // IsJSONParsingFlagError returns true when the error is a JSON parsing error.
 func IsJSONParsingFlagError(err error) (*ErrJSONParsingFlag, bool) {
 	var e *ErrJSONParsingFlag
-	return e, errors.As(err, &e)
+	return e, errors.As(err, &e) //nolint:gocritic
 }
 
 type ErrMultipleJSONParsingFlags struct {
@@ -162,5 +163,5 @@ func (e *ErrMultipleJSONParsingFlags) Error() string {
 
 func IsMultipleJSONParsingFlagsError(err error) (*ErrMultipleJSONParsingFlags, bool) {
 	var e *ErrMultipleJSONParsingFlags
-	return e, errors.As(err, &e)
+	return e, errors.As(err, &e) //nolint:gocritic
 }

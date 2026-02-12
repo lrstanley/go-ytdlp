@@ -30,8 +30,9 @@ import (
 )
 
 const (
-	xdgCacheDir     = "go-ytdlp"       // Cache directory that will be appended to the XDG cache directory.
-	downloadTimeout = 30 * time.Second // HTTP timeout for downloading the yt-dlp binary.
+	xdgCacheDir          = "go-ytdlp"         // Cache directory that will be appended to the XDG cache directory.
+	maxArtifactSizeBytes = 1000 * 1024 * 1024 // 1GB -- unlikely anything to be this size, but prevents most DoS vulnerabilities (e.g. zip bombs).
+	downloadTimeout      = 30 * time.Second   // HTTP timeout for downloading the yt-dlp binary.
 )
 
 // supportsMusl checks if the OS is MUSL based, using "ldd" on "/bin/ls" to see
@@ -41,10 +42,18 @@ var supportsMusl = sync.OnceValue(func() bool {
 	if runtime.GOOS != "linux" {
 		return false
 	}
-	out, err := exec.Command("ldd", "/bin/ls").Output()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	cmd := exec.CommandContext(ctx, "ldd", "/bin/ls")
+	cmd.WaitDelay = 1 * time.Second
+
+	out, err := cmd.Output()
 	if err == nil && strings.Contains(string(out), "musl") {
 		return true
 	}
+
 	return false
 })
 
@@ -113,11 +122,13 @@ func createCacheDir(ctx context.Context) (string, error) {
 		return "", err
 	}
 
-	if _, err := os.Stat(cacheDir); os.IsNotExist(err) {
+	_, err = os.Stat(cacheDir)
+	if os.IsNotExist(err) {
 		debug(ctx, "cache directory does not exist, creating", "path", cacheDir)
 	}
 
-	if err := os.MkdirAll(cacheDir, 0o750); err != nil {
+	err = os.MkdirAll(cacheDir, 0o750)
+	if err != nil {
 		return "", fmt.Errorf("unable to create cache directory: %w", err)
 	}
 
@@ -140,9 +151,9 @@ func InstallAll(ctx context.Context) ([]*ResolvedInstall, error) {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 
-	_, err := createCacheDir(ctx)
-	if err != nil {
-		return nil, err
+	_, cerr := createCacheDir(ctx)
+	if cerr != nil {
+		return nil, cerr
 	}
 
 	var installs []*ResolvedInstall
@@ -241,7 +252,9 @@ func downloadFile(ctx context.Context, url, targetDir, targetName string, perms 
 	if targetName != "" {
 		dest = targetName
 	} else {
-		disposition, params, err := mime.ParseMediaType(resp.Header.Get("Content-Disposition"))
+		var disposition string
+		var params map[string]string
+		disposition, params, err = mime.ParseMediaType(resp.Header.Get("Content-Disposition"))
 		if err != nil {
 			return "", fmt.Errorf("unable to parse content disposition: %w", err)
 		}
@@ -250,7 +263,7 @@ func downloadFile(ctx context.Context, url, targetDir, targetName string, perms 
 		}
 
 		if params["filename"] == "" {
-			return "", fmt.Errorf("no filename in content disposition")
+			return "", errors.New("no filename in content disposition")
 		}
 
 		dest = filepath.Join(targetDir, params["filename"])
@@ -265,7 +278,7 @@ func downloadFile(ctx context.Context, url, targetDir, targetName string, perms 
 	}
 	defer f.Close()
 
-	_, err = f.ReadFrom(resp.Body)
+	_, err = io.Copy(f, io.LimitReader(resp.Body, maxArtifactSizeBytes))
 	if err != nil {
 		return "", fmt.Errorf("unable to download go-ytdlp dependent file %q: streaming data: %w", dest, err)
 	}
@@ -292,7 +305,7 @@ func downloadAndExtractFilesFromArchive(ctx context.Context, downloadURL, cacheD
 
 // extractFilesFromArchive extracts the specified files from the given archive (zip, tar.xz) into cacheDir.
 // The archive type is detected from the file extension.
-func extractFilesFromArchive(ctx context.Context, archivePath, cacheDir string, filenames []string) error {
+func extractFilesFromArchive(ctx context.Context, archivePath, cacheDir string, filenames []string) error { //nolint:gocognit
 	switch {
 	case strings.HasSuffix(archivePath, ".zip"):
 		debug(
@@ -310,31 +323,48 @@ func extractFilesFromArchive(ctx context.Context, archivePath, cacheDir string, 
 
 		for _, file := range reader.File {
 			for _, name := range filenames {
-				if strings.HasSuffix(file.Name, "/"+name) || strings.HasSuffix(file.Name, "\\"+name) || file.Name == name {
-					rc, err := file.Open()
-					if err != nil {
-						return err
-					}
-					defer rc.Close()
+				if !strings.HasSuffix(file.Name, "/"+name) && !strings.HasSuffix(file.Name, "\\"+name) && file.Name != name {
+					continue
+				}
 
-					debug(
-						ctx, "extracting file",
-						"archive", archivePath,
-						"cache", cacheDir,
-						"filenames", filenames,
-						"name", name,
-					)
+				var rc io.ReadCloser
+				rc, err = file.Open()
+				if err != nil {
+					_ = rc.Close()
+					return err
+				}
 
-					outFile, err := os.OpenFile(filepath.Join(cacheDir, name), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o755)
-					if err != nil {
-						return err
-					}
-					defer outFile.Close()
+				debug(
+					ctx, "extracting file",
+					"archive", archivePath,
+					"cache", cacheDir,
+					"filenames", filenames,
+					"name", name,
+				)
 
-					_, err = io.Copy(outFile, rc)
-					if err != nil {
-						return err
-					}
+				var outFile *os.File
+				outFile, err = os.OpenFile(filepath.Join(cacheDir, name), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o755) //nolint:gosec
+				if err != nil {
+					_ = rc.Close()
+					return err
+				}
+
+				_, err = io.Copy(outFile, io.LimitReader(rc, maxArtifactSizeBytes))
+				if err != nil {
+					_ = rc.Close()
+					_ = outFile.Close()
+					return err
+				}
+
+				err = rc.Close()
+				if err != nil {
+					_ = outFile.Close()
+					return err
+				}
+
+				err = outFile.Close()
+				if err != nil {
+					return err
 				}
 			}
 		}
@@ -361,9 +391,11 @@ func extractFilesFromArchive(ctx context.Context, archivePath, cacheDir string, 
 
 		tarReader := tar.NewReader(xzReader)
 
+		var header *tar.Header
+
 		for {
-			header, err := tarReader.Next()
-			if err == io.EOF {
+			header, err = tarReader.Next()
+			if errors.Is(err, io.EOF) {
 				break
 			}
 			if err != nil {
@@ -371,19 +403,33 @@ func extractFilesFromArchive(ctx context.Context, archivePath, cacheDir string, 
 			}
 
 			for _, name := range filenames {
-				if strings.HasSuffix(header.Name, "/"+name) || header.Name == name {
-					debug(ctx, "extracting file", "archivePath", archivePath, "cacheDir", cacheDir, "filenames", filenames, "name", name)
+				if !strings.HasSuffix(header.Name, "/"+name) && header.Name != name {
+					continue
+				}
 
-					outFile, err := os.OpenFile(filepath.Join(cacheDir, name), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o755)
-					if err != nil {
-						return err
-					}
-					defer outFile.Close()
+				debug(
+					ctx, "extracting file",
+					"archivePath", archivePath,
+					"cacheDir", cacheDir,
+					"filenames", filenames,
+					"name", name,
+				)
 
-					_, err = io.Copy(outFile, tarReader)
-					if err != nil {
-						return err
-					}
+				var outFile *os.File
+				outFile, err = os.OpenFile(filepath.Join(cacheDir, name), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o755) //nolint:gosec
+				if err != nil {
+					_ = outFile.Close()
+					return err
+				}
+
+				_, err = io.Copy(outFile, io.LimitReader(tarReader, maxArtifactSizeBytes))
+				if err != nil {
+					_ = outFile.Close()
+					return err
+				}
+				err = outFile.Close()
+				if err != nil {
+					return err
 				}
 			}
 		}

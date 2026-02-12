@@ -213,7 +213,7 @@ func MustInstall(ctx context.Context, opts *InstallOptions) {
 func ytdlpGetVersion(ctx context.Context, r *ResolvedInstall) error {
 	var stdout bytes.Buffer
 
-	cmd := exec.Command(r.Executable, "--version") //nolint:gosec
+	cmd := exec.CommandContext(ctx, r.Executable, "--version") //nolint:gosec
 	cmd.Stdout = &stdout
 	applySyscall(cmd, false)
 
