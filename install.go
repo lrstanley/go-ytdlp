@@ -291,6 +291,12 @@ func downloadFile(ctx context.Context, url, targetDir, targetName string, perms 
 	return dest, nil
 }
 
+// isArchiveURL returns true if the URL points to a known archive format.
+func isArchiveURL(url string) bool {
+	lower := strings.ToLower(url)
+	return strings.HasSuffix(lower, ".zip") || strings.HasSuffix(lower, ".tar.xz")
+}
+
 // downloadAndExtractFilesFromArchive downloads an archive from the given URL, extracts the specified files
 // into cacheDir, and removes the archive after extraction.
 func downloadAndExtractFilesFromArchive(ctx context.Context, downloadURL, cacheDir string, filenames []string) error {
@@ -330,7 +336,6 @@ func extractFilesFromArchive(ctx context.Context, archivePath, cacheDir string, 
 				var rc io.ReadCloser
 				rc, err = file.Open()
 				if err != nil {
-					_ = rc.Close()
 					return err
 				}
 
@@ -418,7 +423,6 @@ func extractFilesFromArchive(ctx context.Context, archivePath, cacheDir string, 
 				var outFile *os.File
 				outFile, err = os.OpenFile(filepath.Join(cacheDir, name), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o755) //nolint:gosec
 				if err != nil {
-					_ = outFile.Close()
 					return err
 				}
 

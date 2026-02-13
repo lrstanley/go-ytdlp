@@ -229,6 +229,12 @@ func downloadAndInstallFFmpeg(ctx context.Context, opts *InstallFFmpegOptions) (
 		if err != nil {
 			return nil, fmt.Errorf("failed to download and extract ffmpeg archive: %w", err)
 		}
+	} else if isArchiveURL(downloadURL) {
+		// Download and extract single binary from archive.
+		err = downloadAndExtractFilesFromArchive(ctx, downloadURL, cacheDir, []string{config.ffmpegBinary})
+		if err != nil {
+			return nil, fmt.Errorf("failed to download and extract ffmpeg: %w", err)
+		}
 	} else {
 		// Download single binary.
 		destPath, err = downloadFile(ctx, downloadURL, cacheDir, destPath, 0o700)
@@ -257,24 +263,30 @@ func downloadAndInstallFFprobe(ctx context.Context, opts *InstallFFmpegOptions) 
 
 	destPath := filepath.Join(cacheDir, config.ffprobeBinary)
 
-	if config.grouped {
-		// Download and extract archive (contains both ffmpeg and ffprobe).
-		downloadURL := opts.DownloadURL
-		if downloadURL == "" {
-			downloadURL = config.ffmpegURL // Use ffmpeg URL for archive.
+	downloadURL := opts.DownloadURL
+	if downloadURL == "" {
+		if config.grouped {
+			downloadURL = config.ffmpegURL // Use ffmpeg URL for grouped archive.
+		} else {
+			downloadURL = config.ffprobeURL
 		}
+	}
 
+	switch {
+	case config.grouped:
+		// Download and extract archive (contains both ffmpeg and ffprobe).
 		err = downloadAndExtractFilesFromArchive(ctx, downloadURL, cacheDir, []string{config.ffmpegBinary, config.ffprobeBinary})
 		if err != nil {
 			return nil, fmt.Errorf("failed to download and extract ffprobe archive: %w", err)
 		}
-	} else {
-		// Download single binary.
-		downloadURL := opts.DownloadURL
-		if downloadURL == "" {
-			downloadURL = config.ffprobeURL
+	case isArchiveURL(downloadURL):
+		// Download and extract single binary from archive.
+		err = downloadAndExtractFilesFromArchive(ctx, downloadURL, cacheDir, []string{config.ffprobeBinary})
+		if err != nil {
+			return nil, fmt.Errorf("failed to download and extract ffprobe: %w", err)
 		}
-
+	default:
+		// Download single binary.
 		destPath, err = downloadFile(ctx, downloadURL, cacheDir, "", 0o700)
 		if err != nil {
 			return nil, fmt.Errorf("failed to download ffprobe: %w", err)

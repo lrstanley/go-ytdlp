@@ -8,7 +8,6 @@ package ytdlp
 import (
 	"context"
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"slices"
@@ -49,7 +48,7 @@ func TestCommand_Simple(t *testing.T) {
 
 	progressUpdates := map[string]ProgressUpdate{}
 
-	res, err := New().
+	res, rerr := New().
 		NoUpdate().
 		Verbose().
 		PrintJSON().
@@ -60,8 +59,8 @@ func TestCommand_Simple(t *testing.T) {
 			progressUpdates[prog.Filename] = prog
 		}).
 		Run(context.Background(), urls...)
-	if err != nil {
-		t.Fatal(err)
+	if rerr != nil {
+		t.Fatal(rerr)
 	}
 
 	if res == nil {
@@ -92,11 +91,9 @@ func TestCommand_Simple(t *testing.T) {
 		t.Run(f.name, func(t *testing.T) {
 			t.Parallel()
 
-			var stat fs.FileInfo
-
 			fn := filepath.Join(dir, fmt.Sprintf("%s - %s.%s", f.extractor, f.name, f.ext))
 
-			stat, err = os.Stat(fn)
+			stat, err := os.Stat(fn)
 			if err != nil {
 				t.Fatal(err)
 			}
