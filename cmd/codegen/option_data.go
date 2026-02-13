@@ -25,16 +25,23 @@ type OptionURL struct {
 }
 
 type OptionData struct {
-	Channel      string        `json:"channel"`
-	Version      string        `json:"version"`
-	OptionGroups []OptionGroup `json:"option_groups"`
-	Extractors   []Extractor   `json:"extractors"`
+	Channel      string               `json:"channel"`
+	Version      string               `json:"version"`
+	OptionGroups []OptionGroup        `json:"option_groups"`
+	OptionIDs    map[string][]*Option `json:"option_ids"`
+	Extractors   []Extractor          `json:"extractors"`
 }
 
 func (c *OptionData) Generate() {
 	for i := range c.OptionGroups {
 		c.OptionGroups[i].Generate(c)
 		slog.Info("generated option group", "group", c.OptionGroups[i].Name)
+	}
+
+	for _, g := range c.OptionGroups {
+		for _, o := range g.Options {
+			c.OptionIDs[o.ID] = append(c.OptionIDs[o.ID], &o)
+		}
 	}
 }
 
@@ -81,6 +88,7 @@ type Option struct {
 	AllFlags       []string     `json:"-"` // all flags, short + long.
 	ArgNames       []string     `json:"-"` // MetaArgs converted to function arguments.
 	Executable     bool         `json:"-"` // if the option means yt-dlp doesn't accept arguments, and some callback is done.
+	NoOverride     bool         `json:"-"` // if the option should not override other flags with the same ID.
 	Deprecated     string       `json:"-"` // if the option is deprecated, this will be the deprecation description.
 	URLs           []OptionURL  `json:"-"` // if the option has any links to the documentation.
 	AllowsMultiple bool         `json:"-"` // if the option allows being invoked multiple times.
@@ -129,6 +137,10 @@ func (o *Option) Generate(parent *OptionGroup) {
 		if strings.EqualFold(d[0], o.ID) || strings.EqualFold(d[0], o.Flag) {
 			o.Deprecated = d[1]
 		}
+	}
+
+	if slices.Contains(noOverrideIDs, o.ID) {
+		o.NoOverride = true
 	}
 
 	switch o.Type {

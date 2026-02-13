@@ -13,7 +13,9 @@ import (
 	"sort"
 
 	"github.com/invopop/jsonschema"
+	"github.com/lmittmann/tint"
 	"github.com/lrstanley/go-ytdlp"
+	"github.com/lrstanley/go-ytdlp/optiondata"
 )
 
 type UIDMapper struct {
@@ -22,9 +24,13 @@ type UIDMapper struct {
 }
 
 func main() {
-	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
-		Level: slog.LevelDebug,
-	})))
+	slog.SetDefault(slog.New(tint.NewHandler(
+		os.Stderr,
+		&tint.Options{
+			Level:     slog.LevelDebug,
+			AddSource: true,
+		},
+	)))
 
 	ref := jsonschema.Reflector{
 		AllowAdditionalProperties: false,
@@ -71,6 +77,19 @@ func main() {
 			slog.Debug("adding all-of condition due to duplicate uids", "name", name, "props", propMap.Props)
 
 			for _, prop := range propMap.Props {
+				var disallowsOverride bool
+
+				for _, opt := range optiondata.FindByID(propMap.UID) {
+					if opt.NoOverride {
+						disallowsOverride = true
+						break
+					}
+				}
+
+				if disallowsOverride {
+					continue
+				}
+
 				slog.Debug("processing all-of for duplicate prop", "name", name, "prop", prop)
 
 				var otherProps []string

@@ -1,19 +1,19 @@
 {
-    "files.associations": {
-        "**/*.gotmpl": "go-template",
-    },
-    "files.exclude": {
-        "**/*.example": true,
-        "**/*.log": true,
-        "**/*.sum": true,
-        "**/.*ignore": true,
-        "**/.golangci.yml": true,
-        "**/LICENSE": true,
-        "**/tmp": true,
-    },
-    "go.lintTool": "golangci-lint",
-    "gopls": {
-        "formatting.gofumpt": true
-    },
-    "shellformat.flag": "-s -i 0 -bn -ci -sr"
+  "files.associations": {
+    "**/*.gotmpl": "go-template",
+  },
+  "files.exclude": {
+    "**/*.example": true,
+    "**/*.log": true,
+    "**/*.sum": true,
+    "**/.*ignore": true,
+    "**/.golangci.yml": true,
+    "**/LICENSE": true,
+    "**/tmp": true,
+  },
+  "go.lintTool": "golangci-lint-v2",
+  "gopls": {
+    "formatting.gofumpt": true
+  },
+  "shellformat.flag": "-s -i 0 -bn -ci -sr"
 }

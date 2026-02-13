@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := generate
 
-export YTDLP_VERSION := 2025.10.22
+export YTDLP_VERSION := 2026.02.04
 
 license:
 	curl -sL https://liam.sh/-/gh/g/license-header.sh | bash -s
@@ -34,7 +34,7 @@ patch:
 	./cmd/patch-ytdlp/run.sh ${YTDLP_VERSION}
 
 test: fetch
-	GORACE='exitcode=1 halt_on_error=1' go test -v -race -timeout 3m -count 3 ./...
+	GORACE='exitcode=1 halt_on_error=1' go test -v -race -timeout 5m -count 3 ./...
 
 generate: license fetch patch
 	rm -rf \

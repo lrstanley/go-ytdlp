@@ -39,6 +39,46 @@ var Options = []*Option{
     {{- end }}
 }
 
+// FindByName finds an option by its name if found, nil otherwise.
+func FindByName(id string) *Option {
+    switch id {
+    {{- range $group := .OptionGroups }}
+        {{- range $option := $group.Options }}
+            {{- $names := list
+                ($option.Name | quote)
+                ($option.Name | to_camel | quote)
+                ($option.Name | to_lower_camel | quote)
+                ($option.Name | to_snake | quote)
+            | uniq }}
+            case
+            {{- range $index, $name := $names }}
+                {{- $name }}{{- if not (last $index $names) }}, {{- end }}
+            {{- end -}}
+            :
+                return option{{ $option.Name | to_camel }}
+        {{- end }}
+    {{- end }}
+    default:
+        return nil
+    }
+}
+
+// FindByID finds options by their ID if found, nil otherwise.
+func FindByID(id string) (options []*Option) {
+    switch id {
+    {{- range $id, $options := .OptionIDs }}
+        case {{ $id | quote }}:
+            return []*Option{
+                {{- range $option := $options }}
+                    {{- "" -}}option{{ $option.Name | to_camel }},
+                {{- end -}}
+            }
+    {{- end }}
+    default:
+        return nil
+    }
+}
+
 // Underlying options.
 var (
     {{- range $group := .OptionGroups }}
@@ -90,6 +130,9 @@ var (
                 {{- end }}
                 {{- if $option.NArgs }}
                 NArgs: {{ $option.NArgs }},
+                {{- end }}
+                {{- if $option.NoOverride }}
+                NoOverride: true,
                 {{- end }}
             }
         {{- end }}

@@ -8,7 +8,6 @@ package ytdlp
 import (
 	"context"
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"slices"
@@ -49,7 +48,7 @@ func TestCommand_Simple(t *testing.T) {
 
 	progressUpdates := map[string]ProgressUpdate{}
 
-	res, err := New().
+	res, rerr := New().
 		NoUpdate().
 		Verbose().
 		PrintJSON().
@@ -60,8 +59,8 @@ func TestCommand_Simple(t *testing.T) {
 			progressUpdates[prog.Filename] = prog
 		}).
 		Run(context.Background(), urls...)
-	if err != nil {
-		t.Fatal(err)
+	if rerr != nil {
+		t.Fatal(rerr)
 	}
 
 	if res == nil {
@@ -90,11 +89,11 @@ func TestCommand_Simple(t *testing.T) {
 
 	for _, f := range sampleFiles {
 		t.Run(f.name, func(t *testing.T) {
-			var stat fs.FileInfo
+			t.Parallel()
 
 			fn := filepath.Join(dir, fmt.Sprintf("%s - %s.%s", f.extractor, f.name, f.ext))
 
-			stat, err = os.Stat(fn)
+			stat, err := os.Stat(fn)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -157,6 +156,7 @@ func TestCommand_Unset(t *testing.T) {
 
 	builder := New().NoUpdate().Progress().NoProgress().Output("test.mp4")
 
+	bunResolveCache.Store(nil) // Explicitly clear the resolve cache for bun, so it doesn't inject itself into the command.
 	cmd := builder.BuildCommand(context.TODO(), sampleFiles[0].url)
 
 	// Make sure --no-progress is set.
@@ -166,6 +166,7 @@ func TestCommand_Unset(t *testing.T) {
 
 	_ = builder.UnsetProgress()
 
+	bunResolveCache.Store(nil) // Explicitly clear the resolve cache for bun, so it doesn't inject itself into the command.
 	cmd = builder.BuildCommand(context.TODO(), sampleFiles[0].url)
 
 	// Make sure --no-progress is not set.

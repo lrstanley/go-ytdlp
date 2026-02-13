@@ -17,6 +17,7 @@ import (
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/iancoleman/strcase"
+	"github.com/lmittmann/tint"
 )
 
 var (
@@ -163,16 +164,22 @@ func createTemplateFile(dir, name string, tmpl *template.Template, data any) {
 }
 
 func main() {
-	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
-		Level: slog.LevelDebug,
-	})))
+	slog.SetDefault(slog.New(tint.NewHandler(
+		os.Stderr,
+		&tint.Options{
+			Level:     slog.LevelDebug,
+			AddSource: true,
+		},
+	)))
 
 	if len(os.Args) < 3 { //nolint:gomnd
 		slog.Error("usage: codegen <command_data.json> <output_dir>")
 		os.Exit(1)
 	}
 
-	var data OptionData
+	data := OptionData{
+		OptionIDs: make(map[string][]*Option),
+	}
 
 	slog.Info("reading option data file", "file", os.Args[1])
 	optionDataFile, err := os.Open(os.Args[1])

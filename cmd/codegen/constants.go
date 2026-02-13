@@ -4,6 +4,12 @@
 
 package main
 
+// noOverrideIDs are flag IDs that are not intended to override other flags with
+// the same ID.
+var noOverrideIDs = []string{
+	"js_runtimes",
+}
+
 // ignoredFlags are flags that are not intended to be used by the end-user and/or
 // don't make sense in a binding library scenario.
 //
@@ -17,6 +23,7 @@ var ignoredFlags = []string{
 	"--no-allow-unplayable-formats", // Not intended to be used by the end-user.
 	"--test",                        // Not intended to be used by the end-user.
 	"--youtube-print-sig-code",      // Not intended to be used by the end-user.
+	"--format-sort-reset",           // We already handle the same logic that this flag does, internally.
 }
 
 // deprecatedFlags are flags that are deprecated (but still work), and should be replaced

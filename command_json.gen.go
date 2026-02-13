@@ -133,6 +133,7 @@ func (f *FlagConfig) ToFlags() (flags Flags) {
 			}
 		}
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -176,6 +177,27 @@ type FlagsGeneral struct {
 	// Clear plugin directories to search, including defaults and those provided by previous
 	// --plugin-dirs
 	NoPluginDirs *bool `json:"no_plugin_dirs,omitempty" id:"plugin_dirs" jsonschema:"title=NoPluginDirs" jsonschema_extras:"uid=plugin_dirs" jsonschema_description:"Clear plugin directories to search, including defaults and those provided by previous --plugin-dirs"`
+	// Additional JavaScript runtime to enable, with an optional location for the runtime (either
+	// the path to the binary or its containing directory). This option can be used multiple
+	// times to enable multiple runtimes. Supported runtimes are (in order of priority, from
+	// highest to lowest): deno, node, quickjs, bun. Only "deno" is enabled by default. The
+	// highest priority runtime that is both enabled and available will be used. In order to use
+	// a lower priority runtime when "deno" is available, --no-js-runtimes needs to be passed
+	// before enabling other runtimes
+	JsRuntimes []string `json:"js_runtimes,omitempty" id:"js_runtimes" jsonschema:"title=JsRuntimes" jsonschema_extras:"uid=js_runtimes" jsonschema_description:"Additional JavaScript runtime to enable, with an optional location for the runtime (either the path to the binary or its containing directory). This option can be used multiple times to enable multiple runtimes. Supported runtimes are (in order of priority, from highest to lowest): deno, node, quickjs, bun. Only \"deno\" is enabled by default. The highest priority runtime that is both enabled and available will be used. In order to use a lower priority runtime when \"deno\" is available, --no-js-runtimes needs to be passed before enabling other runtimes"`
+	// Clear JavaScript runtimes to enable, including defaults and those provided by previous
+	// --js-runtimes
+	NoJsRuntimes *bool `json:"no_js_runtimes,omitempty" id:"js_runtimes" jsonschema:"title=NoJsRuntimes" jsonschema_extras:"uid=js_runtimes" jsonschema_description:"Clear JavaScript runtimes to enable, including defaults and those provided by previous --js-runtimes"`
+	// Remote components to allow yt-dlp to fetch when required. This option is currently not
+	// needed if you are using an official executable or have the requisite version of the
+	// yt-dlp-ejs package installed. You can use this option multiple times to allow multiple
+	// components. Supported values: ejs:npm (external JavaScript components from npm),
+	// ejs:github (external JavaScript components from yt-dlp-ejs GitHub). By default, no remote
+	// components are allowed
+	RemoteComponents []string `json:"remote_components,omitempty" id:"remote_components" jsonschema:"title=RemoteComponents" jsonschema_extras:"uid=remote_components" jsonschema_description:"Remote components to allow yt-dlp to fetch when required. This option is currently not needed if you are using an official executable or have the requisite version of the yt-dlp-ejs package installed. You can use this option multiple times to allow multiple components. Supported values: ejs:npm (external JavaScript components from npm), ejs:github (external JavaScript components from yt-dlp-ejs GitHub). By default, no remote components are allowed"`
+	// Disallow fetching of all remote components, including any previously allowed by
+	// --remote-components or defaults.
+	NoRemoteComponents *bool `json:"no_remote_components,omitempty" id:"remote_components" jsonschema:"title=NoRemoteComponents" jsonschema_extras:"uid=remote_components" jsonschema_description:"Disallow fetching of all remote components, including any previously allowed by --remote-components or defaults."`
 	// Do not extract a playlist's URL result entries; some entry metadata may be missing and
 	// downloading may be bypassed
 	FlatPlaylist *bool `json:"flat_playlist,omitempty" id:"extract_flat" jsonschema:"title=FlatPlaylist" jsonschema_extras:"uid=extract_flat" jsonschema_description:"Do not extract a playlist's URL result entries; some entry metadata may be missing and downloading may be bypassed"`
@@ -278,6 +300,18 @@ func (g *FlagsGeneral) ToFlags() (flags Flags) {
 	if g.NoPluginDirs != nil && *g.NoPluginDirs {
 		flags = append(flags, &Flag{ID: "plugin_dirs", Flag: "--no-plugin-dirs", Args: nil})
 	}
+	for _, v := range g.JsRuntimes {
+		flags = append(flags, &Flag{ID: "js_runtimes", Flag: "--js-runtimes", AllowsMultiple: true, Args: []any{v}})
+	}
+	if g.NoJsRuntimes != nil && *g.NoJsRuntimes {
+		flags = append(flags, &Flag{ID: "js_runtimes", Flag: "--no-js-runtimes", Args: nil})
+	}
+	for _, v := range g.RemoteComponents {
+		flags = append(flags, &Flag{ID: "remote_components", Flag: "--remote-components", AllowsMultiple: true, Args: []any{v}})
+	}
+	if g.NoRemoteComponents != nil && *g.NoRemoteComponents {
+		flags = append(flags, &Flag{ID: "remote_components", Flag: "--no-remote-components", Args: nil})
+	}
 	if g.FlatPlaylist != nil && *g.FlatPlaylist {
 		flags = append(flags, &Flag{ID: "extract_flat", Flag: "--flat-playlist", Args: nil})
 	}
@@ -314,6 +348,7 @@ func (g *FlagsGeneral) ToFlags() (flags Flags) {
 	for _, v := range g.PresetAlias {
 		flags = append(flags, &Flag{ID: "preset-alias", Flag: "--preset-alias", AllowsMultiple: true, Args: []any{v}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -395,6 +430,7 @@ func (g *FlagsNetwork) ToFlags() (flags Flags) {
 	if g.EnableFileURLs != nil && *g.EnableFileURLs {
 		flags = append(flags, &Flag{ID: "enable_file_urls", Flag: "--enable-file-urls", Args: nil})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -462,18 +498,19 @@ func (g *FlagsGeoRestriction) ToFlags() (flags Flags) {
 	if g.GeoBypassIPBlock != nil {
 		flags = append(flags, &Flag{ID: "geo_bypass", Flag: "--geo-bypass-ip-block", Args: []any{*g.GeoBypassIPBlock}})
 	}
+	flags.Sort()
 	return flags
 }
 
 type FlagsVideoSelection struct {
 	PlaylistStart *int `json:"playlist_start,omitempty" id:"playliststart" jsonschema:"title=PlaylistStart" jsonschema_extras:"uid=playliststart" jsonschema_description:""`
 	PlaylistEnd   *int `json:"playlist_end,omitempty" id:"playlistend" jsonschema:"title=PlaylistEnd" jsonschema_extras:"uid=playlistend" jsonschema_description:""`
-	// Comma separated playlist_index of the items to download. You can specify a range using
+	// Comma-separated playlist_index of the items to download. You can specify a range using
 	// "[START]:[STOP][:STEP]". For backward compatibility, START-STOP is also supported. Use
 	// negative indices to count from the right and negative STEP to download in reverse order.
 	// E.g. "-I 1:3,7,-5::2" used on a playlist of size 15 will download the items at index
 	// 1,2,3,7,11,13,15
-	PlaylistItems *string `json:"playlist_items,omitempty" id:"playlist_items" jsonschema:"title=PlaylistItems" jsonschema_extras:"uid=playlist_items" jsonschema_description:"Comma separated playlist_index of the items to download. You can specify a range using \"[START]:[STOP][:STEP]\". For backward compatibility, START-STOP is also supported. Use negative indices to count from the right and negative STEP to download in reverse order. E.g. \"-I 1:3,7,-5::2\" used on a playlist of size 15 will download the items at index 1,2,3,7,11,13,15"`
+	PlaylistItems *string `json:"playlist_items,omitempty" id:"playlist_items" jsonschema:"title=PlaylistItems" jsonschema_extras:"uid=playlist_items" jsonschema_description:"Comma-separated playlist_index of the items to download. You can specify a range using \"[START]:[STOP][:STEP]\". For backward compatibility, START-STOP is also supported. Use negative indices to count from the right and negative STEP to download in reverse order. E.g. \"-I 1:3,7,-5::2\" used on a playlist of size 15 will download the items at index 1,2,3,7,11,13,15"`
 	MatchTitle    *string `json:"match_title,omitempty" id:"matchtitle" jsonschema:"title=MatchTitle" jsonschema_extras:"uid=matchtitle" jsonschema_description:""`
 	RejectTitle   *string `json:"reject_title,omitempty" id:"rejecttitle" jsonschema:"title=RejectTitle" jsonschema_extras:"uid=rejecttitle" jsonschema_description:""`
 	// Abort download if filesize is smaller than SIZE, e.g. 50k or 44.6M
@@ -652,6 +689,7 @@ func (g *FlagsVideoSelection) ToFlags() (flags Flags) {
 	if g.SkipPlaylistAfterErrors != nil {
 		flags = append(flags, &Flag{ID: "skip_playlist_after_errors", Flag: "--skip-playlist-after-errors", Args: []any{*g.SkipPlaylistAfterErrors}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -844,6 +882,7 @@ func (g *FlagsDownload) ToFlags() (flags Flags) {
 	for _, v := range g.DownloaderArgs {
 		flags = append(flags, &Flag{ID: "external_downloader_args", Flag: "--downloader-args", AllowsMultiple: true, Args: []any{v}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1093,6 +1132,7 @@ func (g *FlagsFilesystem) ToFlags() (flags Flags) {
 	if g.RmCacheDir != nil && *g.RmCacheDir {
 		flags = append(flags, &Flag{ID: "rm_cachedir", Flag: "--rm-cache-dir", Args: nil})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1150,6 +1190,7 @@ func (g *FlagsThumbnail) ToFlags() (flags Flags) {
 	if g.ListThumbnails != nil && *g.ListThumbnails {
 		flags = append(flags, &Flag{ID: "list_thumbnails", Flag: "--list-thumbnails", Args: nil})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1208,6 +1249,7 @@ func (g *FlagsInternetShortcut) ToFlags() (flags Flags) {
 	if g.WriteDesktopLink != nil && *g.WriteDesktopLink {
 		flags = append(flags, &Flag{ID: "writedesktoplink", Flag: "--write-desktop-link", Args: nil})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1415,6 +1457,7 @@ func (g *FlagsVerbositySimulation) ToFlags() (flags Flags) {
 	if g.PrintTraffic != nil && *g.PrintTraffic {
 		flags = append(flags, &Flag{ID: "debug_printtraffic", Flag: "--print-traffic", Args: nil})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1445,7 +1488,7 @@ type FlagsWorkarounds struct {
 	// Maximum number of seconds to sleep. Can only be used along with --min-sleep-interval
 	MaxSleepInterval *float64 `json:"max_sleep_interval,omitempty" id:"max_sleep_interval" jsonschema:"title=MaxSleepInterval" jsonschema_extras:"uid=max_sleep_interval" jsonschema_description:"Maximum number of seconds to sleep. Can only be used along with --min-sleep-interval"`
 	// Number of seconds to sleep before each subtitle download
-	SleepSubtitles *int `json:"sleep_subtitles,omitempty" id:"sleep_interval_subtitles" jsonschema:"title=SleepSubtitles" jsonschema_extras:"uid=sleep_interval_subtitles" jsonschema_description:"Number of seconds to sleep before each subtitle download"`
+	SleepSubtitles *float64 `json:"sleep_subtitles,omitempty" id:"sleep_interval_subtitles" jsonschema:"title=SleepSubtitles" jsonschema_extras:"uid=sleep_interval_subtitles" jsonschema_description:"Number of seconds to sleep before each subtitle download"`
 }
 
 // Validate ensures all flags have appropriate values. If there are validation-specific
@@ -1515,6 +1558,7 @@ func (g *FlagsWorkarounds) ToFlags() (flags Flags) {
 	if g.SleepSubtitles != nil {
 		flags = append(flags, &Flag{ID: "sleep_interval_subtitles", Flag: "--sleep-subtitles", Args: []any{*g.SleepSubtitles}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1642,6 +1686,7 @@ func (g *FlagsVideoFormat) ToFlags() (flags Flags) {
 	if g.MergeOutputFormat != nil {
 		flags = append(flags, &Flag{ID: "merge_output_format", Flag: "--merge-output-format", Args: []any{*g.MergeOutputFormat}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1722,6 +1767,7 @@ func (g *FlagsSubtitle) ToFlags() (flags Flags) {
 	if g.SubLangs != nil {
 		flags = append(flags, &Flag{ID: "subtitleslangs", Flag: "--sub-langs", Args: []any{*g.SubLangs}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -1833,6 +1879,7 @@ func (g *FlagsAuthentication) ToFlags() (flags Flags) {
 	if g.ClientCertificatePassword != nil {
 		flags = append(flags, &Flag{ID: "client_certificate_password", Flag: "--client-certificate-password", Args: []any{*g.ClientCertificatePassword}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -2150,16 +2197,17 @@ func (g *FlagsPostProcessing) ToFlags() (flags Flags) {
 	for _, v := range g.UsePostProcessor {
 		flags = append(flags, &Flag{ID: "add_postprocessors", Flag: "--use-postprocessor", AllowsMultiple: true, Args: []any{v}})
 	}
+	flags.Sort()
 	return flags
 }
 
 type FlagsSponsorBlock struct {
 	// SponsorBlock categories to create chapters for, separated by commas. Available categories
-	// are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic,
+	// are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, hook,
 	// poi_highlight, chapter, all and default (=all). You can prefix the category with a "-" to
 	// exclude it. See [1] for descriptions of the categories. E.g. --sponsorblock-mark
 	// all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories
-	SponsorblockMark *string `json:"sponsorblock_mark,omitempty" id:"sponsorblock_mark" jsonschema:"title=SponsorblockMark" jsonschema_extras:"uid=sponsorblock_mark" jsonschema_description:"SponsorBlock categories to create chapters for, separated by commas. Available categories are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, poi_highlight, chapter, all and default (=all). You can prefix the category with a \"-\" to exclude it. See [1] for descriptions of the categories. E.g. --sponsorblock-mark all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories"`
+	SponsorblockMark *string `json:"sponsorblock_mark,omitempty" id:"sponsorblock_mark" jsonschema:"title=SponsorblockMark" jsonschema_extras:"uid=sponsorblock_mark" jsonschema_description:"SponsorBlock categories to create chapters for, separated by commas. Available categories are sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic, hook, poi_highlight, chapter, all and default (=all). You can prefix the category with a \"-\" to exclude it. See [1] for descriptions of the categories. E.g. --sponsorblock-mark all,-preview [1] https://wiki.sponsor.ajay.app/w/Segment_Categories"`
 	// SponsorBlock categories to be removed from the video file, separated by commas. If a
 	// category is present in both mark and remove, remove takes precedence. The syntax and
 	// available categories are the same as for --sponsorblock-mark except that "default" refers
@@ -2221,6 +2269,7 @@ func (g *FlagsSponsorBlock) ToFlags() (flags Flags) {
 	if g.SponsorblockAPI != nil {
 		flags = append(flags, &Flag{ID: "sponsorblock_api", Flag: "--sponsorblock-api", Args: []any{*g.SponsorblockAPI}})
 	}
+	flags.Sort()
 	return flags
 }
 
@@ -2290,5 +2339,6 @@ func (g *FlagsExtractor) ToFlags() (flags Flags) {
 	for _, v := range g.ExtractorArgs {
 		flags = append(flags, &Flag{ID: "extractor_args", Flag: "--extractor-args", AllowsMultiple: true, Args: []any{v}})
 	}
+	flags.Sort()
 	return flags
 }

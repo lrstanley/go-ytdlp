@@ -66,6 +66,7 @@
   - [Install Function(s) &amp; Binary Management](#package-install-functions--binary-management)
     - [yt-dlp](#yt-dlp)
     - [ffmpeg &amp; ffprobe](#ffmpeg--ffprobe)
+    - [bun](#bun)
   - [FlagConfig: JSON to/from Flags Conversion &amp; Usage](#flagconfig-json-tofrom-flags-conversion--usage)
   - [Support &amp; Assistance](#raising_hand_man-support--assistance)
   - [Contributing](#handshake-contributing)
@@ -76,7 +77,7 @@
 
 - CLI bindings for yt-dlp -- including all flags/commands.
 - Optional `Install*` helpers to auto-download the latest supported version of
-  yt-dlp, ffmpeg and ffprobe, including proper checksum validation for secure downloads (yt-dlp only).
+  yt-dlp, ffmpeg, ffprobe and bun, including proper checksum validation for secure downloads (yt-dlp only).
   - Worry less about making sure yt-dlp is installed wherever **go-ytdlp** is running from!
 - Carried over help documentation for all functions/methods.
 - Flags with arguments have type mappings according to what the actual flags expect.
@@ -145,10 +146,10 @@ Source: [bubble-dl](./_examples/bubble-dl)
 ## :package: Install Function(s) & Binary Management
 
 The `Install*` function helpers in **go-ytdlp** allow you to automatically download and cache the
-required binaries (`yt-dlp`, `ffmpeg`, and `ffprobe`) for your platform. This makes it easy to get
+required binaries (`yt-dlp`, `ffmpeg`, `ffprobe` and `bun`) for your platform. This makes it easy to get
 started without manually installing these dependencies, and ensures the correct versions are used.
 
-> **Note:** Download/installation of `ffmpeg` and `ffprobe` is only supported on a handful of platforms.
+> **Note:** Download/installation of `ffmpeg`, `ffprobe` and `bun` is only supported on a handful of platforms.
 > It is still recommended to install them via other means if your platform is not listed below.
 
 ### yt-dlp
@@ -164,13 +165,34 @@ started without manually installing these dependencies, and ensures the correct 
 
 ### ffmpeg & ffprobe
 
-| OS/Arch       | ffmpeg/ffprobe Download Source          |
-|---------------|-----------------------------------------|
-| darwin_amd64  | https://evermeet.cx/ffmpeg/             |
-| linux_amd64   | https://github.com/yt-dlp/FFmpeg-Builds |
-| linux_arm64   | https://github.com/yt-dlp/FFmpeg-Builds |
-| windows_amd64 | https://github.com/yt-dlp/FFmpeg-Builds |
-| windows_arm   | https://github.com/yt-dlp/FFmpeg-Builds |
+| OS/Arch       | ffmpeg/ffprobe Download Source         |
+|---------------|----------------------------------------|
+| darwin_amd64  | https://evermeet.cx/ffmpeg/            |
+| darwin_arm64  | https://www.osxexperts.net/            |
+| linux_amd64   | https://github.com/BtbN/FFmpeg-Builds/ |
+| linux_arm64   | https://github.com/BtbN/FFmpeg-Builds/ |
+| windows_amd64 | https://github.com/BtbN/FFmpeg-Builds/ |
+| windows_arm   | https://github.com/BtbN/FFmpeg-Builds/ |
+
+### bun
+
+| OS/Arch       | bun Download Source                                                            |
+|---------------|--------------------------------------------------------------------------------|
+| darwin_amd64  | https://github.com/oven-sh/bun |
+| darwin_arm64  | https://github.com/oven-sh/bun |
+| linux_amd64   | https://github.com/oven-sh/bun |
+| linux_arm64   | https://github.com/oven-sh/bun |
+| windows_amd64 | https://github.com/oven-sh/bun |
+
+#### Using a different JS runtime
+
+Multiple JavaScript runtimes are supported by **yt-dlp**, in the same way that **yt-dlp** itself handles
+multiple runtimes. However, when using `[Must]InstallAll` (or `[Must]InstallBun`), it will automatically
+enable [Bun](https://bun.com/) by default (and explicitly disable other runtimes). **yt-dlp** prefers
+[Deno](https://deno.com/) over Bun, however, Deno still doesn't support musl-based linux distros (like
+Alpine Linux uses) yet.
+
+Refer to the [official documentation](https://github.com/yt-dlp/yt-dlp/wiki/EJS) for more information.
 
 ## FlagConfig: JSON to/from Flags Conversion & Usage
 

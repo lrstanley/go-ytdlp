@@ -172,7 +172,7 @@ func toMap(env []string) map[string]string {
 		if runtime.GOOS == "windows" {
 			// On Windows, env vars can start with "=".
 			prefix := false
-			if len(e) > 0 && e[0] == '=' {
+			if e != "" && e[0] == '=' {
 				e = e[1:]
 				prefix = true
 			}
@@ -195,6 +195,13 @@ func toMap(env []string) map[string]string {
 func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	var cmdArgs []string
 
+	c.mu.RLock()
+	if bunResolveCache.Load() != nil && len(c.flagConfig.General.JsRuntimes) == 0 && c.flagConfig.General.NoJsRuntimes == nil {
+		// Explicitly disable other options, and enable bun since they installed bun
+		// through our install cache.
+		c.NoJsRuntimes().JsRuntimes("bun")
+	}
+
 	for _, f := range c.flagConfig.ToFlags() {
 		cmdArgs = append(cmdArgs, f.Raw()...)
 	}
@@ -204,19 +211,18 @@ func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	var name string
 	var err error
 
-	c.mu.RLock()
 	name = c.executable
 
 	if name == "" {
-		r := ytdlpResolveCache.Load()
-		if r == nil {
-			_, binaries, _ := ytdlpGetDownloadBinary() // don't check error yet.
-			r, err = resolveExecutable(ctx, false, false, binaries)
-			if err == nil {
-				name = r.Executable
-			}
-		} else {
+		if r := ytdlpResolveCache.Load(); r != nil {
 			name = r.Executable
+		} else {
+			if config, _ := getBinaryConfig(ytdlpBinConfigs); config != nil {
+				r, err = resolveExecutable(ctx, false, false, config.binaries)
+				if err == nil {
+					name = r.Executable
+				}
+			}
 		}
 	}
 
@@ -369,6 +375,20 @@ func (f *Flag) Raw() (args []string) {
 }
 
 type Flags []*Flag
+
+// Sort sorts the flags, ensuring some special flags are always ordered correctly.
+func (f Flags) Sort() {
+	slices.SortFunc(f, func(a, b *Flag) int {
+		switch {
+		case strings.HasPrefix(a.Flag, "--no") && !strings.HasPrefix(b.Flag, "--no"):
+			return -1
+		case strings.HasPrefix(b.Flag, "--no") && !strings.HasPrefix(a.Flag, "--no"):
+			return 1
+		default:
+			return strings.Compare(a.ID, b.ID)
+		}
+	})
+}
 
 func (f Flags) FindByID(id string) (flags Flags) {
 	for _, flag := range f {

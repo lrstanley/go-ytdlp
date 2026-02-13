@@ -12,8 +12,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
-	"runtime"
-	"strings"
 	"sync"
 	"sync/atomic"
 )
@@ -26,45 +24,52 @@ var (
 
 	ffmpegBinConfigs = map[string]ffmpegBinConfig{
 		"darwin_amd64": {
-			ffmpegURL:  "https://evermeet.cx/ffmpeg/getrelease/ffmpeg",
-			ffprobeURL: "https://evermeet.cx/ffmpeg/getrelease/ffprobe",
-			ffmpeg:     "ffmpeg",
-			ffprobe:    "ffprobe",
-			isArchive:  false,
+			ffmpegURL:     "https://evermeet.cx/ffmpeg/getrelease/ffmpeg",
+			ffprobeURL:    "https://evermeet.cx/ffmpeg/getrelease/ffprobe",
+			ffmpegBinary:  "ffmpeg",
+			ffprobeBinary: "ffprobe",
+			grouped:       false,
+		},
+		"darwin_arm64": {
+			ffmpegURL:     "https://www.osxexperts.net/ffmpeg80arm.zip",
+			ffprobeURL:    "https://www.osxexperts.net/ffprobe80arm.zip",
+			ffmpegBinary:  "ffmpeg",
+			ffprobeBinary: "ffprobe",
+			grouped:       false,
 		},
 		"linux_amd64": {
-			ffmpegURL: "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz",
-			ffmpeg:    "ffmpeg",
-			ffprobe:   "ffprobe",
-			isArchive: true,
+			ffmpegURL:     "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz",
+			ffmpegBinary:  "ffmpeg",
+			ffprobeBinary: "ffprobe",
+			grouped:       true,
 		},
 		"linux_arm64": {
-			ffmpegURL: "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linuxarm64-gpl.tar.xz",
-			ffmpeg:    "ffmpeg",
-			ffprobe:   "ffprobe",
-			isArchive: true,
+			ffmpegURL:     "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linuxarm64-gpl.tar.xz",
+			ffmpegBinary:  "ffmpeg",
+			ffprobeBinary: "ffprobe",
+			grouped:       true,
 		},
 		"windows_amd64": {
-			ffmpegURL: "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip",
-			ffmpeg:    "ffmpeg.exe",
-			ffprobe:   "ffprobe.exe",
-			isArchive: true,
+			ffmpegURL:     "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip",
+			ffmpegBinary:  "ffmpeg.exe",
+			ffprobeBinary: "ffprobe.exe",
+			grouped:       true,
 		},
 		"windows_arm": {
-			ffmpegURL: "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-winarm64-gpl.zip",
-			ffmpeg:    "ffmpeg.exe",
-			ffprobe:   "ffprobe.exe",
-			isArchive: true,
+			ffmpegURL:     "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-winarm64-gpl.zip",
+			ffmpegBinary:  "ffmpeg.exe",
+			ffprobeBinary: "ffprobe.exe",
+			grouped:       true,
 		},
 	}
 )
 
 type ffmpegBinConfig struct {
-	ffmpegURL  string
-	ffprobeURL string
-	ffmpeg     string
-	ffprobe    string
-	isArchive  bool // true if the download is an archive containing both binaries
+	ffmpegURL     string
+	ffprobeURL    string
+	ffmpegBinary  string
+	ffprobeBinary string
+	grouped       bool // true if the download is an archive containing both binaries
 }
 
 type InstallFFmpegOptions struct {
@@ -95,9 +100,6 @@ func MustInstallFFmpeg(ctx context.Context, opts *InstallFFmpegOptions) {
 // downloading of ffmpeg and ffprobe is only supported on a handful of platforms, and so
 // it is still recommended to install ffmpeg/ffprobe via other means.
 func InstallFFmpeg(ctx context.Context, opts *InstallFFmpegOptions) (*ResolvedInstall, error) {
-	ffmpegInstallLock.Lock()
-	defer ffmpegInstallLock.Unlock()
-
 	if opts == nil {
 		opts = &InstallFFmpegOptions{}
 	}
@@ -106,8 +108,15 @@ func InstallFFmpeg(ctx context.Context, opts *InstallFFmpegOptions) (*ResolvedIn
 		return cached, nil
 	}
 
-	_, binaries, _ := ffmpegGetDownloadBinary() // don't check error yet.
-	resolved, err := resolveExecutable(ctx, false, opts.DisableSystem, binaries)
+	config, err := getBinaryConfig(ffmpegBinConfigs)
+	if err != nil {
+		return nil, err
+	}
+
+	ffmpegInstallLock.Lock()
+	defer ffmpegInstallLock.Unlock()
+
+	resolved, err := resolveExecutable(ctx, false, opts.DisableSystem, []string{config.ffmpegBinary})
 	if err == nil {
 		if resolved.Version == "" {
 			err = ffGetVersion(ctx, resolved)
@@ -115,7 +124,6 @@ func InstallFFmpeg(ctx context.Context, opts *InstallFFmpegOptions) (*ResolvedIn
 				return nil, err
 			}
 		}
-
 		ffmpegResolveCache.Store(resolved)
 		return resolved, nil
 	}
@@ -148,9 +156,6 @@ func MustInstallFFprobe(ctx context.Context, opts *InstallFFmpegOptions) {
 // downloading of ffmpeg and ffprobe is only supported on a handful of platforms, and so
 // it is still recommended to install ffmpeg/ffprobe via other means.
 func InstallFFprobe(ctx context.Context, opts *InstallFFmpegOptions) (*ResolvedInstall, error) {
-	ffprobeInstallLock.Lock()
-	defer ffprobeInstallLock.Unlock()
-
 	if opts == nil {
 		opts = &InstallFFmpegOptions{}
 	}
@@ -159,8 +164,22 @@ func InstallFFprobe(ctx context.Context, opts *InstallFFmpegOptions) (*ResolvedI
 		return cached, nil
 	}
 
-	_, binaries, _ := ffprobeGetDownloadBinary() // don't check error yet.
-	resolved, err := resolveExecutable(ctx, false, opts.DisableSystem, binaries)
+	config, err := getBinaryConfig(ffmpegBinConfigs)
+	if err != nil {
+		return nil, err
+	}
+
+	if config.grouped {
+		// If the binaries are grouped, we need to use the ffmpeg install lock,
+		// since the 1 artifact (for either) will contain both ffmpeg and ffprobe.
+		ffmpegInstallLock.Lock()
+		defer ffmpegInstallLock.Unlock()
+	} else {
+		ffprobeInstallLock.Lock()
+		defer ffprobeInstallLock.Unlock()
+	}
+
+	resolved, err := resolveExecutable(ctx, false, opts.DisableSystem, []string{config.ffprobeBinary})
 	if err == nil {
 		if resolved.Version == "" {
 			err = ffGetVersion(ctx, resolved)
@@ -168,7 +187,6 @@ func InstallFFprobe(ctx context.Context, opts *InstallFFmpegOptions) (*ResolvedI
 				return nil, err
 			}
 		}
-
 		ffprobeResolveCache.Store(resolved)
 		return resolved, nil
 	}
@@ -188,14 +206,9 @@ func InstallFFprobe(ctx context.Context, opts *InstallFFmpegOptions) (*ResolvedI
 }
 
 func downloadAndInstallFFmpeg(ctx context.Context, opts *InstallFFmpegOptions) (*ResolvedInstall, error) {
-	src, destBinaries, err := ffmpegGetDownloadBinary()
+	config, err := getBinaryConfig(ffmpegBinConfigs)
 	if err != nil {
 		return nil, err
-	}
-
-	config, ok := ffmpegBinConfigs[src]
-	if !ok {
-		return nil, fmt.Errorf("no ffmpeg download configuration for %s", src)
 	}
 
 	cacheDir, err := createCacheDir(ctx)
@@ -208,13 +221,19 @@ func downloadAndInstallFFmpeg(ctx context.Context, opts *InstallFFmpegOptions) (
 		downloadURL = config.ffmpegURL
 	}
 
-	destPath := filepath.Join(cacheDir, destBinaries[0])
+	destPath := filepath.Join(cacheDir, config.ffmpegBinary)
 
-	if config.isArchive {
+	if config.grouped {
 		// Download and extract archive.
-		err = downloadAndExtractFilesFromArchive(ctx, downloadURL, cacheDir, []string{config.ffmpeg, config.ffprobe})
+		err = downloadAndExtractFilesFromArchive(ctx, downloadURL, cacheDir, []string{config.ffmpegBinary, config.ffprobeBinary})
 		if err != nil {
 			return nil, fmt.Errorf("failed to download and extract ffmpeg archive: %w", err)
+		}
+	} else if isArchiveURL(downloadURL) {
+		// Download and extract single binary from archive.
+		err = downloadAndExtractFilesFromArchive(ctx, downloadURL, cacheDir, []string{config.ffmpegBinary})
+		if err != nil {
+			return nil, fmt.Errorf("failed to download and extract ffmpeg: %w", err)
 		}
 	} else {
 		// Download single binary.
@@ -232,14 +251,9 @@ func downloadAndInstallFFmpeg(ctx context.Context, opts *InstallFFmpegOptions) (
 }
 
 func downloadAndInstallFFprobe(ctx context.Context, opts *InstallFFmpegOptions) (*ResolvedInstall, error) {
-	src, destBinaries, err := ffprobeGetDownloadBinary()
+	config, err := getBinaryConfig(ffmpegBinConfigs)
 	if err != nil {
 		return nil, err
-	}
-
-	config, ok := ffmpegBinConfigs[src]
-	if !ok {
-		return nil, fmt.Errorf("no ffprobe download configuration for %s", src)
 	}
 
 	cacheDir, err := createCacheDir(ctx)
@@ -247,26 +261,32 @@ func downloadAndInstallFFprobe(ctx context.Context, opts *InstallFFmpegOptions) 
 		return nil, err
 	}
 
-	destPath := filepath.Join(cacheDir, destBinaries[0])
+	destPath := filepath.Join(cacheDir, config.ffprobeBinary)
 
-	if config.isArchive {
-		// Download and extract archive (contains both ffmpeg and ffprobe).
-		downloadURL := opts.DownloadURL
-		if downloadURL == "" {
-			downloadURL = config.ffmpegURL // Use ffmpeg URL for archive.
+	downloadURL := opts.DownloadURL
+	if downloadURL == "" {
+		if config.grouped {
+			downloadURL = config.ffmpegURL // Use ffmpeg URL for grouped archive.
+		} else {
+			downloadURL = config.ffprobeURL
 		}
+	}
 
-		err = downloadAndExtractFilesFromArchive(ctx, downloadURL, cacheDir, []string{config.ffmpeg, config.ffprobe})
+	switch {
+	case config.grouped:
+		// Download and extract archive (contains both ffmpeg and ffprobe).
+		err = downloadAndExtractFilesFromArchive(ctx, downloadURL, cacheDir, []string{config.ffmpegBinary, config.ffprobeBinary})
 		if err != nil {
 			return nil, fmt.Errorf("failed to download and extract ffprobe archive: %w", err)
 		}
-	} else {
-		// Download single binary.
-		downloadURL := opts.DownloadURL
-		if downloadURL == "" {
-			downloadURL = config.ffprobeURL
+	case isArchiveURL(downloadURL):
+		// Download and extract single binary from archive.
+		err = downloadAndExtractFilesFromArchive(ctx, downloadURL, cacheDir, []string{config.ffprobeBinary})
+		if err != nil {
+			return nil, fmt.Errorf("failed to download and extract ffprobe: %w", err)
 		}
-
+	default:
+		// Download single binary.
 		destPath, err = downloadFile(ctx, downloadURL, cacheDir, "", 0o700)
 		if err != nil {
 			return nil, fmt.Errorf("failed to download ffprobe: %w", err)
@@ -280,62 +300,12 @@ func downloadAndInstallFFprobe(ctx context.Context, opts *InstallFFmpegOptions) 
 	}, nil
 }
 
-func ffmpegGetDownloadBinary() (src string, dest []string, err error) {
-	src = runtime.GOOS + "_" + runtime.GOARCH
-	if binary, ok := ffmpegBinConfigs[src]; ok {
-		return src, []string{binary.ffmpeg}, nil
-	}
-
-	var supported []string
-	for k := range ffmpegBinConfigs {
-		supported = append(supported, k)
-	}
-
-	if runtime.GOOS == "windows" {
-		dest = []string{"ffmpeg.exe"}
-	} else {
-		dest = []string{"ffmpeg"}
-	}
-
-	return src, dest, fmt.Errorf(
-		"unsupported os/arch combo: %s/%s (supported: %s)",
-		runtime.GOOS,
-		runtime.GOARCH,
-		strings.Join(supported, ", "),
-	)
-}
-
-func ffprobeGetDownloadBinary() (src string, dest []string, err error) {
-	src = runtime.GOOS + "_" + runtime.GOARCH
-	if binary, ok := ffmpegBinConfigs[src]; ok {
-		return src, []string{binary.ffprobe}, nil
-	}
-
-	var supported []string
-	for k := range ffmpegBinConfigs {
-		supported = append(supported, k)
-	}
-
-	if runtime.GOOS == "windows" {
-		dest = []string{"ffprobe.exe"}
-	} else {
-		dest = []string{"ffprobe"}
-	}
-
-	return src, dest, fmt.Errorf(
-		"unsupported os/arch combo: %s/%s (supported: %s)",
-		runtime.GOOS,
-		runtime.GOARCH,
-		strings.Join(supported, ", "),
-	)
-}
-
 var ffmpegVersionRegex = regexp.MustCompile(`^(?:ffmpeg|ffprobe) version ([^ ]+) .*`)
 
 func ffGetVersion(ctx context.Context, r *ResolvedInstall) error {
 	var stdout bytes.Buffer
 
-	cmd := exec.Command(r.Executable, "-version") //nolint:gosec
+	cmd := exec.CommandContext(ctx, r.Executable, "-version") //nolint:gosec
 	cmd.Stdout = &stdout
 	applySyscall(cmd, false)
 

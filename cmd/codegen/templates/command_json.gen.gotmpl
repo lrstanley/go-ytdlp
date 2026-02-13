@@ -120,6 +120,7 @@ func (f *FlagConfig) ToFlags() (flags Flags) {
             }
         }
     }
+    flags.Sort()
     return flags
 }
 
@@ -256,6 +257,7 @@ func (g *Flags{{ $group.Name | to_camel }}) ToFlags() (flags Flags) {
             }
         {{- end }}
     {{- end }}{{/* end range for options */}}
+    flags.Sort()
     return flags
 }
 {{ end }}{{/* end range for option groups */}}
