@@ -13,7 +13,7 @@ jobs:
       - uses: lrstanley/.github/composite/go-versions@master
         id: goversion
       - name: install-go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: "${{ steps.goversion.outputs.version }}"
           cache: false
