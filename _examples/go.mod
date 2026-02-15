@@ -10,7 +10,7 @@ require (
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/lrstanley/go-ytdlp v1.2.7
-	github.com/samber/slog-http v1.11.1
+	github.com/samber/slog-http v1.12.0
 )
 
 require (
