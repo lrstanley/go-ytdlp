@@ -203,9 +203,9 @@ type FlagsGeneral struct {
 	FlatPlaylist *bool `json:"flat_playlist,omitempty" id:"extract_flat" jsonschema:"title=FlatPlaylist" jsonschema_extras:"uid=extract_flat" jsonschema_description:"Do not extract a playlist's URL result entries; some entry metadata may be missing and downloading may be bypassed"`
 	// Fully extract the videos of a playlist (default)
 	NoFlatPlaylist *bool `json:"no_flat_playlist,omitempty" id:"extract_flat" jsonschema:"title=NoFlatPlaylist" jsonschema_extras:"uid=extract_flat" jsonschema_description:"Fully extract the videos of a playlist (default)"`
-	// Download livestreams from the start. Currently experimental and only supported for YouTube
-	// and Twitch
-	LiveFromStart *bool `json:"live_from_start,omitempty" id:"live_from_start" jsonschema:"title=LiveFromStart" jsonschema_extras:"uid=live_from_start" jsonschema_description:"Download livestreams from the start. Currently experimental and only supported for YouTube and Twitch"`
+	// Download livestreams from the start. Currently experimental and only supported for
+	// YouTube, Twitch, and TVer
+	LiveFromStart *bool `json:"live_from_start,omitempty" id:"live_from_start" jsonschema:"title=LiveFromStart" jsonschema_extras:"uid=live_from_start" jsonschema_description:"Download livestreams from the start. Currently experimental and only supported for YouTube, Twitch, and TVer"`
 	// Download livestreams from the current time (default)
 	NoLiveFromStart *bool `json:"no_live_from_start,omitempty" id:"live_from_start" jsonschema:"title=NoLiveFromStart" jsonschema_extras:"uid=live_from_start" jsonschema_description:"Download livestreams from the current time (default)"`
 	// Wait for scheduled streams to become available. Pass the minimum number of seconds (or

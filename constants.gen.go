@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2026.02.04"
+	Version = "2026.02.21"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -534,7 +534,9 @@ var SupportedExtractors = []*Extractor{
 	{Name: "GDCVault", Description: "[gdcvault] (Currently broken)"},
 	{Name: "GediDigital"},
 	{Name: "gem.cbc.ca", Description: "[cbcgem]", AgeLimit: 14},
-	{Name: "gem.cbc.ca:live"},
+	{Name: "gem.cbc.ca:content", Description: "[cbcgem] [HIDDEN]"},
+	{Name: "gem.cbc.ca:live", Description: "[cbcgem]"},
+	{Name: "gem.cbc.ca:olympics", Description: "[cbcgem]"},
 	{Name: "gem.cbc.ca:playlist", Description: "[cbcgem]"},
 	{Name: "generic:quoted-html", Description: "[HIDDEN]"},
 	{Name: "Genius"},
@@ -766,6 +768,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Livestreamfails"},
 	{Name: "Lnk"},
 	{Name: "loc", Description: "Library of Congress"},
+	{Name: "Locipo"},
+	{Name: "LocipoPlaylist"},
 	{Name: "Loco"},
 	{Name: "loom"},
 	{Name: "loom:folder", Description: "(Currently broken)"},
@@ -795,6 +799,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "MarkizaPage", Description: "(Currently broken)"},
 	{Name: "massengeschmack.tv"},
 	{Name: "Masters"},
+	{Name: "MatchiTV"},
 	{Name: "MatchTV"},
 	{Name: "mave", AgeLimit: 18},
 	{Name: "mave:channel"},
@@ -1319,6 +1324,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "SangiinInstruction", Description: "[HIDDEN]"},
 	{Name: "Sapo", Description: "SAPO Vídeos"},
 	{Name: "SaucePlus", Description: "Sauce+"},
+	{Name: "SaucePlusChannel"},
 	{Name: "SBS", Description: "sbs.com.au"},
 	{Name: "sbs.co.kr", AgeLimit: 15},
 	{Name: "sbs.co.kr:allvod_program"},
@@ -1588,10 +1594,12 @@ var SupportedExtractors = []*Extractor{
 	{Name: "TVC"},
 	{Name: "TVCArticle"},
 	{Name: "TVer"},
+	{Name: "tver:olympic"},
 	{Name: "tvigle", Description: "Интернет-телевидение Tvigle.ru", AgeLimit: 12},
 	{Name: "TVIPlayer"},
 	{Name: "TVN24", Description: "(Currently broken)"},
 	{Name: "tvnoe", Description: "Televize Noe"},
+	{Name: "TVO"},
 	{Name: "tvopengr:embed", Description: "tvopen.gr embedded videos"},
 	{Name: "tvopengr:watch", Description: "tvopen.gr (and ethnos.gr) videos"},
 	{Name: "tvp", Description: "Telewizja Polska", AgeLimit: 12},
@@ -1704,6 +1712,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "ViMP:Playlist"},
 	{Name: "Viously"},
 	{Name: "Viqeo", Description: "(Currently broken)"},
+	{Name: "Visir", Description: "Vísir"},
 	{Name: "Viu"},
 	{Name: "viu:ott", Description: "[viu]"},
 	{Name: "viu:playlist"},
@@ -1853,7 +1862,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "youtube:playlist", Description: "[youtube] YouTube playlists"},
 	{Name: "youtube:recommended", Description: "[youtube] YouTube recommended videos; \":ytrec\" keyword"},
 	{Name: "youtube:search", Description: "[youtube] YouTube search; \"ytsearch:\" prefix"},
-	{Name: "youtube:search:date", Description: "[youtube] YouTube search, newest videos first; \"ytsearchdate:\" prefix"},
 	{Name: "youtube:search_url", Description: "[youtube] YouTube search URLs with sorting and filter support"},
 	{Name: "youtube:shorts:pivot:audio", Description: "[youtube] YouTube Shorts audio pivot (Shorts using audio of a given video)"},
 	{Name: "youtube:subscriptions", Description: "[youtube] YouTube subscriptions feed; \":ytsubs\" keyword (requires cookies)"},
