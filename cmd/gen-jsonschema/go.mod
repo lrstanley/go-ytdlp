@@ -7,7 +7,7 @@ replace github.com/lrstanley/go-ytdlp => ../..
 require (
 	github.com/invopop/jsonschema v0.13.0
 	github.com/lmittmann/tint v1.1.3
-	github.com/lrstanley/go-ytdlp v1.2.7
+	github.com/lrstanley/go-ytdlp v1.3.1
 )
 
 require (
