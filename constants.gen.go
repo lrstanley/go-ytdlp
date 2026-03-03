@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2026.02.21"
+	Version = "2026.03.03"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -1510,7 +1510,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "theatercomplextown:ppv", Description: "[theatercomplextown]"},
 	{Name: "theatercomplextown:vod", Description: "[theatercomplextown]"},
 	{Name: "TheChosen"},
-	{Name: "TheChosenGroup"},
+	{Name: "TheChosenGroup", Description: "(Currently broken)"},
 	{Name: "TheGuardianPodcast"},
 	{Name: "TheGuardianPodcastPlaylist"},
 	{Name: "TheHighWire"},
