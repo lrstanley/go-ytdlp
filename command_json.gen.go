@@ -898,7 +898,7 @@ type FlagsFilesystem struct {
 	// can also provide "home" (default) and "temp" paths. All intermediary files are first
 	// downloaded to the temp path and then the final files are moved over to the home path after
 	// download is finished. This option is ignored if --output is an absolute path
-	Paths *string `json:"paths,omitempty" id:"paths" jsonschema:"title=Paths" jsonschema_extras:"uid=paths" jsonschema_description:"The paths where the files should be downloaded. Specify the type of file and the path separated by a colon \":\". All the same TYPES as --output are supported. Additionally, you can also provide \"home\" (default) and \"temp\" paths. All intermediary files are first downloaded to the temp path and then the final files are moved over to the home path after download is finished. This option is ignored if --output is an absolute path"`
+	Paths []string `json:"paths,omitempty" id:"paths" jsonschema:"title=Paths" jsonschema_extras:"uid=paths" jsonschema_description:"The paths where the files should be downloaded. Specify the type of file and the path separated by a colon \":\". All the same TYPES as --output are supported. Additionally, you can also provide \"home\" (default) and \"temp\" paths. All intermediary files are first downloaded to the temp path and then the final files are moved over to the home path after download is finished. This option is ignored if --output is an absolute path"`
 	// Output filename template; see "OUTPUT TEMPLATE" for details
 	Output *string `json:"output,omitempty" id:"outtmpl" jsonschema:"title=Output" jsonschema_extras:"uid=outtmpl" jsonschema_description:"Output filename template; see \"OUTPUT TEMPLATE\" for details"`
 	// Placeholder for unavailable fields in --output (default: "NA")
@@ -1021,8 +1021,8 @@ func (g *FlagsFilesystem) ToFlags() (flags Flags) {
 	if g.ID != nil && *g.ID {
 		flags = append(flags, &Flag{ID: "useid", Flag: "--id", Args: nil})
 	}
-	if g.Paths != nil {
-		flags = append(flags, &Flag{ID: "paths", Flag: "--paths", Args: []any{*g.Paths}})
+	for _, v := range g.Paths {
+		flags = append(flags, &Flag{ID: "paths", Flag: "--paths", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.Output != nil {
 		flags = append(flags, &Flag{ID: "outtmpl", Flag: "--output", Args: []any{*g.Output}})

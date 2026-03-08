@@ -129,7 +129,9 @@ func (o *Option) Generate(parent *OptionGroup) {
 		o.Executable = true
 	}
 
-	if strings.Contains(o.Help, "used multiple times") || strings.Contains(o.Help, "option multiple times") {
+	if slices.Contains(knownAllowsMultiple, o.ID) || slices.Contains(knownAllowsMultiple, o.Flag) {
+		o.AllowsMultiple = true
+	} else if strings.Contains(o.Help, "used multiple times") || strings.Contains(o.Help, "option multiple times") {
 		o.AllowsMultiple = true
 	}
 

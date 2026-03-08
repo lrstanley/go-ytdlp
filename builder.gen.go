@@ -2049,7 +2049,7 @@ func (c *Command) UnsetID() *Command {
 //  - Paths maps to cli flags: -P/--paths=[TYPES:]PATH.
 //  - From option group: "Filesystem"
 func (c *Command) Paths(path string) *Command {
-	c.flagConfig.Filesystem.Paths = &path
+	c.flagConfig.Filesystem.Paths = append(c.flagConfig.Filesystem.Paths, path)
 	return c
 }
 

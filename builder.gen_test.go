@@ -1083,7 +1083,7 @@ func TestBuilder_Filesystem_NonExecutable(t *testing.T) {
 		builder := New().NoUpdate().
 			Paths("test").
 			Paths("test")
-		validateFlagAdded(t, builder, "paths", "--paths", 1, 1)
+		validateFlagAdded(t, builder, "paths", "--paths", 1, 2)
 		_ = builder.UnsetPaths()
 		validateFlagRemoved(t, builder, "paths", "--paths")
 	})
