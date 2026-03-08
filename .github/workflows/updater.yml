@@ -40,4 +40,5 @@ jobs:
             *.gen.go
             *.gen_test.go
             optiondata/*.gen.go
+            optiondata/json-schema.json
           repo: ${{ steps.release.outputs.repo }}
