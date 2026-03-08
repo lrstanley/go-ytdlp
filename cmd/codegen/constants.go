@@ -153,6 +153,11 @@ var knownExecutable = []string{
 	"print_help",
 }
 
+// knownAllowsMultiple are dest or flag names that allow being invoked multiple times.
+var knownAllowsMultiple = []string{
+	"--paths",
+}
+
 var disallowedNames = []string{
 	"",
 	"type",
