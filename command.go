@@ -42,6 +42,7 @@ type Command struct {
 	disableEnvVarInherit bool
 
 	progress *progressHandler
+	stderr   *stderrHandler
 }
 
 // Clone returns a copy of the command, with all flags, env vars, executable,
@@ -55,6 +56,7 @@ func (c *Command) Clone() *Command {
 		flagConfig:           c.flagConfig.Clone(),
 		separateProcessGroup: c.separateProcessGroup,
 		progress:             c.progress,
+		stderr:               c.stderr,
 	}
 	maps.Copy(cc.env, c.env)
 	c.mu.RUnlock()
@@ -291,7 +293,7 @@ func (c *Command) runWithResult(ctx context.Context, cmd *exec.Cmd) (*Result, er
 	}
 
 	stdout := &timestampWriter{pipe: "stdout", progress: c.progress}
-	stderr := &timestampWriter{pipe: "stderr"}
+	stderr := &timestampWriter{pipe: "stderr", stderr: c.stderr}
 
 	if c.hasJSONFlag() {
 		stdout.checkJSON = true

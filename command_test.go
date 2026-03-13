@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"sync"
 	"testing"
 	"time"
 )
@@ -261,5 +262,76 @@ func TestCommand_JSONClone(t *testing.T) {
 
 	if *cloned.Filesystem.Output != "test.mp4" {
 		t.Fatalf("expected output to be %q, got %q", "test.mp4", *cloned.Filesystem.Output)
+	}
+}
+
+func TestCommand_StderrFunc(t *testing.T) {
+	t.Parallel()
+
+	server := newMockServer(t, "testdata/sample-1.mp4")
+
+	dir := t.TempDir()
+
+	var mu sync.Mutex
+	var stderrLines []string
+
+	result, err := New().
+		Verbose().
+		ForceOverwrites().
+		Output(filepath.Join(dir, "%(extractor)s - %(title)s.%(ext)s")).
+		StderrFunc(func(line string) {
+			mu.Lock()
+			stderrLines = append(stderrLines, line)
+			mu.Unlock()
+		}).
+		Run(context.TODO(), server.fileURL)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if result.ExitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d", result.ExitCode)
+	}
+
+	mu.Lock()
+	count := len(stderrLines)
+	mu.Unlock()
+
+	if count == 0 {
+		t.Fatal("expected at least one stderr line from the callback")
+	}
+
+	if result.Stderr == "" {
+		t.Fatal("expected result.Stderr to be non-empty with --verbose")
+	}
+}
+
+func TestCommand_StderrFunc_Clone(t *testing.T) {
+	t.Parallel()
+
+	called := false
+	builder := New().NoUpdate().StderrFunc(func(_ string) {
+		called = true
+	})
+
+	cloned := builder.Clone()
+
+	if cloned.stderr == nil {
+		t.Fatal("expected stderr handler to be copied by Clone()")
+	}
+
+	cloned.stderr.handle("test")
+	if !called {
+		t.Fatal("expected cloned stderr handler to invoke the original callback")
+	}
+}
+
+func TestCommand_UnsetStderrFunc(t *testing.T) {
+	t.Parallel()
+
+	builder := New().NoUpdate().StderrFunc(func(_ string) {}).UnsetStderrFunc()
+
+	if builder.stderr != nil {
+		t.Fatal("expected stderr handler to be nil after UnsetStderrFunc()")
 	}
 }

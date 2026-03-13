@@ -135,6 +135,7 @@ type timestampWriter struct {
 	results        []*ResultLog
 
 	progress *progressHandler
+	stderr   *stderrHandler
 }
 
 func (w *timestampWriter) Write(p []byte) (n int, err error) {
@@ -148,6 +149,16 @@ func (w *timestampWriter) Write(p []byte) (n int, err error) {
 
 		_, err = w.Write(p[i+1:]) // Recursively write the rest of the buffer, in case it contains multiple lines.
 		return len(p), err
+	}
+
+	if w.stderr != nil {
+		if i := bytes.IndexByte(p, '\r'); i >= 0 {
+			w.buf.Write(p[:i+1])
+			w.flushStderr()
+
+			_, err = w.Write(p[i+1:])
+			return len(p), err
+		}
 	}
 
 	return w.buf.Write(p)
@@ -184,7 +195,30 @@ func (w *timestampWriter) flush() {
 	}
 
 	w.results = append(w.results, result)
+
+	if w.stderr != nil {
+		w.stderr.handle(result.Line)
+	}
+
 reset:
+	w.lastWriteStart = time.Time{}
+	w.buf.Reset()
+}
+
+// flushStderr flushes the current buffer as a \r-terminated stderr line.
+// These ephemeral lines (e.g. ffmpeg in-place progress) are sent to the
+// stderr callback but NOT appended to w.results.
+func (w *timestampWriter) flushStderr() {
+	if w.buf.Len() == 0 {
+		return
+	}
+
+	line := strings.TrimSpace(w.buf.String())
+
+	if line != "" && w.stderr != nil {
+		w.stderr.handle(line)
+	}
+
 	w.lastWriteStart = time.Time{}
 	w.buf.Reset()
 }
