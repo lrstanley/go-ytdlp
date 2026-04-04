@@ -15,9 +15,10 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/Masterminds/sprig/v3"
+	sprig "github.com/go-task/slim-sprig/v3"
 	"github.com/iancoleman/strcase"
 	"github.com/lmittmann/tint"
+	"github.com/mitchellh/go-wordwrap"
 )
 
 var (
@@ -34,14 +35,11 @@ var (
 			"to_lower_camel": func(s string) string {
 				return acronymReplacer.Replace(strcase.ToLowerCamel(s))
 			}, // anyKindOfString
-			"to_snake": func(s string) string {
-				return strcase.ToSnake(s)
-			}, // any_kind_of_string
-			"has_prefix": func(s, prefix string) bool {
-				return strings.HasPrefix(s, prefix)
-			},
-			"has_suffix": func(s, suffix string) bool {
-				return strings.HasSuffix(s, suffix)
+			"to_snake":   strcase.ToSnake, // any_kind_of_string
+			"has_prefix": strings.HasPrefix,
+			"has_suffix": strings.HasSuffix,
+			"wrap": func(width int, s string) string {
+				return wordwrap.WrapString(s, uint(width))
 			},
 		},
 	)
