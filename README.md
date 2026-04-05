@@ -3,7 +3,8 @@
   "nodescription": true
 }
 -->
-![logo](https://liam.sh/-/gh/svg/lrstanley/go-ytdlp?layout=left&icon=logos%3Ayoutube-icon&icon.height=70&font=1.2&bg=geometric&bgcolor=rgba%2833%2C+33%2C+33%2C+1%29)
+![banner](https://github.com/user-attachments/assets/25e33513-8134-4e42-95b0-eb2bb52e27be)
+
 
 <!-- template:begin:header -->
 <!-- do not edit anything in this "template" block, its auto-generated -->
