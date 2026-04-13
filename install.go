@@ -17,7 +17,9 @@ import (
 	"io"
 	"mime"
 	"net/http"
+	"net/url"
 	"os"
+	"path"
 	"os/exec"
 	"path/filepath"
 	"runtime"
@@ -220,17 +222,44 @@ func InstallAll(ctx context.Context) ([]*ResolvedInstall, error) {
 	return installs, nil
 }
 
-func downloadFile(ctx context.Context, url, targetDir, targetName string, perms os.FileMode) (dest string, err error) {
+// destPathForDownload picks a cache path when the caller did not supply an explicit filename.
+// Prefer Content-Disposition; some hosts (e.g. static zip mirrors) omit it but use a meaningful URL path.
+func destPathForDownload(resp *http.Response, targetDir, rawURL string) (string, error) {
+	if cd := strings.TrimSpace(resp.Header.Get("Content-Disposition")); cd != "" {
+		disposition, params, err := mime.ParseMediaType(cd)
+		if err == nil && disposition == "attachment" && params["filename"] != "" {
+			return filepath.Join(targetDir, params["filename"]), nil
+		}
+	}
+
+	parsed, err := url.Parse(rawURL)
+	if err != nil {
+		return "", fmt.Errorf("parse url: %w", err)
+	}
+
+	base := path.Base(parsed.Path)
+	if unescaped, err := url.PathUnescape(base); err == nil {
+		base = unescaped
+	}
+
+	if base == "" || base == "." || base == "/" {
+		return "", errors.New("unable to determine download filename from url path")
+	}
+
+	return filepath.Join(targetDir, base), nil
+}
+
+func downloadFile(ctx context.Context, rawURL, targetDir, targetName string, perms os.FileMode) (dest string, err error) {
 	debug(
 		ctx, "downloading file",
-		"url", url,
+		"url", rawURL,
 		"dir", targetDir,
 		"file", targetName,
 	)
 
 	// Download the binary.
 	client := &http.Client{Timeout: downloadTimeout}
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, http.NoBody)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, rawURL, http.NoBody)
 	if err != nil {
 		return "", fmt.Errorf("unable to download go-ytdlp dependent file %q: request creation: %w", dest, err)
 	}
@@ -252,22 +281,11 @@ func downloadFile(ctx context.Context, url, targetDir, targetName string, perms 
 	if targetName != "" {
 		dest = targetName
 	} else {
-		var disposition string
-		var params map[string]string
-		disposition, params, err = mime.ParseMediaType(resp.Header.Get("Content-Disposition"))
+		dest, err = destPathForDownload(resp, targetDir, rawURL)
 		if err != nil {
-			return "", fmt.Errorf("unable to parse content disposition: %w", err)
+			return "", fmt.Errorf("unable to determine download destination: %w", err)
 		}
-		if disposition != "attachment" {
-			return "", fmt.Errorf("unexpected content disposition: %s", disposition)
-		}
-
-		if params["filename"] == "" {
-			return "", errors.New("no filename in content disposition")
-		}
-
-		dest = filepath.Join(targetDir, params["filename"])
-		debug(ctx, "using filename from content disposition", "dest", dest)
+		debug(ctx, "resolved download destination", "dest", dest)
 	}
 
 	debug(ctx, "creating file", "dest", dest)
