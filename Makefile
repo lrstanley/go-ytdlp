@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := generate
 
-export YTDLP_VERSION := 2026.03.17
+export YTDLP_VERSION := 2026.07.04
 
 license:
 	curl -sL https://liam.sh/-/gh/g/license-header.sh | bash -s

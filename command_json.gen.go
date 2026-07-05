@@ -204,8 +204,8 @@ type FlagsGeneral struct {
 	// Fully extract the videos of a playlist (default)
 	NoFlatPlaylist *bool `json:"no_flat_playlist,omitempty" id:"extract_flat" jsonschema:"title=NoFlatPlaylist" jsonschema_extras:"uid=extract_flat" jsonschema_description:"Fully extract the videos of a playlist (default)"`
 	// Download livestreams from the start. Currently experimental and only supported for
-	// YouTube, Twitch, and TVer
-	LiveFromStart *bool `json:"live_from_start,omitempty" id:"live_from_start" jsonschema:"title=LiveFromStart" jsonschema_extras:"uid=live_from_start" jsonschema_description:"Download livestreams from the start. Currently experimental and only supported for YouTube, Twitch, and TVer"`
+	// YouTube, Twitch, TVer, and mellow-fan
+	LiveFromStart *bool `json:"live_from_start,omitempty" id:"live_from_start" jsonschema:"title=LiveFromStart" jsonschema_extras:"uid=live_from_start" jsonschema_description:"Download livestreams from the start. Currently experimental and only supported for YouTube, Twitch, TVer, and mellow-fan"`
 	// Download livestreams from the current time (default)
 	NoLiveFromStart *bool `json:"no_live_from_start,omitempty" id:"live_from_start" jsonschema:"title=NoLiveFromStart" jsonschema_extras:"uid=live_from_start" jsonschema_description:"Download livestreams from the current time (default)"`
 	// Wait for scheduled streams to become available. Pass the minimum number of seconds (or
@@ -757,12 +757,12 @@ type FlagsDownload struct {
 	// --download-sections "*10:15-inf" --download-sections "intro"
 	DownloadSections []string `json:"download_sections,omitempty" id:"download_ranges" jsonschema:"title=DownloadSections" jsonschema_extras:"uid=download_ranges" jsonschema_description:"Download only chapters that match the regular expression. A \"*\" prefix denotes time-range instead of chapter. Negative timestamps are calculated from the end. \"*from-url\" can be used to download between the \"start_time\" and \"end_time\" extracted from the URL. Needs ffmpeg. This option can be used multiple times to download multiple sections, e.g. --download-sections \"*10:15-inf\" --download-sections \"intro\""`
 	// Name or path of the external downloader to use (optionally) prefixed by the protocols
-	// (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c,
-	// axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different
+	// (http, ftp, m3u8, dash, rtmp) to use it for. Currently supports native, aria2c, axel,
+	// curl, ffmpeg, httpie, wget. You can use this option multiple times to set different
 	// downloaders for different protocols. E.g. --downloader aria2c --downloader
 	// "dash,m3u8:native" will use aria2c for http/ftp downloads, and the native downloader for
 	// dash/m3u8 downloads
-	Downloader []string `json:"downloader,omitempty" id:"external_downloader" jsonschema:"title=Downloader" jsonschema_extras:"uid=external_downloader" jsonschema_description:"Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads"`
+	Downloader []string `json:"downloader,omitempty" id:"external_downloader" jsonschema:"title=Downloader" jsonschema_extras:"uid=external_downloader" jsonschema_description:"Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rtmp) to use it for. Currently supports native, aria2c, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads"`
 	// Give these arguments to the external downloader. Specify the downloader name and the
 	// arguments separated by a colon ":". For ffmpeg, arguments can be passed to different
 	// positions using the same syntax as --postprocessor-args. You can use this option multiple
@@ -1469,9 +1469,8 @@ type FlagsWorkarounds struct {
 	LegacyServerConnect *bool `json:"legacy_server_connect,omitempty" id:"legacy_server_connect" jsonschema:"title=LegacyServerConnect" jsonschema_extras:"uid=legacy_server_connect" jsonschema_description:"Explicitly allow HTTPS connection to servers that do not support RFC 5746 secure renegotiation"`
 	// Suppress HTTPS certificate validation
 	NoCheckCertificates *bool `json:"no_check_certificates,omitempty" id:"no_check_certificate" jsonschema:"title=NoCheckCertificates" jsonschema_extras:"uid=no_check_certificate" jsonschema_description:"Suppress HTTPS certificate validation"`
-	// Use an unencrypted connection to retrieve information about the video (Currently supported
-	// only for YouTube)
-	PreferInsecure *bool   `json:"prefer_insecure,omitempty" id:"prefer_insecure" jsonschema:"title=PreferInsecure" jsonschema_extras:"uid=prefer_insecure" jsonschema_description:"Use an unencrypted connection to retrieve information about the video (Currently supported only for YouTube)"`
+	// Use an unencrypted connection to retrieve information about the video
+	PreferInsecure *bool   `json:"prefer_insecure,omitempty" id:"prefer_insecure" jsonschema:"title=PreferInsecure" jsonschema_extras:"uid=prefer_insecure" jsonschema_description:"Use an unencrypted connection to retrieve information about the video"`
 	UserAgent      *string `json:"user_agent,omitempty" id:"user_agent" jsonschema:"title=UserAgent" jsonschema_extras:"uid=user_agent" jsonschema_description:""`
 	Referer        *string `json:"referer,omitempty" id:"referer" jsonschema:"title=Referer" jsonschema_extras:"uid=referer" jsonschema_description:""`
 	// Specify a custom HTTP header and its value, separated by a colon ":". You can use this
@@ -1970,9 +1969,11 @@ type FlagsPostProcessing struct {
 	// Execute a command, optionally prefixed with when to execute it, separated by a ":".
 	// Supported values of "WHEN" are the same as that of --use-postprocessor (default:
 	// after_move). The same syntax as the output template can be used to pass any field as
-	// arguments to the command. If no fields are passed, %(filepath,_filename|)q is appended to
-	// the end of the command. This option can be used multiple times
-	Exec []string `json:"exec,omitempty" id:"exec_cmd" jsonschema:"title=Exec" jsonschema_extras:"uid=exec_cmd" jsonschema_description:"Execute a command, optionally prefixed with when to execute it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: after_move). The same syntax as the output template can be used to pass any field as arguments to the command. If no fields are passed, %(filepath,_filename|)q is appended to the end of the command. This option can be used multiple times"`
+	// arguments to the command; however, for security reasons the only allowed conversions are:
+	// "i"/"d" (signed integer decimal), "f" (floating-point decimal) and "q" (shell-quoted). If
+	// no fields are passed, %(filepath,_filename|)q is appended to the end of the command. This
+	// option can be used multiple times
+	Exec []string `json:"exec,omitempty" id:"exec_cmd" jsonschema:"title=Exec" jsonschema_extras:"uid=exec_cmd" jsonschema_description:"Execute a command, optionally prefixed with when to execute it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: after_move). The same syntax as the output template can be used to pass any field as arguments to the command; however, for security reasons the only allowed conversions are: \"i\"/\"d\" (signed integer decimal), \"f\" (floating-point decimal) and \"q\" (shell-quoted). If no fields are passed, %(filepath,_filename|)q is appended to the end of the command. This option can be used multiple times"`
 	// Remove any previously defined --exec
 	NoExec               *bool   `json:"no_exec,omitempty" id:"exec_cmd" jsonschema:"title=NoExec" jsonschema_extras:"uid=exec_cmd" jsonschema_description:"Remove any previously defined --exec"`
 	ExecBeforeDownload   *string `json:"exec_before_download,omitempty" id:"exec_before_dl_cmd" jsonschema:"title=ExecBeforeDownload" jsonschema_extras:"uid=exec_before_dl_cmd" jsonschema_description:""`
