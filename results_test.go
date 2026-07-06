@@ -6,6 +6,7 @@ package ytdlp
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
@@ -103,4 +104,25 @@ func TestExtractedInfo(t *testing.T) {
 
 	require.NotNil(t, info[0].ExtractorKey, "expected extractor key to be set")
 	assert.Equal(t, "Generic", *info[0].ExtractorKey, "expected extractor key to be generic")
+}
+
+func TestParseExtractedInfo_requestedSubtitles(t *testing.T) {
+	// yt-dlp's process_subtitles selects a single subtitle format per language,
+	// so requested_subtitles holds one object per language, while subtitles and
+	// automatic_captions hold a list of formats per language.
+	raw := json.RawMessage(`{
+		"id": "sample-1",
+		"subtitles": {"en": [{"ext": "vtt", "url": "https://example.com/en.vtt"}, {"ext": "srt", "url": "https://example.com/en.srt"}]},
+		"automatic_captions": {"en": [{"ext": "vtt", "url": "https://example.com/auto-en.vtt"}]},
+		"requested_subtitles": {"en": {"ext": "srt", "url": "https://example.com/en.srt", "name": "English"}}
+	}`)
+
+	info, err := ParseExtractedInfo(&raw)
+	require.NoError(t, err, "expected requested_subtitles to unmarshal")
+
+	require.Contains(t, info.RequestedSubtitles, "en", "expected en requested subtitle")
+	assert.Equal(t, "https://example.com/en.srt", info.RequestedSubtitles["en"].URL, "expected en requested subtitle url")
+
+	require.Len(t, info.Subtitles["en"], 2, "expected 2 en subtitle formats")
+	require.Len(t, info.AutomaticCaptions["en"], 1, "expected 1 en automatic caption format")
 }
