@@ -161,6 +161,9 @@ func (c *Command) hasJSONFlag() bool {
 	if v := c.flagConfig.VerbositySimulation.DumpJSON; v != nil && *v {
 		return true
 	}
+	if v := c.flagConfig.VerbositySimulation.DumpSingleJSON; v != nil && *v {
+		return true
+	}
 	return false
 }
 
