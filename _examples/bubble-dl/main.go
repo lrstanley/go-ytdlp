@@ -12,10 +12,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/bubbles/progress"
-	"github.com/charmbracelet/bubbles/spinner"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/key"
+	"charm.land/bubbles/v2/progress"
+	"charm.land/bubbles/v2/spinner"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 	"github.com/dustin/go-humanize"
 	"github.com/lrstanley/go-ytdlp"
 )
@@ -42,7 +43,14 @@ type model struct {
 	lastProgress ytdlp.ProgressUpdate
 }
 
+var _ tea.Model = model{}
+
 var (
+	keyQuit = key.NewBinding(
+		key.WithKeys("ctrl+c", "esc", "q"),
+		key.WithHelp("q", "quit"),
+	)
+
 	fileStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("211"))
 	titleStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("93"))
 	doneStyle    = lipgloss.NewStyle().Margin(1, 2)
@@ -50,15 +58,20 @@ var (
 	successStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("42")).SetString("✓")
 	etaStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
 	sizeStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
+	spinnerStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("63"))
 )
+
+func newProgress() progress.Model {
+	return progress.New(
+		progress.WithDefaultBlend(),
+		progress.WithWidth(40),
+	)
+}
 
 func newModel() model {
 	m := model{
-		spinner: spinner.New(),
-		progress: progress.New(
-			progress.WithDefaultGradient(),
-			progress.WithWidth(40),
-		),
+		spinner:  spinner.New(spinner.WithStyle(spinnerStyle)),
+		progress: newProgress(),
 	}
 
 	if len(os.Args[1:]) > 0 {
@@ -74,8 +87,6 @@ func newModel() model {
 			os.Exit(1)
 		}
 	}
-
-	m.spinner.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("63"))
 
 	return m
 }
@@ -105,9 +116,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		m.width, m.height = msg.Width, msg.Height
-	case tea.KeyMsg:
-		switch msg.String() {
-		case "ctrl+c", "esc", "q":
+	case tea.KeyPressMsg:
+		if key.Matches(msg, keyQuit) {
 			return m, tea.Quit
 		}
 	case MsgToolsVerified:
@@ -131,25 +141,30 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		return m, tea.Sequence(append(cmds, m.initiateDownload)...)
 	case MsgProgress:
-		m.lastProgress = msg.Progress
-		cmds := []tea.Cmd{m.progress.SetPercent(msg.Progress.Percent() / 100)}
+		next := msg.Progress
+		if m.shouldResetProgress(next) {
+			// Replace the widget. SetPercent(0) only changes the target, so the
+			// spring would still render 100% on this frame and tween down.
+			m.progress = newProgress()
+		}
+		m.lastProgress = next
 
-		if m.lastProgress.Status == ytdlp.ProgressStatusFinished {
-			cmds = append(cmds, tea.Printf(
+		if next.Status == ytdlp.ProgressStatusFinished {
+			return m, tea.Printf(
 				"%s downloaded %s (%s)",
 				successStyle,
-				fileStyle.Render(*m.lastProgress.Info.URL),
-				titleStyle.Render(*m.lastProgress.Info.Filename),
-			))
+				fileStyle.Render(*next.Info.URL),
+				titleStyle.Render(*next.Info.Filename),
+			)
 		}
-		if m.lastProgress.Status == ytdlp.ProgressStatusError {
-			cmds = append(cmds, tea.Printf(
+		if next.Status == ytdlp.ProgressStatusError {
+			return m, tea.Printf(
 				"%s error downloading: %s",
 				errorStyle,
-				*m.lastProgress.Info.URL,
-			))
+				*next.Info.URL,
+			)
 		}
-		return m, tea.Sequence(cmds...)
+		return m, m.progress.SetPercent(next.Percent() / 100)
 	case MsgFinished:
 		m.done = true
 		if msg.Err != nil {
@@ -164,13 +179,42 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.spinner, cmd = m.spinner.Update(msg)
 		return m, cmd
 	case progress.FrameMsg:
-		newModel, cmd := m.progress.Update(msg)
-		if newModel, ok := newModel.(progress.Model); ok {
-			m.progress = newModel
-		}
+		var cmd tea.Cmd
+		m.progress, cmd = m.progress.Update(msg)
 		return m, cmd
 	}
 	return m, nil
+}
+
+func (m model) shouldResetProgress(next ytdlp.ProgressUpdate) bool {
+	prev := m.lastProgress
+	if prev.Status == "" {
+		return false
+	}
+	if next.Status.IsCompletedType() || prev.Status.IsCompletedType() {
+		return true
+	}
+	if next.Status == ytdlp.ProgressStatusStarting {
+		return true
+	}
+	if next.Percent()/100 < m.progress.Percent() || next.Percent() < prev.Percent() {
+		return true
+	}
+	return downloadKey(prev) != downloadKey(next)
+}
+
+func downloadKey(p ytdlp.ProgressUpdate) string {
+	id, src, dest := "", "", p.Filename
+	if p.Info != nil {
+		id = p.Info.ID
+		if p.Info.URL != nil {
+			src = *p.Info.URL
+		}
+		if p.Info.Filename != nil && *p.Info.Filename != "" {
+			dest = *p.Info.Filename
+		}
+	}
+	return id + "\x00" + src + "\x00" + dest + "\x00" + p.Filename
 }
 
 type MsgProgress struct {
@@ -201,22 +245,24 @@ func (m model) initiateDownload() tea.Msg {
 	return MsgFinished{Result: result, Err: err}
 }
 
-func (m model) View() string {
+func (m model) View() tea.View {
 	// " <spinner> <status> <file> <GAP> <progress> [eta: <eta>] [size: <size>]"
 
-	if m.lastProgress.Status == "" {
-		return doneStyle.Render(m.spinner.View() + " fetching url information...\n")
+	if m.done {
+		return tea.NewView(doneStyle.Render(fmt.Sprintf("downloaded %d urls.\n", len(m.urls))))
 	}
 
-	if m.done {
-		return doneStyle.Render(fmt.Sprintf("downloaded %d urls.\n", len(m.urls)))
+	if m.lastProgress.Status == "" || m.lastProgress.Status.IsCompletedType() {
+		return tea.NewView(m.spinner.View() + " fetching url information...")
 	}
+
+	var b strings.Builder
 
 	spin := m.spinner.View()
 	status := string(m.lastProgress.Status)
 	prog := m.progress.View()
-	eta := m.lastProgress.ETA().Round(time.Second).String()
-	eta = "[eta: " + etaStyle.MarginLeft(max(0, 4-len(eta))).Render(eta) + "]"
+	etaRaw := m.lastProgress.ETA().Round(time.Second).String()
+	eta := "[eta: " + etaStyle.MarginLeft(max(0, 4-lipgloss.Width(etaRaw))).Render(etaRaw) + "]"
 	size := "[size: " + sizeStyle.Render(humanize.Bytes(uint64(m.lastProgress.TotalBytes))) + "]"
 
 	cellsAvail := max(0, m.width-lipgloss.Width(spin+" "+status+" "+prog+" "+eta+" "+size))
@@ -224,9 +270,20 @@ func (m model) View() string {
 	file := fileStyle.MaxWidth(cellsAvail).Render(m.lastProgress.Filename)
 
 	cellsRemaining := max(0, cellsAvail-lipgloss.Width(file))
-	gap := strings.Repeat(" ", cellsRemaining)
 
-	return spin + " " + status + " " + file + gap + prog + " " + eta + " " + size
+	b.WriteString(spin)
+	b.WriteByte(' ')
+	b.WriteString(status)
+	b.WriteByte(' ')
+	b.WriteString(file)
+	b.WriteString(strings.Repeat(" ", cellsRemaining))
+	b.WriteString(prog)
+	b.WriteByte(' ')
+	b.WriteString(eta)
+	b.WriteByte(' ')
+	b.WriteString(size)
+
+	return tea.NewView(b.String())
 }
 
 func main() {
