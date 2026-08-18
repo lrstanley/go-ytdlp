@@ -106,6 +106,42 @@ func TestExtractedInfo(t *testing.T) {
 	assert.Equal(t, "Generic", *info[0].ExtractorKey, "expected extractor key to be generic")
 }
 
+func TestGetExtractedInfo_dumpJSONFlags(t *testing.T) {
+	server := newMockServer(t, "testdata/sample-1.mp4")
+
+	tests := []struct {
+		name string
+		cmd  *Command
+	}{
+		{name: "DumpJSON", cmd: New().DumpJSON()},
+		{name: "DumpSingleJSON", cmd: New().DumpSingleJSON()},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result, err := tt.cmd.NoUpdate().Run(context.TODO(), server.fileURL)
+			require.NoError(t, err)
+			require.NotEmpty(t, result.Stdout, "expected JSON on stdout")
+			require.True(t, json.Valid([]byte(result.Stdout)), "expected stdout to be valid JSON")
+
+			var jsonLogs int
+			for _, l := range result.OutputLogs {
+				if l.JSON != nil {
+					jsonLogs++
+				}
+			}
+			require.Positive(t, jsonLogs, "expected at least one OutputLog with parsed JSON")
+
+			info, err := result.GetExtractedInfo()
+			require.NoError(t, err)
+			require.Len(t, info, 1, "expected 1 extracted info")
+			assert.Equal(t, "sample-1", info[0].ID)
+			require.NotNil(t, info[0].Title)
+			assert.Equal(t, "sample-1", *info[0].Title)
+		})
+	}
+}
+
 func TestParseExtractedInfo_requestedSubtitles(t *testing.T) {
 	// yt-dlp's process_subtitles selects a single subtitle format per language,
 	// so requested_subtitles holds one object per language, while subtitles and

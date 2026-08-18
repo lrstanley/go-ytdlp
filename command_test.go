@@ -36,6 +36,34 @@ var sampleFiles = []testSampleFile{
 	{url: "https://cdn.liam.sh/github/go-ytdlp/sample-4.mpg", name: "sample-4", ext: "mpg", extractor: "generic"},
 }
 
+func TestCommand_hasJSONFlag(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		cmd  *Command
+		want bool
+	}{
+		{name: "none", cmd: New(), want: false},
+		{name: "DumpJSON", cmd: New().DumpJSON(), want: true},
+		{name: "DumpSingleJSON", cmd: New().DumpSingleJSON(), want: true},
+		{name: "PrintJSON", cmd: New().PrintJSON(), want: true},
+		{name: "Print %(j)", cmd: New().Print("%(j)"), want: true},
+		{name: "Print %(title)s", cmd: New().Print("%(title)s"), want: false},
+		{name: "Print %(j) with extra template", cmd: New().Print("%(j)").Print("%(title)s"), want: false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			if got := tt.cmd.hasJSONFlag(); got != tt.want {
+				t.Fatalf("hasJSONFlag() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestCommand_Simple(t *testing.T) {
 	t.Parallel()
 
