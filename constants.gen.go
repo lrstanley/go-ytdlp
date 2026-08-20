@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2026.07.04"
+	Version = "2026.08.19"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -108,10 +108,9 @@ var SupportedExtractors = []*Extractor{
 	{Name: "APA"},
 	{Name: "Aparat"},
 	{Name: "apple:music:connect", Description: "Apple Music Connect"},
-	{Name: "ApplePodcasts"},
+	{Name: "apple:podcasts", Description: "Apple Podcasts"},
 	{Name: "archive.org", Description: "archive.org video and audio"},
 	{Name: "ArcPublishing"},
-	{Name: "ARD"},
 	{Name: "ARDAudiothek"},
 	{Name: "ARDAudiothekPlaylist"},
 	{Name: "ARDMediathek"},
@@ -1274,7 +1273,8 @@ var SupportedExtractors = []*Extractor{
 	{Name: "SharePoint"},
 	{Name: "ShemarooMe"},
 	{Name: "Shiey"},
-	{Name: "ShowRoomLive", Description: "(Currently broken)"},
+	{Name: "showroom:live", Description: "SHOWROOM"},
+	{Name: "showroom:vod"},
 	{Name: "ShugiinItvLive", Description: "衆議院インターネット審議中継"},
 	{Name: "ShugiinItvLiveRoom", Description: "衆議院インターネット審議中継 (中継)"},
 	{Name: "ShugiinItvVod", Description: "衆議院インターネット審議中継 (ビデオライブラリ)"},
