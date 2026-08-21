@@ -26,7 +26,6 @@
 
 
 
-
   <a href="https://codecov.io/gh/lrstanley/go-ytdlp">
     <img title="Code Coverage" src="https://img.shields.io/codecov/c/github/lrstanley/go-ytdlp/master?style=flat-square">
   </a>
