@@ -7,7 +7,7 @@ require (
 	github.com/iancoleman/strcase v0.3.0
 	github.com/invopop/jsonschema v0.14.0
 	github.com/lmittmann/tint v1.2.0
-	github.com/lrstanley/go-ytdlp v1.3.5
+	github.com/lrstanley/go-ytdlp v1.3.6
 	github.com/mitchellh/go-wordwrap v1.0.1
 )
 
