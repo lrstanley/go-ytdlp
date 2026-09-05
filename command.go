@@ -55,6 +55,8 @@ func (c *Command) Clone() *Command {
 		env:                  make(map[string]string, len(c.env)),
 		flagConfig:           c.flagConfig.Clone(),
 		separateProcessGroup: c.separateProcessGroup,
+		cancelMaxWait:        c.cancelMaxWait,
+		disableEnvVarInherit: c.disableEnvVarInherit,
 		progress:             c.progress,
 		stderr:               c.stderr,
 	}
@@ -170,10 +172,8 @@ func (c *Command) hasJSONFlag() bool {
 // toMap converts a slice of environment variables to a map. Handles Windows
 // environment variables that start with '='.
 func toMap(env []string) map[string]string {
-	r := map[string]string{}
+	r := make(map[string]string, len(env))
 	for _, e := range env {
-		p := strings.SplitN(e, "=", 2)
-
 		if runtime.GOOS == "windows" {
 			// On Windows, env vars can start with "=".
 			prefix := false
@@ -181,14 +181,19 @@ func toMap(env []string) map[string]string {
 				e = e[1:]
 				prefix = true
 			}
-			p = strings.SplitN(e, "=", 2)
+
+			key, value, ok := strings.Cut(e, "=")
 			if prefix {
-				p[0] = "=" + p[0]
+				key = "=" + key
 			}
+			if ok {
+				r[key] = value
+			}
+			continue
 		}
 
-		if len(p) == 2 {
-			r[p[0]] = p[1]
+		if key, value, ok := strings.Cut(e, "="); ok {
+			r[key] = value
 		}
 	}
 	return r
@@ -200,13 +205,18 @@ func toMap(env []string) map[string]string {
 func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 	var cmdArgs []string
 
-	c.mu.RLock()
-	if bunResolveCache.Load() != nil && len(c.flagConfig.General.JsRuntimes) == 0 && c.flagConfig.General.NoJsRuntimes == nil {
-		// Explicitly disable other options, and enable bun since they installed bun
-		// through our install cache.
-		c.NoJsRuntimes().JsRuntimes("bun")
+	if bunResolveCache.Load() != nil {
+		c.mu.Lock()
+		if len(c.flagConfig.General.JsRuntimes) == 0 && c.flagConfig.General.NoJsRuntimes == nil {
+			// Explicitly disable other options, and enable bun since they installed bun
+			// through our install cache.
+			c.flagConfig.General.NoJsRuntimes = new(true)
+			c.flagConfig.General.JsRuntimes = append(c.flagConfig.General.JsRuntimes, "bun")
+		}
+		c.mu.Unlock()
 	}
 
+	c.mu.RLock()
 	for _, f := range c.flagConfig.ToFlags() {
 		cmdArgs = append(cmdArgs, f.Raw()...)
 	}
@@ -246,9 +256,14 @@ func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 				cpaths := filepath.SplitList(v)
 				// Append parent process paths to the end of our custom provided
 				// paths, only if they are not already in the PATH.
+				seen := make(map[string]struct{}, len(cpaths)+len(paths))
+				for _, p := range cpaths {
+					seen[p] = struct{}{}
+				}
 				for _, p := range paths {
-					if !slices.Contains(cpaths, p) {
-						cpaths = append([]string{p}, cpaths...)
+					if _, ok := seen[p]; !ok {
+						seen[p] = struct{}{}
+						cpaths = append(cpaths, p)
 					}
 				}
 				env["PATH"] = strings.Join(cpaths, string(filepath.ListSeparator))
@@ -295,10 +310,17 @@ func (c *Command) runWithResult(ctx context.Context, cmd *exec.Cmd) (*Result, er
 		return wrapError(nil, cmd.Err)
 	}
 
-	stdout := &timestampWriter{pipe: "stdout", progress: c.progress}
-	stderr := &timestampWriter{pipe: "stderr", stderr: c.stderr}
+	c.mu.RLock()
+	progress := c.progress
+	stderrHandler := c.stderr
+	separateProcessGroup := c.separateProcessGroup
+	hasJSONFlag := c.hasJSONFlag()
+	c.mu.RUnlock()
 
-	if c.hasJSONFlag() {
+	stdout := &timestampWriter{pipe: "stdout", progress: progress}
+	stderr := &timestampWriter{pipe: "stderr", stderr: stderrHandler}
+
+	if hasJSONFlag {
 		stdout.checkJSON = true
 		stderr.checkJSON = true
 	}
@@ -306,7 +328,7 @@ func (c *Command) runWithResult(ctx context.Context, cmd *exec.Cmd) (*Result, er
 	cmd.Stdout = stdout
 	cmd.Stderr = stderr
 
-	applySyscall(cmd, c.separateProcessGroup)
+	applySyscall(cmd, separateProcessGroup)
 
 	debug(
 		ctx, "running command",
@@ -318,10 +340,15 @@ func (c *Command) runWithResult(ctx context.Context, cmd *exec.Cmd) (*Result, er
 
 	err := cmd.Run()
 
+	exitCode := -1
+	if cmd.ProcessState != nil {
+		exitCode = cmd.ProcessState.ExitCode()
+	}
+
 	result := &Result{
 		Executable: cmd.Path,
 		Args:       cmd.Args[1:],
-		ExitCode:   cmd.ProcessState.ExitCode(),
+		ExitCode:   exitCode,
 		Stdout:     stdout.String(),
 		Stderr:     stderr.String(),
 		OutputLogs: stdout.mergeResults(stderr),
@@ -334,9 +361,12 @@ func (c *Command) runWithResult(ctx context.Context, cmd *exec.Cmd) (*Result, er
 // and returns the results (stdout/stderr, exit code, etc). args should be the
 // URLs that would normally be passed in to yt-dlp.
 func (c *Command) Run(ctx context.Context, args ...string) (*Result, error) {
+	c.mu.RLock()
 	if err := c.flagConfig.Validate(); err != nil {
+		c.mu.RUnlock()
 		return nil, err
 	}
+	c.mu.RUnlock()
 
 	cmd := c.BuildCommand(ctx, args...)
 	return c.runWithResult(ctx, cmd)
@@ -350,7 +380,8 @@ type Flag struct {
 }
 
 func (f *Flag) Raw() (args []string) {
-	args = append(args, f.Flag)
+	args = make([]string, 1, len(f.Args)+1)
+	args[0] = f.Flag
 	if f.Args == nil {
 		return args
 	}
@@ -405,16 +436,17 @@ func (f Flags) FindByID(id string) (flags Flags) {
 }
 
 func (f Flags) Duplicates() (duplicates Flags) {
-	seen := make(map[string]Flags)
+	seen := make(map[string]int, len(f))
 	for _, flag := range f {
 		if flag.AllowsMultiple {
 			continue
 		}
-		seen[flag.ID] = append(seen[flag.ID], flag)
+		seen[flag.ID]++
 	}
-	for _, flags := range seen {
-		if len(flags) > 1 {
-			duplicates = append(duplicates, flags...)
+
+	for _, flag := range f {
+		if !flag.AllowsMultiple && seen[flag.ID] > 1 {
+			duplicates = append(duplicates, flag)
 		}
 	}
 	return duplicates

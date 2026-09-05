@@ -5,7 +5,7 @@
 package main
 
 import (
-	"encoding/json"
+	"encoding/json/v2"
 	"fmt"
 	"log/slog"
 	"maps"
@@ -190,7 +190,7 @@ func main() {
 	defer optionDataFile.Close()
 
 	slog.Info("decoding option data")
-	err = json.NewDecoder(optionDataFile).Decode(&data)
+	err = json.UnmarshalRead(optionDataFile, &data)
 	if err != nil {
 		slog.Error("failed to decode option data", "error", err)
 		os.Exit(1)

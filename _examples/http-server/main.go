@@ -6,7 +6,8 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"log/slog"
 	"net/http"
 	"os"
@@ -29,6 +30,12 @@ var downloadsPath = "/tmp/ytdlp-downloads"
 type RequestBody struct {
 	Env   map[string]string `json:"env,omitempty"`
 	Flags ytdlp.FlagConfig  `json:"flags"`
+	Args  []string          `json:"args"`
+}
+
+type requestBodyJSON struct {
+	Env   map[string]string `json:"env,omitempty"`
+	Flags jsontext.Value    `json:"flags"`
 	Args  []string          `json:"args"`
 }
 
@@ -78,7 +85,7 @@ func jsonError(w http.ResponseWriter, r *http.Request, code int, err error) {
 		data["flag"] = perr.Flag
 	}
 
-	if err := json.NewEncoder(w).Encode(&data); err != nil {
+	if err := json.MarshalWrite(w, &data); err != nil {
 		slog.ErrorContext(r.Context(), "failed to encode error", "error", err)
 		return
 	}
@@ -91,12 +98,35 @@ func postDownload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 1. Unmarshal JSON into RequestBody.
-	var body RequestBody
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+	var rawBody requestBodyJSON
+	defer r.Body.Close()
+	if err := json.UnmarshalRead(r.Body, &rawBody); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	defer r.Body.Close()
+
+	body := RequestBody{
+		Env:   rawBody.Env,
+		Args:  rawBody.Args,
+		Flags: ytdlp.FlagConfig{},
+	}
+	if len(rawBody.Flags) > 0 {
+		warnings, err := body.Flags.UnmarshalJSONWithWarnings(rawBody.Flags)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		for _, warning := range warnings {
+			slog.WarnContext(
+				r.Context(),
+				"flag config compatibility warning",
+				"json_path", warning.JSONPath,
+				"flag", warning.Flag,
+				"id", warning.ID,
+				"reason", warning.Reason,
+			)
+		}
+	}
 
 	// 2. Validate flags using [FlagConfig.Validate], or using the JSON schema (noted above).
 	if err := body.Flags.Validate(); err != nil {
@@ -135,9 +165,7 @@ func postDownload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// print current run flags.
-	enc := json.NewEncoder(os.Stdout)
-	enc.SetIndent("", "  ")
-	err := enc.Encode(cmd.GetFlagConfig())
+	err := json.MarshalWrite(os.Stdout, cmd.GetFlagConfig(), jsontext.Multiline(true))
 	if err != nil {
 		slog.ErrorContext(r.Context(), "failed to encode flags", "error", err)
 		return
@@ -154,7 +182,7 @@ func postDownload(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(result); err != nil {
+	if err := json.MarshalWrite(w, result); err != nil {
 		slog.ErrorContext(r.Context(), "failed to encode result", "error", err)
 		return
 	}

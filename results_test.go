@@ -6,7 +6,7 @@ package ytdlp
 
 import (
 	"context"
-	"encoding/json"
+	"encoding/json/jsontext"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
@@ -21,6 +21,43 @@ type mockServer struct {
 	*httptest.Server
 
 	fileURL string
+}
+
+func TestCleanJSON(t *testing.T) {
+	t.Parallel()
+
+	type nested struct {
+		Name  string
+		Empty *string
+	}
+	type document struct {
+		Name     string
+		Title    *string
+		Uploader *string
+		Nested   *nested
+		Items    []*nested
+	}
+
+	value := &document{
+		Name:     "none",
+		Title:    new("none"),
+		Uploader: new(""),
+		Nested:   &nested{Name: "none", Empty: new("")},
+		Items:    []*nested{{Name: "none", Empty: new("none")}},
+	}
+
+	cleanJSON(value)
+
+	assert.Empty(t, value.Name)
+	require.NotNil(t, value.Title)
+	assert.Empty(t, *value.Title)
+	assert.Nil(t, value.Uploader)
+	require.NotNil(t, value.Nested)
+	assert.Empty(t, value.Nested.Name)
+	assert.Nil(t, value.Nested.Empty)
+	require.Len(t, value.Items, 1)
+	assert.Empty(t, value.Items[0].Name)
+	assert.Nil(t, value.Items[0].Empty)
 }
 
 func newMockServer(t *testing.T, fileName string) *mockServer {
@@ -122,7 +159,7 @@ func TestGetExtractedInfo_dumpJSONFlags(t *testing.T) {
 			result, err := tt.cmd.NoUpdate().Run(context.TODO(), server.fileURL)
 			require.NoError(t, err)
 			require.NotEmpty(t, result.Stdout, "expected JSON on stdout")
-			require.True(t, json.Valid([]byte(result.Stdout)), "expected stdout to be valid JSON")
+			require.True(t, jsontext.Value(result.Stdout).IsValid(), "expected stdout to be valid JSON")
 
 			var jsonLogs int
 			for _, l := range result.OutputLogs {
@@ -146,7 +183,7 @@ func TestParseExtractedInfo_requestedSubtitles(t *testing.T) {
 	// yt-dlp's process_subtitles selects a single subtitle format per language,
 	// so requested_subtitles holds one object per language, while subtitles and
 	// automatic_captions hold a list of formats per language.
-	raw := json.RawMessage(`{
+	raw := jsontext.Value(`{
 		"id": "sample-1",
 		"subtitles": {"en": [{"ext": "vtt", "url": "https://example.com/en.vtt"}, {"ext": "srt", "url": "https://example.com/en.srt"}]},
 		"automatic_captions": {"en": [{"ext": "vtt", "url": "https://example.com/auto-en.vtt"}]},

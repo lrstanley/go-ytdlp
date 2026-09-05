@@ -5,7 +5,8 @@
 package main
 
 import (
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -123,9 +124,7 @@ func main() {
 	}
 	defer f.Close()
 
-	enc := json.NewEncoder(f)
-	enc.SetIndent("", "  ")
-	err = enc.Encode(s)
+	err = json.MarshalWrite(f, s, jsontext.Multiline(true))
 	if err != nil {
 		slog.Error("failed to marshal JSON", "error", err)
 		os.Exit(1)

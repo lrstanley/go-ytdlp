@@ -7,7 +7,7 @@
 package ytdlp
 
 import (
-    "encoding/json"
+    "encoding/json/v2"
     "errors"
     "fmt"
     "slices"
@@ -103,22 +103,22 @@ func (f *FlagConfig) ToFlags() (flags Flags) {
         flags = append(flags, f.{{ $group.Name | to_camel }}.ToFlags()...)
     {{- end }}{{/* end range for option groups */}}
 
-    // Deduplicate flags by their ID, where only the last one is kept, and the others are deleted.
-    for i := 0; i < len(flags); i++ {
-        if flags[i].AllowsMultiple {
-            continue
-        }
-
-        for j := i + 1; j < len(flags); j++ {
-            if flags[j].AllowsMultiple {
-                continue
-            }
-
-            if flags[i].ID == flags[j].ID {
-                flags[j] = nil
-                flags = append(flags[:j], flags[j+1:]...)
+    // Deduplicate flags by their ID, where only the last one is kept.
+    if len(flags) > 1 {
+        last := make(map[string]int, len(flags))
+        for i, flag := range flags {
+            if !flag.AllowsMultiple {
+                last[flag.ID] = i
             }
         }
+
+        kept := flags[:0]
+        for i, flag := range flags {
+            if flag.AllowsMultiple || last[flag.ID] == i {
+                kept = append(kept, flag)
+            }
+        }
+        flags = kept
     }
     flags.Sort()
     return flags

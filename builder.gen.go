@@ -10,10 +10,6 @@ import (
 	"context"
 )
 
-func ptr[T any](v T) *T {
-	return &v
-}
-
 // Print program version and exit
 //
 // Additional information:
@@ -43,7 +39,7 @@ func (c *Command) Update(ctx context.Context) (*Result, error) {
 //  - NoUpdate maps to cli flags: --no-update.
 //  - From option group: "General"
 func (c *Command) NoUpdate() *Command {
-	c.flagConfig.General.NoUpdate = ptr(true)
+	c.flagConfig.General.NoUpdate = new(true)
 	return c
 }
 
@@ -78,7 +74,7 @@ func (c *Command) UpdateTo(ctx context.Context, value string) (*Result, error) {
 func (c *Command) IgnoreErrors() *Command {
 	c.flagConfig.General.NoAbortOnError = nil
 	c.flagConfig.General.AbortOnError = nil
-	c.flagConfig.General.IgnoreErrors = ptr(true)
+	c.flagConfig.General.IgnoreErrors = new(true)
 	return c
 }
 
@@ -101,7 +97,7 @@ func (c *Command) UnsetIgnoreErrors() *Command {
 func (c *Command) NoAbortOnError() *Command {
 	c.flagConfig.General.IgnoreErrors = nil
 	c.flagConfig.General.AbortOnError = nil
-	c.flagConfig.General.NoAbortOnError = ptr(true)
+	c.flagConfig.General.NoAbortOnError = new(true)
 	return c
 }
 
@@ -124,7 +120,7 @@ func (c *Command) UnsetAbortOnError() *Command {
 func (c *Command) AbortOnError() *Command {
 	c.flagConfig.General.IgnoreErrors = nil
 	c.flagConfig.General.NoAbortOnError = nil
-	c.flagConfig.General.AbortOnError = ptr(true)
+	c.flagConfig.General.AbortOnError = new(true)
 	return c
 }
 
@@ -176,7 +172,7 @@ func (c *Command) UnsetUseExtractors() *Command {
 //
 // Deprecated: Use [Command.UseExtractors] with `generic,default` as an argument.
 func (c *Command) ForceGenericExtractor() *Command {
-	c.flagConfig.General.ForceGenericExtractor = ptr(true)
+	c.flagConfig.General.ForceGenericExtractor = new(true)
 	return c
 }
 
@@ -220,7 +216,7 @@ func (c *Command) UnsetDefaultSearch() *Command {
 //  - IgnoreConfig maps to cli flags: --ignore-config/--no-config.
 //  - From option group: "General"
 func (c *Command) IgnoreConfig() *Command {
-	c.flagConfig.General.IgnoreConfig = ptr(true)
+	c.flagConfig.General.IgnoreConfig = new(true)
 	return c
 }
 
@@ -241,7 +237,7 @@ func (c *Command) UnsetIgnoreConfig() *Command {
 //  - From option group: "General"
 func (c *Command) NoConfigLocations() *Command {
 	c.flagConfig.General.ConfigLocations = nil
-	c.flagConfig.General.NoConfigLocations = ptr(true)
+	c.flagConfig.General.NoConfigLocations = new(true)
 	return c
 }
 
@@ -300,7 +296,7 @@ func (c *Command) UnsetPluginDirs() *Command {
 //  - From option group: "General"
 func (c *Command) NoPluginDirs() *Command {
 	c.flagConfig.General.PluginDirs = nil
-	c.flagConfig.General.NoPluginDirs = ptr(true)
+	c.flagConfig.General.NoPluginDirs = new(true)
 	return c
 }
 
@@ -338,7 +334,7 @@ func (c *Command) UnsetJsRuntimes() *Command {
 //  - NoJsRuntimes maps to cli flags: --no-js-runtimes.
 //  - From option group: "General"
 func (c *Command) NoJsRuntimes() *Command {
-	c.flagConfig.General.NoJsRuntimes = ptr(true)
+	c.flagConfig.General.NoJsRuntimes = new(true)
 	return c
 }
 
@@ -377,7 +373,7 @@ func (c *Command) UnsetRemoteComponents() *Command {
 //  - From option group: "General"
 func (c *Command) NoRemoteComponents() *Command {
 	c.flagConfig.General.RemoteComponents = nil
-	c.flagConfig.General.NoRemoteComponents = ptr(true)
+	c.flagConfig.General.NoRemoteComponents = new(true)
 	return c
 }
 
@@ -390,7 +386,7 @@ func (c *Command) NoRemoteComponents() *Command {
 //  - From option group: "General"
 func (c *Command) FlatPlaylist() *Command {
 	c.flagConfig.General.NoFlatPlaylist = nil
-	c.flagConfig.General.FlatPlaylist = ptr(true)
+	c.flagConfig.General.FlatPlaylist = new(true)
 	return c
 }
 
@@ -411,7 +407,7 @@ func (c *Command) UnsetFlatPlaylist() *Command {
 //  - From option group: "General"
 func (c *Command) NoFlatPlaylist() *Command {
 	c.flagConfig.General.FlatPlaylist = nil
-	c.flagConfig.General.NoFlatPlaylist = ptr(true)
+	c.flagConfig.General.NoFlatPlaylist = new(true)
 	return c
 }
 
@@ -424,7 +420,7 @@ func (c *Command) NoFlatPlaylist() *Command {
 //  - From option group: "General"
 func (c *Command) LiveFromStart() *Command {
 	c.flagConfig.General.NoLiveFromStart = nil
-	c.flagConfig.General.LiveFromStart = ptr(true)
+	c.flagConfig.General.LiveFromStart = new(true)
 	return c
 }
 
@@ -445,7 +441,7 @@ func (c *Command) UnsetLiveFromStart() *Command {
 //  - From option group: "General"
 func (c *Command) NoLiveFromStart() *Command {
 	c.flagConfig.General.LiveFromStart = nil
-	c.flagConfig.General.NoLiveFromStart = ptr(true)
+	c.flagConfig.General.NoLiveFromStart = new(true)
 	return c
 }
 
@@ -479,7 +475,7 @@ func (c *Command) UnsetWaitForVideo() *Command {
 //  - From option group: "General"
 func (c *Command) NoWaitForVideo() *Command {
 	c.flagConfig.General.WaitForVideo = nil
-	c.flagConfig.General.NoWaitForVideo = ptr(true)
+	c.flagConfig.General.NoWaitForVideo = new(true)
 	return c
 }
 
@@ -491,7 +487,7 @@ func (c *Command) NoWaitForVideo() *Command {
 //  - From option group: "General"
 func (c *Command) MarkWatched() *Command {
 	c.flagConfig.General.NoMarkWatched = nil
-	c.flagConfig.General.MarkWatched = ptr(true)
+	c.flagConfig.General.MarkWatched = new(true)
 	return c
 }
 
@@ -512,7 +508,7 @@ func (c *Command) UnsetMarkWatched() *Command {
 //  - From option group: "General"
 func (c *Command) NoMarkWatched() *Command {
 	c.flagConfig.General.MarkWatched = nil
-	c.flagConfig.General.NoMarkWatched = ptr(true)
+	c.flagConfig.General.NoMarkWatched = new(true)
 	return c
 }
 
@@ -526,7 +522,7 @@ func (c *Command) NoMarkWatched() *Command {
 // Deprecated: Use [Command.Color] with `no_color` as an argument.
 func (c *Command) NoColors() *Command {
 	c.flagConfig.General.Color = nil
-	c.flagConfig.General.NoColors = ptr(true)
+	c.flagConfig.General.NoColors = new(true)
 	return c
 }
 
@@ -694,7 +690,7 @@ func (c *Command) UnsetImpersonate() *Command {
 //  - ListImpersonateTargets maps to cli flags: --list-impersonate-targets.
 //  - From option group: "Network"
 func (c *Command) ListImpersonateTargets() *Command {
-	c.flagConfig.Network.ListImpersonateTargets = ptr(true)
+	c.flagConfig.Network.ListImpersonateTargets = new(true)
 	return c
 }
 
@@ -714,7 +710,7 @@ func (c *Command) UnsetListImpersonateTargets() *Command {
 func (c *Command) ForceIPv4() *Command {
 	c.flagConfig.Network.SourceAddress = nil
 	c.flagConfig.Network.ForceIPv6 = nil
-	c.flagConfig.Network.ForceIPv4 = ptr(true)
+	c.flagConfig.Network.ForceIPv4 = new(true)
 	return c
 }
 
@@ -736,7 +732,7 @@ func (c *Command) UnsetForceIPv4() *Command {
 func (c *Command) ForceIPv6() *Command {
 	c.flagConfig.Network.SourceAddress = nil
 	c.flagConfig.Network.ForceIPv4 = nil
-	c.flagConfig.Network.ForceIPv6 = ptr(true)
+	c.flagConfig.Network.ForceIPv6 = new(true)
 	return c
 }
 
@@ -756,7 +752,7 @@ func (c *Command) UnsetForceIPv6() *Command {
 //  - EnableFileURLs maps to cli flags: --enable-file-urls.
 //  - From option group: "Network"
 func (c *Command) EnableFileURLs() *Command {
-	c.flagConfig.Network.EnableFileURLs = ptr(true)
+	c.flagConfig.Network.EnableFileURLs = new(true)
 	return c
 }
 
@@ -828,7 +824,7 @@ func (c *Command) GeoBypass() *Command {
 	c.flagConfig.GeoRestriction.NoGeoBypass = nil
 	c.flagConfig.GeoRestriction.GeoBypassCountry = nil
 	c.flagConfig.GeoRestriction.GeoBypassIPBlock = nil
-	c.flagConfig.GeoRestriction.GeoBypass = ptr(true)
+	c.flagConfig.GeoRestriction.GeoBypass = new(true)
 	return c
 }
 
@@ -859,7 +855,7 @@ func (c *Command) NoGeoBypass() *Command {
 	c.flagConfig.GeoRestriction.GeoBypass = nil
 	c.flagConfig.GeoRestriction.GeoBypassCountry = nil
 	c.flagConfig.GeoRestriction.GeoBypassIPBlock = nil
-	c.flagConfig.GeoRestriction.NoGeoBypass = ptr(true)
+	c.flagConfig.GeoRestriction.NoGeoBypass = new(true)
 	return c
 }
 
@@ -1210,7 +1206,7 @@ func (c *Command) UnsetMatchFilters() *Command {
 //  - From option group: "Video Selection"
 func (c *Command) NoMatchFilters() *Command {
 	c.flagConfig.VideoSelection.MatchFilters = nil
-	c.flagConfig.VideoSelection.NoMatchFilters = ptr(true)
+	c.flagConfig.VideoSelection.NoMatchFilters = new(true)
 	return c
 }
 
@@ -1244,7 +1240,7 @@ func (c *Command) UnsetBreakMatchFilters() *Command {
 //  - From option group: "Video Selection"
 func (c *Command) NoBreakMatchFilters() *Command {
 	c.flagConfig.VideoSelection.BreakMatchFilters = nil
-	c.flagConfig.VideoSelection.NoBreakMatchFilters = ptr(true)
+	c.flagConfig.VideoSelection.NoBreakMatchFilters = new(true)
 	return c
 }
 
@@ -1256,7 +1252,7 @@ func (c *Command) NoBreakMatchFilters() *Command {
 //  - From option group: "Video Selection"
 func (c *Command) NoPlaylist() *Command {
 	c.flagConfig.VideoSelection.YesPlaylist = nil
-	c.flagConfig.VideoSelection.NoPlaylist = ptr(true)
+	c.flagConfig.VideoSelection.NoPlaylist = new(true)
 	return c
 }
 
@@ -1277,7 +1273,7 @@ func (c *Command) UnsetPlaylist() *Command {
 //  - From option group: "Video Selection"
 func (c *Command) YesPlaylist() *Command {
 	c.flagConfig.VideoSelection.NoPlaylist = nil
-	c.flagConfig.VideoSelection.YesPlaylist = ptr(true)
+	c.flagConfig.VideoSelection.YesPlaylist = new(true)
 	return c
 }
 
@@ -1329,7 +1325,7 @@ func (c *Command) UnsetDownloadArchive() *Command {
 //  - From option group: "Video Selection"
 func (c *Command) NoDownloadArchive() *Command {
 	c.flagConfig.VideoSelection.DownloadArchive = nil
-	c.flagConfig.VideoSelection.NoDownloadArchive = ptr(true)
+	c.flagConfig.VideoSelection.NoDownloadArchive = new(true)
 	return c
 }
 
@@ -1360,7 +1356,7 @@ func (c *Command) UnsetMaxDownloads() *Command {
 //  - From option group: "Video Selection"
 func (c *Command) BreakOnExisting() *Command {
 	c.flagConfig.VideoSelection.NoBreakOnExisting = nil
-	c.flagConfig.VideoSelection.BreakOnExisting = ptr(true)
+	c.flagConfig.VideoSelection.BreakOnExisting = new(true)
 	return c
 }
 
@@ -1382,7 +1378,7 @@ func (c *Command) UnsetBreakOnExisting() *Command {
 //  - From option group: "Video Selection"
 func (c *Command) NoBreakOnExisting() *Command {
 	c.flagConfig.VideoSelection.BreakOnExisting = nil
-	c.flagConfig.VideoSelection.NoBreakOnExisting = ptr(true)
+	c.flagConfig.VideoSelection.NoBreakOnExisting = new(true)
 	return c
 }
 
@@ -1395,7 +1391,7 @@ func (c *Command) NoBreakOnExisting() *Command {
 //
 // Deprecated: Use [Command.BreakMatchFilters] instead.
 func (c *Command) BreakOnReject() *Command {
-	c.flagConfig.VideoSelection.BreakOnReject = ptr(true)
+	c.flagConfig.VideoSelection.BreakOnReject = new(true)
 	return c
 }
 
@@ -1417,7 +1413,7 @@ func (c *Command) UnsetBreakOnReject() *Command {
 //  - From option group: "Video Selection"
 func (c *Command) BreakPerInput() *Command {
 	c.flagConfig.VideoSelection.NoBreakPerInput = nil
-	c.flagConfig.VideoSelection.BreakPerInput = ptr(true)
+	c.flagConfig.VideoSelection.BreakPerInput = new(true)
 	return c
 }
 
@@ -1438,7 +1434,7 @@ func (c *Command) UnsetBreakPerInput() *Command {
 //  - From option group: "Video Selection"
 func (c *Command) NoBreakPerInput() *Command {
 	c.flagConfig.VideoSelection.BreakPerInput = nil
-	c.flagConfig.VideoSelection.NoBreakPerInput = ptr(true)
+	c.flagConfig.VideoSelection.NoBreakPerInput = new(true)
 	return c
 }
 
@@ -1601,7 +1597,7 @@ func (c *Command) UnsetRetrySleep() *Command {
 //  - From option group: "Download"
 func (c *Command) SkipUnavailableFragments() *Command {
 	c.flagConfig.Download.AbortOnUnavailableFragments = nil
-	c.flagConfig.Download.SkipUnavailableFragments = ptr(true)
+	c.flagConfig.Download.SkipUnavailableFragments = new(true)
 	return c
 }
 
@@ -1621,7 +1617,7 @@ func (c *Command) UnsetSkipUnavailableFragments() *Command {
 //  - From option group: "Download"
 func (c *Command) AbortOnUnavailableFragments() *Command {
 	c.flagConfig.Download.SkipUnavailableFragments = nil
-	c.flagConfig.Download.AbortOnUnavailableFragments = ptr(true)
+	c.flagConfig.Download.AbortOnUnavailableFragments = new(true)
 	return c
 }
 
@@ -1641,7 +1637,7 @@ func (c *Command) UnsetAbortOnUnavailableFragments() *Command {
 //  - From option group: "Download"
 func (c *Command) KeepFragments() *Command {
 	c.flagConfig.Download.NoKeepFragments = nil
-	c.flagConfig.Download.KeepFragments = ptr(true)
+	c.flagConfig.Download.KeepFragments = new(true)
 	return c
 }
 
@@ -1662,7 +1658,7 @@ func (c *Command) UnsetKeepFragments() *Command {
 //  - From option group: "Download"
 func (c *Command) NoKeepFragments() *Command {
 	c.flagConfig.Download.KeepFragments = nil
-	c.flagConfig.Download.NoKeepFragments = ptr(true)
+	c.flagConfig.Download.NoKeepFragments = new(true)
 	return c
 }
 
@@ -1693,7 +1689,7 @@ func (c *Command) UnsetBufferSize() *Command {
 //  - From option group: "Download"
 func (c *Command) ResizeBuffer() *Command {
 	c.flagConfig.Download.NoResizeBuffer = nil
-	c.flagConfig.Download.ResizeBuffer = ptr(true)
+	c.flagConfig.Download.ResizeBuffer = new(true)
 	return c
 }
 
@@ -1714,7 +1710,7 @@ func (c *Command) UnsetResizeBuffer() *Command {
 //  - From option group: "Download"
 func (c *Command) NoResizeBuffer() *Command {
 	c.flagConfig.Download.ResizeBuffer = nil
-	c.flagConfig.Download.NoResizeBuffer = ptr(true)
+	c.flagConfig.Download.NoResizeBuffer = new(true)
 	return c
 }
 
@@ -1748,7 +1744,7 @@ func (c *Command) UnsetHTTPChunkSize() *Command {
 // Deprecated: Use [Command.PlaylistItems] with `::-1` as an argument.
 func (c *Command) PlaylistReverse() *Command {
 	c.flagConfig.Download.NoPlaylistReverse = nil
-	c.flagConfig.Download.PlaylistReverse = ptr(true)
+	c.flagConfig.Download.PlaylistReverse = new(true)
 	return c
 }
 
@@ -1773,7 +1769,7 @@ func (c *Command) UnsetPlaylistReverse() *Command {
 // Deprecated: It is now the default behavior.
 func (c *Command) NoPlaylistReverse() *Command {
 	c.flagConfig.Download.PlaylistReverse = nil
-	c.flagConfig.Download.NoPlaylistReverse = ptr(true)
+	c.flagConfig.Download.NoPlaylistReverse = new(true)
 	return c
 }
 
@@ -1784,7 +1780,7 @@ func (c *Command) NoPlaylistReverse() *Command {
 //  - PlaylistRandom maps to cli flags: --playlist-random.
 //  - From option group: "Download"
 func (c *Command) PlaylistRandom() *Command {
-	c.flagConfig.Download.PlaylistRandom = ptr(true)
+	c.flagConfig.Download.PlaylistRandom = new(true)
 	return c
 }
 
@@ -1804,7 +1800,7 @@ func (c *Command) UnsetPlaylistRandom() *Command {
 //  - From option group: "Download"
 func (c *Command) LazyPlaylist() *Command {
 	c.flagConfig.Download.NoLazyPlaylist = nil
-	c.flagConfig.Download.LazyPlaylist = ptr(true)
+	c.flagConfig.Download.LazyPlaylist = new(true)
 	return c
 }
 
@@ -1826,7 +1822,7 @@ func (c *Command) UnsetLazyPlaylist() *Command {
 //  - From option group: "Download"
 func (c *Command) NoLazyPlaylist() *Command {
 	c.flagConfig.Download.LazyPlaylist = nil
-	c.flagConfig.Download.NoLazyPlaylist = ptr(true)
+	c.flagConfig.Download.NoLazyPlaylist = new(true)
 	return c
 }
 
@@ -1840,7 +1836,7 @@ func (c *Command) NoLazyPlaylist() *Command {
 // Deprecated: Use [Command.Downloader] with `m3u8:native` as an argument.
 func (c *Command) HLSPreferNative() *Command {
 	c.flagConfig.Download.HLSPreferFFmpeg = nil
-	c.flagConfig.Download.HLSPreferNative = ptr(true)
+	c.flagConfig.Download.HLSPreferNative = new(true)
 	return c
 }
 
@@ -1864,7 +1860,7 @@ func (c *Command) UnsetHLSPreferNative() *Command {
 // Deprecated: Use [Command.Downloader] with `m3u8:ffmpeg` as an argument.
 func (c *Command) HLSPreferFFmpeg() *Command {
 	c.flagConfig.Download.HLSPreferNative = nil
-	c.flagConfig.Download.HLSPreferFFmpeg = ptr(true)
+	c.flagConfig.Download.HLSPreferFFmpeg = new(true)
 	return c
 }
 
@@ -1888,7 +1884,7 @@ func (c *Command) UnsetHLSPreferFFmpeg() *Command {
 //  - From option group: "Download"
 func (c *Command) HLSUseMPEGTS() *Command {
 	c.flagConfig.Download.NoHLSUseMPEGTS = nil
-	c.flagConfig.Download.HLSUseMPEGTS = ptr(true)
+	c.flagConfig.Download.HLSUseMPEGTS = new(true)
 	return c
 }
 
@@ -1910,7 +1906,7 @@ func (c *Command) UnsetHLSUseMPEGTS() *Command {
 //  - From option group: "Download"
 func (c *Command) NoHLSUseMPEGTS() *Command {
 	c.flagConfig.Download.HLSUseMPEGTS = nil
-	c.flagConfig.Download.NoHLSUseMPEGTS = ptr(true)
+	c.flagConfig.Download.NoHLSUseMPEGTS = new(true)
 	return c
 }
 
@@ -2011,7 +2007,7 @@ func (c *Command) UnsetBatchFile() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoBatchFile() *Command {
 	c.flagConfig.Filesystem.BatchFile = nil
-	c.flagConfig.Filesystem.NoBatchFile = ptr(true)
+	c.flagConfig.Filesystem.NoBatchFile = new(true)
 	return c
 }
 
@@ -2024,7 +2020,7 @@ func (c *Command) NoBatchFile() *Command {
 //
 // Deprecated: Use [Command.Output] with `%(id)s.%(ext)s` as an argument.
 func (c *Command) ID() *Command {
-	c.flagConfig.Filesystem.ID = ptr(true)
+	c.flagConfig.Filesystem.ID = new(true)
 	return c
 }
 
@@ -2152,7 +2148,7 @@ func (c *Command) UnsetAutoNumberStart() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) RestrictFilenames() *Command {
 	c.flagConfig.Filesystem.NoRestrictFilenames = nil
-	c.flagConfig.Filesystem.RestrictFilenames = ptr(true)
+	c.flagConfig.Filesystem.RestrictFilenames = new(true)
 	return c
 }
 
@@ -2173,7 +2169,7 @@ func (c *Command) UnsetRestrictFilenames() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoRestrictFilenames() *Command {
 	c.flagConfig.Filesystem.RestrictFilenames = nil
-	c.flagConfig.Filesystem.NoRestrictFilenames = ptr(true)
+	c.flagConfig.Filesystem.NoRestrictFilenames = new(true)
 	return c
 }
 
@@ -2185,7 +2181,7 @@ func (c *Command) NoRestrictFilenames() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) WindowsFilenames() *Command {
 	c.flagConfig.Filesystem.NoWindowsFilenames = nil
-	c.flagConfig.Filesystem.WindowsFilenames = ptr(true)
+	c.flagConfig.Filesystem.WindowsFilenames = new(true)
 	return c
 }
 
@@ -2206,7 +2202,7 @@ func (c *Command) UnsetWindowsFilenames() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoWindowsFilenames() *Command {
 	c.flagConfig.Filesystem.WindowsFilenames = nil
-	c.flagConfig.Filesystem.NoWindowsFilenames = ptr(true)
+	c.flagConfig.Filesystem.NoWindowsFilenames = new(true)
 	return c
 }
 
@@ -2238,7 +2234,7 @@ func (c *Command) UnsetTrimFilenames() *Command {
 func (c *Command) NoOverwrites() *Command {
 	c.flagConfig.Filesystem.ForceOverwrites = nil
 	c.flagConfig.Filesystem.NoForceOverwrites = nil
-	c.flagConfig.Filesystem.NoOverwrites = ptr(true)
+	c.flagConfig.Filesystem.NoOverwrites = new(true)
 	return c
 }
 
@@ -2260,7 +2256,7 @@ func (c *Command) UnsetOverwrites() *Command {
 func (c *Command) ForceOverwrites() *Command {
 	c.flagConfig.Filesystem.NoOverwrites = nil
 	c.flagConfig.Filesystem.NoForceOverwrites = nil
-	c.flagConfig.Filesystem.ForceOverwrites = ptr(true)
+	c.flagConfig.Filesystem.ForceOverwrites = new(true)
 	return c
 }
 
@@ -2283,7 +2279,7 @@ func (c *Command) UnsetForceOverwrites() *Command {
 func (c *Command) NoForceOverwrites() *Command {
 	c.flagConfig.Filesystem.NoOverwrites = nil
 	c.flagConfig.Filesystem.ForceOverwrites = nil
-	c.flagConfig.Filesystem.NoForceOverwrites = ptr(true)
+	c.flagConfig.Filesystem.NoForceOverwrites = new(true)
 	return c
 }
 
@@ -2295,7 +2291,7 @@ func (c *Command) NoForceOverwrites() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) Continue() *Command {
 	c.flagConfig.Filesystem.NoContinue = nil
-	c.flagConfig.Filesystem.Continue = ptr(true)
+	c.flagConfig.Filesystem.Continue = new(true)
 	return c
 }
 
@@ -2317,7 +2313,7 @@ func (c *Command) UnsetContinue() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoContinue() *Command {
 	c.flagConfig.Filesystem.Continue = nil
-	c.flagConfig.Filesystem.NoContinue = ptr(true)
+	c.flagConfig.Filesystem.NoContinue = new(true)
 	return c
 }
 
@@ -2329,7 +2325,7 @@ func (c *Command) NoContinue() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) Part() *Command {
 	c.flagConfig.Filesystem.NoPart = nil
-	c.flagConfig.Filesystem.Part = ptr(true)
+	c.flagConfig.Filesystem.Part = new(true)
 	return c
 }
 
@@ -2350,7 +2346,7 @@ func (c *Command) UnsetPart() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoPart() *Command {
 	c.flagConfig.Filesystem.Part = nil
-	c.flagConfig.Filesystem.NoPart = ptr(true)
+	c.flagConfig.Filesystem.NoPart = new(true)
 	return c
 }
 
@@ -2362,7 +2358,7 @@ func (c *Command) NoPart() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) Mtime() *Command {
 	c.flagConfig.Filesystem.NoMtime = nil
-	c.flagConfig.Filesystem.Mtime = ptr(true)
+	c.flagConfig.Filesystem.Mtime = new(true)
 	return c
 }
 
@@ -2383,7 +2379,7 @@ func (c *Command) UnsetMtime() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoMtime() *Command {
 	c.flagConfig.Filesystem.Mtime = nil
-	c.flagConfig.Filesystem.NoMtime = ptr(true)
+	c.flagConfig.Filesystem.NoMtime = new(true)
 	return c
 }
 
@@ -2395,7 +2391,7 @@ func (c *Command) NoMtime() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) WriteDescription() *Command {
 	c.flagConfig.Filesystem.NoWriteDescription = nil
-	c.flagConfig.Filesystem.WriteDescription = ptr(true)
+	c.flagConfig.Filesystem.WriteDescription = new(true)
 	return c
 }
 
@@ -2416,7 +2412,7 @@ func (c *Command) UnsetWriteDescription() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoWriteDescription() *Command {
 	c.flagConfig.Filesystem.WriteDescription = nil
-	c.flagConfig.Filesystem.NoWriteDescription = ptr(true)
+	c.flagConfig.Filesystem.NoWriteDescription = new(true)
 	return c
 }
 
@@ -2429,7 +2425,7 @@ func (c *Command) NoWriteDescription() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) WriteInfoJSON() *Command {
 	c.flagConfig.Filesystem.NoWriteInfoJSON = nil
-	c.flagConfig.Filesystem.WriteInfoJSON = ptr(true)
+	c.flagConfig.Filesystem.WriteInfoJSON = new(true)
 	return c
 }
 
@@ -2450,7 +2446,7 @@ func (c *Command) UnsetWriteInfoJSON() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoWriteInfoJSON() *Command {
 	c.flagConfig.Filesystem.WriteInfoJSON = nil
-	c.flagConfig.Filesystem.NoWriteInfoJSON = ptr(true)
+	c.flagConfig.Filesystem.NoWriteInfoJSON = new(true)
 	return c
 }
 
@@ -2463,7 +2459,7 @@ func (c *Command) NoWriteInfoJSON() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) WritePlaylistMetafiles() *Command {
 	c.flagConfig.Filesystem.NoWritePlaylistMetafiles = nil
-	c.flagConfig.Filesystem.WritePlaylistMetafiles = ptr(true)
+	c.flagConfig.Filesystem.WritePlaylistMetafiles = new(true)
 	return c
 }
 
@@ -2485,7 +2481,7 @@ func (c *Command) UnsetWritePlaylistMetafiles() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoWritePlaylistMetafiles() *Command {
 	c.flagConfig.Filesystem.WritePlaylistMetafiles = nil
-	c.flagConfig.Filesystem.NoWritePlaylistMetafiles = ptr(true)
+	c.flagConfig.Filesystem.NoWritePlaylistMetafiles = new(true)
 	return c
 }
 
@@ -2497,7 +2493,7 @@ func (c *Command) NoWritePlaylistMetafiles() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) CleanInfoJSON() *Command {
 	c.flagConfig.Filesystem.NoCleanInfoJSON = nil
-	c.flagConfig.Filesystem.CleanInfoJSON = ptr(true)
+	c.flagConfig.Filesystem.CleanInfoJSON = new(true)
 	return c
 }
 
@@ -2518,7 +2514,7 @@ func (c *Command) UnsetCleanInfoJSON() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoCleanInfoJSON() *Command {
 	c.flagConfig.Filesystem.CleanInfoJSON = nil
-	c.flagConfig.Filesystem.NoCleanInfoJSON = ptr(true)
+	c.flagConfig.Filesystem.NoCleanInfoJSON = new(true)
 	return c
 }
 
@@ -2531,7 +2527,7 @@ func (c *Command) NoCleanInfoJSON() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) WriteComments() *Command {
 	c.flagConfig.Filesystem.NoWriteComments = nil
-	c.flagConfig.Filesystem.WriteComments = ptr(true)
+	c.flagConfig.Filesystem.WriteComments = new(true)
 	return c
 }
 
@@ -2552,7 +2548,7 @@ func (c *Command) UnsetWriteComments() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoWriteComments() *Command {
 	c.flagConfig.Filesystem.WriteComments = nil
-	c.flagConfig.Filesystem.NoWriteComments = ptr(true)
+	c.flagConfig.Filesystem.NoWriteComments = new(true)
 	return c
 }
 
@@ -2604,7 +2600,7 @@ func (c *Command) UnsetCookies() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoCookies() *Command {
 	c.flagConfig.Filesystem.Cookies = nil
-	c.flagConfig.Filesystem.NoCookies = ptr(true)
+	c.flagConfig.Filesystem.NoCookies = new(true)
 	return c
 }
 
@@ -2644,7 +2640,7 @@ func (c *Command) UnsetCookiesFromBrowser() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoCookiesFromBrowser() *Command {
 	c.flagConfig.Filesystem.CookiesFromBrowser = nil
-	c.flagConfig.Filesystem.NoCookiesFromBrowser = ptr(true)
+	c.flagConfig.Filesystem.NoCookiesFromBrowser = new(true)
 	return c
 }
 
@@ -2679,7 +2675,7 @@ func (c *Command) UnsetCacheDir() *Command {
 //  - From option group: "Filesystem"
 func (c *Command) NoCacheDir() *Command {
 	c.flagConfig.Filesystem.CacheDir = nil
-	c.flagConfig.Filesystem.NoCacheDir = ptr(true)
+	c.flagConfig.Filesystem.NoCacheDir = new(true)
 	return c
 }
 
@@ -2690,7 +2686,7 @@ func (c *Command) NoCacheDir() *Command {
 //  - RmCacheDir maps to cli flags: --rm-cache-dir.
 //  - From option group: "Filesystem"
 func (c *Command) RmCacheDir() *Command {
-	c.flagConfig.Filesystem.RmCacheDir = ptr(true)
+	c.flagConfig.Filesystem.RmCacheDir = new(true)
 	return c
 }
 
@@ -2710,7 +2706,7 @@ func (c *Command) UnsetRmCacheDir() *Command {
 func (c *Command) WriteThumbnail() *Command {
 	c.flagConfig.Thumbnail.NoWriteThumbnail = nil
 	c.flagConfig.Thumbnail.WriteAllThumbnails = nil
-	c.flagConfig.Thumbnail.WriteThumbnail = ptr(true)
+	c.flagConfig.Thumbnail.WriteThumbnail = new(true)
 	return c
 }
 
@@ -2733,7 +2729,7 @@ func (c *Command) UnsetWriteThumbnail() *Command {
 func (c *Command) NoWriteThumbnail() *Command {
 	c.flagConfig.Thumbnail.WriteThumbnail = nil
 	c.flagConfig.Thumbnail.WriteAllThumbnails = nil
-	c.flagConfig.Thumbnail.NoWriteThumbnail = ptr(true)
+	c.flagConfig.Thumbnail.NoWriteThumbnail = new(true)
 	return c
 }
 
@@ -2746,7 +2742,7 @@ func (c *Command) NoWriteThumbnail() *Command {
 func (c *Command) WriteAllThumbnails() *Command {
 	c.flagConfig.Thumbnail.WriteThumbnail = nil
 	c.flagConfig.Thumbnail.NoWriteThumbnail = nil
-	c.flagConfig.Thumbnail.WriteAllThumbnails = ptr(true)
+	c.flagConfig.Thumbnail.WriteAllThumbnails = new(true)
 	return c
 }
 
@@ -2768,7 +2764,7 @@ func (c *Command) UnsetWriteAllThumbnails() *Command {
 //
 // Deprecated: Call [Command.Print] twice, once with `thumbnails_table` as an argument, then with `playlist:thumbnails_table` as an argument.
 func (c *Command) ListThumbnails() *Command {
-	c.flagConfig.Thumbnail.ListThumbnails = ptr(true)
+	c.flagConfig.Thumbnail.ListThumbnails = new(true)
 	return c
 }
 
@@ -2789,7 +2785,7 @@ func (c *Command) UnsetListThumbnails() *Command {
 //  - WriteLink maps to cli flags: --write-link.
 //  - From option group: "Internet Shortcut"
 func (c *Command) WriteLink() *Command {
-	c.flagConfig.InternetShortcut.WriteLink = ptr(true)
+	c.flagConfig.InternetShortcut.WriteLink = new(true)
 	return c
 }
 
@@ -2808,7 +2804,7 @@ func (c *Command) UnsetWriteLink() *Command {
 //  - WriteURLLink maps to cli flags: --write-url-link.
 //  - From option group: "Internet Shortcut"
 func (c *Command) WriteURLLink() *Command {
-	c.flagConfig.InternetShortcut.WriteURLLink = ptr(true)
+	c.flagConfig.InternetShortcut.WriteURLLink = new(true)
 	return c
 }
 
@@ -2826,7 +2822,7 @@ func (c *Command) UnsetWriteURLLink() *Command {
 //  - WriteWeblocLink maps to cli flags: --write-webloc-link.
 //  - From option group: "Internet Shortcut"
 func (c *Command) WriteWeblocLink() *Command {
-	c.flagConfig.InternetShortcut.WriteWeblocLink = ptr(true)
+	c.flagConfig.InternetShortcut.WriteWeblocLink = new(true)
 	return c
 }
 
@@ -2844,7 +2840,7 @@ func (c *Command) UnsetWriteWeblocLink() *Command {
 //  - WriteDesktopLink maps to cli flags: --write-desktop-link.
 //  - From option group: "Internet Shortcut"
 func (c *Command) WriteDesktopLink() *Command {
-	c.flagConfig.InternetShortcut.WriteDesktopLink = ptr(true)
+	c.flagConfig.InternetShortcut.WriteDesktopLink = new(true)
 	return c
 }
 
@@ -2863,7 +2859,7 @@ func (c *Command) UnsetWriteDesktopLink() *Command {
 //  - From option group: "Verbosity Simulation"
 func (c *Command) Quiet() *Command {
 	c.flagConfig.VerbositySimulation.NoQuiet = nil
-	c.flagConfig.VerbositySimulation.Quiet = ptr(true)
+	c.flagConfig.VerbositySimulation.Quiet = new(true)
 	return c
 }
 
@@ -2884,7 +2880,7 @@ func (c *Command) UnsetQuiet() *Command {
 //  - From option group: "Verbosity Simulation"
 func (c *Command) NoQuiet() *Command {
 	c.flagConfig.VerbositySimulation.Quiet = nil
-	c.flagConfig.VerbositySimulation.NoQuiet = ptr(true)
+	c.flagConfig.VerbositySimulation.NoQuiet = new(true)
 	return c
 }
 
@@ -2895,7 +2891,7 @@ func (c *Command) NoQuiet() *Command {
 //  - NoWarnings maps to cli flags: --no-warnings.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) NoWarnings() *Command {
-	c.flagConfig.VerbositySimulation.NoWarnings = ptr(true)
+	c.flagConfig.VerbositySimulation.NoWarnings = new(true)
 	return c
 }
 
@@ -2914,7 +2910,7 @@ func (c *Command) UnsetWarnings() *Command {
 //  - From option group: "Verbosity Simulation"
 func (c *Command) Simulate() *Command {
 	c.flagConfig.VerbositySimulation.NoSimulate = nil
-	c.flagConfig.VerbositySimulation.Simulate = ptr(true)
+	c.flagConfig.VerbositySimulation.Simulate = new(true)
 	return c
 }
 
@@ -2935,7 +2931,7 @@ func (c *Command) UnsetSimulate() *Command {
 //  - From option group: "Verbosity Simulation"
 func (c *Command) NoSimulate() *Command {
 	c.flagConfig.VerbositySimulation.Simulate = nil
-	c.flagConfig.VerbositySimulation.NoSimulate = ptr(true)
+	c.flagConfig.VerbositySimulation.NoSimulate = new(true)
 	return c
 }
 
@@ -2948,7 +2944,7 @@ func (c *Command) NoSimulate() *Command {
 //  - From option group: "Verbosity Simulation"
 func (c *Command) IgnoreNoFormatsError() *Command {
 	c.flagConfig.VerbositySimulation.NoIgnoreNoFormatsError = nil
-	c.flagConfig.VerbositySimulation.IgnoreNoFormatsError = ptr(true)
+	c.flagConfig.VerbositySimulation.IgnoreNoFormatsError = new(true)
 	return c
 }
 
@@ -2969,7 +2965,7 @@ func (c *Command) UnsetIgnoreNoFormatsError() *Command {
 //  - From option group: "Verbosity Simulation"
 func (c *Command) NoIgnoreNoFormatsError() *Command {
 	c.flagConfig.VerbositySimulation.IgnoreNoFormatsError = nil
-	c.flagConfig.VerbositySimulation.NoIgnoreNoFormatsError = ptr(true)
+	c.flagConfig.VerbositySimulation.NoIgnoreNoFormatsError = new(true)
 	return c
 }
 
@@ -2980,7 +2976,7 @@ func (c *Command) NoIgnoreNoFormatsError() *Command {
 //  - SkipDownload maps to cli flags: --skip-download/--no-download.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) SkipDownload() *Command {
-	c.flagConfig.VerbositySimulation.SkipDownload = ptr(true)
+	c.flagConfig.VerbositySimulation.SkipDownload = new(true)
 	return c
 }
 
@@ -3045,7 +3041,7 @@ func (c *Command) UnsetPrintToFile() *Command {
 //
 // Deprecated: Use [Command.Print] with `urls` as an argument.
 func (c *Command) GetURL() *Command {
-	c.flagConfig.VerbositySimulation.GetURL = ptr(true)
+	c.flagConfig.VerbositySimulation.GetURL = new(true)
 	return c
 }
 
@@ -3067,7 +3063,7 @@ func (c *Command) UnsetGetURL() *Command {
 //
 // Deprecated: Use [Command.Print] with `title` as an argument.
 func (c *Command) GetTitle() *Command {
-	c.flagConfig.VerbositySimulation.GetTitle = ptr(true)
+	c.flagConfig.VerbositySimulation.GetTitle = new(true)
 	return c
 }
 
@@ -3089,7 +3085,7 @@ func (c *Command) UnsetGetTitle() *Command {
 //
 // Deprecated: Use [Command.Print] with `id` as an argument.
 func (c *Command) GetID() *Command {
-	c.flagConfig.VerbositySimulation.GetID = ptr(true)
+	c.flagConfig.VerbositySimulation.GetID = new(true)
 	return c
 }
 
@@ -3111,7 +3107,7 @@ func (c *Command) UnsetGetID() *Command {
 //
 // Deprecated: Use [Command.Print] with `thumbnail` as an argument.
 func (c *Command) GetThumbnail() *Command {
-	c.flagConfig.VerbositySimulation.GetThumbnail = ptr(true)
+	c.flagConfig.VerbositySimulation.GetThumbnail = new(true)
 	return c
 }
 
@@ -3133,7 +3129,7 @@ func (c *Command) UnsetGetThumbnail() *Command {
 //
 // Deprecated: Use [Command.Print] with `description` as an argument.
 func (c *Command) GetDescription() *Command {
-	c.flagConfig.VerbositySimulation.GetDescription = ptr(true)
+	c.flagConfig.VerbositySimulation.GetDescription = new(true)
 	return c
 }
 
@@ -3155,7 +3151,7 @@ func (c *Command) UnsetGetDescription() *Command {
 //
 // Deprecated: Use [Command.Print] with `duration_string` as an argument.
 func (c *Command) GetDuration() *Command {
-	c.flagConfig.VerbositySimulation.GetDuration = ptr(true)
+	c.flagConfig.VerbositySimulation.GetDuration = new(true)
 	return c
 }
 
@@ -3177,7 +3173,7 @@ func (c *Command) UnsetGetDuration() *Command {
 //
 // Deprecated: Use [Command.Print] with `filename` as an argument.
 func (c *Command) GetFilename() *Command {
-	c.flagConfig.VerbositySimulation.GetFilename = ptr(true)
+	c.flagConfig.VerbositySimulation.GetFilename = new(true)
 	return c
 }
 
@@ -3199,7 +3195,7 @@ func (c *Command) UnsetGetFilename() *Command {
 //
 // Deprecated: Use [Command.Print] with `format` as an argument.
 func (c *Command) GetFormat() *Command {
-	c.flagConfig.VerbositySimulation.GetFormat = ptr(true)
+	c.flagConfig.VerbositySimulation.GetFormat = new(true)
 	return c
 }
 
@@ -3223,7 +3219,7 @@ func (c *Command) UnsetGetFormat() *Command {
 //  - DumpJSON maps to cli flags: -j/--dump-json.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) DumpJSON() *Command {
-	c.flagConfig.VerbositySimulation.DumpJSON = ptr(true)
+	c.flagConfig.VerbositySimulation.DumpJSON = new(true)
 	return c
 }
 
@@ -3243,7 +3239,7 @@ func (c *Command) UnsetDumpJSON() *Command {
 //  - DumpSingleJSON maps to cli flags: -J/--dump-single-json.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) DumpSingleJSON() *Command {
-	c.flagConfig.VerbositySimulation.DumpSingleJSON = ptr(true)
+	c.flagConfig.VerbositySimulation.DumpSingleJSON = new(true)
 	return c
 }
 
@@ -3261,7 +3257,7 @@ func (c *Command) UnsetDumpSingleJSON() *Command {
 //  - PrintJSON maps to cli flags: --print-json (hidden).
 //  - From option group: "Verbosity Simulation"
 func (c *Command) PrintJSON() *Command {
-	c.flagConfig.VerbositySimulation.PrintJSON = ptr(true)
+	c.flagConfig.VerbositySimulation.PrintJSON = new(true)
 	return c
 }
 
@@ -3280,7 +3276,7 @@ func (c *Command) UnsetPrintJSON() *Command {
 //  - ForceWriteArchive maps to cli flags: --force-write-archive/--force-write-download-archive/--force-download-archive.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) ForceWriteArchive() *Command {
-	c.flagConfig.VerbositySimulation.ForceWriteArchive = ptr(true)
+	c.flagConfig.VerbositySimulation.ForceWriteArchive = new(true)
 	return c
 }
 
@@ -3298,7 +3294,7 @@ func (c *Command) UnsetForceWriteArchive() *Command {
 //  - Newline maps to cli flags: --newline.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) Newline() *Command {
-	c.flagConfig.VerbositySimulation.Newline = ptr(true)
+	c.flagConfig.VerbositySimulation.Newline = new(true)
 	return c
 }
 
@@ -3317,7 +3313,7 @@ func (c *Command) UnsetNewline() *Command {
 //  - From option group: "Verbosity Simulation"
 func (c *Command) NoProgress() *Command {
 	c.flagConfig.VerbositySimulation.Progress = nil
-	c.flagConfig.VerbositySimulation.NoProgress = ptr(true)
+	c.flagConfig.VerbositySimulation.NoProgress = new(true)
 	return c
 }
 
@@ -3338,7 +3334,7 @@ func (c *Command) UnsetProgress() *Command {
 //  - From option group: "Verbosity Simulation"
 func (c *Command) Progress() *Command {
 	c.flagConfig.VerbositySimulation.NoProgress = nil
-	c.flagConfig.VerbositySimulation.Progress = ptr(true)
+	c.flagConfig.VerbositySimulation.Progress = new(true)
 	return c
 }
 
@@ -3349,7 +3345,7 @@ func (c *Command) Progress() *Command {
 //  - ConsoleTitle maps to cli flags: --console-title.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) ConsoleTitle() *Command {
-	c.flagConfig.VerbositySimulation.ConsoleTitle = ptr(true)
+	c.flagConfig.VerbositySimulation.ConsoleTitle = new(true)
 	return c
 }
 
@@ -3408,7 +3404,7 @@ func (c *Command) UnsetProgressDelta() *Command {
 //  - Verbose maps to cli flags: -v/--verbose.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) Verbose() *Command {
-	c.flagConfig.VerbositySimulation.Verbose = ptr(true)
+	c.flagConfig.VerbositySimulation.Verbose = new(true)
 	return c
 }
 
@@ -3426,7 +3422,7 @@ func (c *Command) UnsetVerbose() *Command {
 //  - DumpPages maps to cli flags: --dump-pages.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) DumpPages() *Command {
-	c.flagConfig.VerbositySimulation.DumpPages = ptr(true)
+	c.flagConfig.VerbositySimulation.DumpPages = new(true)
 	return c
 }
 
@@ -3445,7 +3441,7 @@ func (c *Command) UnsetDumpPages() *Command {
 //  - WritePages maps to cli flags: --write-pages.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) WritePages() *Command {
-	c.flagConfig.VerbositySimulation.WritePages = ptr(true)
+	c.flagConfig.VerbositySimulation.WritePages = new(true)
 	return c
 }
 
@@ -3463,7 +3459,7 @@ func (c *Command) UnsetWritePages() *Command {
 //  - PrintTraffic maps to cli flags: --print-traffic.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) PrintTraffic() *Command {
-	c.flagConfig.VerbositySimulation.PrintTraffic = ptr(true)
+	c.flagConfig.VerbositySimulation.PrintTraffic = new(true)
 	return c
 }
 
@@ -3500,7 +3496,7 @@ func (c *Command) UnsetEncoding() *Command {
 //  - LegacyServerConnect maps to cli flags: --legacy-server-connect.
 //  - From option group: "Workarounds"
 func (c *Command) LegacyServerConnect() *Command {
-	c.flagConfig.Workarounds.LegacyServerConnect = ptr(true)
+	c.flagConfig.Workarounds.LegacyServerConnect = new(true)
 	return c
 }
 
@@ -3518,7 +3514,7 @@ func (c *Command) UnsetLegacyServerConnect() *Command {
 //  - NoCheckCertificates maps to cli flags: --no-check-certificates.
 //  - From option group: "Workarounds"
 func (c *Command) NoCheckCertificates() *Command {
-	c.flagConfig.Workarounds.NoCheckCertificates = ptr(true)
+	c.flagConfig.Workarounds.NoCheckCertificates = new(true)
 	return c
 }
 
@@ -3536,7 +3532,7 @@ func (c *Command) UnsetCheckCertificates() *Command {
 //  - PreferInsecure maps to cli flags: --prefer-insecure/--prefer-unsecure.
 //  - From option group: "Workarounds"
 func (c *Command) PreferInsecure() *Command {
-	c.flagConfig.Workarounds.PreferInsecure = ptr(true)
+	c.flagConfig.Workarounds.PreferInsecure = new(true)
 	return c
 }
 
@@ -3618,7 +3614,7 @@ func (c *Command) UnsetAddHeaders() *Command {
 //  - BidiWorkaround maps to cli flags: --bidi-workaround.
 //  - From option group: "Workarounds"
 func (c *Command) BidiWorkaround() *Command {
-	c.flagConfig.Workarounds.BidiWorkaround = ptr(true)
+	c.flagConfig.Workarounds.BidiWorkaround = new(true)
 	return c
 }
 
@@ -3762,7 +3758,7 @@ func (c *Command) UnsetFormatSort() *Command {
 //  - From option group: "Video Format"
 func (c *Command) FormatSortForce() *Command {
 	c.flagConfig.VideoFormat.NoFormatSortForce = nil
-	c.flagConfig.VideoFormat.FormatSortForce = ptr(true)
+	c.flagConfig.VideoFormat.FormatSortForce = new(true)
 	return c
 }
 
@@ -3783,7 +3779,7 @@ func (c *Command) UnsetFormatSortForce() *Command {
 //  - From option group: "Video Format"
 func (c *Command) NoFormatSortForce() *Command {
 	c.flagConfig.VideoFormat.FormatSortForce = nil
-	c.flagConfig.VideoFormat.NoFormatSortForce = ptr(true)
+	c.flagConfig.VideoFormat.NoFormatSortForce = new(true)
 	return c
 }
 
@@ -3798,7 +3794,7 @@ func (c *Command) NoFormatSortForce() *Command {
 //  - From option group: "Video Format"
 func (c *Command) VideoMultistreams() *Command {
 	c.flagConfig.VideoFormat.NoVideoMultistreams = nil
-	c.flagConfig.VideoFormat.VideoMultistreams = ptr(true)
+	c.flagConfig.VideoFormat.VideoMultistreams = new(true)
 	return c
 }
 
@@ -3819,7 +3815,7 @@ func (c *Command) UnsetVideoMultistreams() *Command {
 //  - From option group: "Video Format"
 func (c *Command) NoVideoMultistreams() *Command {
 	c.flagConfig.VideoFormat.VideoMultistreams = nil
-	c.flagConfig.VideoFormat.NoVideoMultistreams = ptr(true)
+	c.flagConfig.VideoFormat.NoVideoMultistreams = new(true)
 	return c
 }
 
@@ -3834,7 +3830,7 @@ func (c *Command) NoVideoMultistreams() *Command {
 //  - From option group: "Video Format"
 func (c *Command) AudioMultistreams() *Command {
 	c.flagConfig.VideoFormat.NoAudioMultistreams = nil
-	c.flagConfig.VideoFormat.AudioMultistreams = ptr(true)
+	c.flagConfig.VideoFormat.AudioMultistreams = new(true)
 	return c
 }
 
@@ -3855,7 +3851,7 @@ func (c *Command) UnsetAudioMultistreams() *Command {
 //  - From option group: "Video Format"
 func (c *Command) NoAudioMultistreams() *Command {
 	c.flagConfig.VideoFormat.AudioMultistreams = nil
-	c.flagConfig.VideoFormat.NoAudioMultistreams = ptr(true)
+	c.flagConfig.VideoFormat.NoAudioMultistreams = new(true)
 	return c
 }
 
@@ -3869,7 +3865,7 @@ func (c *Command) NoAudioMultistreams() *Command {
 // Deprecated: Use [Command.Format] with `all` as an argument.
 func (c *Command) AllFormats() *Command {
 	c.flagConfig.VideoFormat.Format = nil
-	c.flagConfig.VideoFormat.AllFormats = ptr(true)
+	c.flagConfig.VideoFormat.AllFormats = new(true)
 	return c
 }
 
@@ -3893,7 +3889,7 @@ func (c *Command) UnsetAllFormats() *Command {
 //  - From option group: "Video Format"
 func (c *Command) PreferFreeFormats() *Command {
 	c.flagConfig.VideoFormat.NoPreferFreeFormats = nil
-	c.flagConfig.VideoFormat.PreferFreeFormats = ptr(true)
+	c.flagConfig.VideoFormat.PreferFreeFormats = new(true)
 	return c
 }
 
@@ -3914,7 +3910,7 @@ func (c *Command) UnsetPreferFreeFormats() *Command {
 //  - From option group: "Video Format"
 func (c *Command) NoPreferFreeFormats() *Command {
 	c.flagConfig.VideoFormat.PreferFreeFormats = nil
-	c.flagConfig.VideoFormat.NoPreferFreeFormats = ptr(true)
+	c.flagConfig.VideoFormat.NoPreferFreeFormats = new(true)
 	return c
 }
 
@@ -3927,7 +3923,7 @@ func (c *Command) NoPreferFreeFormats() *Command {
 func (c *Command) CheckFormats() *Command {
 	c.flagConfig.VideoFormat.CheckAllFormats = nil
 	c.flagConfig.VideoFormat.NoCheckFormats = nil
-	c.flagConfig.VideoFormat.CheckFormats = ptr(true)
+	c.flagConfig.VideoFormat.CheckFormats = new(true)
 	return c
 }
 
@@ -3950,7 +3946,7 @@ func (c *Command) UnsetCheckFormats() *Command {
 func (c *Command) CheckAllFormats() *Command {
 	c.flagConfig.VideoFormat.CheckFormats = nil
 	c.flagConfig.VideoFormat.NoCheckFormats = nil
-	c.flagConfig.VideoFormat.CheckAllFormats = ptr(true)
+	c.flagConfig.VideoFormat.CheckAllFormats = new(true)
 	return c
 }
 
@@ -3972,7 +3968,7 @@ func (c *Command) UnsetCheckAllFormats() *Command {
 func (c *Command) NoCheckFormats() *Command {
 	c.flagConfig.VideoFormat.CheckFormats = nil
 	c.flagConfig.VideoFormat.CheckAllFormats = nil
-	c.flagConfig.VideoFormat.NoCheckFormats = ptr(true)
+	c.flagConfig.VideoFormat.NoCheckFormats = new(true)
 	return c
 }
 
@@ -3985,7 +3981,7 @@ func (c *Command) NoCheckFormats() *Command {
 //
 // Deprecated: Use [Command.Print] with `formats_table` as an argument.
 func (c *Command) ListFormats() *Command {
-	c.flagConfig.VideoFormat.ListFormats = ptr(true)
+	c.flagConfig.VideoFormat.ListFormats = new(true)
 	return c
 }
 
@@ -4008,7 +4004,7 @@ func (c *Command) UnsetListFormats() *Command {
 // Deprecated: Use [Command.ListFormatsAsTable] or [Command.CompatOptions] with `-list-formats` as an argument.
 func (c *Command) ListFormatsAsTable() *Command {
 	c.flagConfig.VideoFormat.ListFormatsOld = nil
-	c.flagConfig.VideoFormat.ListFormatsAsTable = ptr(true)
+	c.flagConfig.VideoFormat.ListFormatsAsTable = new(true)
 	return c
 }
 
@@ -4032,7 +4028,7 @@ func (c *Command) UnsetListFormatsAsTable() *Command {
 // Deprecated: Use [Command.CompatOptions] with `list-formats` as an argument.
 func (c *Command) ListFormatsOld() *Command {
 	c.flagConfig.VideoFormat.ListFormatsAsTable = nil
-	c.flagConfig.VideoFormat.ListFormatsOld = ptr(true)
+	c.flagConfig.VideoFormat.ListFormatsOld = new(true)
 	return c
 }
 
@@ -4074,7 +4070,7 @@ func (c *Command) UnsetMergeOutputFormat() *Command {
 //  - From option group: "Subtitle"
 func (c *Command) WriteSubs() *Command {
 	c.flagConfig.Subtitle.NoWriteSubs = nil
-	c.flagConfig.Subtitle.WriteSubs = ptr(true)
+	c.flagConfig.Subtitle.WriteSubs = new(true)
 	return c
 }
 
@@ -4095,7 +4091,7 @@ func (c *Command) UnsetWriteSubs() *Command {
 //  - From option group: "Subtitle"
 func (c *Command) NoWriteSubs() *Command {
 	c.flagConfig.Subtitle.WriteSubs = nil
-	c.flagConfig.Subtitle.NoWriteSubs = ptr(true)
+	c.flagConfig.Subtitle.NoWriteSubs = new(true)
 	return c
 }
 
@@ -4107,7 +4103,7 @@ func (c *Command) NoWriteSubs() *Command {
 //  - From option group: "Subtitle"
 func (c *Command) WriteAutoSubs() *Command {
 	c.flagConfig.Subtitle.NoWriteAutoSubs = nil
-	c.flagConfig.Subtitle.WriteAutoSubs = ptr(true)
+	c.flagConfig.Subtitle.WriteAutoSubs = new(true)
 	return c
 }
 
@@ -4128,7 +4124,7 @@ func (c *Command) UnsetWriteAutoSubs() *Command {
 //  - From option group: "Subtitle"
 func (c *Command) NoWriteAutoSubs() *Command {
 	c.flagConfig.Subtitle.WriteAutoSubs = nil
-	c.flagConfig.Subtitle.NoWriteAutoSubs = ptr(true)
+	c.flagConfig.Subtitle.NoWriteAutoSubs = new(true)
 	return c
 }
 
@@ -4141,7 +4137,7 @@ func (c *Command) NoWriteAutoSubs() *Command {
 //
 // Deprecated: Use [Command.SubLangs] with `all` as an argument, in addition to [Command.WriteSubs].
 func (c *Command) AllSubs() *Command {
-	c.flagConfig.Subtitle.AllSubs = ptr(true)
+	c.flagConfig.Subtitle.AllSubs = new(true)
 	return c
 }
 
@@ -4161,7 +4157,7 @@ func (c *Command) UnsetAllSubs() *Command {
 //  - ListSubs maps to cli flags: --list-subs.
 //  - From option group: "Subtitle"
 func (c *Command) ListSubs() *Command {
-	c.flagConfig.Subtitle.ListSubs = ptr(true)
+	c.flagConfig.Subtitle.ListSubs = new(true)
 	return c
 }
 
@@ -4274,7 +4270,7 @@ func (c *Command) UnsetTwoFactor() *Command {
 //  - Netrc maps to cli flags: -n/--netrc.
 //  - From option group: "Authentication"
 func (c *Command) Netrc() *Command {
-	c.flagConfig.Authentication.Netrc = ptr(true)
+	c.flagConfig.Authentication.Netrc = new(true)
 	return c
 }
 
@@ -4403,7 +4399,7 @@ func (c *Command) UnsetApPassword() *Command {
 //  - ApListMSO maps to cli flags: --ap-list-mso.
 //  - From option group: "Authentication"
 func (c *Command) ApListMSO() *Command {
-	c.flagConfig.Authentication.ApListMSO = ptr(true)
+	c.flagConfig.Authentication.ApListMSO = new(true)
 	return c
 }
 
@@ -4476,7 +4472,7 @@ func (c *Command) UnsetClientCertificatePassword() *Command {
 //  - ExtractAudio maps to cli flags: -x/--extract-audio.
 //  - From option group: "Post-Processing"
 func (c *Command) ExtractAudio() *Command {
-	c.flagConfig.PostProcessing.ExtractAudio = ptr(true)
+	c.flagConfig.PostProcessing.ExtractAudio = new(true)
 	return c
 }
 
@@ -4606,7 +4602,7 @@ func (c *Command) UnsetPostProcessorArgs() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) KeepVideo() *Command {
 	c.flagConfig.PostProcessing.NoKeepVideo = nil
-	c.flagConfig.PostProcessing.KeepVideo = ptr(true)
+	c.flagConfig.PostProcessing.KeepVideo = new(true)
 	return c
 }
 
@@ -4627,7 +4623,7 @@ func (c *Command) UnsetKeepVideo() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) NoKeepVideo() *Command {
 	c.flagConfig.PostProcessing.KeepVideo = nil
-	c.flagConfig.PostProcessing.NoKeepVideo = ptr(true)
+	c.flagConfig.PostProcessing.NoKeepVideo = new(true)
 	return c
 }
 
@@ -4639,7 +4635,7 @@ func (c *Command) NoKeepVideo() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) PostOverwrites() *Command {
 	c.flagConfig.PostProcessing.NoPostOverwrites = nil
-	c.flagConfig.PostProcessing.PostOverwrites = ptr(true)
+	c.flagConfig.PostProcessing.PostOverwrites = new(true)
 	return c
 }
 
@@ -4660,7 +4656,7 @@ func (c *Command) UnsetPostOverwrites() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) NoPostOverwrites() *Command {
 	c.flagConfig.PostProcessing.PostOverwrites = nil
-	c.flagConfig.PostProcessing.NoPostOverwrites = ptr(true)
+	c.flagConfig.PostProcessing.NoPostOverwrites = new(true)
 	return c
 }
 
@@ -4672,7 +4668,7 @@ func (c *Command) NoPostOverwrites() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) EmbedSubs() *Command {
 	c.flagConfig.PostProcessing.NoEmbedSubs = nil
-	c.flagConfig.PostProcessing.EmbedSubs = ptr(true)
+	c.flagConfig.PostProcessing.EmbedSubs = new(true)
 	return c
 }
 
@@ -4693,7 +4689,7 @@ func (c *Command) UnsetEmbedSubs() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) NoEmbedSubs() *Command {
 	c.flagConfig.PostProcessing.EmbedSubs = nil
-	c.flagConfig.PostProcessing.NoEmbedSubs = ptr(true)
+	c.flagConfig.PostProcessing.NoEmbedSubs = new(true)
 	return c
 }
 
@@ -4705,7 +4701,7 @@ func (c *Command) NoEmbedSubs() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) EmbedThumbnail() *Command {
 	c.flagConfig.PostProcessing.NoEmbedThumbnail = nil
-	c.flagConfig.PostProcessing.EmbedThumbnail = ptr(true)
+	c.flagConfig.PostProcessing.EmbedThumbnail = new(true)
 	return c
 }
 
@@ -4726,7 +4722,7 @@ func (c *Command) UnsetEmbedThumbnail() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) NoEmbedThumbnail() *Command {
 	c.flagConfig.PostProcessing.EmbedThumbnail = nil
-	c.flagConfig.PostProcessing.NoEmbedThumbnail = ptr(true)
+	c.flagConfig.PostProcessing.NoEmbedThumbnail = new(true)
 	return c
 }
 
@@ -4739,7 +4735,7 @@ func (c *Command) NoEmbedThumbnail() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) EmbedMetadata() *Command {
 	c.flagConfig.PostProcessing.NoEmbedMetadata = nil
-	c.flagConfig.PostProcessing.EmbedMetadata = ptr(true)
+	c.flagConfig.PostProcessing.EmbedMetadata = new(true)
 	return c
 }
 
@@ -4760,7 +4756,7 @@ func (c *Command) UnsetEmbedMetadata() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) NoEmbedMetadata() *Command {
 	c.flagConfig.PostProcessing.EmbedMetadata = nil
-	c.flagConfig.PostProcessing.NoEmbedMetadata = ptr(true)
+	c.flagConfig.PostProcessing.NoEmbedMetadata = new(true)
 	return c
 }
 
@@ -4772,7 +4768,7 @@ func (c *Command) NoEmbedMetadata() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) EmbedChapters() *Command {
 	c.flagConfig.PostProcessing.NoEmbedChapters = nil
-	c.flagConfig.PostProcessing.EmbedChapters = ptr(true)
+	c.flagConfig.PostProcessing.EmbedChapters = new(true)
 	return c
 }
 
@@ -4793,7 +4789,7 @@ func (c *Command) UnsetEmbedChapters() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) NoEmbedChapters() *Command {
 	c.flagConfig.PostProcessing.EmbedChapters = nil
-	c.flagConfig.PostProcessing.NoEmbedChapters = ptr(true)
+	c.flagConfig.PostProcessing.NoEmbedChapters = new(true)
 	return c
 }
 
@@ -4805,7 +4801,7 @@ func (c *Command) NoEmbedChapters() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) EmbedInfoJSON() *Command {
 	c.flagConfig.PostProcessing.NoEmbedInfoJSON = nil
-	c.flagConfig.PostProcessing.EmbedInfoJSON = ptr(true)
+	c.flagConfig.PostProcessing.EmbedInfoJSON = new(true)
 	return c
 }
 
@@ -4826,7 +4822,7 @@ func (c *Command) UnsetEmbedInfoJSON() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) NoEmbedInfoJSON() *Command {
 	c.flagConfig.PostProcessing.EmbedInfoJSON = nil
-	c.flagConfig.PostProcessing.NoEmbedInfoJSON = ptr(true)
+	c.flagConfig.PostProcessing.NoEmbedInfoJSON = new(true)
 	return c
 }
 
@@ -4915,7 +4911,7 @@ func (c *Command) UnsetReplaceInMetadata() *Command {
 //  - Xattrs maps to cli flags: --xattrs/--xattr.
 //  - From option group: "Post-Processing"
 func (c *Command) Xattrs() *Command {
-	c.flagConfig.PostProcessing.Xattrs = ptr(true)
+	c.flagConfig.PostProcessing.Xattrs = new(true)
 	return c
 }
 
@@ -5062,7 +5058,7 @@ func (c *Command) UnsetExec() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) NoExec() *Command {
 	c.flagConfig.PostProcessing.Exec = nil
-	c.flagConfig.PostProcessing.NoExec = ptr(true)
+	c.flagConfig.PostProcessing.NoExec = new(true)
 	return c
 }
 
@@ -5101,7 +5097,7 @@ func (c *Command) UnsetExecBeforeDownload() *Command {
 // Deprecated: Use [Command.NoExec] instead.
 func (c *Command) NoExecBeforeDownload() *Command {
 	c.flagConfig.PostProcessing.ExecBeforeDownload = nil
-	c.flagConfig.PostProcessing.NoExecBeforeDownload = ptr(true)
+	c.flagConfig.PostProcessing.NoExecBeforeDownload = new(true)
 	return c
 }
 
@@ -5157,7 +5153,7 @@ func (c *Command) UnsetConvertThumbnails() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) SplitChapters() *Command {
 	c.flagConfig.PostProcessing.NoSplitChapters = nil
-	c.flagConfig.PostProcessing.SplitChapters = ptr(true)
+	c.flagConfig.PostProcessing.SplitChapters = new(true)
 	return c
 }
 
@@ -5178,7 +5174,7 @@ func (c *Command) UnsetSplitChapters() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) NoSplitChapters() *Command {
 	c.flagConfig.PostProcessing.SplitChapters = nil
-	c.flagConfig.PostProcessing.NoSplitChapters = ptr(true)
+	c.flagConfig.PostProcessing.NoSplitChapters = new(true)
 	return c
 }
 
@@ -5212,7 +5208,7 @@ func (c *Command) UnsetRemoveChapters() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) NoRemoveChapters() *Command {
 	c.flagConfig.PostProcessing.RemoveChapters = nil
-	c.flagConfig.PostProcessing.NoRemoveChapters = ptr(true)
+	c.flagConfig.PostProcessing.NoRemoveChapters = new(true)
 	return c
 }
 
@@ -5226,7 +5222,7 @@ func (c *Command) NoRemoveChapters() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) ForceKeyframesAtCuts() *Command {
 	c.flagConfig.PostProcessing.NoForceKeyframesAtCuts = nil
-	c.flagConfig.PostProcessing.ForceKeyframesAtCuts = ptr(true)
+	c.flagConfig.PostProcessing.ForceKeyframesAtCuts = new(true)
 	return c
 }
 
@@ -5247,7 +5243,7 @@ func (c *Command) UnsetForceKeyframesAtCuts() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) NoForceKeyframesAtCuts() *Command {
 	c.flagConfig.PostProcessing.ForceKeyframesAtCuts = nil
-	c.flagConfig.PostProcessing.NoForceKeyframesAtCuts = ptr(true)
+	c.flagConfig.PostProcessing.NoForceKeyframesAtCuts = new(true)
 	return c
 }
 
@@ -5351,7 +5347,7 @@ func (c *Command) UnsetSponsorblockChapterTitle() *Command {
 //  - NoSponsorblock maps to cli flags: --no-sponsorblock.
 //  - From option group: "SponsorBlock"
 func (c *Command) NoSponsorblock() *Command {
-	c.flagConfig.SponsorBlock.NoSponsorblock = ptr(true)
+	c.flagConfig.SponsorBlock.NoSponsorblock = new(true)
 	return c
 }
 
@@ -5406,7 +5402,7 @@ func (c *Command) UnsetExtractorRetries() *Command {
 //  - From option group: "Extractor"
 func (c *Command) AllowDynamicMPD() *Command {
 	c.flagConfig.Extractor.IgnoreDynamicMPD = nil
-	c.flagConfig.Extractor.AllowDynamicMPD = ptr(true)
+	c.flagConfig.Extractor.AllowDynamicMPD = new(true)
 	return c
 }
 
@@ -5426,7 +5422,7 @@ func (c *Command) UnsetAllowDynamicMPD() *Command {
 //  - From option group: "Extractor"
 func (c *Command) IgnoreDynamicMPD() *Command {
 	c.flagConfig.Extractor.AllowDynamicMPD = nil
-	c.flagConfig.Extractor.IgnoreDynamicMPD = ptr(true)
+	c.flagConfig.Extractor.IgnoreDynamicMPD = new(true)
 	return c
 }
 
@@ -5446,7 +5442,7 @@ func (c *Command) UnsetIgnoreDynamicMPD() *Command {
 //  - From option group: "Extractor"
 func (c *Command) HLSSplitDiscontinuity() *Command {
 	c.flagConfig.Extractor.NoHLSSplitDiscontinuity = nil
-	c.flagConfig.Extractor.HLSSplitDiscontinuity = ptr(true)
+	c.flagConfig.Extractor.HLSSplitDiscontinuity = new(true)
 	return c
 }
 
@@ -5468,7 +5464,7 @@ func (c *Command) UnsetHLSSplitDiscontinuity() *Command {
 //  - From option group: "Extractor"
 func (c *Command) NoHLSSplitDiscontinuity() *Command {
 	c.flagConfig.Extractor.HLSSplitDiscontinuity = nil
-	c.flagConfig.Extractor.NoHLSSplitDiscontinuity = ptr(true)
+	c.flagConfig.Extractor.NoHLSSplitDiscontinuity = new(true)
 	return c
 }
 

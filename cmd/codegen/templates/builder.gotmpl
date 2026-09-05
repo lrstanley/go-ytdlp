@@ -10,10 +10,6 @@ import (
     "context"
 )
 
-func ptr[T any](v T) *T {
-	return &v
-}
-
 {{- /* variables modified during loops for state checks */}}
 {{ $unsets := list }}
 
@@ -74,7 +70,7 @@ func ptr[T any](v T) *T {
                 {{- ""}}c.flagConfig.{{ $group.Name | to_camel }}.{{ $option.Name | to_camel }},
             {{- end }}
             {{- if (eq $option.NArgs 0) -}}
-                ptr(true)
+                new(true)
             {{- else if (eq $option.NArgs 1) -}}
                 {{ if not $option.AllowsMultiple }}&{{ end }}{{ $option.ArgNames | join ", " }}
             {{- else if (gt $option.NArgs 1) -}}

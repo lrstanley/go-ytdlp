@@ -64,6 +64,60 @@ func TestCommand_hasJSONFlag(t *testing.T) {
 	}
 }
 
+func TestCommand_BuildCommand_BunCache(t *testing.T) {
+	bunResolveCache.Store(&ResolvedInstall{Executable: "bun"})
+	t.Cleanup(func() {
+		bunResolveCache.Store(nil)
+	})
+
+	cmd := New().
+		SetExecutable("/bin/true").
+		BuildCommand(context.Background())
+
+	if !slices.Contains(cmd.Args, "--no-js-runtimes") {
+		t.Fatal("expected --no-js-runtimes flag to be set")
+	}
+	if !slices.Contains(cmd.Args, "--js-runtimes") {
+		t.Fatal("expected --js-runtimes flag to be set")
+	}
+	if !slices.Contains(cmd.Args, "bun") {
+		t.Fatal("expected bun runtime to be enabled")
+	}
+}
+
+func TestCommand_CloneExecutionSettings(t *testing.T) {
+	t.Parallel()
+
+	original := New().
+		SetCancelMaxWait(2 * time.Second).
+		SetEnvVarInherit(false)
+	clone := original.Clone()
+
+	if clone.cancelMaxWait != 2*time.Second {
+		t.Fatalf("expected cancel max wait to be cloned, got %s", clone.cancelMaxWait)
+	}
+	if !clone.disableEnvVarInherit {
+		t.Fatal("expected environment inheritance setting to be cloned")
+	}
+}
+
+func TestFlagConfigToFlagsDeduplicatesLastFlag(t *testing.T) {
+	t.Parallel()
+
+	config := &FlagConfig{}
+	config.General.IgnoreErrors = new(true)
+	config.General.NoAbortOnError = new(true)
+	config.General.AbortOnError = new(true)
+
+	flags := config.ToFlags().FindByID("ignoreerrors")
+	if len(flags) != 1 {
+		t.Fatalf("expected one ignoreerrors flag, got %d: %#v", len(flags), flags)
+	}
+	if flags[0].Flag != "--abort-on-error" {
+		t.Fatalf("expected the last ignoreerrors flag, got %q", flags[0].Flag)
+	}
+}
+
 func TestCommand_Simple(t *testing.T) {
 	t.Parallel()
 
@@ -258,8 +312,8 @@ func TestCommand_SetFlagConfig_DuplicateFlags(t *testing.T) {
 	t.Parallel()
 
 	flagConfig := &FlagConfig{}
-	flagConfig.General.IgnoreErrors = ptr(true)
-	flagConfig.General.AbortOnError = ptr(true)
+	flagConfig.General.IgnoreErrors = new(true)
+	flagConfig.General.AbortOnError = new(true)
 
 	builder := New().NoUpdate().SetFlagConfig(flagConfig)
 

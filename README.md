@@ -205,12 +205,17 @@ This is useful for scenarios such as HTTP APIs, web UIs, or persisting flag conf
   `Command.SetFlagConfig` and `Command.GetFlagConfig` to set/get the flag config.
 - **Validation:** Use the provided validation functions and JSON schema to ensure correctness. The
   JSON body allows duplicate flags (unless using the provided json schema), so always validate before use.
+- **Compatible Decoding:** When loading persisted or client-supplied configurations that may use
+  older flag names or value types, call `FlagConfig.UnmarshalJSONWithWarnings` first. Review or
+  log its warnings, then call `FlagConfig.Validate`; valid flags are retained even when other
+  members are unknown or incompatible. Use ordinary `json.Unmarshal` when strict decoding is required.
 - **JSON Schema:** The schema (available via the `optiondata.JSONSchema` variable and also
   [located here](./optiondata/json-schema.json)) can be used for type generation in other languages (e.g.
   TypeScript) and for client-side validation (e.g. using something like [json-schema-to-zod](https://www.npmjs.com/package/json-schema-to-zod)
   when working with a web UI).
 - **Persistence:** If storing flag configs in a database, note that yt-dlp flags can change or be removed
-  at any time (in correlation to updates of **go-ytdlp**). Always validate after loading from storage.
+  at any time (in correlation to updates of **go-ytdlp**). Use compatibility decoding and handle its
+  warnings before validating after loading from storage.
   - If validation fails, clear the invalid values in the JSON before retrying (e.g. using the
     `ErrMultipleJSONParsingFlags` and `ErrJSONParsingFlag` error types, which include the path in the
     JSON where the issue occurred).

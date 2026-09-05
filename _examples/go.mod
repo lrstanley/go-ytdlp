@@ -1,6 +1,6 @@
 module github.com/lrstanley/go-ytdlp/_examples
 
-go 1.26.0
+go 1.27
 
 replace github.com/lrstanley/go-ytdlp => ../
 
@@ -9,7 +9,7 @@ require (
 	charm.land/bubbletea/v2 v2.0.9
 	charm.land/lipgloss/v2 v2.0.6
 	github.com/dustin/go-humanize v1.0.1
-	github.com/lrstanley/go-ytdlp v1.3.6
+	github.com/lrstanley/go-ytdlp v1.4.0
 	github.com/samber/slog-http v1.12.1
 )
 

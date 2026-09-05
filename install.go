@@ -27,7 +27,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ProtonMail/go-crypto/openpgp"
+	openpgp "github.com/ProtonMail/go-crypto/openpgp/v2"
 	"github.com/ulikunitz/xz"
 )
 
@@ -59,19 +59,13 @@ var supportsMusl = sync.OnceValue(func() bool {
 	return false
 })
 
+var downloadClient = &http.Client{Timeout: downloadTimeout}
+
 // getBinaryConfig returns the binary configuration for the current runtime.
 // If the current runtime is not supported/found, nil is returned.
 func getBinaryConfig[T any](cfg map[string]T) (*T, error) {
-	var configSupportsMusl bool
-	for k := range cfg {
-		if strings.Contains(k, "musl") {
-			configSupportsMusl = true
-			break
-		}
-	}
-
-	if runtime.GOOS == "linux" && configSupportsMusl && supportsMusl() {
-		if binary, ok := cfg[runtime.GOOS+"_musl_"+runtime.GOARCH]; ok {
+	if runtime.GOOS == "linux" {
+		if binary, ok := cfg[runtime.GOOS+"_musl_"+runtime.GOARCH]; ok && supportsMusl() {
 			return &binary, nil
 		}
 	}
@@ -118,15 +112,10 @@ func RemoveInstallCache() error {
 }
 
 // createCacheDir creates the go-ytdlp cache directory and returns its path.
-func createCacheDir(ctx context.Context) (string, error) {
+func createCacheDir(_ context.Context) (string, error) {
 	cacheDir, err := GetCacheDir()
 	if err != nil {
 		return "", err
-	}
-
-	_, err = os.Stat(cacheDir)
-	if os.IsNotExist(err) {
-		debug(ctx, "cache directory does not exist, creating", "path", cacheDir)
 	}
 
 	err = os.MkdirAll(cacheDir, 0o750)
@@ -238,7 +227,7 @@ func destPathForDownload(resp *http.Response, targetDir, rawURL string) (string,
 	}
 
 	base := path.Base(parsed.Path)
-	if unescaped, err := url.PathUnescape(base); err == nil {
+	if unescaped, unescapeErr := url.PathUnescape(base); unescapeErr == nil {
 		base = unescaped
 	}
 
@@ -249,7 +238,9 @@ func destPathForDownload(resp *http.Response, targetDir, rawURL string) (string,
 	return filepath.Join(targetDir, base), nil
 }
 
-func downloadFile(ctx context.Context, rawURL, targetDir, targetName string, perms os.FileMode) (dest string, err error) {
+func downloadFile(ctx context.Context, rawURL, targetDir, targetName string, perms os.FileMode) (string, error) {
+	var dest string
+
 	debug(
 		ctx, "downloading file",
 		"url", rawURL,
@@ -258,7 +249,6 @@ func downloadFile(ctx context.Context, rawURL, targetDir, targetName string, per
 	)
 
 	// Download the binary.
-	client := &http.Client{Timeout: downloadTimeout}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, rawURL, http.NoBody)
 	if err != nil {
 		return "", fmt.Errorf("unable to download go-ytdlp dependent file %q: request creation: %w", dest, err)
@@ -266,7 +256,7 @@ func downloadFile(ctx context.Context, rawURL, targetDir, targetName string, per
 
 	req.Header.Set("User-Agent", "github.com/lrstanley/go-ytdlp; version/"+Version)
 
-	resp, err := client.Do(req)
+	resp, err := downloadClient.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("unable to download go-ytdlp dependent file %q: %w", dest, err)
 	}
@@ -310,8 +300,8 @@ func downloadFile(ctx context.Context, rawURL, targetDir, targetName string, per
 }
 
 // isArchiveURL returns true if the URL points to a known archive format.
-func isArchiveURL(url string) bool {
-	lower := strings.ToLower(url)
+func isArchiveURL(rawURL string) bool {
+	lower := strings.ToLower(rawURL)
 	return strings.HasSuffix(lower, ".zip") || strings.HasSuffix(lower, ".tar.xz")
 }
 
@@ -508,7 +498,7 @@ func verifyFileChecksum(ctx context.Context, checksumPath, signaturePath, target
 		return fmt.Errorf("unable to read armored key ring: %w", err)
 	}
 
-	_, err = openpgp.CheckDetachedSignature(keyring, checksumFile, signatureFile, nil)
+	_, _, err = openpgp.VerifyDetachedSignature(keyring, checksumFile, signatureFile, nil)
 	if err != nil {
 		return fmt.Errorf("unable to check detached signature: %w", err)
 	}
@@ -542,6 +532,9 @@ func verifyFileChecksum(ctx context.Context, checksumPath, signaturePath, target
 
 			return nil
 		}
+	}
+	if scanErr := scanner.Err(); scanErr != nil {
+		return fmt.Errorf("unable to scan checksum file: %w", scanErr)
 	}
 
 	return fmt.Errorf("unable to find checksum for %s", filepath.Base(targetPath))

@@ -6,11 +6,11 @@ package ytdlp
 
 import (
 	"bytes"
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"fmt"
 	"reflect"
 	"slices"
-	"sort"
 	"strings"
 	"time"
 	"unicode"
@@ -42,7 +42,7 @@ type Result struct {
 }
 
 func (r *Result) asString(stdout, stderr, timestamps, maskJSON, exitCode bool) string {
-	var out []string
+	out := make([]string, 0, len(r.OutputLogs)+1)
 
 	for _, l := range r.OutputLogs {
 		if l.Pipe == "stdout" && !stdout {
@@ -95,6 +95,9 @@ func (r *Result) GetExtractedInfo() (info []*ExtractedInfo, err error) {
 			continue // Not an extracted info result.
 		}
 
+		if info == nil {
+			info = make([]*ExtractedInfo, 0, len(r.OutputLogs))
+		}
 		info = append(info, e)
 	}
 
@@ -102,10 +105,10 @@ func (r *Result) GetExtractedInfo() (info []*ExtractedInfo, err error) {
 }
 
 type ResultLog struct {
-	Timestamp time.Time        `json:"timestamp"`
-	Line      string           `json:"line"`
-	JSON      *json.RawMessage `json:"json,omitempty"` // May be nil if the log line wasn't valid JSON.
-	Pipe      string           `json:"pipe"`           // stdout or stderr.
+	Timestamp time.Time       `json:"timestamp"`
+	Line      string          `json:"line"`
+	JSON      *jsontext.Value `json:"json,omitempty"` // May be nil if the log line wasn't valid JSON.
+	Pipe      string          `json:"pipe"`           // stdout or stderr.
 }
 
 func (r *ResultLog) asString(timestamps, maskJSON bool) string {
@@ -139,29 +142,36 @@ type timestampWriter struct {
 }
 
 func (w *timestampWriter) Write(p []byte) (n int, err error) {
-	if w.lastWriteStart.IsZero() {
-		w.lastWriteStart = time.Now()
-	}
+	n = len(p)
 
-	if i := bytes.IndexByte(p, '\n'); i >= 0 {
-		w.buf.Write(p[:i+1])
-		w.flush()
-
-		_, err = w.Write(p[i+1:]) // Recursively write the rest of the buffer, in case it contains multiple lines.
-		return len(p), err
-	}
-
-	if w.stderr != nil {
-		if i := bytes.IndexByte(p, '\r'); i >= 0 {
-			w.buf.Write(p[:i+1])
-			w.flushStderr()
-
-			_, err = w.Write(p[i+1:])
-			return len(p), err
+	for len(p) > 0 {
+		if w.lastWriteStart.IsZero() {
+			w.lastWriteStart = time.Now()
 		}
+
+		// Prefer newline over carriage return to preserve the behavior of
+		// regular stdout/stderr lines that contain both separators.
+		if i := bytes.IndexByte(p, '\n'); i >= 0 {
+			_, _ = w.buf.Write(p[:i+1])
+			w.flush()
+			p = p[i+1:]
+			continue
+		}
+
+		if w.stderr != nil {
+			if i := bytes.IndexByte(p, '\r'); i >= 0 {
+				_, _ = w.buf.Write(p[:i+1])
+				w.flushStderr()
+				p = p[i+1:]
+				continue
+			}
+		}
+
+		_, err = w.buf.Write(p)
+		return n, err
 	}
 
-	return w.buf.Write(p)
+	return n, nil
 }
 
 func (w *timestampWriter) flush() {
@@ -171,23 +181,25 @@ func (w *timestampWriter) flush() {
 
 	line := bytes.TrimRightFunc(w.buf.Bytes(), unicode.IsSpace)
 
+	if v, ok := bytes.CutPrefix(line, progressPrefix); ok && w.progress != nil {
+		var raw jsontext.Value
+
+		if err := json.Unmarshal(v, &raw); err == nil {
+			w.progress.parse(raw)
+			w.lastWriteStart = time.Time{}
+			w.buf.Reset()
+			return
+		}
+	}
+
 	result := &ResultLog{
 		Timestamp: w.lastWriteStart,
 		Line:      string(line),
 		Pipe:      w.pipe,
 	}
 
-	if v, ok := bytes.CutPrefix(line, progressPrefix); ok && w.progress != nil {
-		var raw json.RawMessage
-
-		if err := json.Unmarshal(v, &raw); err == nil {
-			w.progress.parse(raw)
-		}
-		goto reset
-	}
-
 	if w.checkJSON && len(line) > 0 { // Try to parse the line as JSON.
-		var raw json.RawMessage
+		var raw jsontext.Value
 
 		if err := json.Unmarshal(line, &raw); err == nil {
 			result.JSON = &raw
@@ -200,7 +212,6 @@ func (w *timestampWriter) flush() {
 		w.stderr.handle(result.Line)
 	}
 
-reset:
 	w.lastWriteStart = time.Time{}
 	w.buf.Reset()
 }
@@ -228,15 +239,21 @@ func (w *timestampWriter) flushStderr() {
 func (w *timestampWriter) mergeResults(otherWriters ...*timestampWriter) []*ResultLog {
 	w.flush()
 
-	results := slices.Clone(w.results)
+	resultCount := len(w.results)
+	for _, other := range otherWriters {
+		resultCount += len(other.results)
+	}
+
+	results := make([]*ResultLog, 0, resultCount)
+	results = append(results, w.results...)
 
 	for _, other := range otherWriters {
 		results = append(results, other.results...)
 	}
 
 	// Sort results by timestamp.
-	sort.Slice(results, func(i, j int) bool {
-		return results[i].Timestamp.Before(results[j].Timestamp)
+	slices.SortFunc(results, func(a, b *ResultLog) int {
+		return a.Timestamp.Compare(b.Timestamp)
 	})
 
 	return results
@@ -266,7 +283,7 @@ func (w *timestampWriter) String() string {
 // ParseExtractedInfo parses the extracted info from msg. ParseExtractedInfo will
 // also clean the returned results to remove some ytdlp-isims, such as "none" for
 // some string fields.
-func ParseExtractedInfo(msg *json.RawMessage) (info *ExtractedInfo, err error) {
+func ParseExtractedInfo(msg *jsontext.Value) (info *ExtractedInfo, err error) {
 	info = &ExtractedInfo{source: msg}
 
 	err = json.Unmarshal(*msg, info)
@@ -282,63 +299,58 @@ func ParseExtractedInfo(msg *json.RawMessage) (info *ExtractedInfo, err error) {
 // string or pointer to a string, and the value is "none" or empty, set the value
 // to empty/nil.
 func cleanJSON(input any) {
-	v := reflect.ValueOf(input)
-	if v.Kind() == reflect.Ptr {
-		v = v.Elem()
+	cleanJSONValue(reflect.ValueOf(input))
+}
 
-		// Might be a double pointer, e.g. **ExtractedInfo.
-		if v.Kind() == reflect.Ptr {
-			v = v.Elem()
+func cleanJSONValue(v reflect.Value) {
+	for v.IsValid() && v.Kind() == reflect.Pointer {
+		if v.IsNil() {
+			return
 		}
+		v = v.Elem()
 	}
 
-	// If nil, nothing to do.
-	if !v.IsValid() {
-		return
-	}
-
-	// If not struct, return.
-	if v.Kind() != reflect.Struct {
+	if !v.IsValid() || v.Kind() != reflect.Struct {
 		return
 	}
 
 	for i := range v.NumField() {
 		field := v.Field(i)
-
-		if !v.IsValid() {
+		if !field.CanSet() {
 			continue
 		}
 
-		// If field is a struct, or a pointer to a struct, recurse.
-		if field.Kind() == reflect.Struct || (field.Kind() == reflect.Ptr && field.Elem().Kind() == reflect.Struct) {
-			cleanJSON(field.Addr().Interface())
-			continue
-		}
-
-		// If field is a slice, loop through each element and recurse.
-		if field.Kind() == reflect.Slice {
-			for j := range field.Len() {
-				cleanJSON(field.Index(j).Addr().Interface())
-			}
-			continue
-		}
-
-		// If string, and value is "none", set to empty string.
-		if field.Kind() != reflect.String && field.String() == "none" {
-			field.SetString("")
-			continue
-		}
-
-		// If pointer to string, and value is "none" or empty, set to nil.
-		if field.Kind() == reflect.Ptr && field.Elem().Kind() == reflect.String && (field.Elem().String() == "none" || field.Elem().String() == "") {
-			// If field name == "Title", set to empty string instead of nil.
-			// See [ExtractedInfo.Title] for more info.
-			if v.Type().Field(i).Name == "Title" {
-				field.Elem().SetString("")
+		switch field.Kind() { //nolint:exhaustive // unsupported kinds need no cleaning
+		case reflect.Struct:
+			cleanJSONValue(field)
+		case reflect.Pointer:
+			if field.IsNil() {
 				continue
 			}
 
-			field.Set(reflect.Zero(field.Type()))
+			value := field.Elem()
+			if value.Kind() == reflect.Struct {
+				cleanJSONValue(value)
+				continue
+			}
+
+			if value.Kind() == reflect.String && (value.String() == "none" || value.String() == "") {
+				// If field name == "Title", set to empty string instead of nil.
+				// See [ExtractedInfo.Title] for more info.
+				if v.Type().Field(i).Name == "Title" {
+					value.SetString("")
+					continue
+				}
+				field.SetZero()
+			}
+		case reflect.Slice:
+			for j := range field.Len() {
+				cleanJSONValue(field.Index(j))
+			}
+		case reflect.String:
+			if field.String() == "none" {
+				field.SetString("")
+			}
 		}
 	}
 }
@@ -347,7 +359,7 @@ type ExtractedInfo struct {
 	// ExtractedFormat fields which can also be returned for ExtractedInfo.
 	*ExtractedFormat
 
-	source *json.RawMessage `json:"-"`
+	source *jsontext.Value `json:"-"`
 
 	// Type is the type of the video or returned result.
 	Type ExtractedType `json:"_type"`

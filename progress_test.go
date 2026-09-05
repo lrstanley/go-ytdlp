@@ -5,7 +5,7 @@
 package ytdlp
 
 import (
-	"encoding/json"
+	"encoding/json/jsontext"
 	"path/filepath"
 	"sync"
 	"testing"
@@ -56,7 +56,7 @@ func TestProgressHandler_parse(t *testing.T) {
 			h := newProgressHandler(func(update ProgressUpdate) {
 				got = update
 			})
-			h.parse(json.RawMessage(tt.raw))
+			h.parse(jsontext.Value(tt.raw))
 
 			assert.Equal(t, tt.wantStatus, got.Status)
 			assert.Equal(t, tt.wantProcessor, got.PostProcessor)

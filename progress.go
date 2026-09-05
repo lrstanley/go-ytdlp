@@ -5,7 +5,8 @@
 package ytdlp
 
 import (
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"fmt"
 	"strconv"
 	"strings"
@@ -52,7 +53,7 @@ func newProgressHandler(fn ProgressCallbackFunc) *progressHandler {
 	return h
 }
 
-func (h *progressHandler) parse(raw json.RawMessage) {
+func (h *progressHandler) parse(raw jsontext.Value) {
 	data := &progressData{}
 
 	err := json.Unmarshal(raw, data)

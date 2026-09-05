@@ -6,7 +6,8 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"fmt"
 	"log/slog"
 	"os"
@@ -55,10 +56,7 @@ func main() {
 	}
 	defer f.Close()
 
-	enc := json.NewEncoder(f)
-	enc.SetIndent("", "    ")
-
-	if err = enc.Encode(r); err != nil {
+	if err = json.MarshalWrite(f, r, jsontext.Multiline(true)); err != nil {
 		panic(err)
 	}
 
