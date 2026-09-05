@@ -640,7 +640,7 @@
           },
           "type": "array",
           "title": "Downloader",
-          "description": "Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rstp, rtmp, mms) to use it for. Currently supports native, aria2c, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads",
+          "description": "Name or path of the external downloader to use (optionally) prefixed by the protocols (http, ftp, m3u8, dash, rtmp) to use it for. Currently supports native, aria2c, axel, curl, ffmpeg, httpie, wget. You can use this option multiple times to set different downloaders for different protocols. E.g. --downloader aria2c --downloader \"dash,m3u8:native\" will use aria2c for http/ftp downloads, and the native downloader for dash/m3u8 downloads",
           "uid": "external_downloader"
         },
         "downloader_args": {
@@ -1839,7 +1839,7 @@
         "live_from_start": {
           "type": "boolean",
           "title": "LiveFromStart",
-          "description": "Download livestreams from the start. Currently experimental and only supported for YouTube, Twitch, and TVer",
+          "description": "Download livestreams from the start. Currently experimental and only supported for YouTube, Twitch, TVer, and mellow-fan",
           "uid": "live_from_start"
         },
         "no_live_from_start": {
@@ -2714,7 +2714,7 @@
           },
           "type": "array",
           "title": "Exec",
-          "description": "Execute a command, optionally prefixed with when to execute it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: after_move). The same syntax as the output template can be used to pass any field as arguments to the command. If no fields are passed, %(filepath,_filename|)q is appended to the end of the command. This option can be used multiple times",
+          "description": "Execute a command, optionally prefixed with when to execute it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: after_move). The same syntax as the output template can be used to pass any field as arguments to the command; however, for security reasons the only allowed conversions are: \"i\"/\"d\" (signed integer decimal), \"f\" (floating-point decimal) and \"q\" (shell-quoted). If no fields are passed, %(filepath,_filename|)q is appended to the end of the command. This option can be used multiple times",
           "uid": "exec_cmd"
         },
         "no_exec": {
@@ -3291,7 +3291,10 @@
           "uid": "consoletitle"
         },
         "progress_template": {
-          "type": "string",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
           "title": "ProgressTemplate",
           "description": "Template for progress outputs, optionally prefixed with one of \"download:\" (default), \"download-title:\" (the console title), \"postprocess:\",  or \"postprocess-title:\". The video's fields are accessible under the \"info\" key and the progress attributes are accessible under \"progress\" key. E.g. --console-title --progress-template \"download-title:%(info.id)s-%(progress.eta)s\"",
           "uid": "progress_template"
@@ -4019,7 +4022,7 @@
         "prefer_insecure": {
           "type": "boolean",
           "title": "PreferInsecure",
-          "description": "Use an unencrypted connection to retrieve information about the video (Currently supported only for YouTube)",
+          "description": "Use an unencrypted connection to retrieve information about the video",
           "uid": "prefer_insecure"
         },
         "user_agent": {

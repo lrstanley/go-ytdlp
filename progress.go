@@ -28,6 +28,7 @@ type progressData struct {
 		TmpFilename        string         `json:"tmpfilename,omitempty"`
 		FragmentIndex      int            `json:"fragment_index,omitempty"`
 		FragmentCount      int            `json:"fragment_count,omitempty"`
+		PostProcessor      string         `json:"postprocessor,omitempty"`
 		// There are technically other fields, but these are the important ones.
 	} `json:"progress"`
 	AutoNumber      int `json:"autonumber,omitempty"`
@@ -61,14 +62,22 @@ func (h *progressHandler) parse(raw json.RawMessage) {
 
 	cleanJSON(data)
 
+	status := data.Progress.Status
+	if data.Progress.PostProcessor != "" && status != ProgressStatusError {
+		// yt-dlp post-processor hooks use started/processing/finished, which
+		// would otherwise look like a download completing.
+		status = ProgressStatusPostProcessing
+	}
+
 	update := ProgressUpdate{
 		Info:            data.Info,
-		Status:          data.Progress.Status,
+		Status:          status,
 		TotalBytes:      data.Progress.TotalBytes,
 		DownloadedBytes: data.Progress.DownloadedBytes,
 		FragmentIndex:   data.Progress.FragmentIndex,
 		FragmentCount:   data.Progress.FragmentCount,
 		Filename:        data.Progress.Filename,
+		PostProcessor:   data.Progress.PostProcessor,
 	}
 
 	if update.TotalBytes == 0 {
@@ -78,26 +87,26 @@ func (h *progressHandler) parse(raw json.RawMessage) {
 	if update.Filename == "" {
 		if data.Progress.TmpFilename != "" {
 			update.Filename = data.Progress.TmpFilename
-		} else if data.Info.Filename != nil && *data.Info.Filename != "" {
+		} else if data.Info != nil && data.Info.Filename != nil && *data.Info.Filename != "" {
 			update.Filename = *data.Info.Filename
 		}
 	}
 
-	uuid := update.uuid()
+	key := update.Key()
 
 	var ok bool
 
 	h.mu.Lock()
-	update.Started, ok = h.started[uuid]
+	update.Started, ok = h.started[key]
 	if !ok {
 		update.Started = time.Now()
-		h.started[uuid] = update.Started
+		h.started[key] = update.Started
 	}
 
-	update.Finished, ok = h.finished[uuid]
+	update.Finished, ok = h.finished[key]
 	if !ok && update.Status.IsCompletedType() {
 		update.Finished = time.Now()
-		h.finished[uuid] = update.Finished
+		h.finished[key] = update.Finished
 	}
 	h.mu.Unlock()
 
@@ -112,11 +121,27 @@ func (s ProgressStatus) IsCompletedType() bool {
 }
 
 const (
-	ProgressStatusStarting       ProgressStatus = "starting"
-	ProgressStatusDownloading    ProgressStatus = "downloading"
+	// ProgressStatusStarting is unused. yt-dlp does not emit this status.
+	//
+	// Deprecated: ProgressStatusStarting is never reported. Handle
+	// [ProgressStatusDownloading], [ProgressStatusFinished],
+	// [ProgressStatusError], and [ProgressStatusPostProcessing] instead.
+	ProgressStatusStarting ProgressStatus = "starting"
+	// ProgressStatusDownloading is reported while a file is being written.
+	// Separate formats (for example video then audio) each get their own
+	// downloading updates; compare [ProgressUpdate.Key] or Filename.
+	ProgressStatusDownloading ProgressStatus = "downloading"
+	// ProgressStatusPostProcessing is reported for yt-dlp post-processor
+	// events (merge, recode, metadata, and similar). yt-dlp emits
+	// started/processing/finished for those hooks; they are mapped here so
+	// they are not mistaken for a download finishing.
 	ProgressStatusPostProcessing ProgressStatus = "post_processing"
-	ProgressStatusError          ProgressStatus = "error"
-	ProgressStatusFinished       ProgressStatus = "finished"
+	// ProgressStatusError is reported when yt-dlp fails to download a file.
+	ProgressStatusError ProgressStatus = "error"
+	// ProgressStatusFinished is reported when a download hook completes
+	// successfully. Post-processor finished events are mapped to
+	// [ProgressStatusPostProcessing] instead.
+	ProgressStatusFinished ProgressStatus = "finished"
 )
 
 // ProgressCallbackFunc is a callback function that is called when (if) we receive
@@ -127,22 +152,32 @@ type ProgressCallbackFunc func(update ProgressUpdate)
 type ProgressUpdate struct {
 	Info *ExtractedInfo `json:"info"`
 
-	// Status is the current status of the download.
+	// Status is the current status of this update. Download hooks use
+	// downloading/error/finished; post-processor hooks are mapped to
+	// [ProgressStatusPostProcessing].
 	Status ProgressStatus `json:"status"`
-	// TotalBytes is the total number of bytes in the download. If yt-dlp is unable
-	// to determine the total bytes, this will be 0.
+	// TotalBytes is the size of the current file being downloaded, not the
+	// final merged or recoded output. Separate formats (for example video
+	// then audio) each report their own size. Zero if yt-dlp cannot
+	// determine the size.
 	TotalBytes int `json:"total_bytes"`
-	// DownloadedBytes is the number of bytes that have been downloaded so far.
+	// DownloadedBytes is how many bytes of the current file have been
+	// written. These values are not monotonic across a whole run; use
+	// [ProgressUpdate.Key] or Filename to tell files apart.
 	DownloadedBytes int `json:"downloaded_bytes"`
 	// FragmentIndex is the index of the current fragment being downloaded.
 	FragmentIndex int `json:"fragment_index,omitempty"`
 	// FragmentCount is the total number of fragments in the download.
 	FragmentCount int `json:"fragment_count,omitempty"`
 
-	// Filename is the filename of the video being downloaded, if available. Note that
-	// this is not necessarily the same as the destination file, as post-processing
-	// may merge multiple files into one.
+	// Filename is the file currently being downloaded or processed. This is
+	// often a temporary per-format path (for example video.f137.mp4, then
+	// audio.f140.m4a), not the final merged destination.
 	Filename string `json:"filename"`
+	// PostProcessor is the yt-dlp post-processor name when Status is
+	// [ProgressStatusPostProcessing] (for example Merger or
+	// FFmpegVideoConvertor). Empty during downloads.
+	PostProcessor string `json:"postprocessor,omitempty"`
 
 	// Started is the time the download started.
 	Started time.Time `json:"started"`
@@ -151,18 +186,27 @@ type ProgressUpdate struct {
 	Finished time.Time `json:"finished,omitempty"`
 }
 
-func (p *ProgressUpdate) uuid() string {
-	unique := []string{
-		p.Filename,
-		p.Info.ID,
+// Key returns a stable identifier for the file or post-processor this
+// update belongs to. Progress callbacks receive separate updates for each
+// downloaded format and each post-processor; compare keys to detect phase
+// changes rather than assuming TotalBytes is for the whole job.
+func (p *ProgressUpdate) Key() string {
+	unique := []string{p.Filename}
+
+	if p.Info != nil {
+		unique = append(unique, p.Info.ID)
+
+		if p.Info.PlaylistID != nil {
+			unique = append(unique, *p.Info.PlaylistID)
+		}
+
+		if p.Info.PlaylistIndex != nil {
+			unique = append(unique, strconv.Itoa(*p.Info.PlaylistIndex))
+		}
 	}
 
-	if p.Info.PlaylistID != nil {
-		unique = append(unique, *p.Info.PlaylistID)
-	}
-
-	if p.Info.PlaylistIndex != nil {
-		unique = append(unique, strconv.Itoa(*p.Info.PlaylistIndex))
+	if p.PostProcessor != "" {
+		unique = append(unique, p.PostProcessor)
 	}
 
 	return strings.Join(unique, ":")
@@ -204,11 +248,15 @@ func (p *ProgressUpdate) PercentString() string {
 	return fmt.Sprintf("%.2f%%", p.Percent())
 }
 
-// ProgressFunc can be used to register a callback function that will be called when
-// yt-dlp sends progress updates. The callback function will be called with any information
-// that yt-dlp is able to provide, including sending separate updates for each file, playlist,
-// etc that may be downloaded.
-//   - See [Command.UnsetProgressFunc], for unsetting the progress function.
+// ProgressFunc registers a callback for yt-dlp progress events. yt-dlp
+// reports progress per file (and separately for post-processing), not as
+// one aggregate for the final output. Use [ProgressUpdate.Key], Filename,
+// and [ProgressUpdate.PostProcessor] to distinguish phases.
+//
+// ProgressFunc also sets [Command.ProgressTemplate] twice (download and
+// postprocess) so both kinds of events are emitted.
+//
+// See [Command.UnsetProgressFunc] to unset the callback.
 func (c *Command) ProgressFunc(frequency time.Duration, fn ProgressCallbackFunc) *Command {
 	if frequency < 100*time.Millisecond {
 		frequency = 100 * time.Millisecond
@@ -216,7 +264,8 @@ func (c *Command) ProgressFunc(frequency time.Duration, fn ProgressCallbackFunc)
 
 	c.Progress().
 		ProgressDelta(frequency.Seconds()).
-		ProgressTemplate(string(progressPrefix) + progressFormat).
+		ProgressTemplate("download:" + string(progressPrefix) + progressFormat).
+		ProgressTemplate("postprocess:" + string(progressPrefix) + progressFormat).
 		Newline()
 
 	c.mu.Lock()

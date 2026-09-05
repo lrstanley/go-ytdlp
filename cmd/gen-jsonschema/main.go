@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"slices"
 	"sort"
+	"time"
 
 	"github.com/invopop/jsonschema"
 	"github.com/lmittmann/tint"
@@ -24,11 +25,12 @@ type UIDMapper struct {
 }
 
 func main() {
-	slog.SetDefault(slog.New(tint.NewHandler(
+	slog.SetDefault(slog.New(tint.NewTextHandler(
 		os.Stderr,
 		&tint.Options{
-			Level:     slog.LevelDebug,
-			AddSource: true,
+			Level:      slog.LevelDebug,
+			AddSource:  true,
+			TimeFormat: time.RFC3339,
 		},
 	)))
 

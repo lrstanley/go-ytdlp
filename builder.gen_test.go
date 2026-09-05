@@ -1805,7 +1805,7 @@ func TestBuilder_VerbositySimulation_NonExecutable(t *testing.T) {
 		builder := New().NoUpdate().
 			ProgressTemplate("test").
 			ProgressTemplate("test")
-		validateFlagAdded(t, builder, "progress_template", "--progress-template", 1, 1)
+		validateFlagAdded(t, builder, "progress_template", "--progress-template", 1, 2)
 		_ = builder.UnsetProgressTemplate()
 		validateFlagRemoved(t, builder, "progress_template", "--progress-template")
 	})

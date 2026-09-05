@@ -1312,7 +1312,7 @@ type FlagsVerbositySimulation struct {
 	// video's fields are accessible under the "info" key and the progress attributes are
 	// accessible under "progress" key. E.g. --console-title --progress-template
 	// "download-title:%(info.id)s-%(progress.eta)s"
-	ProgressTemplate *string `json:"progress_template,omitempty" id:"progress_template" jsonschema:"title=ProgressTemplate" jsonschema_extras:"uid=progress_template" jsonschema_description:"Template for progress outputs, optionally prefixed with one of \"download:\" (default), \"download-title:\" (the console title), \"postprocess:\",  or \"postprocess-title:\". The video's fields are accessible under the \"info\" key and the progress attributes are accessible under \"progress\" key. E.g. --console-title --progress-template \"download-title:%(info.id)s-%(progress.eta)s\""`
+	ProgressTemplate []string `json:"progress_template,omitempty" id:"progress_template" jsonschema:"title=ProgressTemplate" jsonschema_extras:"uid=progress_template" jsonschema_description:"Template for progress outputs, optionally prefixed with one of \"download:\" (default), \"download-title:\" (the console title), \"postprocess:\",  or \"postprocess-title:\". The video's fields are accessible under the \"info\" key and the progress attributes are accessible under \"progress\" key. E.g. --console-title --progress-template \"download-title:%(info.id)s-%(progress.eta)s\""`
 	// Time between progress output (default: 0)
 	ProgressDelta *float64 `json:"progress_delta,omitempty" id:"progress_delta" jsonschema:"title=ProgressDelta" jsonschema_extras:"uid=progress_delta" jsonschema_description:"Time between progress output (default: 0)"`
 	// Print various debugging information
@@ -1439,8 +1439,8 @@ func (g *FlagsVerbositySimulation) ToFlags() (flags Flags) {
 	if g.ConsoleTitle != nil && *g.ConsoleTitle {
 		flags = append(flags, &Flag{ID: "consoletitle", Flag: "--console-title", Args: nil})
 	}
-	if g.ProgressTemplate != nil {
-		flags = append(flags, &Flag{ID: "progress_template", Flag: "--progress-template", Args: []any{*g.ProgressTemplate}})
+	for _, v := range g.ProgressTemplate {
+		flags = append(flags, &Flag{ID: "progress_template", Flag: "--progress-template", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.ProgressDelta != nil {
 		flags = append(flags, &Flag{ID: "progress_delta", Flag: "--progress-delta", Args: []any{*g.ProgressDelta}})

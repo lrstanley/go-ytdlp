@@ -194,9 +194,6 @@ func (m model) shouldResetProgress(next ytdlp.ProgressUpdate) bool {
 	if next.Status.IsCompletedType() || prev.Status.IsCompletedType() {
 		return true
 	}
-	if next.Status == ytdlp.ProgressStatusStarting {
-		return true
-	}
 	if next.Percent()/100 < m.progress.Percent() || next.Percent() < prev.Percent() {
 		return true
 	}

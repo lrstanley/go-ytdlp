@@ -3372,7 +3372,7 @@ func (c *Command) UnsetConsoleTitle() *Command {
 //  - ProgressTemplate maps to cli flags: --progress-template=[TYPES:]TEMPLATE.
 //  - From option group: "Verbosity Simulation"
 func (c *Command) ProgressTemplate(template string) *Command {
-	c.flagConfig.VerbositySimulation.ProgressTemplate = &template
+	c.flagConfig.VerbositySimulation.ProgressTemplate = append(c.flagConfig.VerbositySimulation.ProgressTemplate, template)
 	return c
 }
 

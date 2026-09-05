@@ -14,6 +14,7 @@ import (
 	"reflect"
 	"strings"
 	"text/template"
+	"time"
 
 	sprig "github.com/go-task/slim-sprig/v3"
 	"github.com/iancoleman/strcase"
@@ -162,11 +163,12 @@ func createTemplateFile(dir, name string, tmpl *template.Template, data any) {
 }
 
 func main() {
-	slog.SetDefault(slog.New(tint.NewHandler(
+	slog.SetDefault(slog.New(tint.NewTextHandler(
 		os.Stderr,
 		&tint.Options{
-			Level:     slog.LevelDebug,
-			AddSource: true,
+			Level:      slog.LevelDebug,
+			AddSource:  true,
+			TimeFormat: time.RFC3339,
 		},
 	)))
 
