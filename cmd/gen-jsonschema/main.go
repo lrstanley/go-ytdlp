@@ -8,6 +8,7 @@ import (
 	"encoding/json/jsontext"
 	"encoding/json/v2"
 	"log/slog"
+	"maps"
 	"os"
 	"path/filepath"
 	"slices"
@@ -40,6 +41,8 @@ func main() {
 	}
 
 	s := ref.Reflect(&ytdlp.FlagConfig{})
+	optionDataSchema := ref.Reflect(&optiondata.OptionGroup{})
+	maps.Copy(s.Definitions, optionDataSchema.Definitions)
 
 	for name, def := range s.Definitions {
 		if def.Type != "object" {

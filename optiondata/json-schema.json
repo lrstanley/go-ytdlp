@@ -4077,6 +4077,137 @@
 			},
 			"additionalProperties": false,
 			"type": "object"
+		},
+		"Option": {
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"name_camel_case": {
+					"type": "string"
+				},
+				"name_pascal_case": {
+					"type": "string"
+				},
+				"name_snake_case": {
+					"type": "string"
+				},
+				"urls": {
+					"items": {
+						"$ref": "#/$defs/OptionURL"
+					},
+					"type": "array"
+				},
+				"default_flag": {
+					"type": "string"
+				},
+				"arg_names": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"executable": {
+					"type": "boolean"
+				},
+				"deprecated": {
+					"type": "string"
+				},
+				"choices": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"help": {
+					"type": "string"
+				},
+				"hidden": {
+					"type": "boolean"
+				},
+				"meta_args": {
+					"type": "string"
+				},
+				"type": {
+					"type": "string"
+				},
+				"long_flags": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"short_flags": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"nargs": {
+					"type": "integer"
+				},
+				"no_override": {
+					"type": "boolean"
+				}
+			},
+			"additionalProperties": false,
+			"type": "object",
+			"required": [
+				"name",
+				"name_camel_case",
+				"name_pascal_case",
+				"name_snake_case",
+				"default_flag",
+				"executable",
+				"choices",
+				"hidden",
+				"type",
+				"long_flags",
+				"short_flags",
+				"nargs",
+				"no_override"
+			]
+		},
+		"OptionGroup": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"options": {
+					"items": {
+						"$ref": "#/$defs/Option"
+					},
+					"type": "array"
+				}
+			},
+			"additionalProperties": false,
+			"type": "object",
+			"required": [
+				"name",
+				"options"
+			]
+		},
+		"OptionURL": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"url": {
+					"type": "string"
+				}
+			},
+			"additionalProperties": false,
+			"type": "object",
+			"required": [
+				"name",
+				"url"
+			]
 		}
 	}
 }
