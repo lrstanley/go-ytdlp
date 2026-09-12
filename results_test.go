@@ -9,12 +9,10 @@ import (
 	"encoding/json/jsontext"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 type mockServer struct {
@@ -48,16 +46,36 @@ func TestCleanJSON(t *testing.T) {
 
 	cleanJSON(value)
 
-	assert.Empty(t, value.Name)
-	require.NotNil(t, value.Title)
-	assert.Empty(t, *value.Title)
-	assert.Nil(t, value.Uploader)
-	require.NotNil(t, value.Nested)
-	assert.Empty(t, value.Nested.Name)
-	assert.Nil(t, value.Nested.Empty)
-	require.Len(t, value.Items, 1)
-	assert.Empty(t, value.Items[0].Name)
-	assert.Nil(t, value.Items[0].Empty)
+	if value.Name != "" {
+		t.Errorf("name = %q, want empty", value.Name)
+	}
+	if value.Title == nil {
+		t.Fatal("title is nil")
+	}
+	if *value.Title != "" {
+		t.Errorf("title = %q, want empty", *value.Title)
+	}
+	if value.Uploader != nil {
+		t.Errorf("uploader = %q, want nil", *value.Uploader)
+	}
+	if value.Nested == nil {
+		t.Fatal("nested is nil")
+	}
+	if value.Nested.Name != "" {
+		t.Errorf("nested name = %q, want empty", value.Nested.Name)
+	}
+	if value.Nested.Empty != nil {
+		t.Errorf("nested empty = %q, want nil", *value.Nested.Empty)
+	}
+	if len(value.Items) != 1 {
+		t.Fatalf("items has length %d, want 1", len(value.Items))
+	}
+	if value.Items[0].Name != "" {
+		t.Errorf("item name = %q, want empty", value.Items[0].Name)
+	}
+	if value.Items[0].Empty != nil {
+		t.Errorf("item empty = %q, want nil", *value.Items[0].Empty)
+	}
 }
 
 func newMockServer(t *testing.T, fileName string) *mockServer {
@@ -103,44 +121,98 @@ func TestExtractedInfo(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	require.Len(t, info, 1, "expected 1 extracted info")
-	require.NotNil(t, info[0].FormatID, "expected format id to be set")
-	assert.Equal(t, "mp4", *info[0].FormatID, "expected format id to be mp4")
+	if len(info) != 1 {
+		t.Fatalf("info has length %d, want 1", len(info))
+	}
+	if info[0].FormatID == nil {
+		t.Fatal("expected format id to be set")
+	}
+	if got := *info[0].FormatID; got != "mp4" {
+		t.Errorf("format id = %q, want mp4", got)
+	}
 
-	require.NotNil(t, info[0].Protocol, "expected protocol to be set")
-	assert.Equal(t, "http", *info[0].Protocol, "expected protocol to be http")
+	if info[0].Protocol == nil {
+		t.Fatal("expected protocol to be set")
+	}
+	if got := *info[0].Protocol; got != "http" {
+		t.Errorf("protocol = %q, want http", got)
+	}
 
-	require.NotNil(t, info[0].HTTPHeaders, "expected http headers to be set")
-	assert.Contains(t, info[0].HTTPHeaders["User-Agent"], "Mozilla", "expected User-Agent header to be set and contain Mozilla")
+	if info[0].HTTPHeaders == nil {
+		t.Fatal("expected http headers to be set")
+	}
+	if !strings.Contains(info[0].HTTPHeaders["User-Agent"], "Mozilla") {
+		t.Errorf("expected User-Agent header to contain Mozilla, got %q", info[0].HTTPHeaders["User-Agent"])
+	}
 
-	assert.Equal(t, "sample-1", info[0].ID, "expected id to be set")
+	if info[0].ID != "sample-1" {
+		t.Errorf("id = %q, want sample-1", info[0].ID)
+	}
 
-	require.NotNil(t, info[0].Title, "expected title to be set")
-	assert.Equal(t, "sample-1", *info[0].Title, "expected title to be set")
+	if info[0].Title == nil {
+		t.Fatal("expected title to be set")
+	}
+	if got := *info[0].Title; got != "sample-1" {
+		t.Errorf("title = %q, want sample-1", got)
+	}
 
-	require.Len(t, info[0].Formats, 1, "expected 1 format")
-	require.NotNil(t, info[0].Formats[0].Extension, "expected format extension to be set")
-	assert.Equal(t, "mp4", *info[0].Formats[0].Extension, "expected format extension to be mp4")
+	if len(info[0].Formats) != 1 {
+		t.Fatalf("formats has length %d, want 1", len(info[0].Formats))
+	}
+	if info[0].Formats[0].Extension == nil {
+		t.Fatal("expected format extension to be set")
+	}
+	if got := *info[0].Formats[0].Extension; got != "mp4" {
+		t.Errorf("format extension = %q, want mp4", got)
+	}
 
-	require.NotNil(t, info[0].URL, "expected url to be set")
-	assert.Equal(t, server.fileURL, *info[0].URL, "expected url to be set")
-	require.NotNil(t, info[0].WebpageURL, "expected webpage url to be set")
-	assert.Equal(t, server.fileURL, *info[0].WebpageURL, "expected webpage url to be set")
+	if info[0].URL == nil {
+		t.Fatal("expected url to be set")
+	}
+	if got := *info[0].URL; got != server.fileURL {
+		t.Errorf("url = %q, want %q", got, server.fileURL)
+	}
+	if info[0].WebpageURL == nil {
+		t.Fatal("expected webpage url to be set")
+	}
+	if got := *info[0].WebpageURL; got != server.fileURL {
+		t.Errorf("webpage url = %q, want %q", got, server.fileURL)
+	}
 
-	require.NotNil(t, info[0].Filename, "expected filename to be set")
-	assert.FileExists(t, *info[0].Filename, "expected file to exist")
+	if info[0].Filename == nil {
+		t.Fatal("expected filename to be set")
+	}
+	if _, statErr := os.Stat(*info[0].Filename); statErr != nil {
+		t.Fatalf("expected file to exist: %v", statErr)
+	}
 
-	require.NotNil(t, info[0].Timestamp, "expected timestamp to be set")
-	assert.Positive(t, *info[0].Timestamp, "expected timestamp to be set")
+	if info[0].Timestamp == nil {
+		t.Fatal("expected timestamp to be set")
+	}
+	if *info[0].Timestamp <= 0 {
+		t.Errorf("timestamp = %v, want positive", *info[0].Timestamp)
+	}
 
-	require.NotNil(t, info[0].UploadDate, "expected upload date to be set")
-	assert.Positive(t, *info[0].UploadDate, "expected upload date to be set")
+	if info[0].UploadDate == nil {
+		t.Fatal("expected upload date to be set")
+	}
+	if *info[0].UploadDate == "" {
+		t.Error("upload date is empty")
+	}
 
-	require.NotNil(t, info[0].Extractor, "expected extractor to be set")
-	assert.Equal(t, "generic", *info[0].Extractor, "expected extractor to be generic")
+	if info[0].Extractor == nil {
+		t.Fatal("expected extractor to be set")
+	}
+	if got := *info[0].Extractor; got != "generic" {
+		t.Errorf("extractor = %q, want generic", got)
+	}
 
-	require.NotNil(t, info[0].ExtractorKey, "expected extractor key to be set")
-	assert.Equal(t, "Generic", *info[0].ExtractorKey, "expected extractor key to be generic")
+	if info[0].ExtractorKey == nil {
+		t.Fatal("expected extractor key to be set")
+	}
+	if got := *info[0].ExtractorKey; got != "Generic" {
+		t.Errorf("extractor key = %q, want Generic", got)
+	}
 }
 
 func TestGetExtractedInfo_dumpJSONFlags(t *testing.T) {
@@ -157,9 +229,15 @@ func TestGetExtractedInfo_dumpJSONFlags(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result, err := tt.cmd.NoUpdate().Run(context.TODO(), server.fileURL)
-			require.NoError(t, err)
-			require.NotEmpty(t, result.Stdout, "expected JSON on stdout")
-			require.True(t, jsontext.Value(result.Stdout).IsValid(), "expected stdout to be valid JSON")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if result.Stdout == "" {
+				t.Fatal("expected JSON on stdout")
+			}
+			if !jsontext.Value(result.Stdout).IsValid() {
+				t.Fatal("expected stdout to be valid JSON")
+			}
 
 			var jsonLogs int
 			for _, l := range result.OutputLogs {
@@ -167,14 +245,26 @@ func TestGetExtractedInfo_dumpJSONFlags(t *testing.T) {
 					jsonLogs++
 				}
 			}
-			require.Positive(t, jsonLogs, "expected at least one OutputLog with parsed JSON")
+			if jsonLogs <= 0 {
+				t.Fatal("expected at least one OutputLog with parsed JSON")
+			}
 
 			info, err := result.GetExtractedInfo()
-			require.NoError(t, err)
-			require.Len(t, info, 1, "expected 1 extracted info")
-			assert.Equal(t, "sample-1", info[0].ID)
-			require.NotNil(t, info[0].Title)
-			assert.Equal(t, "sample-1", *info[0].Title)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(info) != 1 {
+				t.Fatalf("info has length %d, want 1", len(info))
+			}
+			if info[0].ID != "sample-1" {
+				t.Errorf("id = %q, want sample-1", info[0].ID)
+			}
+			if info[0].Title == nil {
+				t.Fatal("title is nil")
+			}
+			if got := *info[0].Title; got != "sample-1" {
+				t.Errorf("title = %q, want sample-1", got)
+			}
 		})
 	}
 }
@@ -191,11 +281,22 @@ func TestParseExtractedInfo_requestedSubtitles(t *testing.T) {
 	}`)
 
 	info, err := ParseExtractedInfo(&raw)
-	require.NoError(t, err, "expected requested_subtitles to unmarshal")
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	require.Contains(t, info.RequestedSubtitles, "en", "expected en requested subtitle")
-	assert.Equal(t, "https://example.com/en.srt", info.RequestedSubtitles["en"].URL, "expected en requested subtitle url")
+	subtitle, ok := info.RequestedSubtitles["en"]
+	if !ok {
+		t.Fatal("expected en requested subtitle")
+	}
+	if got := subtitle.URL; got != "https://example.com/en.srt" {
+		t.Errorf("requested subtitle URL = %q, want https://example.com/en.srt", got)
+	}
 
-	require.Len(t, info.Subtitles["en"], 2, "expected 2 en subtitle formats")
-	require.Len(t, info.AutomaticCaptions["en"], 1, "expected 1 en automatic caption format")
+	if got := len(info.Subtitles["en"]); got != 2 {
+		t.Errorf("en subtitles has length %d, want 2", got)
+	}
+	if got := len(info.AutomaticCaptions["en"]); got != 1 {
+		t.Errorf("en automatic captions has length %d, want 1", got)
+	}
 }

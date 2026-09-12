@@ -26,4 +26,11 @@
 //
 // Deprecated: {{ $option.Deprecated }}
 {{- end }}{{/* end if deprecated */}}
+{{- if $option.DeprecatedAliases }}
+//
+// Deprecated aliases:
+{{- range $alias := $option.DeprecatedAliases }}
+//  - {{ $alias.Flag }}: {{ $alias.Description }}
+{{- end }}{{/* end range deprecated aliases */}}
+{{- end }}{{/* end if deprecated aliases */}}
 {{- end -}}{{/* end define builder-help */}}

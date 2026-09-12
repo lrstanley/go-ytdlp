@@ -7,12 +7,10 @@ package ytdlp
 import (
 	"encoding/json/jsontext"
 	"path/filepath"
+	"slices"
 	"sync"
 	"testing"
 	"time"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestProgressHandler_parse(t *testing.T) {
@@ -58,8 +56,12 @@ func TestProgressHandler_parse(t *testing.T) {
 			})
 			h.parse(jsontext.Value(tt.raw))
 
-			assert.Equal(t, tt.wantStatus, got.Status)
-			assert.Equal(t, tt.wantProcessor, got.PostProcessor)
+			if got.Status != tt.wantStatus {
+				t.Errorf("status = %v, want %v", got.Status, tt.wantStatus)
+			}
+			if got.PostProcessor != tt.wantProcessor {
+				t.Errorf("post processor = %q, want %q", got.PostProcessor, tt.wantProcessor)
+			}
 		})
 	}
 }
@@ -72,8 +74,12 @@ func TestProgressUpdate_Key(t *testing.T) {
 	audio := ProgressUpdate{Filename: "a.f140.m4a", Info: info}
 	merge := ProgressUpdate{Filename: "a.mp4", Info: info, PostProcessor: "Merger"}
 
-	assert.NotEqual(t, video.Key(), audio.Key())
-	assert.NotEqual(t, audio.Key(), merge.Key())
+	if video.Key() == audio.Key() {
+		t.Errorf("video and audio keys are equal: %q", video.Key())
+	}
+	if audio.Key() == merge.Key() {
+		t.Errorf("audio and merge keys are equal: %q", audio.Key())
+	}
 }
 
 func TestProgressFunc_templates(t *testing.T) {
@@ -83,10 +89,13 @@ func TestProgressFunc_templates(t *testing.T) {
 		ProgressFunc(100*time.Millisecond, func(ProgressUpdate) {}).
 		GetFlagConfig()
 
-	assert.Equal(t, []string{
+	want := []string{
 		"download:" + string(progressPrefix) + progressFormat,
 		"postprocess:" + string(progressPrefix) + progressFormat,
-	}, cfg.VerbositySimulation.ProgressTemplate)
+	}
+	if !slices.Equal(cfg.VerbositySimulation.ProgressTemplate, want) {
+		t.Errorf("progress templates = %v, want %v", cfg.VerbositySimulation.ProgressTemplate, want)
+	}
 }
 
 func TestCommand_ProgressPostProcess(t *testing.T) {
@@ -109,8 +118,12 @@ func TestCommand_ProgressPostProcess(t *testing.T) {
 			mu.Unlock()
 		}).
 		Run(t.Context(), server.fileURL)
-	require.NoError(t, err)
-	require.Equal(t, 0, result.ExitCode)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.ExitCode != 0 {
+		t.Fatalf("exit code = %d, want 0", result.ExitCode)
+	}
 
 	mu.Lock()
 	defer mu.Unlock()
@@ -122,9 +135,15 @@ func TestCommand_ProgressPostProcess(t *testing.T) {
 			continue
 		}
 		sawPost = true
-		assert.Equal(t, ProgressStatusPostProcessing, update.Status)
+		if update.Status != ProgressStatusPostProcessing {
+			t.Errorf("post-processing status = %v, want %v", update.Status, ProgressStatusPostProcessing)
+		}
 	}
 
-	assert.True(t, sawDownload, "expected download progress")
-	assert.True(t, sawPost, "expected post-processing progress")
+	if !sawDownload {
+		t.Error("expected download progress")
+	}
+	if !sawPost {
+		t.Error("expected post-processing progress")
+	}
 }

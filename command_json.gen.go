@@ -543,7 +543,7 @@ type FlagsVideoSelection struct {
 	// Do not use any --match-filters (default)
 	NoMatchFilters *bool `json:"no_match_filters,omitempty" id:"match_filter" jsonschema:"title=NoMatchFilters" jsonschema_extras:"uid=match_filter" jsonschema_description:"Do not use any --match-filters (default)"`
 	// Same as "--match-filters" but stops the download process when a video is rejected
-	BreakMatchFilters *string `json:"break_match_filters,omitempty" id:"breaking_match_filter" jsonschema:"title=BreakMatchFilters" jsonschema_extras:"uid=breaking_match_filter" jsonschema_description:"Same as \"--match-filters\" but stops the download process when a video is rejected"`
+	BreakMatchFilters []string `json:"break_match_filters,omitempty" id:"breaking_match_filter" jsonschema:"title=BreakMatchFilters" jsonschema_extras:"uid=breaking_match_filter" jsonschema_description:"Same as \"--match-filters\" but stops the download process when a video is rejected"`
 	// Do not use any --break-match-filters (default)
 	NoBreakMatchFilters *bool `json:"no_break_match_filters,omitempty" id:"breaking_match_filter" jsonschema:"title=NoBreakMatchFilters" jsonschema_extras:"uid=breaking_match_filter" jsonschema_description:"Do not use any --break-match-filters (default)"`
 	// Download only the video, if the URL refers to a video and a playlist
@@ -647,8 +647,8 @@ func (g *FlagsVideoSelection) ToFlags() (flags Flags) {
 	if g.NoMatchFilters != nil && *g.NoMatchFilters {
 		flags = append(flags, &Flag{ID: "match_filter", Flag: "--no-match-filters", Args: nil})
 	}
-	if g.BreakMatchFilters != nil {
-		flags = append(flags, &Flag{ID: "breaking_match_filter", Flag: "--break-match-filters", Args: []any{*g.BreakMatchFilters}})
+	for _, v := range g.BreakMatchFilters {
+		flags = append(flags, &Flag{ID: "breaking_match_filter", Flag: "--break-match-filters", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.NoBreakMatchFilters != nil && *g.NoBreakMatchFilters {
 		flags = append(flags, &Flag{ID: "breaking_match_filter", Flag: "--no-break-match-filters", Args: nil})
@@ -1565,7 +1565,7 @@ type FlagsVideoFormat struct {
 	// Video format code, see "FORMAT SELECTION" for more details
 	Format *string `json:"format,omitempty" id:"format" jsonschema:"title=Format" jsonschema_extras:"uid=format" jsonschema_description:"Video format code, see \"FORMAT SELECTION\" for more details"`
 	// Sort the formats by the fields given, see "Sorting Formats" for more details
-	FormatSort *string `json:"format_sort,omitempty" id:"format_sort" jsonschema:"title=FormatSort" jsonschema_extras:"uid=format_sort" jsonschema_description:"Sort the formats by the fields given, see \"Sorting Formats\" for more details"`
+	FormatSort []string `json:"format_sort,omitempty" id:"format_sort" jsonschema:"title=FormatSort" jsonschema_extras:"uid=format_sort" jsonschema_description:"Sort the formats by the fields given, see \"Sorting Formats\" for more details"`
 	// Force user specified sort order to have precedence over all fields, see "Sorting Formats"
 	// for more details
 	FormatSortForce *bool `json:"format_sort_force,omitempty" id:"format_sort_force" jsonschema:"title=FormatSortForce" jsonschema_extras:"uid=format_sort_force" jsonschema_description:"Force user specified sort order to have precedence over all fields, see \"Sorting Formats\" for more details"`
@@ -1634,8 +1634,8 @@ func (g *FlagsVideoFormat) ToFlags() (flags Flags) {
 	if g.Format != nil {
 		flags = append(flags, &Flag{ID: "format", Flag: "--format", Args: []any{*g.Format}})
 	}
-	if g.FormatSort != nil {
-		flags = append(flags, &Flag{ID: "format_sort", Flag: "--format-sort", Args: []any{*g.FormatSort}})
+	for _, v := range g.FormatSort {
+		flags = append(flags, &Flag{ID: "format_sort", Flag: "--format-sort", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.FormatSortForce != nil && *g.FormatSortForce {
 		flags = append(flags, &Flag{ID: "format_sort_force", Flag: "--format-sort-force", Args: nil})
@@ -1947,7 +1947,7 @@ type FlagsPostProcessing struct {
 	// Parse additional metadata like title/artist from other fields; see "MODIFYING METADATA"
 	// for details. Supported values of "WHEN" are the same as that of --use-postprocessor
 	// (default: pre_process)
-	ParseMetadata *string `json:"parse_metadata,omitempty" id:"parse_metadata" jsonschema:"title=ParseMetadata" jsonschema_extras:"uid=parse_metadata" jsonschema_description:"Parse additional metadata like title/artist from other fields; see \"MODIFYING METADATA\" for details. Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: pre_process)"`
+	ParseMetadata []string `json:"parse_metadata,omitempty" id:"parse_metadata" jsonschema:"title=ParseMetadata" jsonschema_extras:"uid=parse_metadata" jsonschema_description:"Parse additional metadata like title/artist from other fields; see \"MODIFYING METADATA\" for details. Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: pre_process)"`
 	// Replace text in a metadata field using the given regex. This option can be used multiple
 	// times. Supported values of "WHEN" are the same as that of --use-postprocessor (default:
 	// pre_process)
@@ -1975,9 +1975,9 @@ type FlagsPostProcessing struct {
 	// option can be used multiple times
 	Exec []string `json:"exec,omitempty" id:"exec_cmd" jsonschema:"title=Exec" jsonschema_extras:"uid=exec_cmd" jsonschema_description:"Execute a command, optionally prefixed with when to execute it, separated by a \":\". Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: after_move). The same syntax as the output template can be used to pass any field as arguments to the command; however, for security reasons the only allowed conversions are: \"i\"/\"d\" (signed integer decimal), \"f\" (floating-point decimal) and \"q\" (shell-quoted). If no fields are passed, %(filepath,_filename|)q is appended to the end of the command. This option can be used multiple times"`
 	// Remove any previously defined --exec
-	NoExec               *bool   `json:"no_exec,omitempty" id:"exec_cmd" jsonschema:"title=NoExec" jsonschema_extras:"uid=exec_cmd" jsonschema_description:"Remove any previously defined --exec"`
-	ExecBeforeDownload   *string `json:"exec_before_download,omitempty" id:"exec_before_dl_cmd" jsonschema:"title=ExecBeforeDownload" jsonschema_extras:"uid=exec_before_dl_cmd" jsonschema_description:""`
-	NoExecBeforeDownload *bool   `json:"no_exec_before_download,omitempty" id:"exec_before_dl_cmd" jsonschema:"title=NoExecBeforeDownload" jsonschema_extras:"uid=exec_before_dl_cmd" jsonschema_description:""`
+	NoExec               *bool    `json:"no_exec,omitempty" id:"exec_cmd" jsonschema:"title=NoExec" jsonschema_extras:"uid=exec_cmd" jsonschema_description:"Remove any previously defined --exec"`
+	ExecBeforeDownload   []string `json:"exec_before_download,omitempty" id:"exec_before_dl_cmd" jsonschema:"title=ExecBeforeDownload" jsonschema_extras:"uid=exec_before_dl_cmd" jsonschema_description:""`
+	NoExecBeforeDownload *bool    `json:"no_exec_before_download,omitempty" id:"exec_before_dl_cmd" jsonschema:"title=NoExecBeforeDownload" jsonschema_extras:"uid=exec_before_dl_cmd" jsonschema_description:""`
 	// Convert the subtitles to another format (currently supported: ass, lrc, srt, vtt). Use
 	// "--convert-subs none" to disable conversion (default)
 	ConvertSubs *string `json:"convert_subs,omitempty" id:"convertsubtitles" jsonschema:"title=ConvertSubs" jsonschema_extras:"uid=convertsubtitles" jsonschema_description:"Convert the subtitles to another format (currently supported: ass, lrc, srt, vtt). Use \"--convert-subs none\" to disable conversion (default)"`
@@ -2141,8 +2141,8 @@ func (g *FlagsPostProcessing) ToFlags() (flags Flags) {
 	if g.MetadataFromTitle != nil {
 		flags = append(flags, &Flag{ID: "metafromtitle", Flag: "--metadata-from-title", Args: []any{*g.MetadataFromTitle}})
 	}
-	if g.ParseMetadata != nil {
-		flags = append(flags, &Flag{ID: "parse_metadata", Flag: "--parse-metadata", Args: []any{*g.ParseMetadata}})
+	for _, v := range g.ParseMetadata {
+		flags = append(flags, &Flag{ID: "parse_metadata", Flag: "--parse-metadata", AllowsMultiple: true, Args: []any{v}})
 	}
 	for _, v := range g.ReplaceInMetadata {
 		flags = append(flags, &Flag{ID: "parse_metadata", Flag: "--replace-in-metadata", AllowsMultiple: true, Args: []any{v.Fields, v.Regex, v.Replace}})
@@ -2165,8 +2165,8 @@ func (g *FlagsPostProcessing) ToFlags() (flags Flags) {
 	if g.NoExec != nil && *g.NoExec {
 		flags = append(flags, &Flag{ID: "exec_cmd", Flag: "--no-exec", Args: nil})
 	}
-	if g.ExecBeforeDownload != nil {
-		flags = append(flags, &Flag{ID: "exec_before_dl_cmd", Flag: "--exec-before-download", Args: []any{*g.ExecBeforeDownload}})
+	for _, v := range g.ExecBeforeDownload {
+		flags = append(flags, &Flag{ID: "exec_before_dl_cmd", Flag: "--exec-before-download", AllowsMultiple: true, Args: []any{v}})
 	}
 	if g.NoExecBeforeDownload != nil && *g.NoExecBeforeDownload {
 		flags = append(flags, &Flag{ID: "exec_before_dl_cmd", Flag: "--no-exec-before-download", Args: nil})

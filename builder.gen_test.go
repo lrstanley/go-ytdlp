@@ -635,7 +635,7 @@ func TestBuilder_VideoSelection_NonExecutable(t *testing.T) {
 		builder := New().NoUpdate().
 			BreakMatchFilters("test").
 			BreakMatchFilters("test")
-		validateFlagAdded(t, builder, "breaking_match_filter", "--break-match-filters", 1, 1)
+		validateFlagAdded(t, builder, "breaking_match_filter", "--break-match-filters", 1, 2)
 		_ = builder.UnsetBreakMatchFilters()
 		validateFlagRemoved(t, builder, "breaking_match_filter", "--break-match-filters")
 	})
@@ -2003,7 +2003,7 @@ func TestBuilder_VideoFormat_NonExecutable(t *testing.T) {
 		builder := New().NoUpdate().
 			FormatSort("test").
 			FormatSort("test")
-		validateFlagAdded(t, builder, "format_sort", "--format-sort", 1, 1)
+		validateFlagAdded(t, builder, "format_sort", "--format-sort", 1, 2)
 		_ = builder.UnsetFormatSort()
 		validateFlagRemoved(t, builder, "format_sort", "--format-sort")
 	})
@@ -2615,7 +2615,7 @@ func TestBuilder_PostProcessing_NonExecutable(t *testing.T) {
 		builder := New().NoUpdate().
 			ParseMetadata("test").
 			ParseMetadata("test")
-		validateFlagAdded(t, builder, "parse_metadata", "--parse-metadata", 1, 1)
+		validateFlagAdded(t, builder, "parse_metadata", "--parse-metadata", 1, 2)
 		_ = builder.UnsetParseMetadata()
 		validateFlagRemoved(t, builder, "parse_metadata", "--parse-metadata")
 	})
@@ -2695,7 +2695,7 @@ func TestBuilder_PostProcessing_NonExecutable(t *testing.T) {
 		builder := New().NoUpdate().
 			ExecBeforeDownload("test").
 			ExecBeforeDownload("test")
-		validateFlagAdded(t, builder, "exec_before_dl_cmd", "--exec-before-download", 1, 1)
+		validateFlagAdded(t, builder, "exec_before_dl_cmd", "--exec-before-download", 1, 2)
 		_ = builder.UnsetExecBeforeDownload()
 		validateFlagRemoved(t, builder, "exec_before_dl_cmd", "--exec-before-download")
 	})

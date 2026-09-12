@@ -7,10 +7,8 @@ package ytdlp
 import (
 	"encoding/json/v2"
 	"reflect"
+	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestFlagConfigUnmarshalJSONWithWarnings(t *testing.T) {
@@ -27,8 +25,12 @@ func TestFlagConfigUnmarshalJSONWithWarnings(t *testing.T) {
 			name:  "unknown members",
 			input: `{"unknown":true,"general":{"no_update":true,"unknown_flag":false}}`,
 			assert: func(t *testing.T, config *FlagConfig) {
-				require.NotNil(t, config.General.NoUpdate)
-				assert.True(t, *config.General.NoUpdate)
+				if config.General.NoUpdate == nil {
+					t.Fatal("general.no_update is nil")
+				}
+				if !*config.General.NoUpdate {
+					t.Error("general.no_update = false, want true")
+				}
 			},
 			wantPaths: []string{"general.unknown_flag", "unknown"},
 		},
@@ -36,10 +38,18 @@ func TestFlagConfigUnmarshalJSONWithWarnings(t *testing.T) {
 			name:  "valid siblings survive incompatible values",
 			input: `{"download":{"concurrent_fragments":"not-a-number","retries":3},"filesystem":{"output":42}}`,
 			assert: func(t *testing.T, config *FlagConfig) {
-				require.NotNil(t, config.Download.Retries)
-				assert.Equal(t, "3", *config.Download.Retries)
-				require.NotNil(t, config.Filesystem.Output)
-				assert.Equal(t, "42", *config.Filesystem.Output)
+				if config.Download.Retries == nil {
+					t.Fatal("download.retries is nil")
+				}
+				if got := *config.Download.Retries; got != "3" {
+					t.Errorf("download.retries = %q, want 3", got)
+				}
+				if config.Filesystem.Output == nil {
+					t.Fatal("filesystem.output is nil")
+				}
+				if got := *config.Filesystem.Output; got != "42" {
+					t.Errorf("filesystem.output = %q, want 42", got)
+				}
 			},
 			wantPaths:  []string{"download.concurrent_fragments"},
 			wantReason: "cannot coerce",
@@ -48,29 +58,51 @@ func TestFlagConfigUnmarshalJSONWithWarnings(t *testing.T) {
 			name:  "conservative scalar coercions",
 			input: `{"general":{"no_update":"true"},"download":{"concurrent_fragments":"4"},"filesystem":{"output":123}}`,
 			assert: func(t *testing.T, config *FlagConfig) {
-				require.NotNil(t, config.General.NoUpdate)
-				assert.True(t, *config.General.NoUpdate)
-				require.NotNil(t, config.Download.ConcurrentFragments)
-				assert.Equal(t, 4, *config.Download.ConcurrentFragments)
-				require.NotNil(t, config.Filesystem.Output)
-				assert.Equal(t, "123", *config.Filesystem.Output)
+				if config.General.NoUpdate == nil {
+					t.Fatal("general.no_update is nil")
+				}
+				if !*config.General.NoUpdate {
+					t.Error("general.no_update = false, want true")
+				}
+				if config.Download.ConcurrentFragments == nil {
+					t.Fatal("download.concurrent_fragments is nil")
+				}
+				if got := *config.Download.ConcurrentFragments; got != 4 {
+					t.Errorf("download.concurrent_fragments = %d, want 4", got)
+				}
+				if config.Filesystem.Output == nil {
+					t.Fatal("filesystem.output is nil")
+				}
+				if got := *config.Filesystem.Output; got != "123" {
+					t.Errorf("filesystem.output = %q, want 123", got)
+				}
 			},
 		},
 		{
 			name:  "scalar to singleton slices",
 			input: `{"general":{"config_locations":"/tmp/config"},"verbosity_simulation":{"print":42}}`,
 			assert: func(t *testing.T, config *FlagConfig) {
-				assert.Equal(t, []string{"/tmp/config"}, config.General.ConfigLocations)
-				assert.Equal(t, []string{"42"}, config.VerbositySimulation.Print)
+				if !reflect.DeepEqual(config.General.ConfigLocations, []string{"/tmp/config"}) {
+					t.Errorf("general.config_locations = %v, want [/tmp/config]", config.General.ConfigLocations)
+				}
+				if !reflect.DeepEqual(config.VerbositySimulation.Print, []string{"42"}) {
+					t.Errorf("verbosity_simulation.print = %v, want [42]", config.VerbositySimulation.Print)
+				}
 			},
 		},
 		{
 			name:  "nested multi argument flag",
 			input: `{"verbosity_simulation":{"print_to_file":[{"template":"%(title)s","file":123,"unknown":true}]}}`,
 			assert: func(t *testing.T, config *FlagConfig) {
-				require.Len(t, config.VerbositySimulation.PrintToFile, 1)
-				assert.Equal(t, "%(title)s", config.VerbositySimulation.PrintToFile[0].Template)
-				assert.Equal(t, "123", config.VerbositySimulation.PrintToFile[0].File)
+				if len(config.VerbositySimulation.PrintToFile) != 1 {
+					t.Fatalf("verbosity_simulation.print_to_file has length %d, want 1", len(config.VerbositySimulation.PrintToFile))
+				}
+				if got := config.VerbositySimulation.PrintToFile[0].Template; got != "%(title)s" {
+					t.Errorf("print_to_file template = %q, want %%(title)s", got)
+				}
+				if got := config.VerbositySimulation.PrintToFile[0].File; got != "123" {
+					t.Errorf("print_to_file file = %q, want 123", got)
+				}
 			},
 			wantPaths:  []string{"verbosity_simulation.print_to_file[0].unknown"},
 			wantReason: "unknown member",
@@ -79,7 +111,9 @@ func TestFlagConfigUnmarshalJSONWithWarnings(t *testing.T) {
 			name:  "multiple warnings",
 			input: `{"general":{"no_update":"not-a-bool","unknown_one":true,"unknown_two":false}}`,
 			assert: func(t *testing.T, config *FlagConfig) {
-				assert.Nil(t, config.General.NoUpdate)
+				if config.General.NoUpdate != nil {
+					t.Errorf("general.no_update = %v, want nil", *config.General.NoUpdate)
+				}
 			},
 			wantPaths: []string{
 				"general.no_update",
@@ -95,20 +129,33 @@ func TestFlagConfigUnmarshalJSONWithWarnings(t *testing.T) {
 
 			var config FlagConfig
 			warnings, err := config.UnmarshalJSONWithWarnings([]byte(tt.input))
-			require.NoError(t, err)
+			if err != nil {
+				t.Fatal(err)
+			}
 			tt.assert(t, &config)
 
 			var paths []string
 			for _, warning := range warnings {
 				paths = append(paths, warning.JSONPath)
 				if warning.JSONPath == "download.concurrent_fragments" {
-					assert.Equal(t, "--concurrent-fragments", warning.Flag)
-					assert.Equal(t, "concurrent_fragment_downloads", warning.ID)
+					if warning.Flag != "--concurrent-fragments" {
+						t.Errorf("warning flag = %q, want --concurrent-fragments", warning.Flag)
+					}
+					if warning.ID != "concurrent_fragment_downloads" {
+						t.Errorf("warning ID = %q, want concurrent_fragment_downloads", warning.ID)
+					}
 				}
 			}
-			assert.Equal(t, tt.wantPaths, paths)
+			if !reflect.DeepEqual(paths, tt.wantPaths) {
+				t.Errorf("warning paths = %v, want %v", paths, tt.wantPaths)
+			}
 			if tt.wantReason != "" {
-				assert.Contains(t, warnings[0].Reason, tt.wantReason)
+				if len(warnings) == 0 {
+					t.Fatal("expected at least one warning")
+				}
+				if !strings.Contains(warnings[0].Reason, tt.wantReason) {
+					t.Errorf("warning reason = %q, want it to contain %q", warnings[0].Reason, tt.wantReason)
+				}
 			}
 		})
 	}
@@ -127,10 +174,18 @@ func TestFlagConfigUnmarshalJSONWithWarningsCustomCoercion(t *testing.T) {
 			return nil, false, nil
 		}),
 	)
-	require.NoError(t, err)
-	require.Empty(t, warnings)
-	require.NotNil(t, config.Filesystem.Output)
-	assert.Equal(t, "custom-output", *config.Filesystem.Output)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(warnings) != 0 {
+		t.Fatalf("warnings = %v, want none", warnings)
+	}
+	if config.Filesystem.Output == nil {
+		t.Fatal("filesystem.output is nil")
+	}
+	if got := *config.Filesystem.Output; got != "custom-output" {
+		t.Errorf("filesystem.output = %q, want custom-output", got)
+	}
 }
 
 func TestFlagConfigUnmarshalJSONWithWarningsInvalidSlicePreservesValue(t *testing.T) {
@@ -145,10 +200,18 @@ func TestFlagConfigUnmarshalJSONWithWarningsInvalidSlicePreservesValue(t *testin
 	warnings, err := config.UnmarshalJSONWithWarnings(
 		[]byte(`{"general":{"config_locations":["replacement",{"invalid":true}]}}`),
 	)
-	require.NoError(t, err)
-	require.Len(t, warnings, 1)
-	assert.Equal(t, "general.config_locations[1]", warnings[0].JSONPath)
-	assert.Equal(t, []string{"existing"}, config.General.ConfigLocations)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(warnings) != 1 {
+		t.Fatalf("warnings has length %d, want 1", len(warnings))
+	}
+	if got := warnings[0].JSONPath; got != "general.config_locations[1]" {
+		t.Errorf("warning JSON path = %q, want general.config_locations[1]", got)
+	}
+	if !reflect.DeepEqual(config.General.ConfigLocations, []string{"existing"}) {
+		t.Errorf("general.config_locations = %v, want [existing]", config.General.ConfigLocations)
+	}
 }
 
 func TestFlagConfigUnmarshalJSONWithWarningsMalformedRoot(t *testing.T) {
@@ -160,8 +223,12 @@ func TestFlagConfigUnmarshalJSONWithWarningsMalformedRoot(t *testing.T) {
 
 			var config FlagConfig
 			warnings, err := config.UnmarshalJSONWithWarnings([]byte(input))
-			require.Error(t, err)
-			assert.Empty(t, warnings)
+			if err == nil {
+				t.Fatal("expected an error")
+			}
+			if len(warnings) != 0 {
+				t.Errorf("warnings = %v, want none", warnings)
+			}
 		})
 	}
 }
@@ -171,12 +238,18 @@ func TestFlagConfigStrictJSONAndClone(t *testing.T) {
 
 	var config FlagConfig
 	err := json.Unmarshal([]byte(`{"download":{"concurrent_fragments":"4"}}`), &config)
-	require.Error(t, err)
+	if err == nil {
+		t.Fatal("expected an error")
+	}
 
 	value := true
 	original := &FlagConfig{General: FlagsGeneral{NoUpdate: &value}}
 	clone := original.Clone()
-	require.NotNil(t, clone.General.NoUpdate)
+	if clone.General.NoUpdate == nil {
+		t.Fatal("clone general.no_update is nil")
+	}
 	*clone.General.NoUpdate = false
-	assert.True(t, *original.General.NoUpdate)
+	if !*original.General.NoUpdate {
+		t.Error("original general.no_update = false, want true")
+	}
 }

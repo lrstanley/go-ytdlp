@@ -19,8 +19,7 @@ func (c *Command) Version(ctx context.Context) (*Result, error) {
 	return c.runWithResult(ctx, c.BuildCommand(ctx, "--version"))
 }
 
-// Check if updates are available. You cannot update when running from source code;
-// Use git to pull the latest changes
+// Check if updates are available.
 //
 // References:
 //  - Update Notes: https://github.com/yt-dlp/yt-dlp/blob/2026.08.19/README.md#update
@@ -1219,7 +1218,7 @@ func (c *Command) NoMatchFilters() *Command {
 //  - From option group: "Video Selection"
 func (c *Command) BreakMatchFilters(filter string) *Command {
 	c.flagConfig.VideoSelection.NoBreakMatchFilters = nil
-	c.flagConfig.VideoSelection.BreakMatchFilters = &filter
+	c.flagConfig.VideoSelection.BreakMatchFilters = append(c.flagConfig.VideoSelection.BreakMatchFilters, filter)
 	return c
 }
 
@@ -1481,6 +1480,9 @@ func (c *Command) UnsetConcurrentFragments() *Command {
 //  - See [Command.UnsetLimitRate], for unsetting the flag.
 //  - LimitRate maps to cli flags: -r/--limit-rate/--rate-limit=RATE.
 //  - From option group: "Download"
+//
+// Deprecated aliases:
+//  - --rate-limit: Use [Command.LimitRate] instead.
 func (c *Command) LimitRate(rate string) *Command {
 	c.flagConfig.Download.LimitRate = &rate
 	return c
@@ -2213,6 +2215,9 @@ func (c *Command) NoWindowsFilenames() *Command {
 //  - See [Command.UnsetTrimFilenames], for unsetting the flag.
 //  - TrimFilenames maps to cli flags: --trim-filenames/--trim-file-names=LENGTH.
 //  - From option group: "Filesystem"
+//
+// Deprecated aliases:
+//  - --trim-file-names: Use [Command.TrimFilenames] instead.
 func (c *Command) TrimFilenames(length int) *Command {
 	c.flagConfig.Filesystem.TrimFilenames = &length
 	return c
@@ -2253,6 +2258,9 @@ func (c *Command) UnsetOverwrites() *Command {
 //  - See [Command.UnsetForceOverwrites], for unsetting the flag.
 //  - ForceOverwrites maps to cli flags: --force-overwrites/--yes-overwrites.
 //  - From option group: "Filesystem"
+//
+// Deprecated aliases:
+//  - --yes-overwrites: Use [Command.ForceOverwrites] instead.
 func (c *Command) ForceOverwrites() *Command {
 	c.flagConfig.Filesystem.NoOverwrites = nil
 	c.flagConfig.Filesystem.NoForceOverwrites = nil
@@ -2491,6 +2499,9 @@ func (c *Command) NoWritePlaylistMetafiles() *Command {
 //  - See [Command.UnsetCleanInfoJSON], for unsetting the flag.
 //  - CleanInfoJSON maps to cli flags: --clean-info-json/--clean-infojson.
 //  - From option group: "Filesystem"
+//
+// Deprecated aliases:
+//  - --clean-infojson: Use [Command.CleanInfoJson] instead.
 func (c *Command) CleanInfoJSON() *Command {
 	c.flagConfig.Filesystem.NoCleanInfoJSON = nil
 	c.flagConfig.Filesystem.CleanInfoJSON = new(true)
@@ -2512,6 +2523,9 @@ func (c *Command) UnsetCleanInfoJSON() *Command {
 //  - See [Command.UnsetCleanInfoJSON], for unsetting the flag.
 //  - NoCleanInfoJSON maps to cli flags: --no-clean-info-json/--no-clean-infojson.
 //  - From option group: "Filesystem"
+//
+// Deprecated aliases:
+//  - --no-clean-infojson: Use [Command.NoCleanInfoJson] instead.
 func (c *Command) NoCleanInfoJSON() *Command {
 	c.flagConfig.Filesystem.CleanInfoJSON = nil
 	c.flagConfig.Filesystem.NoCleanInfoJSON = new(true)
@@ -3275,6 +3289,9 @@ func (c *Command) UnsetPrintJSON() *Command {
 //  - See [Command.UnsetForceWriteArchive], for unsetting the flag.
 //  - ForceWriteArchive maps to cli flags: --force-write-archive/--force-write-download-archive/--force-download-archive.
 //  - From option group: "Verbosity Simulation"
+//
+// Deprecated aliases:
+//  - --force-write-download-archive: Use [Command.ForceWriteArchive] instead.
 func (c *Command) ForceWriteArchive() *Command {
 	c.flagConfig.VerbositySimulation.ForceWriteArchive = new(true)
 	return c
@@ -3531,6 +3548,9 @@ func (c *Command) UnsetCheckCertificates() *Command {
 //  - See [Command.UnsetPreferInsecure], for unsetting the flag.
 //  - PreferInsecure maps to cli flags: --prefer-insecure/--prefer-unsecure.
 //  - From option group: "Workarounds"
+//
+// Deprecated aliases:
+//  - --prefer-unsecure: Use [Command.PreferInsecure] instead.
 func (c *Command) PreferInsecure() *Command {
 	c.flagConfig.Workarounds.PreferInsecure = new(true)
 	return c
@@ -3735,7 +3755,7 @@ func (c *Command) UnsetFormat() *Command {
 //  - FormatSort maps to cli flags: -S/--format-sort=SORTORDER.
 //  - From option group: "Video Format"
 func (c *Command) FormatSort(sortorder string) *Command {
-	c.flagConfig.VideoFormat.FormatSort = &sortorder
+	c.flagConfig.VideoFormat.FormatSort = append(c.flagConfig.VideoFormat.FormatSort, sortorder)
 	return c
 }
 
@@ -4068,6 +4088,9 @@ func (c *Command) UnsetMergeOutputFormat() *Command {
 //  - See [Command.UnsetWriteSubs], for unsetting the flag.
 //  - WriteSubs maps to cli flags: --write-subs/--write-srt.
 //  - From option group: "Subtitle"
+//
+// Deprecated aliases:
+//  - --write-srt: Use [Command.WriteSubs] instead.
 func (c *Command) WriteSubs() *Command {
 	c.flagConfig.Subtitle.NoWriteSubs = nil
 	c.flagConfig.Subtitle.WriteSubs = new(true)
@@ -4089,6 +4112,9 @@ func (c *Command) UnsetWriteSubs() *Command {
 //  - See [Command.UnsetWriteSubs], for unsetting the flag.
 //  - NoWriteSubs maps to cli flags: --no-write-subs/--no-write-srt.
 //  - From option group: "Subtitle"
+//
+// Deprecated aliases:
+//  - --no-write-srt: Use [Command.NoWriteSubs] instead.
 func (c *Command) NoWriteSubs() *Command {
 	c.flagConfig.Subtitle.WriteSubs = nil
 	c.flagConfig.Subtitle.NoWriteSubs = new(true)
@@ -4862,7 +4888,7 @@ func (c *Command) UnsetMetadataFromTitle() *Command {
 //  - From option group: "Post-Processing"
 func (c *Command) ParseMetadata(fromto string) *Command {
 	c.flagConfig.PostProcessing.ReplaceInMetadata = nil
-	c.flagConfig.PostProcessing.ParseMetadata = &fromto
+	c.flagConfig.PostProcessing.ParseMetadata = append(c.flagConfig.PostProcessing.ParseMetadata, fromto)
 	return c
 }
 
@@ -5072,7 +5098,7 @@ func (c *Command) NoExec() *Command {
 // Deprecated: Use [Command.Exec] with `before_dl:CMD` as an argument.
 func (c *Command) ExecBeforeDownload(cmd string) *Command {
 	c.flagConfig.PostProcessing.NoExecBeforeDownload = nil
-	c.flagConfig.PostProcessing.ExecBeforeDownload = &cmd
+	c.flagConfig.PostProcessing.ExecBeforeDownload = append(c.flagConfig.PostProcessing.ExecBeforeDownload, cmd)
 	return c
 }
 
@@ -5151,6 +5177,9 @@ func (c *Command) UnsetConvertThumbnails() *Command {
 //  - See [Command.UnsetSplitChapters], for unsetting the flag.
 //  - SplitChapters maps to cli flags: --split-chapters/--split-tracks.
 //  - From option group: "Post-Processing"
+//
+// Deprecated aliases:
+//  - --split-tracks: Use [Command.SplitChapters] instead.
 func (c *Command) SplitChapters() *Command {
 	c.flagConfig.PostProcessing.NoSplitChapters = nil
 	c.flagConfig.PostProcessing.SplitChapters = new(true)
@@ -5172,6 +5201,9 @@ func (c *Command) UnsetSplitChapters() *Command {
 //  - See [Command.UnsetSplitChapters], for unsetting the flag.
 //  - NoSplitChapters maps to cli flags: --no-split-chapters/--no-split-tracks.
 //  - From option group: "Post-Processing"
+//
+// Deprecated aliases:
+//  - --no-split-tracks: Use [Command.NoSplitChapters] instead.
 func (c *Command) NoSplitChapters() *Command {
 	c.flagConfig.PostProcessing.SplitChapters = nil
 	c.flagConfig.PostProcessing.NoSplitChapters = new(true)

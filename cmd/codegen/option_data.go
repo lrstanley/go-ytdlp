@@ -5,9 +5,11 @@
 package main
 
 import (
+	"fmt"
 	"log/slog"
 	"regexp"
 	"slices"
+	"sort"
 	"strings"
 
 	"github.com/iancoleman/strcase"
@@ -24,12 +26,81 @@ type OptionURL struct {
 	URL  string
 }
 
+// OptionDeprecation describes a deprecated alias for an option.
+type OptionDeprecation struct {
+	Flag        string
+	Description string
+}
+
 type OptionData struct {
 	Channel      string               `json:"channel"`
 	Version      string               `json:"version"`
 	OptionGroups []OptionGroup        `json:"option_groups"`
 	OptionIDs    map[string][]*Option `json:"option_ids"`
 	Extractors   []Extractor          `json:"extractors"`
+}
+
+// StalePolicies returns generator policy entries that do not match the
+// exported yt-dlp option data.
+func (c *OptionData) StalePolicies() (stale []string) {
+	flags := make(map[string]struct{})
+	ids := make(map[string]struct{})
+	for _, group := range c.OptionGroups {
+		for _, option := range group.Options {
+			if option.ID != "" {
+				ids[option.ID] = struct{}{}
+			}
+			for _, flag := range slices.Concat(option.ShortFlags, option.LongFlags) {
+				flags[flag] = struct{}{}
+			}
+		}
+	}
+
+	addIfMissing := func(kind, value string, found bool) {
+		if !found {
+			stale = append(stale, kind+": "+value)
+		}
+	}
+
+	for _, flag := range ignoredFlags {
+		_, found := flags[flag]
+		addIfMissing("ignored flag", flag, found)
+	}
+	for _, deprecated := range deprecatedFlags {
+		_, found := flags[deprecated[0]]
+		addIfMissing("deprecated flag", deprecated[0], found)
+	}
+	for flag := range linkableFlags {
+		_, found := flags[flag]
+		addIfMissing("linkable flag", flag, found)
+	}
+	for _, name := range knownExecutable {
+		_, flagFound := flags[name]
+		_, idFound := ids[name]
+		addIfMissing("executable option", name, flagFound || idFound)
+	}
+	for _, name := range knownAllowsMultiple {
+		_, flagFound := flags[name]
+		_, idFound := ids[name]
+		addIfMissing("repeatable option", name, flagFound || idFound)
+	}
+	for _, id := range noOverrideIDs {
+		_, found := ids[id]
+		addIfMissing("no-override ID", id, found)
+	}
+
+	sort.Strings(stale)
+	return stale
+}
+
+// ValidatePolicies returns an error when generator policy does not match the
+// exported yt-dlp option data.
+func (c *OptionData) ValidatePolicies() error {
+	stale := c.StalePolicies()
+	if len(stale) == 0 {
+		return nil
+	}
+	return fmt.Errorf("generator policies do not match exported options: %s", strings.Join(stale, ", "))
 }
 
 func (c *OptionData) Generate() {
@@ -67,7 +138,9 @@ func (o *OptionGroup) Generate(parent *OptionData) {
 
 	// Remove any ignored flags.
 	o.Options = slices.DeleteFunc(o.Options, func(o Option) bool {
-		return slices.Contains(ignoredFlags, o.Flag)
+		return slices.ContainsFunc(o.AllFlags, func(flag string) bool {
+			return slices.Contains(ignoredFlags, flag)
+		})
 	})
 }
 
@@ -82,16 +155,17 @@ func (o *OptionGroup) AllAllowsMultiple() (opts []*Option) {
 
 type Option struct {
 	// Generated fields.
-	Parent         *OptionGroup `json:"-"` // Reference to parent.
-	Name           string       `json:"-"` // simplified name, based off the first found flags.
-	Flag           string       `json:"-"` // first flag (priority on long flags).
-	AllFlags       []string     `json:"-"` // all flags, short + long.
-	ArgNames       []string     `json:"-"` // MetaArgs converted to function arguments.
-	Executable     bool         `json:"-"` // if the option means yt-dlp doesn't accept arguments, and some callback is done.
-	NoOverride     bool         `json:"-"` // if the option should not override other flags with the same ID.
-	Deprecated     string       `json:"-"` // if the option is deprecated, this will be the deprecation description.
-	URLs           []OptionURL  `json:"-"` // if the option has any links to the documentation.
-	AllowsMultiple bool         `json:"-"` // if the option allows being invoked multiple times.
+	Parent            *OptionGroup        `json:"-"`               // Reference to parent.
+	Name              string              `json:"-"`               // simplified name, based off the first found flags.
+	Flag              string              `json:"-"`               // first flag (priority on long flags).
+	AllFlags          []string            `json:"-"`               // all flags, short + long.
+	ArgNames          []string            `json:"-"`               // MetaArgs converted to function arguments.
+	Executable        bool                `json:"executable"`      // if the option means yt-dlp doesn't accept arguments, and some callback is done.
+	NoOverride        bool                `json:"-"`               // if the option should not override other flags with the same ID.
+	Deprecated        string              `json:"-"`               // if the option is deprecated, this will be the deprecation description.
+	DeprecatedAliases []OptionDeprecation `json:"-"`               // deprecated aliases for the option.
+	URLs              []OptionURL         `json:"-"`               // if the option has any links to the documentation.
+	AllowsMultiple    bool                `json:"allows_multiple"` // if the option allows being invoked multiple times.
 
 	// Command data fields.
 	ID           string   `json:"id"`
@@ -115,7 +189,7 @@ var (
 
 func (o *Option) Generate(parent *OptionGroup) {
 	o.Parent = parent
-	o.AllFlags = append(o.ShortFlags, o.LongFlags...) //nolint:gocritic
+	o.AllFlags = slices.Concat(o.ShortFlags, o.LongFlags)
 
 	if len(o.LongFlags) > 0 {
 		o.Name = strings.TrimPrefix(o.LongFlags[0], "--")
@@ -125,19 +199,35 @@ func (o *Option) Generate(parent *OptionGroup) {
 		o.Flag = o.ShortFlags[0]
 	}
 
-	if slices.Contains(knownExecutable, o.ID) || slices.Contains(knownExecutable, o.Flag) {
+	if o.Executable || slices.Contains(knownExecutable, o.ID) ||
+		slices.ContainsFunc(o.AllFlags, func(flag string) bool {
+			return slices.Contains(knownExecutable, flag)
+		}) {
 		o.Executable = true
 	}
 
-	if slices.Contains(knownAllowsMultiple, o.ID) || slices.Contains(knownAllowsMultiple, o.Flag) {
+	if o.AllowsMultiple || slices.Contains(knownAllowsMultiple, o.ID) ||
+		slices.ContainsFunc(o.AllFlags, func(flag string) bool {
+			return slices.Contains(knownAllowsMultiple, flag)
+		}) {
 		o.AllowsMultiple = true
 	} else if strings.Contains(o.Help, "used multiple times") || strings.Contains(o.Help, "option multiple times") {
 		o.AllowsMultiple = true
 	}
 
 	for _, d := range deprecatedFlags {
-		if strings.EqualFold(d[0], o.ID) || strings.EqualFold(d[0], o.Flag) {
+		if strings.EqualFold(d[0], o.ID) ||
+			strings.EqualFold(d[0], o.Flag) {
 			o.Deprecated = d[1]
+			continue
+		}
+		if slices.ContainsFunc(o.AllFlags, func(flag string) bool {
+			return strings.EqualFold(d[0], flag)
+		}) {
+			o.DeprecatedAliases = append(o.DeprecatedAliases, OptionDeprecation{
+				Flag:        d[0],
+				Description: d[1],
+			})
 		}
 	}
 

@@ -9,7 +9,7 @@ require (
 	github.com/iancoleman/strcase v0.3.0
 	github.com/invopop/jsonschema v0.14.0
 	github.com/lmittmann/tint v1.2.0
-	github.com/lrstanley/go-ytdlp v1.4.0
+	github.com/lrstanley/go-ytdlp v1.5.1
 	github.com/mitchellh/go-wordwrap v1.0.1
 )
 
@@ -21,6 +21,6 @@ require (
 	github.com/pb33f/ordered-map/v2 v2.3.1 // indirect
 	github.com/ulikunitz/xz v0.5.16 // indirect
 	go.yaml.in/yaml/v4 v4.0.0-rc.6 // indirect
-	golang.org/x/crypto v0.56.0 // indirect
-	golang.org/x/sys v0.47.0 // indirect
+	golang.org/x/crypto v0.57.0 // indirect
+	golang.org/x/sys v0.48.0 // indirect
 )

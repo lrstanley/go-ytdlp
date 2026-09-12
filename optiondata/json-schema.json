@@ -2658,7 +2658,10 @@
 					"uid": "metafromtitle"
 				},
 				"parse_metadata": {
-					"type": "string",
+					"items": {
+						"type": "string"
+					},
+					"type": "array",
 					"title": "ParseMetadata",
 					"description": "Parse additional metadata like title/artist from other fields; see \"MODIFYING METADATA\" for details. Supported values of \"WHEN\" are the same as that of --use-postprocessor (default: pre_process)",
 					"uid": "parse_metadata"
@@ -2724,7 +2727,10 @@
 					"uid": "exec_cmd"
 				},
 				"exec_before_download": {
-					"type": "string",
+					"items": {
+						"type": "string"
+					},
+					"type": "array",
 					"title": "ExecBeforeDownload",
 					"uid": "exec_before_dl_cmd"
 				},
@@ -3557,7 +3563,10 @@
 					"uid": "format"
 				},
 				"format_sort": {
-					"type": "string",
+					"items": {
+						"type": "string"
+					},
+					"type": "array",
 					"title": "FormatSort",
 					"description": "Sort the formats by the fields given, see \"Sorting Formats\" for more details",
 					"uid": "format_sort"
@@ -3913,7 +3922,10 @@
 					"uid": "match_filter"
 				},
 				"break_match_filters": {
-					"type": "string",
+					"items": {
+						"type": "string"
+					},
+					"type": "array",
 					"title": "BreakMatchFilters",
 					"description": "Same as \"--match-filters\" but stops the download process when a video is rejected",
 					"uid": "breaking_match_filter"

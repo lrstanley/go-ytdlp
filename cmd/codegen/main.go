@@ -196,6 +196,11 @@ func main() {
 		os.Exit(1)
 	}
 
+	if err := data.ValidatePolicies(); err != nil {
+		slog.Error("failed to validate generator policies", "error", err)
+		os.Exit(1)
+	}
+
 	data.Generate()
 
 	createTemplateFile(os.Args[2], "optiondata/optiondata.gen.go", optionDataTmpl, data)

@@ -1711,7 +1711,7 @@ var (
 		},
 		DefaultFlag: "--update",
 		Executable:  true,
-		Help:        "Check if updates are available. You cannot update when running from source code; Use git to pull the latest changes",
+		Help:        "Check if updates are available.",
 		Type:        "bool",
 		LongFlags:   []string{"--update"},
 		ShortFlags:  []string{"-U"},
@@ -3639,7 +3639,7 @@ var (
 		DefaultFlag:    "--write-thumbnail",
 		Executable:     false,
 		Help:           "Write thumbnail image to disk",
-		Type:           "string",
+		Type:           "bool",
 		LongFlags:      []string{"--write-thumbnail"},
 	}
 	optionNoWriteThumbnail = &Option{

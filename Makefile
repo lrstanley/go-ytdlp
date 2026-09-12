@@ -6,7 +6,7 @@ license:
 	curl -sL https://liam.sh/-/gh/g/license-header.sh | bash -s
 
 clean:
-	rm -rf ./cmd/patch-ytdlp/tmp/${YTDLP_VERSION} ./cmd/patch-ytdlp/export-${YTDLP_VERSION}.json
+	rm -f ./cmd/export-ytdlp/export-${YTDLP_VERSION}.json
 
 fetch:
 	cd ./cmd/codegen && go mod tidy
@@ -22,16 +22,18 @@ up:
 commit: generate
 	git add --all \
 		Makefile \
+		cmd/export-ytdlp \
 		*.gen.go *.gen_test.go \
 		optiondata/*.gen.go
 	git commit -m "chore(codegen): generate updated cli bindings"
 
-edit-patch: clean patch
-	cd ./cmd/patch-ytdlp/tmp/${YTDLP_VERSION} && ${EDITOR} yt_dlp/options.py && git diff > ../../export-options.patch
-
 patch:
-	@# git diff --minimal -U1 > ../../export-options.patch
-	./cmd/patch-ytdlp/run.sh ${YTDLP_VERSION}
+	uv -q run \
+		--python 3.13 \
+		--no-project \
+		--with "yt-dlp==${YTDLP_VERSION}" \
+		--script ./cmd/export-ytdlp/export.py \
+		${YTDLP_VERSION} > ./cmd/export-ytdlp/export-${YTDLP_VERSION}.json
 
 test: fetch
 	GORACE='exitcode=1 halt_on_error=1' go test -v -race -timeout 5m -count 3 ./...
@@ -40,7 +42,7 @@ generate: license fetch patch
 	rm -rf \
 		*.gen.go *.gen_test.go \
 		optiondata/*.gen.go
-	cd ./cmd/codegen && go run . ../patch-ytdlp/export-${YTDLP_VERSION}.json ../../
+	cd ./cmd/codegen && go run . ../export-ytdlp/export-${YTDLP_VERSION}.json ../../
 	gofmt -e -s -w .
 	cd ./cmd/gen-jsonschema && go run . ../../optiondata/
 	go vet .
