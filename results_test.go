@@ -300,3 +300,11 @@ func TestParseExtractedInfo_requestedSubtitles(t *testing.T) {
 		t.Errorf("en automatic captions has length %d, want 1", got)
 	}
 }
+
+func idsOf(infos []*ExtractedInfo) []string {
+	out := make([]string, len(infos))
+	for i, info := range infos {
+		out[i] = info.ID
+	}
+	return out
+}

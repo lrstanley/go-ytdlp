@@ -361,7 +361,7 @@ func TestCommand_StderrFunc(t *testing.T) {
 		Verbose().
 		ForceOverwrites().
 		Output(filepath.Join(dir, "%(extractor)s - %(title)s.%(ext)s")).
-		StderrFunc(func(line string) {
+		StderrFunc(func(line string) { //nolint:staticcheck // testing deprecated alias
 			mu.Lock()
 			stderrLines = append(stderrLines, line)
 			mu.Unlock()
@@ -388,32 +388,209 @@ func TestCommand_StderrFunc(t *testing.T) {
 	}
 }
 
+func TestCommand_StderrFuncFiltersStdout(t *testing.T) {
+	t.Parallel()
+
+	var got []string
+	cmd := New().LogFunc(func(log *ResultLog) {
+		if log.Pipe == "stderr" {
+			StderrCallbackFunc(func(line string) { got = append(got, line) })(log.Line)
+		}
+	})
+
+	cmd.log(&ResultLog{Pipe: PipeStdout, Line: "out"})
+	cmd.log(&ResultLog{Pipe: PipeStderr, Line: "err"})
+
+	if len(got) != 1 || got[0] != "err" {
+		t.Fatalf("got %v, want [err]", got)
+	}
+}
+
 func TestCommand_StderrFunc_Clone(t *testing.T) {
 	t.Parallel()
 
 	called := false
-	builder := New().NoUpdate().StderrFunc(func(_ string) {
+	builder := New().NoUpdate().StderrFunc(func(_ string) { //nolint:staticcheck // testing deprecated alias
 		called = true
 	})
 
 	cloned := builder.Clone()
-
-	if cloned.stderr == nil {
-		t.Fatal("expected stderr handler to be copied by Clone()")
+	if cloned.log == nil {
+		t.Fatal("expected log handler to be copied by Clone()")
 	}
 
-	cloned.stderr.handle("test")
+	cloned.log(&ResultLog{Pipe: PipeStderr, Line: "test"})
 	if !called {
 		t.Fatal("expected cloned stderr handler to invoke the original callback")
+	}
+
+	called = false
+	cloned.log(&ResultLog{Pipe: PipeStdout, Line: "test"})
+	if called {
+		t.Fatal("stderr handler should ignore stdout")
 	}
 }
 
 func TestCommand_UnsetStderrFunc(t *testing.T) {
 	t.Parallel()
 
-	builder := New().NoUpdate().StderrFunc(func(_ string) {}).UnsetStderrFunc()
+	builder := New().NoUpdate().LogFunc(func(log *ResultLog) {
+		if log.Pipe == "stderr" {
+			StderrCallbackFunc(func(_ string) {})(log.Line)
+		}
+	}).UnsetStderrFunc() //nolint:staticcheck // testing deprecated alias
 
-	if builder.stderr != nil {
-		t.Fatal("expected stderr handler to be nil after UnsetStderrFunc()")
+	if builder.log != nil {
+		t.Fatal("expected log handler to be nil after UnsetStderrFunc()")
+	}
+}
+
+func TestCommand_LogFunc_Clone(t *testing.T) {
+	t.Parallel()
+
+	called := false
+	builder := New().NoUpdate().LogFunc(func(_ *ResultLog) {
+		called = true
+	})
+
+	cloned := builder.Clone()
+	if cloned.log == nil {
+		t.Fatal("expected log handler to be copied by Clone()")
+	}
+
+	cloned.log(&ResultLog{Line: "test"})
+	if !called {
+		t.Fatal("expected cloned log handler to invoke the original callback")
+	}
+}
+
+func TestCommand_UnsetLogFunc(t *testing.T) {
+	t.Parallel()
+
+	builder := New().NoUpdate().LogFunc(func(_ *ResultLog) {}).UnsetLogFunc()
+	if builder.log != nil {
+		t.Fatal("expected log handler to be nil after UnsetLogFunc()")
+	}
+}
+
+func TestCommand_ExtractInfoDoesNotMutate(t *testing.T) {
+	t.Parallel()
+
+	cmd := New().NoUpdate().SetExecutable("/nonexistent-ytdlp")
+	_, _, _ = cmd.ExtractInfo(t.Context(), "https://example.com/video")
+
+	cfg := cmd.GetFlagConfig()
+	if cfg.VerbositySimulation.SkipDownload != nil {
+		t.Fatal("ExtractInfo mutated SkipDownload")
+	}
+	if cfg.VerbositySimulation.DumpJSON != nil {
+		t.Fatal("ExtractInfo mutated DumpJSON")
+	}
+}
+
+func TestCommand_RunWithInfoDoesNotMutate(t *testing.T) {
+	t.Parallel()
+
+	cmd := New().NoUpdate().SetExecutable("/nonexistent-ytdlp")
+	_, _ = cmd.RunWithInfo(t.Context(), []*ExtractedInfo{{
+		ID:    "sample-1",
+		Type:  ExtractedTypeVideo,
+		Title: new("sample-1"),
+	}})
+
+	if cmd.GetFlagConfig().Filesystem.LoadInfoJSON != nil {
+		t.Fatal("RunWithInfo mutated LoadInfoJSON")
+	}
+}
+
+func TestCommand_RunWithInfoEmpty(t *testing.T) {
+	t.Parallel()
+
+	_, err := New().RunWithInfo(t.Context(), nil)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestCommand_LogFunc(t *testing.T) {
+	t.Parallel()
+
+	server := newMockServer(t, "testdata/sample-1.mp4")
+	dir := t.TempDir()
+
+	var mu sync.Mutex
+	var logs []*ResultLog
+
+	result, err := New().
+		Verbose().
+		ForceOverwrites().
+		Output(filepath.Join(dir, "%(extractor)s - %(title)s.%(ext)s")).
+		LogFunc(func(log *ResultLog) {
+			mu.Lock()
+			logs = append(logs, log)
+			mu.Unlock()
+		}).
+		Run(t.Context(), server.fileURL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.ExitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d", result.ExitCode)
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+	if len(logs) == 0 {
+		t.Fatal("expected at least one log line from the callback")
+	}
+}
+
+func TestCommand_ExtractInfo(t *testing.T) {
+	t.Parallel()
+
+	server := newMockServer(t, "testdata/sample-1.mp4")
+	info, result, err := New().NoUpdate().ExtractInfo(t.Context(), server.fileURL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.ExitCode != 0 {
+		t.Fatalf("exit code = %d, want 0", result.ExitCode)
+	}
+	if len(info) != 1 || info[0].ID != "sample-1" {
+		t.Fatalf("info = %+v, want sample-1", idsOf(info))
+	}
+	if info[0].Type != ExtractedTypeVideo && info[0].Type != ExtractedTypeSingle && info[0].Type != "" {
+		t.Fatalf("type = %q", info[0].Type)
+	}
+}
+
+func TestCommand_RunWithInfo(t *testing.T) {
+	t.Parallel()
+
+	server := newMockServer(t, "testdata/sample-1.mp4")
+	info, _, err := New().NoUpdate().ExtractInfo(t.Context(), server.fileURL)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	dir := t.TempDir()
+	result, err := New().
+		NoUpdate().
+		ForceOverwrites().
+		Output(filepath.Join(dir, "%(extractor)s - %(title)s.%(ext)s")).
+		RunWithInfo(t.Context(), info)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.ExitCode != 0 {
+		t.Fatalf("exit code = %d, want 0", result.ExitCode)
+	}
+
+	matches, err := filepath.Glob(filepath.Join(dir, "*"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(matches) == 0 {
+		t.Fatal("expected a downloaded file")
 	}
 }

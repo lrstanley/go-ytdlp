@@ -5,15 +5,11 @@
 package ytdlp
 
 import (
-	"bytes"
 	"encoding/json/jsontext"
 	"encoding/json/v2"
 	"fmt"
 	"reflect"
-	"slices"
 	"strings"
-	"time"
-	"unicode"
 )
 
 // Result contains the yt-dlp execution results, including stdout/stderr, exit code,
@@ -45,11 +41,11 @@ func (r *Result) asString(stdout, stderr, timestamps, maskJSON, exitCode bool) s
 	out := make([]string, 0, len(r.OutputLogs)+1)
 
 	for _, l := range r.OutputLogs {
-		if l.Pipe == "stdout" && !stdout {
+		if l.Pipe == PipeStdout && !stdout {
 			continue
 		}
 
-		if l.Pipe == "stderr" && !stderr {
+		if l.Pipe == PipeStderr && !stderr {
 			continue
 		}
 
@@ -65,14 +61,6 @@ func (r *Result) asString(stdout, stderr, timestamps, maskJSON, exitCode bool) s
 
 func (r *Result) String() string {
 	return r.asString(true, true, true, true, true)
-}
-
-func (r *Result) decorateError(err error) error {
-	if err == nil {
-		return nil
-	}
-
-	return fmt.Errorf("%s\n\n%s", err.Error(), r.asString(false, true, false, true, false))
 }
 
 // GetExtractedInfo returns the extracted info from the yt-dlp output logs. Note that
@@ -102,178 +90,6 @@ func (r *Result) GetExtractedInfo() (info []*ExtractedInfo, err error) {
 	}
 
 	return info, nil
-}
-
-type ResultLog struct {
-	Timestamp time.Time       `json:"timestamp"`
-	Line      string          `json:"line"`
-	JSON      *jsontext.Value `json:"json,omitempty"` // May be nil if the log line wasn't valid JSON.
-	Pipe      string          `json:"pipe"`           // stdout or stderr.
-}
-
-func (r *ResultLog) asString(timestamps, maskJSON bool) string {
-	line := r.Line
-
-	if maskJSON && r.JSON != nil {
-		line = "<json-data>"
-	}
-
-	if timestamps {
-		return fmt.Sprintf("[%s::%s] %s", r.Timestamp.Format(time.DateTime), r.Pipe, line)
-	}
-
-	return line
-}
-
-func (r *ResultLog) String() string {
-	return r.asString(true, true)
-}
-
-type timestampWriter struct {
-	checkJSON bool   // Whether to check if the log lines are valid JSON.
-	pipe      string // stdout or stderr.
-
-	buf            bytes.Buffer
-	lastWriteStart time.Time
-	results        []*ResultLog
-
-	progress *progressHandler
-	stderr   *stderrHandler
-}
-
-func (w *timestampWriter) Write(p []byte) (n int, err error) {
-	n = len(p)
-
-	for len(p) > 0 {
-		if w.lastWriteStart.IsZero() {
-			w.lastWriteStart = time.Now()
-		}
-
-		// Prefer newline over carriage return to preserve the behavior of
-		// regular stdout/stderr lines that contain both separators.
-		if i := bytes.IndexByte(p, '\n'); i >= 0 {
-			_, _ = w.buf.Write(p[:i+1])
-			w.flush()
-			p = p[i+1:]
-			continue
-		}
-
-		if w.stderr != nil {
-			if i := bytes.IndexByte(p, '\r'); i >= 0 {
-				_, _ = w.buf.Write(p[:i+1])
-				w.flushStderr()
-				p = p[i+1:]
-				continue
-			}
-		}
-
-		_, err = w.buf.Write(p)
-		return n, err
-	}
-
-	return n, nil
-}
-
-func (w *timestampWriter) flush() {
-	if w.buf.Len() == 0 {
-		return
-	}
-
-	line := bytes.TrimRightFunc(w.buf.Bytes(), unicode.IsSpace)
-
-	if v, ok := bytes.CutPrefix(line, progressPrefix); ok && w.progress != nil {
-		var raw jsontext.Value
-
-		if err := json.Unmarshal(v, &raw); err == nil {
-			w.progress.parse(raw)
-			w.lastWriteStart = time.Time{}
-			w.buf.Reset()
-			return
-		}
-	}
-
-	result := &ResultLog{
-		Timestamp: w.lastWriteStart,
-		Line:      string(line),
-		Pipe:      w.pipe,
-	}
-
-	if w.checkJSON && len(line) > 0 { // Try to parse the line as JSON.
-		var raw jsontext.Value
-
-		if err := json.Unmarshal(line, &raw); err == nil {
-			result.JSON = &raw
-		}
-	}
-
-	w.results = append(w.results, result)
-
-	if w.stderr != nil {
-		w.stderr.handle(result.Line)
-	}
-
-	w.lastWriteStart = time.Time{}
-	w.buf.Reset()
-}
-
-// flushStderr flushes the current buffer as a \r-terminated stderr line.
-// These ephemeral lines (e.g. ffmpeg in-place progress) are sent to the
-// stderr callback but NOT appended to w.results.
-func (w *timestampWriter) flushStderr() {
-	if w.buf.Len() == 0 {
-		return
-	}
-
-	line := strings.TrimSpace(w.buf.String())
-
-	if line != "" && w.stderr != nil {
-		w.stderr.handle(line)
-	}
-
-	w.lastWriteStart = time.Time{}
-	w.buf.Reset()
-}
-
-// mergeResults merges the results from this writer with the results from another writer
-// (or multiple writers). The results are sorted by timestamp.
-func (w *timestampWriter) mergeResults(otherWriters ...*timestampWriter) []*ResultLog {
-	w.flush()
-
-	resultCount := len(w.results)
-	for _, other := range otherWriters {
-		resultCount += len(other.results)
-	}
-
-	results := make([]*ResultLog, 0, resultCount)
-	results = append(results, w.results...)
-
-	for _, other := range otherWriters {
-		results = append(results, other.results...)
-	}
-
-	// Sort results by timestamp.
-	slices.SortFunc(results, func(a, b *ResultLog) int {
-		return a.Timestamp.Compare(b.Timestamp)
-	})
-
-	return results
-}
-
-// String returns the contents of all log lines written to this writer.
-func (w *timestampWriter) String() string {
-	w.flush()
-
-	var buf bytes.Buffer
-
-	for i, r := range w.results {
-		buf.WriteString(r.Line)
-
-		if i < len(w.results)-1 {
-			buf.WriteByte('\n')
-		}
-	}
-
-	return buf.String()
 }
 
 // Extractor data fields:
@@ -737,6 +553,7 @@ type ExtractedType string
 const (
 	ExtractedTypeAny            ExtractedType = "any"
 	ExtractedTypeSingle         ExtractedType = "single"
+	ExtractedTypeVideo          ExtractedType = "video"
 	ExtractedTypePlaylist       ExtractedType = "playlist"
 	ExtractedTypeMultiVideo     ExtractedType = "multi_video"
 	ExtractedTypeURL            ExtractedType = "url"

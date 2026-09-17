@@ -74,11 +74,10 @@ func jsonError(w http.ResponseWriter, r *http.Request, code int, err error) {
 		"code":  code,
 	}
 
-	if perr, ok := ytdlp.IsMultipleJSONParsingFlagsError(err); ok {
-		data["errors"] = perr.Errors
-	}
-
-	if perr, ok := ytdlp.IsJSONParsingFlagError(err); ok {
+	if flags := ytdlp.JSONParsingFlagErrors(err); len(flags) > 1 {
+		data["errors"] = flags
+	} else if len(flags) == 1 {
+		perr := flags[0]
 		data["error"] = perr.Err.Error()
 		data["id"] = perr.ID
 		data["json_path"] = perr.JSONPath

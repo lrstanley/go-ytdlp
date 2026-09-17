@@ -21,7 +21,7 @@ func wrapError(r *Result, err error) (*Result, error) {
 		return nil, &ErrUnknown{wrapped: err}
 	}
 
-	err = r.decorateError(err)
+	err = fmt.Errorf("%s\n\n%s", err.Error(), r.asString(false, true, false, true, false))
 
 	if errors.Is(err, exec.ErrDot) || errors.Is(err, exec.ErrNotFound) {
 		return r, &ErrMisconfig{wrapped: err, result: r}
@@ -147,12 +147,34 @@ func (e *ErrJSONParsingFlag) Error() string {
 	)
 }
 
+// JSONParsingFlagErrors returns every [ErrJSONParsingFlag] in err.
+// [ErrMultipleJSONParsingFlags] is flattened. Prefer this over
+// [IsJSONParsingFlagError], which stops at the first inner error after
+// [ErrMultipleJSONParsingFlags.Unwrap].
+func JSONParsingFlagErrors(err error) []*ErrJSONParsingFlag {
+	if err == nil {
+		return nil
+	}
+	if multi, ok := IsMultipleJSONParsingFlagsError(err); ok {
+		return multi.Errors
+	}
+	if single, ok := IsJSONParsingFlagError(err); ok {
+		return []*ErrJSONParsingFlag{single}
+	}
+	return nil
+}
+
 // IsJSONParsingFlagError returns true when the error is a JSON parsing error.
+// [ErrMultipleJSONParsingFlags] unwraps to these, so this stops at one inner
+// error. Use [JSONParsingFlagErrors] when you need the full set.
 func IsJSONParsingFlagError(err error) (*ErrJSONParsingFlag, bool) {
 	var e *ErrJSONParsingFlag
 	return e, errors.As(err, &e) //nolint:gocritic
 }
 
+// ErrMultipleJSONParsingFlags is a group of [ErrJSONParsingFlag] values.
+// It implements Unwrap() []error so [errors.Is] and [errors.As] walk each
+// inner error.
 type ErrMultipleJSONParsingFlags struct {
 	Errors []*ErrJSONParsingFlag `json:"errors,omitempty"`
 }
@@ -161,6 +183,20 @@ func (e *ErrMultipleJSONParsingFlags) Error() string {
 	return fmt.Sprintf("multiple errors while parsing json: %s", e.Errors)
 }
 
+// Unwrap returns the individual flag errors so [errors.Is] and [errors.As]
+// walk them without a dedicated helper.
+func (e *ErrMultipleJSONParsingFlags) Unwrap() []error {
+	if e == nil || len(e.Errors) == 0 {
+		return nil
+	}
+	errs := make([]error, len(e.Errors))
+	for i, err := range e.Errors {
+		errs[i] = err
+	}
+	return errs
+}
+
+// IsMultipleJSONParsingFlagsError returns the grouped flag errors, if any.
 func IsMultipleJSONParsingFlagsError(err error) (*ErrMultipleJSONParsingFlags, bool) {
 	var e *ErrMultipleJSONParsingFlags
 	return e, errors.As(err, &e) //nolint:gocritic

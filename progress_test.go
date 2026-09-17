@@ -66,7 +66,7 @@ func TestProgressHandler_parse(t *testing.T) {
 	}
 }
 
-func TestProgressUpdate_Key(t *testing.T) {
+func TestProgressUpdate_generateID(t *testing.T) {
 	t.Parallel()
 
 	info := &ExtractedInfo{ID: "abc"}
@@ -74,11 +74,36 @@ func TestProgressUpdate_Key(t *testing.T) {
 	audio := ProgressUpdate{Filename: "a.f140.m4a", Info: info}
 	merge := ProgressUpdate{Filename: "a.mp4", Info: info, PostProcessor: "Merger"}
 
-	if video.Key() == audio.Key() {
-		t.Errorf("video and audio keys are equal: %q", video.Key())
+	if video.generateID() == audio.generateID() {
+		t.Errorf("video and audio ids are equal: %q", video.generateID())
 	}
-	if audio.Key() == merge.Key() {
-		t.Errorf("audio and merge keys are equal: %q", audio.Key())
+	if audio.generateID() == merge.generateID() {
+		t.Errorf("audio and merge ids are equal: %q", audio.generateID())
+	}
+
+	video.ID = video.generateID()
+	if video.Key() != video.ID { //nolint:staticcheck // testing deprecated alias
+		t.Fatalf("Key() = %q, want ID %q", video.Key(), video.ID)
+	}
+}
+
+func TestProgressHandler_ID(t *testing.T) {
+	t.Parallel()
+
+	var got ProgressUpdate
+	h := newProgressHandler(func(update ProgressUpdate) {
+		got = update
+	})
+	h.parse(jsontext.Value(`{"info":{"id":"abc","playlist_index":2},"progress":{"status":"downloading","filename":"a.mp4"}}`))
+
+	if got.ID == "" {
+		t.Fatal("id is empty")
+	}
+	if got.ID != got.generateID() {
+		t.Fatalf("id = %q, generateID = %q", got.ID, got.generateID())
+	}
+	if got.ID == got.Filename {
+		t.Fatal("id must not be filename alone")
 	}
 }
 

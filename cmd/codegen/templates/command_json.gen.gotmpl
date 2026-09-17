@@ -66,8 +66,9 @@ func (f *FlagConfig) Clone() *FlagConfig {
 }
 
 // Validate runs validation across all flag groups. If there are validation-specific
-// errors, they will be returned as a [ErrMultipleJSONParsingFlags] error. Otherwise,
-// any other errors will be returned as a regular wrapped errors.
+// errors, they will be returned as a single [ErrMultipleJSONParsingFlags] that
+// contains every conflicting ID from every group. Otherwise, any other errors
+// will be returned as a regular wrapped errors.
 func (f *FlagConfig) Validate() error {
     errs := []error{
         {{- range $group := .OptionGroups }}
@@ -82,11 +83,11 @@ func (f *FlagConfig) Validate() error {
         if err == nil {
             continue
         }
-        if verr, ok := IsJSONParsingFlagError(err); ok {
-            validationErrs = append(validationErrs, verr)
-        } else {
-            regularErrs = append(regularErrs, err)
+        if flags := JSONParsingFlagErrors(err); len(flags) > 0 {
+            validationErrs = append(validationErrs, flags...)
+            continue
         }
+        regularErrs = append(regularErrs, err)
     }
 
     if len(validationErrs) > 0 {

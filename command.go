@@ -5,8 +5,12 @@
 package ytdlp
 
 import (
+	"bytes"
 	"context"
+	"encoding/json/v2"
+	"errors"
 	"fmt"
+	"io"
 	"maps"
 	"os"
 	"os/exec"
@@ -42,7 +46,7 @@ type Command struct {
 	disableEnvVarInherit bool
 
 	progress *progressHandler
-	stderr   *stderrHandler
+	log      LogCallbackFunc
 }
 
 // Clone returns a copy of the command, with all flags, env vars, executable,
@@ -58,7 +62,7 @@ func (c *Command) Clone() *Command {
 		cancelMaxWait:        c.cancelMaxWait,
 		disableEnvVarInherit: c.disableEnvVarInherit,
 		progress:             c.progress,
-		stderr:               c.stderr,
+		log:                  c.log,
 	}
 	maps.Copy(cc.env, c.env)
 	c.mu.RUnlock()
@@ -119,9 +123,19 @@ func (c *Command) SetEnvVar(key, value string) *Command {
 	return c
 }
 
-// SetSeparateProcessGroup sets whether the command should be run in a separate
-// process group. This is useful to avoid propagating signals from the app process.
-// NOTE: This is only supported on Windows and Unix-like systems.
+// SetSeparateProcessGroup sets whether yt-dlp should run in a separate
+// process group. Download managers should enable this so Ctrl-C / signals
+// aimed at the app do not also hit yt-dlp; cancel via [context.Context]
+// instead.
+//
+// On context cancel, [os/exec.Cmd] sends os.Interrupt first (SIGINT on
+// Unix), then os.Kill after [Command.SetCancelMaxWait]. yt-dlp handles
+// SIGINT by stopping ffmpeg children. SIGKILL of yt-dlp alone does not
+// kill ffmpeg; those children keep running. On Windows, Interrupt
+// (CTRL_BREAK) only works with a new process group, so managers should
+// enable this or cancel may TerminateProcess immediately and leak ffmpeg.
+//
+// Only supported on Windows and Unix-like systems.
 func (c *Command) SetSeparateProcessGroup(value bool) *Command {
 	c.mu.Lock()
 	c.separateProcessGroup = value
@@ -130,8 +144,15 @@ func (c *Command) SetSeparateProcessGroup(value bool) *Command {
 	return c
 }
 
-// SetCancelMaxWait sets the maximum wait time before the command is killed,
-// after the context is cancelled. Defaults to 1 second.
+// SetCancelMaxWait sets how long to wait after context cancel before
+// yt-dlp is SIGKILL'd. It is assigned to [os/exec.Cmd.WaitDelay].
+// Defaults to 1 second.
+//
+// A positive delay sends os.Interrupt first so yt-dlp can tear down
+// ffmpeg children, then Kill. Zero WaitDelay Kill's immediately and
+// ffmpeg typically keeps running. Download managers should keep a
+// positive delay (and [Command.SetSeparateProcessGroup] on Windows; see
+// that method).
 func (c *Command) SetCancelMaxWait(value time.Duration) *Command {
 	c.mu.Lock()
 	c.cancelMaxWait = value
@@ -277,7 +298,7 @@ func (c *Command) BuildCommand(ctx context.Context, args ...string) *exec.Cmd {
 
 	cmd := exec.CommandContext(ctx, name, cmdArgs...)
 
-	// Ensure all children (e.g. ffmpeg) are killed after the command is killed.
+	// Interrupt first (see SetCancelMaxWait), then Kill so ffmpeg can die.
 	cmd.WaitDelay = c.cancelMaxWait
 
 	// Add cache directory to $PATH, which would cover ffmpeg, ffprobe, etc.
@@ -312,19 +333,17 @@ func (c *Command) runWithResult(ctx context.Context, cmd *exec.Cmd) (*Result, er
 
 	c.mu.RLock()
 	progress := c.progress
-	stderrHandler := c.stderr
+	logFn := c.log
 	separateProcessGroup := c.separateProcessGroup
 	hasJSONFlag := c.hasJSONFlag()
 	c.mu.RUnlock()
 
-	stdout := &timestampWriter{pipe: "stdout", progress: progress}
-	stderr := &timestampWriter{pipe: "stderr", stderr: stderrHandler}
-
-	if hasJSONFlag {
-		stdout.checkJSON = true
-		stderr.checkJSON = true
+	var sink *logSink
+	if logFn != nil {
+		sink = &logSink{fn: logFn}
 	}
-
+	stdout := &timestampWriter{pipe: PipeStdout, checkJSON: hasJSONFlag, progress: progress, log: sink}
+	stderr := &timestampWriter{pipe: PipeStderr, checkJSON: hasJSONFlag, log: sink}
 	cmd.Stdout = stdout
 	cmd.Stderr = stderr
 
@@ -359,17 +378,60 @@ func (c *Command) runWithResult(ctx context.Context, cmd *exec.Cmd) (*Result, er
 
 // Run invokes yt-dlp with the provided arguments (and any flags previously set),
 // and returns the results (stdout/stderr, exit code, etc). args should be the
-// URLs that would normally be passed in to yt-dlp.
+// URLs that would normally be passed in to yt-dlp. To download from previously
+// extracted info without re-hitting the site, use [Command.RunWithInfo].
 func (c *Command) Run(ctx context.Context, args ...string) (*Result, error) {
+	return c.run(ctx, nil, args...)
+}
+
+func (c *Command) run(ctx context.Context, stdin io.Reader, args ...string) (*Result, error) {
 	c.mu.RLock()
-	if err := c.flagConfig.Validate(); err != nil {
-		c.mu.RUnlock()
+	err := c.flagConfig.Validate()
+	c.mu.RUnlock()
+	if err != nil {
 		return nil, err
 	}
-	c.mu.RUnlock()
 
 	cmd := c.BuildCommand(ctx, args...)
+	if stdin != nil {
+		cmd.Stdin = stdin
+	}
 	return c.runWithResult(ctx, cmd)
+}
+
+// ExtractInfo runs yt-dlp with --skip-download --dump-json on a clone of
+// c (the caller's flags are not modified) and returns parsed extractor
+// JSON.
+func (c *Command) ExtractInfo(ctx context.Context, urls ...string) ([]*ExtractedInfo, *Result, error) {
+	result, err := c.Clone().SkipDownload().DumpJSON().Run(ctx, urls...)
+	if err != nil {
+		return nil, result, err
+	}
+	info, err := result.GetExtractedInfo()
+	return info, result, err
+}
+
+// RunWithInfo writes info to yt-dlp via --load-info-json - (stdin) so the
+// download does not re-extract from the site. c is not modified. A single
+// item is written as that object; multiple items are wrapped as a playlist.
+func (c *Command) RunWithInfo(ctx context.Context, info []*ExtractedInfo) (*Result, error) {
+	var payload any
+	switch len(info) {
+	case 0:
+		return nil, errors.New("no extracted info")
+	case 1:
+		payload = info[0]
+	default:
+		payload = &ExtractedInfo{Type: ExtractedTypePlaylist, Entries: info}
+	}
+
+	data, err := json.Marshal(payload)
+	if err != nil {
+		return nil, fmt.Errorf("encode load-info-json: %w", err)
+	}
+
+	cc := c.Clone().LoadInfoJSON("-")
+	return cc.run(ctx, bytes.NewReader(data))
 }
 
 type Flag struct {

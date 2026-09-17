@@ -214,6 +214,21 @@ func TestFlagConfigUnmarshalJSONWithWarningsInvalidSlicePreservesValue(t *testin
 	}
 }
 
+func TestFlagConfigUnmarshalJSONWithWarningsEmptyRoot(t *testing.T) {
+	t.Parallel()
+
+	for _, data := range [][]byte{nil, {}, []byte(""), []byte("   ")} {
+		var config FlagConfig
+		warnings, err := config.UnmarshalJSONWithWarnings(data)
+		if err != nil {
+			t.Fatalf("UnmarshalJSONWithWarnings(%q) err = %v", data, err)
+		}
+		if len(warnings) != 0 {
+			t.Fatalf("warnings = %v, want none", warnings)
+		}
+	}
+}
+
 func TestFlagConfigUnmarshalJSONWithWarningsMalformedRoot(t *testing.T) {
 	t.Parallel()
 

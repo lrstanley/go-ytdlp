@@ -5,6 +5,7 @@
 package ytdlp
 
 import (
+	"bytes"
 	"encoding/json/jsontext"
 	"encoding/json/v2"
 	"errors"
@@ -61,12 +62,21 @@ type flagConfigFieldInfo struct {
 // UnmarshalJSONWithWarnings decodes a [FlagConfig] while retaining valid
 // members and returning warnings for unknown or incompatible members.
 //
+// Nil, empty, and whitespace-only input are treated as {}. A non-object
+// root (array, null, or malformed JSON) is a hard error; the receiver is
+// not modified.
+//
 // The receiver is updated in place. Members absent from data, and members
 // that cannot be decoded, retain their existing values. Unknown members are
 // reported but are not retained.
 func (f *FlagConfig) UnmarshalJSONWithWarnings(data []byte, options ...FlagUnmarshalOption) ([]FlagWarning, error) {
 	if f == nil {
 		return nil, errors.New("cannot decode FlagConfig into a nil receiver")
+	}
+
+	data = bytes.TrimSpace(data)
+	if len(data) == 0 {
+		data = []byte("{}")
 	}
 
 	if jsontext.Value(data).Kind() != jsontext.KindBeginObject {

@@ -93,21 +93,21 @@ func (h *progressHandler) parse(raw jsontext.Value) {
 		}
 	}
 
-	key := update.Key()
+	update.ID = update.generateID()
 
 	var ok bool
 
 	h.mu.Lock()
-	update.Started, ok = h.started[key]
+	update.Started, ok = h.started[update.ID]
 	if !ok {
 		update.Started = time.Now()
-		h.started[key] = update.Started
+		h.started[update.ID] = update.Started
 	}
 
-	update.Finished, ok = h.finished[key]
+	update.Finished, ok = h.finished[update.ID]
 	if !ok && update.Status.IsCompletedType() {
 		update.Finished = time.Now()
-		h.finished[key] = update.Finished
+		h.finished[update.ID] = update.Finished
 	}
 	h.mu.Unlock()
 
@@ -130,7 +130,7 @@ const (
 	ProgressStatusStarting ProgressStatus = "starting"
 	// ProgressStatusDownloading is reported while a file is being written.
 	// Separate formats (for example video then audio) each get their own
-	// downloading updates; compare [ProgressUpdate.Key] or Filename.
+	// downloading updates; compare [ProgressUpdate.ID], not Filename.
 	ProgressStatusDownloading ProgressStatus = "downloading"
 	// ProgressStatusPostProcessing is reported for yt-dlp post-processor
 	// events (merge, recode, metadata, and similar). yt-dlp emits
@@ -145,8 +145,9 @@ const (
 	ProgressStatusFinished ProgressStatus = "finished"
 )
 
-// ProgressCallbackFunc is a callback function that is called when (if) we receive
-// progress updates from yt-dlp.
+// ProgressCallbackFunc is invoked for each yt-dlp progress event.
+// It runs synchronously inside yt-dlp's stdout Write and must not block:
+// a slow callback stalls yt-dlp. It cannot fail the run.
 type ProgressCallbackFunc func(update ProgressUpdate)
 
 // ProgressUpdate is a point-in-time snapshot of the download progress.
@@ -164,7 +165,7 @@ type ProgressUpdate struct {
 	TotalBytes int `json:"total_bytes"`
 	// DownloadedBytes is how many bytes of the current file have been
 	// written. These values are not monotonic across a whole run; use
-	// [ProgressUpdate.Key] or Filename to tell files apart.
+	// [ProgressUpdate.ID], not Filename, to tell files apart.
 	DownloadedBytes int `json:"downloaded_bytes"`
 	// FragmentIndex is the index of the current fragment being downloaded.
 	FragmentIndex int `json:"fragment_index,omitempty"`
@@ -173,8 +174,14 @@ type ProgressUpdate struct {
 
 	// Filename is the file currently being downloaded or processed. This is
 	// often a temporary per-format path (for example video.f137.mp4, then
-	// audio.f140.m4a), not the final merged destination.
+	// audio.f140.m4a), not the final merged destination. Filename alone is
+	// not a stable identity; use [ProgressUpdate.ID].
 	Filename string `json:"filename"`
+	// ID is the stable identity for this update: filename, extractor id,
+	// playlist id, playlist index, and post-processor name. Persist and
+	// compare ID, not Filename; video, audio, and post-processors of the
+	// same item can share similar names.
+	ID string `json:"id,omitempty"`
 	// PostProcessor is the yt-dlp post-processor name when Status is
 	// [ProgressStatusPostProcessing] (for example Merger or
 	// FFmpegVideoConvertor). Empty during downloads.
@@ -187,11 +194,14 @@ type ProgressUpdate struct {
 	Finished time.Time `json:"finished,omitempty"`
 }
 
-// Key returns a stable identifier for the file or post-processor this
-// update belongs to. Progress callbacks receive separate updates for each
-// downloaded format and each post-processor; compare keys to detect phase
-// changes rather than assuming TotalBytes is for the whole job.
-func (p *ProgressUpdate) Key() string {
+// Key returns [ProgressUpdate.ID].
+//
+// Deprecated: Use [ProgressUpdate.ID] instead.
+//
+//go:fix inline
+func (p *ProgressUpdate) Key() string { return p.ID }
+
+func (p *ProgressUpdate) generateID() string {
 	unique := []string{p.Filename}
 
 	if p.Info != nil {
@@ -251,8 +261,10 @@ func (p *ProgressUpdate) PercentString() string {
 
 // ProgressFunc registers a callback for yt-dlp progress events. yt-dlp
 // reports progress per file (and separately for post-processing), not as
-// one aggregate for the final output. Use [ProgressUpdate.Key], Filename,
-// and [ProgressUpdate.PostProcessor] to distinguish phases.
+// one aggregate for the final output. Use [ProgressUpdate.ID], not
+// Filename alone, to identify a file or post-processor.
+//
+// The callback runs on the stdout pump and must not block.
 //
 // ProgressFunc also sets [Command.ProgressTemplate] twice (download and
 // postprocess) so both kinds of events are emitted.
