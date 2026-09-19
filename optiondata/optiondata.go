@@ -6,10 +6,72 @@
 // package are generated via cmd/codegen, and may change at any time.
 package optiondata
 
+import (
+	"encoding/json"
+	"fmt"
+	"strings"
+)
+
 import _ "embed"
 
 //go:embed json-schema.json
 var JSONSchema []byte
+
+// OpenAPIComponents returns the schemas from [JSONSchema] in the format
+// expected by OpenAPI 3.1 components.schemas.
+//
+// JSON Schema definitions are moved from $defs to the returned map, and
+// references to those definitions are rewritten from #/$defs/ to
+// #/components/schemas/. The conversion is performed on parsed JSON values,
+// rather than by replacing text, so unrelated strings containing that text
+// are left unchanged.
+func OpenAPIComponents() (map[string]json.RawMessage, error) {
+	var document struct {
+		Definitions map[string]json.RawMessage `json:"$defs"`
+	}
+	if err := json.Unmarshal(JSONSchema, &document); err != nil {
+		return nil, fmt.Errorf("decode JSON schema: %w", err)
+	}
+
+	if document.Definitions == nil {
+		return nil, fmt.Errorf("decode JSON schema: missing $defs")
+	}
+
+	components := make(map[string]json.RawMessage, len(document.Definitions))
+	for name, raw := range document.Definitions {
+		var value any
+		if err := json.Unmarshal(raw, &value); err != nil {
+			return nil, fmt.Errorf("decode JSON schema definition %q: %w", name, err)
+		}
+
+		rewriteOpenAPIRefs(value)
+		converted, err := json.Marshal(value)
+		if err != nil {
+			return nil, fmt.Errorf("encode OpenAPI schema %q: %w", name, err)
+		}
+		components[name] = converted
+	}
+
+	return components, nil
+}
+
+func rewriteOpenAPIRefs(value any) {
+	switch value := value.(type) {
+	case map[string]any:
+		if ref, ok := value["$ref"].(string); ok {
+			if suffix, found := strings.CutPrefix(ref, "#/$defs/"); found {
+				value["$ref"] = "#/components/schemas/" + suffix
+			}
+		}
+		for _, child := range value {
+			rewriteOpenAPIRefs(child)
+		}
+	case []any:
+		for _, child := range value {
+			rewriteOpenAPIRefs(child)
+		}
+	}
+}
 
 // OptionGroup is a group of options (e.g. general, verbosity, etc).
 type OptionGroup struct {

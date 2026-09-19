@@ -165,6 +165,8 @@ func cleanJSONValue(v reflect.Value) {
 	}
 }
 
+// ExtractedInfo contains metadata returned by yt-dlp for a video, playlist, or
+// other extracted result.
 type ExtractedInfo struct {
 	// ExtractedFormat fields which can also be returned for ExtractedInfo.
 	*ExtractedFormat

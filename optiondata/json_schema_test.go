@@ -28,10 +28,34 @@ func TestJSONSchemaOptionDataDefinitions(t *testing.T) {
 	if !ok {
 		t.Fatal("$defs is not an object")
 	}
-	for _, name := range []string{"Option", "OptionGroup", "OptionURL"} {
+	for _, name := range []string{
+		"ExtractedChapterData",
+		"ExtractedFormat",
+		"ExtractedInfo",
+		"ExtractedVideoComment",
+		"Option",
+		"OptionGroup",
+		"OptionURL",
+	} {
 		if _, found := definitions[name]; !found {
 			t.Errorf("$defs does not contain %q", name)
 		}
+	}
+
+	extractedInfo := schemaDefinition(t, definitions, "ExtractedInfo")
+	if got := extractedInfo["type"]; got != "object" {
+		t.Errorf("ExtractedInfo type = %v, want object", got)
+	}
+	if got, ok := extractedInfo["description"].(string); !ok || got == "" {
+		t.Errorf("ExtractedInfo description = %v, want non-empty string", extractedInfo["description"])
+	}
+	extractedInfoProperties := schemaProperties(t, extractedInfo)
+	title, ok := extractedInfoProperties["title"].(map[string]any)
+	if !ok {
+		t.Fatal("ExtractedInfo title is not an object")
+	}
+	if got := title["description"]; got == nil {
+		t.Error("ExtractedInfo title is missing a description")
 	}
 
 	flagConfig := schemaDefinition(t, definitions, "FlagConfig")
@@ -164,6 +188,36 @@ func TestJSONSchemaOptionDataDefinitions(t *testing.T) {
 		}
 		if _, found := definitions[target]; !found {
 			t.Fatalf("unresolved reference %q", ref)
+		}
+	}
+}
+
+func TestOpenAPIComponents(t *testing.T) {
+	t.Parallel()
+
+	components, err := OpenAPIComponents()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for _, name := range []string{"FlagConfig", "Option", "OptionGroup", "OptionURL"} {
+		if _, found := components[name]; !found {
+			t.Errorf("OpenAPI components does not contain %q", name)
+		}
+	}
+
+	for name, raw := range components {
+		var schema any
+		if err := json.Unmarshal(raw, &schema); err != nil {
+			t.Fatalf("component %q is not valid JSON: %v", name, err)
+		}
+
+		var refs []string
+		collectSchemaRefs(schema, &refs)
+		for _, ref := range refs {
+			if !strings.HasPrefix(ref, "#/components/schemas/") {
+				t.Errorf("component %q has unconverted reference %q", name, ref)
+			}
 		}
 	}
 }

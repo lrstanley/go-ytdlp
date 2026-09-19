@@ -36,13 +36,38 @@ func main() {
 		},
 	)))
 
+	if len(os.Args) != 2 {
+		slog.Error("usage: gen-jsonschema output-directory")
+		os.Exit(1)
+	}
+	outputDir, err := filepath.Abs(os.Args[1])
+	if err != nil {
+		slog.Error("failed to resolve output directory", "error", err)
+		os.Exit(1)
+	}
+	repoRoot, err := filepath.Abs("../..")
+	if err != nil {
+		slog.Error("failed to resolve repository root", "error", err)
+		os.Exit(1)
+	}
+	if err := os.Chdir(repoRoot); err != nil {
+		slog.Error("failed to change to repository root", "error", err)
+		os.Exit(1)
+	}
+
 	ref := jsonschema.Reflector{
 		AllowAdditionalProperties: false,
+	}
+	if err := ref.AddGoComments("github.com/lrstanley/go-ytdlp", ".", jsonschema.WithFullComment()); err != nil {
+		slog.Error("failed to load go comments", "error", err)
+		os.Exit(1)
 	}
 
 	s := ref.Reflect(&ytdlp.FlagConfig{})
 	optionDataSchema := ref.Reflect(&optiondata.OptionGroup{})
 	maps.Copy(s.Definitions, optionDataSchema.Definitions)
+	extractedInfoSchema := ref.Reflect(&ytdlp.ExtractedInfo{})
+	maps.Copy(s.Definitions, extractedInfoSchema.Definitions)
 
 	for name, def := range s.Definitions {
 		if def.Type != "object" {
@@ -120,7 +145,7 @@ func main() {
 		}
 	}
 
-	f, err := os.OpenFile(filepath.Join(os.Args[1], "json-schema.json"), os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o600)
+	f, err := os.OpenFile(filepath.Join(outputDir, "json-schema.json"), os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o600)
 	if err != nil {
 		slog.Error("failed to open file", "error", err)
 		os.Exit(1)
