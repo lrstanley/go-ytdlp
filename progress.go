@@ -8,6 +8,7 @@ import (
 	"encoding/json/jsontext"
 	"encoding/json/v2"
 	"fmt"
+	"reflect"
 	"strconv"
 	"strings"
 	"sync"
@@ -61,7 +62,7 @@ func (h *progressHandler) parse(raw jsontext.Value) {
 		return
 	}
 
-	cleanJSON(data)
+	cleanJSONValue(reflect.ValueOf(data))
 
 	status := data.Progress.Status
 	if data.Progress.PostProcessor != "" && status != ProgressStatusError {

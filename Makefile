@@ -38,6 +38,9 @@ patch:
 test: fetch
 	GORACE='exitcode=1 halt_on_error=1' go test -v -race -timeout 5m -count 3 ./...
 
+test-e2e:
+	go test -tags=e2e -run '^TestExtractedInfoE2E' -v -timeout 15m ./...
+
 generate: license fetch patch
 	rm -rf \
 		*.gen.go *.gen_test.go \

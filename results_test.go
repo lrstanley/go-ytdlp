@@ -11,6 +11,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -44,7 +45,7 @@ func TestCleanJSON(t *testing.T) {
 		Items:    []*nested{{Name: "none", Empty: new("none")}},
 	}
 
-	cleanJSON(value)
+	cleanJSONValue(reflect.ValueOf(value))
 
 	if value.Name != "" {
 		t.Errorf("name = %q, want empty", value.Name)
@@ -289,7 +290,10 @@ func TestParseExtractedInfo_requestedSubtitles(t *testing.T) {
 	if !ok {
 		t.Fatal("expected en requested subtitle")
 	}
-	if got := subtitle.URL; got != "https://example.com/en.srt" {
+	if subtitle.URL == nil {
+		t.Fatal("requested subtitle URL is nil")
+	}
+	if got := *subtitle.URL; got != "https://example.com/en.srt" {
 		t.Errorf("requested subtitle URL = %q, want https://example.com/en.srt", got)
 	}
 

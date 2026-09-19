@@ -92,9 +92,10 @@ func (r *Result) GetExtractedInfo() (info []*ExtractedInfo, err error) {
 	return info, nil
 }
 
-// Extractor data fields:
-//   - https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/extractor/common.py
-//   - https://github.com/yt-dlp/yt-dlp/tree/master?tab=readme-ov-file#output-template
+// Extractor data fields are defined by yt-dlp's InfoExtractor schema:
+//   - https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/extractor/common.py#L119-L489
+// Additional generated fields are documented in yt-dlp's output template:
+//   - https://github.com/yt-dlp/yt-dlp/blob/master/README.md#output-template
 
 // ParseExtractedInfo parses the extracted info from msg. ParseExtractedInfo will
 // also clean the returned results to remove some ytdlp-isims, such as "none" for
@@ -107,15 +108,8 @@ func ParseExtractedInfo(msg *jsontext.Value) (info *ExtractedInfo, err error) {
 		return nil, err
 	}
 
-	cleanJSON(info)
+	cleanJSONValue(reflect.ValueOf(info))
 	return info, nil
-}
-
-// cleanJSON uses reflect to loop through all input fields, and if the field is a
-// string or pointer to a string, and the value is "none" or empty, set the value
-// to empty/nil.
-func cleanJSON(input any) {
-	cleanJSONValue(reflect.ValueOf(input))
 }
 
 func cleanJSONValue(v reflect.Value) {
@@ -175,7 +169,14 @@ type ExtractedInfo struct {
 	// ExtractedFormat fields which can also be returned for ExtractedInfo.
 	*ExtractedFormat
 
+	// source is the original JSON document.
 	source *jsontext.Value `json:"-"`
+
+	// yt-dlp documents several metadata values as integers, but does not
+	// enforce that type: its numeric-field sanitizer preserves both int and
+	// float values. Keep uncertain extractor-provided numeric values as float64
+	// so parsing remains lossless. See:
+	// https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/YoutubeDL.py#L2853-L2859
 
 	// Type is the type of the video or returned result.
 	Type ExtractedType `json:"_type"`
@@ -197,7 +198,9 @@ type ExtractedInfo struct {
 
 	// Formats contains a list of each format available, ordered from worst to best
 	// quality.
-	Formats          []*ExtractedFormat `json:"formats"`
+	Formats []*ExtractedFormat `json:"formats"`
+
+	// RequestedFormats contains the formats selected for download.
 	RequestedFormats []*ExtractedFormat `json:"requested_formats,omitempty"`
 
 	// URL is the final video URL.
@@ -214,7 +217,8 @@ type ExtractedInfo struct {
 	// Extension is the video filename extension.
 	Extension string `json:"ext"`
 
-	// Format is the video format. Defaults to [ExtractorInfo.Extension] (used for get-format functionality).
+	// Format is the video format. Defaults to [ExtractedInfo.Extension] (used for
+	// get-format functionality).
 	Format string `json:"format"`
 
 	// PlayerURL is the SWF Player URL (used for rtmpdump).
@@ -247,7 +251,12 @@ type ExtractedInfo struct {
 	License *string `json:"license,omitempty"`
 
 	// Creator contains the creator of the video.
+	//
+	// Deprecated: use Creators instead.
 	Creator *string `json:"creator,omitempty"`
+
+	// Creators contains the creators of the video.
+	Creators []string `json:"creators,omitempty"`
 
 	// Timestamp contains the UNIX timestamp of the moment the video was uploaded.
 	Timestamp *float64 `json:"timestamp,omitempty"`
@@ -263,6 +272,10 @@ type ExtractedInfo struct {
 	// ReleaseDate contains the date (YYYYMMDD) when the video was released in UTC.
 	// If not explicitly set, calculated from ReleaseTimestamp.
 	ReleaseDate *string `json:"release_date,omitempty"`
+
+	// ReleaseYear contains the year (YYYY) when the video or album was released.
+	// It is used when no exact release date is known.
+	ReleaseYear *int `json:"release_year,omitempty"`
 
 	// ModifiedTimestamp contains the UNIX timestamp of the moment the video was
 	// last modified.
@@ -299,7 +312,8 @@ type ExtractedInfo struct {
 	Location *string `json:"location,omitempty"`
 
 	// Subtitles contains the available subtitles, where the key is the language
-	// code, and the value is a list of subtitle formats.
+	// code and the value is a list of subtitle formats. Each format has an
+	// extension and either a URL or inline data.
 	Subtitles map[string][]*ExtractedSubtitle `json:"subtitles,omitempty"`
 
 	// RequestedSubtitles contains the subtitles selected for download, where the
@@ -321,6 +335,9 @@ type ExtractedInfo struct {
 	// on the platform.
 	ConcurrentViewCount *float64 `json:"concurrent_view_count,omitempty"`
 
+	// SaveCount contains the number of times the video has been saved or bookmarked.
+	SaveCount *float64 `json:"save_count,omitempty"`
+
 	// LikeCount contains the number of positive ratings of the video.
 	LikeCount *float64 `json:"like_count,omitempty"`
 
@@ -330,7 +347,7 @@ type ExtractedInfo struct {
 	// RepostCount contains the number of reposts of the video.
 	RepostCount *float64 `json:"repost_count,omitempty"`
 
-	// AverageRating contains the average rating give by users, the scale used
+	// AverageRating contains the average rating given by users, the scale used
 	// depends on the webpage.
 	AverageRating *float64 `json:"average_rating,omitempty"`
 
@@ -393,6 +410,10 @@ type ExtractedInfo struct {
 
 	// Availability is under what condition the video is available.
 	Availability *ExtractedAvailability `json:"availability,omitempty"`
+
+	// MediaType is the type of media as classified by the site, such as
+	// "episode", "clip", or "trailer".
+	MediaType *string `json:"media_type,omitempty"`
 
 	//
 	// Chapter data available when the video belongs to some logical chapter or
@@ -474,10 +495,23 @@ type ExtractedInfo struct {
 	// TrackID is the ID of the track (useful in case of custom indexing, e.g. 6.iii).
 	TrackID *string `json:"track_id,omitempty"`
 
-	// Artist is the artist(s) of the track.
+	// Artists contains the artist(s) of the track.
+	Artists []string `json:"artists,omitempty"`
+
+	// Artist is the artist(s) of the track, comma-separated.
+	//
+	// Deprecated: use Artists instead.
 	Artist *string `json:"artist,omitempty"`
 
-	// Genre is the genre(s) of the track.
+	// Composers contains the composer(s) of the piece.
+	Composers []string `json:"composers,omitempty"`
+
+	// Genres contains the genre(s) of the track.
+	Genres []string `json:"genres,omitempty"`
+
+	// Genre is the genre(s) of the track, comma-separated.
+	//
+	// Deprecated: use Genres instead.
 	Genre *string `json:"genre,omitempty"`
 
 	// Album is the title of the album the track belongs to.
@@ -486,18 +520,21 @@ type ExtractedInfo struct {
 	// AlbumType is the type of the album (e.g. "Demo", "Full-length", "Split", "Compilation", etc).
 	AlbumType *string `json:"album_type,omitempty"`
 
-	// AlbumArtist is the list of all artists appeared on the album (e.g.
-	// "Ash Borer / Fell Voices" or "Various Artists", useful for splits
-	// and compilations).
+	// AlbumArtists contains all artists who appeared on the album. It is useful
+	// for splits and compilations.
+	AlbumArtists []string `json:"album_artists,omitempty"`
+
+	// AlbumArtist contains all artists who appeared on the album, comma-separated.
+	//
+	// Deprecated: use AlbumArtists instead.
 	AlbumArtist *string `json:"album_artist,omitempty"`
 
 	// DiscNumber is the number of the disc or other physical medium the track belongs to.
 	DiscNumber *float64 `json:"disc_number,omitempty"`
 
-	// ReleaseYear is the year (YYYY) when the album was released.
-	ReleaseYear *int `json:"release_year,omitempty"`
-
-	// Composer is the composer of the piece.
+	// Composer is the composer(s) of the piece, comma-separated.
+	//
+	// Deprecated: use Composers instead.
 	Composer *string `json:"composer,omitempty"`
 
 	//
@@ -538,16 +575,18 @@ type ExtractedInfo struct {
 	WebpageURLDomain *string `json:"webpage_url_domain,omitempty"`
 
 	// Autonumber is a five-digit number that will be increased with each download,
-	// starting at zero.
-	Autonumber float64 `json:"autonumber"`
+	// starting at the configured autonumber start (zero by default).
+	Autonumber int `json:"autonumber"`
 
-	// Epoch is the unix epoch when creating the file.
+	// Epoch is the Unix epoch when information extraction was completed.
 	Epoch *float64 `json:"epoch,omitempty"`
 
-	// Playlist entries if _type is playlist
+	// Entries contains playlist or multi-video entries when [ExtractedInfo.Type]
+	// is [ExtractedTypePlaylist] or [ExtractedTypeMultiVideo].
 	Entries []*ExtractedInfo `json:"entries"`
 }
 
+// ExtractedType identifies the type of an extracted result.
 type ExtractedType string
 
 const (
@@ -560,6 +599,7 @@ const (
 	ExtractedTypeURLTransparent ExtractedType = "url_transparent"
 )
 
+// ExtractedLiveStatus describes the live-stream state of a video.
 type ExtractedLiveStatus string
 
 const (
@@ -570,6 +610,7 @@ const (
 	ExtractedLiveStatusPostLive   ExtractedLiveStatus = "post_live" // Was live, but VOD is not yet processed.
 )
 
+// ExtractedAvailability describes the access condition of a video.
 type ExtractedAvailability string
 
 const (
@@ -581,15 +622,27 @@ const (
 	ExtractedAvailabilityPublic         ExtractedAvailability = "public"
 )
 
+// ExtractedHLSAES contains HLS AES-128 decryption information used by the
+// native HLS downloader.
+type ExtractedHLSAES struct {
+	// URI is the URI from which the decryption key is downloaded.
+	URI *string `json:"uri,omitempty"`
+
+	// Key is the hexadecimal key used to decrypt fragments. When set, any key
+	// URI is ignored.
+	Key *string `json:"key,omitempty"`
+
+	// IV is the hexadecimal initialization vector used to decrypt fragments.
+	IV *string `json:"iv,omitempty"`
+}
+
 // ExtractedFormat is format information returned by yt-dlp.
 //
 // Some intentionally excluded fields:
-//   - request_data (think this is internal).
-//   - manifest_stream_number (internal use only).
-//   - hls_aes (no sample data to use to understand format).
+//   - ws (not JSON-serializable).
 //   - downloader_options (internal use only).
 type ExtractedFormat struct {
-	// URL is the mandatory URL representing the media:
+	// URL is the URL representing the media:
 	//   - plain file media: HTTP URL of this file.
 	//   - RTMP: RTMP URL.
 	//   - HLS: URL of the M3U8 media playlist.
@@ -604,8 +657,13 @@ type ExtractedFormat struct {
 	//   - MSS: URL of the ISM manifest.
 	URL string `json:"url"`
 
-	// RequestData to send in POST request to the URL.
+	// RequestData is the data to send in a POST request to the URL.
 	RequestData *string `json:"request_data,omitempty"`
+
+	// ManifestStreamNumber is the index of the stream in the manifest file.
+	//
+	// This field is for internal use by yt-dlp.
+	ManifestStreamNumber *int `json:"manifest_stream_number,omitempty"`
 
 	// ManifestURL is the URL of the manifest file in case of fragmented media:
 	//   - HLS: URL of the M3U8 master playlist.
@@ -642,13 +700,17 @@ type ExtractedFormat struct {
 	// calculated from width and height.
 	Resolution *string `json:"resolution,omitempty"`
 
+	// DynamicRange is the dynamic range of the video, such as "SDR", "HDR10",
+	// "HDR10+", "HDR12", "HLG", or "DV".
+	DynamicRange *string `json:"dynamic_range,omitempty"`
+
 	// TBR is the average bitrate of audio and video in KBit/s.
 	TBR *float64 `json:"tbr,omitempty"`
 
 	// ABR is the average audio bitrate in KBit/s.
 	ABR *float64 `json:"abr,omitempty"`
 
-	// ACodev is the name of the audio codec in use.
+	// ACodec is the name of the audio codec in use.
 	ACodec *string `json:"acodec,omitempty"`
 
 	// ASR is the audio sampling rate in Hertz.
@@ -657,13 +719,13 @@ type ExtractedFormat struct {
 	// AudioChannels contains the number of audio channels.
 	AudioChannels *float64 `json:"audio_channels,omitempty"`
 
-	// Average video bitrate in KBit/s.
+	// VBR is the average video bitrate in KBit/s.
 	VBR *float64 `json:"vbr,omitempty"`
 
 	// FPS is the framerate per second.
 	FPS *float64 `json:"fps,omitempty"`
 
-	// VCodev is the name of the video codec in use.
+	// VCodec is the name of the video codec in use.
 	VCodec *string `json:"vcodec,omitempty"`
 
 	// Container is the name of the container format.
@@ -692,6 +754,11 @@ type ExtractedFormat struct {
 	// considered by a client. Otherwise both path and [ExtractedFormat.FragmentBaseURL]
 	// must be present.
 	Fragments []*ExtractedFragment `json:"fragments,omitempty"`
+
+	// HLSMediaPlaylistData is the M3U8 media playlist data when it must be
+	// modified during extraction and the native HLS downloader should bypass
+	// requesting the URL.
+	HLSMediaPlaylistData *string `json:"hls_media_playlist_data,omitempty"`
 
 	// IsFromStart is true if it's a live format that can be downloaded from the start.
 	IsFromStart *bool `json:"is_from_start,omitempty"`
@@ -740,9 +807,45 @@ type ExtractedFormat struct {
 	HasDRM any `json:"has_drm,omitempty"`
 
 	// ExtraParamToSegmentURL is a query string to append to each fragment's URL,
-	// or to update each existing query string with. Only applied by the native
-	// HLS/DASH downloaders.
+	// or to update each existing query string with. For HLS AES-128 streams, it
+	// is also applied to the key URL unless [ExtractedFormat.ExtraParamToKeyURL]
+	// is set. Only applied by the native HLS/DASH downloaders.
 	ExtraParamToSegmentURL *string `json:"extra_param_to_segment_url,omitempty"`
+
+	// ExtraParamToKeyURL is a query string to append to the URL of the format's
+	// HLS AES-128 decryption key. Only applied by the native HLS downloader.
+	ExtraParamToKeyURL *string `json:"extra_param_to_key_url,omitempty"`
+
+	// HLSAES contains HLS AES-128 decryption information used by the native HLS
+	// downloader to override values in the media playlist.
+	HLSAES *ExtractedHLSAES `json:"hls_aes,omitempty"`
+
+	// Impersonate identifies the browser client or target to impersonate when
+	// requesting this format. In sanitized yt-dlp JSON, this is a bool, string,
+	// or list of strings; ImpersonateTarget objects are serialized as strings.
+	Impersonate any `json:"impersonate,omitempty"`
+
+	// AvailableAt is the Unix timestamp when this format will be available to download.
+	AvailableAt *float64 `json:"available_at,omitempty"`
+
+	// HTTPChunkSize is the chunk size for HTTP downloads, in bytes.
+	HTTPChunkSize *int `json:"http_chunk_size,omitempty"`
+
+	// FFmpegArgs contains extra arguments for the ffmpeg downloader input.
+	FFmpegArgs []string `json:"ffmpeg_args,omitempty"`
+
+	// FFmpegArgsOut contains extra arguments for the ffmpeg downloader output.
+	FFmpegArgsOut []string `json:"ffmpeg_args_out,omitempty"`
+
+	// WSURL is the WebSocket URL used by the NiconicoLive downloader.
+	WSURL *string `json:"ws_url,omitempty"`
+
+	// MaxQuality is the maximum stream quality used by the NiconicoLive downloader.
+	MaxQuality *string `json:"max_quality,omitempty"`
+
+	// IsDASHPeriods is true when the format was created by merging multiple DASH
+	// periods.
+	IsDASHPeriods *bool `json:"is_dash_periods,omitempty"`
 
 	//
 	// Storyboard data available when the media is a storyboard.
@@ -786,25 +889,31 @@ type ExtractedFormat struct {
 	RTMPRealTime *bool `json:"rtmp_real_time,omitempty"`
 }
 
+// ExtractedFragment describes one fragment of fragmented media.
 type ExtractedFragment struct {
-	// URL of the fragment.
-	URL string `json:"url"`
+	// URL is the URL of the fragment. Either URL or Path is present.
+	URL *string `json:"url,omitempty"`
 
-	// Path of the fragment, relative to [ExtractedFormat.FragmentBaseURL].
+	// Path is the path of the fragment, relative to [ExtractedFormat.FragmentBaseURL].
 	Path *string `json:"path,omitempty"`
 
-	// Duration of the fragment in seconds.
-	Duration float64 `json:"duration"`
+	// Duration is the optional duration of the fragment in seconds.
+	Duration *float64 `json:"duration,omitempty"`
 
-	// Filesize of the fragment in bytes.
+	// FileSize is the size of the fragment in bytes.
 	FileSize *int `json:"filesize,omitempty"`
 }
 
+// ExtractedSubtitle describes one available subtitle format.
 type ExtractedSubtitle struct {
-	// URL of the subtitle file.
-	URL string `json:"url"`
+	// Extension is the subtitle file extension. It is calculated from URL when
+	// missing.
+	Extension *string `json:"ext,omitempty"`
 
-	// Data contains the subtitle file contents.
+	// URL is the URL of the subtitle file. Either URL or Data is present.
+	URL *string `json:"url,omitempty"`
+
+	// Data contains the subtitle file contents. Either Data or URL is present.
 	Data *string `json:"data,omitempty"`
 
 	// Name or description of the subtitle.
@@ -812,14 +921,23 @@ type ExtractedSubtitle struct {
 
 	// HTTPHeaders are additional HTTP headers to be sent with the request.
 	HTTPHeaders map[string]string `json:"http_headers,omitempty"`
+
+	// Impersonate identifies the browser client or target to impersonate when
+	// requesting this subtitle. In sanitized yt-dlp JSON, this is a bool, string,
+	// or list of strings; ImpersonateTarget objects are serialized as strings.
+	Impersonate any `json:"impersonate,omitempty"`
 }
 
+// ExtractedThumbnail describes one available thumbnail format.
 type ExtractedThumbnail struct {
-	// ID is the thumbnail format ID
+	// ID is the thumbnail format ID.
 	ID *string `json:"id,omitempty"`
 
 	// URL of the thumbnail.
 	URL string `json:"url"`
+
+	// Extension is the actual image extension, if it is not given in URL.
+	Extension *string `json:"ext,omitempty"`
 
 	// Preference is the quality ordering of the image.
 	Preference *int `json:"preference,omitempty"`
@@ -840,6 +958,7 @@ type ExtractedThumbnail struct {
 	HTTPHeaders map[string]string `json:"http_headers,omitempty"`
 }
 
+// ExtractedVersion contains the yt-dlp version metadata included in results.
 type ExtractedVersion struct {
 	// CurrentGitHead is the git commit hash of the yt-dlp install that returned
 	// this data.
@@ -856,6 +975,7 @@ type ExtractedVersion struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// ExtractedChapterData describes one video chapter.
 type ExtractedChapterData struct {
 	// StartTime of the chapter in seconds.
 	StartTime *float64 `json:"start_time,omitempty"`
@@ -867,6 +987,7 @@ type ExtractedChapterData struct {
 	Title *string `json:"title,omitempty"`
 }
 
+// ExtractedHeatmapData describes one point in a video's heatmap.
 type ExtractedHeatmapData struct {
 	// StartTime of the data point in seconds.
 	StartTime *float64 `json:"start_time,omitempty"`
@@ -878,6 +999,7 @@ type ExtractedHeatmapData struct {
 	Value *float64 `json:"value,omitempty"`
 }
 
+// ExtractedVideoComment describes one video comment.
 type ExtractedVideoComment struct {
 	// Author is the human-readable name of the comment author.
 	Author *string `json:"author,omitempty"`
@@ -924,4 +1046,10 @@ type ExtractedVideoComment struct {
 
 	// IsPinned is true if the comment is pinned to the top of the comments.
 	IsPinned *bool `json:"is_pinned,omitempty"`
+
+	// StartTime is the time in seconds when the comment should be displayed.
+	StartTime *float64 `json:"start_time,omitempty"`
+
+	// EndTime is the time in seconds when the comment should stop being displayed.
+	EndTime *float64 `json:"end_time,omitempty"`
 }
