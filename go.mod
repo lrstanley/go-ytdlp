@@ -4,7 +4,7 @@ go 1.27
 
 require (
 	github.com/ProtonMail/go-crypto v1.4.1
-	github.com/ulikunitz/xz v0.5.16
+	github.com/ulikunitz/xz v0.5.17
 )
 
 require (
