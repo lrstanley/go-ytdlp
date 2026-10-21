@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2026.08.19"
+	Version = "2026.10.21"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -658,8 +658,10 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Kenh14Video"},
 	{Name: "khanacademy"},
 	{Name: "khanacademy:unit"},
-	{Name: "kick:clips", AgeLimit: 18},
-	{Name: "kick:live", AgeLimit: 18},
+	{Name: "kick:clip", AgeLimit: 18},
+	{Name: "kick:clips"},
+	{Name: "kick:live"},
+	{Name: "kick:videos"},
 	{Name: "kick:vod", AgeLimit: 18},
 	{Name: "Kicker"},
 	{Name: "KickStarter"},
@@ -918,6 +920,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "nhl.com"},
 	{Name: "nick.com"},
 	{Name: "niconico", Description: "[niconico] ニコニコ動画"},
+	{Name: "niconico:channel", Description: "[niconico]"},
 	{Name: "niconico:history", Description: "NicoNico user history or likes. Requires cookies."},
 	{Name: "niconico:live", Description: "[niconico] ニコニコ生放送", AgeLimit: 18},
 	{Name: "niconico:playlist"},
@@ -1468,7 +1471,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "Tube8", Description: "(Currently broken)", AgeLimit: 18},
 	{Name: "TubeTuGraz", Description: "[tubetugraz] tube.tugraz.at"},
 	{Name: "TubeTuGrazSeries", Description: "[tubetugraz]"},
-	{Name: "tubitv", Description: "[tubitv]"},
+	{Name: "tubitv"},
 	{Name: "tubitv:series"},
 	{Name: "Tumblr", Description: "[tumblr]"},
 	{Name: "tunein:embed"},
