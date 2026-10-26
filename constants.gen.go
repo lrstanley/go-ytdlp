@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2026.10.21"
+	Version = "2026.10.26"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
