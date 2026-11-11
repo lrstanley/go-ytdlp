@@ -33,9 +33,6 @@
   <a href="https://pkg.go.dev/github.com/lrstanley/go-ytdlp">
     <img title="Go Documentation" src="https://pkg.go.dev/badge/github.com/lrstanley/go-ytdlp?style=flat-square">
   </a>
-  <a href="https://goreportcard.com/report/github.com/lrstanley/go-ytdlp">
-    <img title="Go Report Card" src="https://goreportcard.com/badge/github.com/lrstanley/go-ytdlp?style=flat-square">
-  </a>
 </p>
 <p align="center">
   <a href="https://github.com/lrstanley/go-ytdlp/issues?q=is:open+is:issue+label:bug">
