@@ -87,28 +87,12 @@ Below are a few guidelines if you would like to contribute:
   files. This should be available for any editor that supports `gopls`, however
   you can also run it locally with `golangci-lint run` after installing it.
 
-
-
-
-
-
-
-
-
 ### :snake: Python
 
 - All functions/methods/files should use type annotations when available, in
   addition to ensuring all functions/methods have proper docstrings.
 - This project uses [black](https://github.com/psf/black) for linting Python libraries
   and scripts. This is an available option in most editors that use a Python language server.
-
-
-
-
-
-
-
-
 
 ## :clipboard: References
 
