@@ -23,4 +23,5 @@ jobs:
       pull-requests: read
       security-events: write
       statuses: write
+      id-token: write # codecov OIDC upload, in the called workflow.
     secrets: inherit
