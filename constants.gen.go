@@ -11,7 +11,7 @@ const (
 	Channel = "stable"
 
 	// Version of yt-dlp that go-ytdlp was generated with.
-	Version = "2026.10.26"
+	Version = "2026.11.23"
 )
 
 // Extractor contains information about a specific yt-dlp extractor. Extractors are
@@ -680,9 +680,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "kuwo:mv", Description: "酷我音乐 - MV (Currently broken)"},
 	{Name: "kuwo:singer", Description: "酷我音乐 - 歌手 (Currently broken)"},
 	{Name: "kuwo:song", Description: "酷我音乐 (Currently broken)"},
-	{Name: "la7.it"},
-	{Name: "la7.it:pod:episode"},
-	{Name: "la7.it:podcast"},
+	{Name: "la7play.it"},
 	{Name: "laracasts"},
 	{Name: "laracasts:series"},
 	{Name: "LastFM"},
@@ -1037,8 +1035,6 @@ var SupportedExtractors = []*Extractor{
 	{Name: "peloton", Description: "[peloton]"},
 	{Name: "peloton:live", Description: "Peloton Live"},
 	{Name: "PerformGroup"},
-	{Name: "periscope", Description: "Periscope"},
-	{Name: "periscope:user", Description: "Periscope user videos"},
 	{Name: "PGATour"},
 	{Name: "PhilharmonieDeParis", Description: "Philharmonie de Paris"},
 	{Name: "phoenix.de"},
@@ -1531,6 +1527,7 @@ var SupportedExtractors = []*Extractor{
 	{Name: "twitter:amplify"},
 	{Name: "twitter:broadcast"},
 	{Name: "twitter:card"},
+	{Name: "twitter:event"},
 	{Name: "twitter:shortener"},
 	{Name: "twitter:spaces"},
 	{Name: "Txxx", AgeLimit: 18},
